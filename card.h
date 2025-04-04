@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QImage>
+#include "ability.h"
 
 class Card
 {
@@ -12,6 +13,7 @@ public:
 private:
     QString description;
     QImage image;
+    Ability ability;
 };
 
 #endif // CARD_H
