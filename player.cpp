@@ -151,3 +151,11 @@ void Player::upkeepStep(){
         card->triggerUpkeep();
     }
 }
+
+void Player::endTurn(){
+    if (Hand.size() <= 7){
+        emit turnEnded();
+        return;
+    }
+    emit requestDiscard("Hand");    // TODO: clarify zone
+}
