@@ -12,18 +12,20 @@ SOURCES += \
     ability.cpp \
     card.cpp \
     deck.cpp \
+    gamemanager.cpp \
     main.cpp \
     mainwindow.cpp \
     player.cpp \
-    type.cpp
+    type.cpp \
 
 HEADERS += \
     ability.h \
     card.h \
     deck.h \
+    gamemanager.h \
     mainwindow.h \
     player.h \
-    type.h
+    type.h \
 
 FORMS += \
     mainwindow.ui
