@@ -14,8 +14,7 @@ SOURCES += \
     deck.cpp \
     main.cpp \
     mainwindow.cpp \
-    player.cpp \
-    type.cpp
+    player.cpp
 
 HEADERS += \
     ability.h \
