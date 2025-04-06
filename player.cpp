@@ -1,48 +1,58 @@
 #include "player.h"
 #include "type.h"
 
-using enum ManaColor;
-
-Player::Player(QWidget *parent)
-    : QWidget{parent}
+Player::Player(QObject *parent)
+    : QObject{parent}
 {
-    manaPool[Red] = 0;
-    manaPool[Blue] = 0;
-    manaPool[White] = 0;
-    manaPool[Green] = 0;
-    manaPool[Black] = 0;
+    manaPool[ManaColor::Red] = 0;
+    manaPool[ManaColor::Blue] = 0;
+    manaPool[ManaColor::White] = 0;
+    manaPool[ManaColor::Green] = 0;
+    manaPool[ManaColor::Black] = 0;
+
+    health = 20;
 
 }
 
 void Player::gainLife(int amount){
+    qDebug() << "Gain Life called with " << amount;
     health += amount;
+    qDebug() << "New Health: " << health;
     emit healthChanged(health);
 }
 
 void Player::takeDamage(int amount){
+    qDebug() << "Take Damage called with " << amount;
     health -= amount;
+    qDebug() << "New Health: " << health;
     emit healthChanged(health);
 }
 
-void Player::addMana(int amount, ManaColor color){
-    manaPool[color] += amount;
-    emit manaPoolChanged();
+void Player::addMana(QMap<ManaColor, int>* manaCosts){
+    for(auto [color, amount] : manaCosts->toStdMap()){
+        manaPool[color] += amount;
+    }
+
+    emit manaPoolChanged(&manaPool);
 }
 
-void Player::useMana(int amount, ManaColor color){
-    manaPool[color] -= amount;
-    emit manaPoolChanged();
+void Player::useMana(QMap<ManaColor, int>* manaCosts){
+    for(auto [color, amount] : manaCosts->toStdMap()){
+        manaPool[color] -= amount;
+    }
+
+    emit manaPoolChanged(&manaPool);
 }
 
 void Player::drawCard(int amount){
     // Check to see if any cards left
     for (int i = 0; i < amount; i++){
-        if(false){ // Library.isEmpty()){     WILL ADD LATER WHEN DECK IS IMPLEMENTED
+        if(false){ // Library.isEmpty()){     TODO: WILL ADD LATER WHEN DECK IS IMPLEMENTED
             emit playerLost();
             return;
         }
 
-        Card* card = Library.drawTopCard();
+        Card* card = nullptr; //Library.drawTopCard(); TODO: ADD AFTER DECK
         Hand.append(card);
         emit cardDrawn(card);
         emit handChanged();
@@ -51,7 +61,7 @@ void Player::drawCard(int amount){
 }
 
 void Player::moveCard(int cardIndex, QString sourceZone, QString targetZone){
-    Card* card = findCardInZone(cardIndex, sourceZone);
+    Card* card = nullptr; // TODO: Implement after card class findCardInZone(cardIndex, sourceZone);
 
     QVector<Card*>* source = nullptr;
     QVector<Card*>* target = nullptr;
@@ -80,11 +90,11 @@ void Player::moveCard(int cardIndex, QString sourceZone, QString targetZone){
 
 void Player::mill(int amount){
     for(int i = 0; i < amount; i++){
-        if(false){ // Library.isEmpty()){     WILL ADD LATER WHEN DECK IS IMPLEMENTED
+        if(false){ // Library.isEmpty()){   TODO:  WILL ADD LATER WHEN DECK IS IMPLEMENTED
             emit playerLost();
             return;
         }
-        Card* card = Library.drawTopCard();
+        Card* card = nullptr; // Library.drawTopCard(); TODO: ADD AFTER DECK IS IMPLEMENTED
         Graveyard.append(card);
         emit libraryChanged();
         emit graveyardChanged();
@@ -97,60 +107,63 @@ void Player::playCard(int index, QString zone){
         emit invalidAction("Card selected out of bounds");
         return;
     }
-    Card* card = findCardInZone(index, zone);
+    // Card* card = findCardInZone(index, zone);
 
-    if(card->isLand()){
-        Hand.removeAt(index);
-        Battlefield.append(card);
+    // TODO: Implement after Card has IsLand and isPermanent, as well as mana costs
+    // if(card->isLand()){
+    //     Hand.removeAt(index);
+    //     Battlefield.append(card);
 
-        emit cardPlayed(card);
-        emit handChanged();
-        emit battlefieldChanged();
-    }
-    else{
-        if(canPayMana(card->getManaCost())){ // Need this function from Card
-            payMana(card->getManaCost());
-            Hand.removeAt(index);
+    //     emit cardPlayed(card);
+    //     emit handChanged();
+    //     emit battlefieldChanged();
+    // }
+    // else{
+    //     if(canPayMana(card->getManaCost())){ // Need this function from Card
+    //         payMana(card->getManaCost());
+    //         Hand.removeAt(index);
 
-            if(card->isPermanent()){ // Need this function from Card class
-                Battlefield.append(card);
-                emit battlefieldChanged();
-            }
-            else{
-                // Instant / Sorcery Card
-                card->DoAction(this);
-                Graveyard.append(card);
-                emit graveyardChanged();
-            }
+    //         if(card->isPermanent()){ // Need this function from Card class
+    //             Battlefield.append(card);
+    //             emit battlefieldChanged();
+    //         }
+    //         else{
+    //             // Instant / Sorcery Card
+    //             card->DoAction(this);
+    //             Graveyard.append(card);
+    //             emit graveyardChanged();
+    //         }
 
-            emit cardPlayed(card);
-            emit handChanged();
-            emit manaPoolChanged();
-        }
-    }
+    //         emit cardPlayed(card);
+    //         emit handChanged();
+    //         emit manaPoolChanged();
+    //     }
+    // }
 }
 
 void Player::updateAllUI(){
     emit handChanged();
-    emit manaPoolChanged();
+    emit manaPoolChanged(&manaPool);
     emit battlefieldChanged();
     emit graveyardChanged();
     emit exileChanged();
     emit healthChanged(health);
 }
 
-void Player::untapPhase(){
-    for (Card* card : Battlefield){
-        card->untap();
-    }
-    emit battlefieldChanged();
-}
+// TODO: Have Cards "Untapable and Tapable"
+// void Player::untapPhase(){
+//     for (Card* card : Battlefield){
+//         card->untap();
+//     }
+//     emit battlefieldChanged();
+// }
 
-void Player::upkeepStep(){
-    for(Card* card : Battlefield){
-        card->triggerUpkeep();
-    }
-}
+// TODO: Have Cards have an "Upkeep" function
+// void Player::upkeepStep(){
+//     for(Card* card : Battlefield){
+//         card->triggerUpkeep();
+//     }
+// }
 
 void Player::endTurn(){
     if (Hand.size() <= 7){

@@ -6,11 +6,11 @@
 #include <QWidget>
 #include "deck.h"
 
-class Player : public QWidget
+class Player : public QObject
 {
     Q_OBJECT
 public:
-    explicit Player(QWidget *parent = nullptr);
+    explicit Player(QObject *parent = nullptr);
 
     Deck Library;
     QVector<Card*> Graveyard;
@@ -34,8 +34,8 @@ public slots:
 
     void playCard(int index, QString zone);
     void moveCard(int CardIndex, QString sourceZone, QString targetZone);
-    void addMana(int amount, ManaColor color);
-    void useMana(int amount, ManaColor color);
+    void addMana(QMap<ManaColor, int>* manaCosts);
+    void useMana(QMap<ManaColor, int>* manaCosts);
     void mill(int amount);
     void drawCard(int amount = 1);
     void takeDamage(int amount);
@@ -57,7 +57,7 @@ signals:
     void graveyardChanged();
     void exileChanged();
     void libraryChanged();
-    void manaPoolChanged();
+    void manaPoolChanged(QMap<ManaColor, int>* newMana);
     void requestDiscard(QString zone);
     void invalidAction(QString message);
 
@@ -66,8 +66,8 @@ private:
     QMap<ManaColor, int> manaPool;
 
     void loseGame();
-    Card* findCardByID(int cardId, const QVector<Card*>& targetZone);
-    Card* findCardInZone(int cardId, QString zoneRequested);
+ //   Card* findCardByID(int cardId, const QVector<Card*>& targetZone); TODO: Implement after Card Class
+//    Card* findCardInZone(int cardId, QString zoneRequested); TODO: Implement after Card Class
 
     bool canPayMana(int manaCost, ManaColor color);
 };
