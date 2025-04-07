@@ -22,11 +22,23 @@ private:
         EndStep,
         Cleanup
     };
+    struct PhaseRules {
+        bool canPlayInstant;
+        bool canPlaySorcery;
+        bool canDraw;
+        bool canDeclareAttack;
+        bool canDeclareDefense;
+        bool canPassTurn;
+        bool canUntap;
+    };
+    Player player1;
+    Player player2;
+
     Phase currentPhase;
     QVector<Ability> theStack;
-    Player* activePlayer;
-    Player* passivePlayer;
-    Player* priority;
+    // Player* activePlayer;
+    // Player* passivePlayer;
+    // Player* priority;
     QVector<Card*> attackers;
     QVector<Card*> defenders;
     int turnCount;
@@ -37,7 +49,7 @@ public:
     /**
      * @brief Sets the current phase in the game state
      */
-    void changePhase();
+    void changePhase(Phase newPhase);
 
     /**
      * @brief Changes player priority
@@ -53,6 +65,12 @@ public:
      * @brief Based on declared attackers and defenders resolve damage
      */
     void resolveCombatDamage();
+
+    /**
+     * @brief Gets the ruels for the current phase
+     * @return The Phase Rules for the current phase
+     */
+    PhaseRules getPaseRules();
 };
 
 #endif // GAMESTATE_H
