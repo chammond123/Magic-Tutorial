@@ -15,7 +15,6 @@ SOURCES += \
     deck.cpp \
     main.cpp \
     mainwindow.cpp \
-    mana.cpp \
     player.cpp \
     type.cpp
 
@@ -25,7 +24,6 @@ HEADERS += \
     cardwidget.h \
     deck.h \
     mainwindow.h \
-    mana.h \
     player.h \
     type.h
 

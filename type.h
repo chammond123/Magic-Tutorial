@@ -3,7 +3,7 @@
 
 #include <QString>
 
-enum class Type : int {
+enum class CardType : int {
     LAND,
     CREATURE,
     ARTIFACT,
@@ -14,11 +14,12 @@ enum class Type : int {
     SORCERY
 };
 
-enum class ManaColor : int {
-    Blue,
-    Red,
-    Green,
-    White,
-    Black,
+enum class ManaType : int {
+    WHITE,
+    RED,
+    BLUE,
+    BLACK,
+    GREEN,
+    ANY
 };
 #endif // TYPE_H
