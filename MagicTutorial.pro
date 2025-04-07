@@ -11,8 +11,10 @@ CONFIG += c++17
 SOURCES += \
     ability.cpp \
     card.cpp \
+    command.cpp \
     deck.cpp \
     gamemanager.cpp \
+    gamestate.cpp \
     main.cpp \
     mainwindow.cpp \
     player.cpp \
@@ -21,8 +23,10 @@ SOURCES += \
 HEADERS += \
     ability.h \
     card.h \
+    command.h \
     deck.h \
     gamemanager.h \
+    gamestate.h \
     mainwindow.h \
     player.h \
     type.h \

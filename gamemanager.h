@@ -15,7 +15,7 @@ private:
         PreCombatMain,
         BeginCombat,
         DeclareAttackers,
-        DeclairBlockers,
+        DeclareBlockers,
         CombatDamage,
         PostCombatMain,
         EndStep,
@@ -28,6 +28,7 @@ private:
         Phase::PreCombatMain,
         Phase::BeginCombat,
         Phase::DeclareAttackers,
+        Phase::DeclareBlockers,
         Phase::CombatDamage,
         Phase::PostCombatMain,
         Phase::EndStep,
@@ -35,10 +36,19 @@ private:
     };
     QVector<Card> theStack;
     int turnCount = 0;
-    Player activePlayer;
-    Player passivePlayer;
+    Player* activePlayer;
+    Player* passivePlayer;
+    Player* priority = activePlayer;
+    bool changePhase;
+    void mainGameLoop(Player player1, Player player2);
+
 public:
     gamemanager();
+
+public slots:
+
 };
+
+
 
 #endif // GAMEMANAGER_H
