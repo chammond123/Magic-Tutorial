@@ -1,10 +1,10 @@
 #include "gamemanager.h"
 
-gamemanager::gamemanager() {}
+gamemanager::gamemanager(){
+    state = new GameState();
+}
 
 void gamemanager::mainGameLoop(Player* &player1, Player* &player2){
-    activePlayer = player1;
-    passivePlayer = player2;
     while (player1.alive && player2.alive){
         for (const Phase& phase : phases){
             switch (phase){
@@ -42,10 +42,6 @@ void gamemanager::mainGameLoop(Player* &player1, Player* &player2){
                     // Player discards excess cards
                     break;
             }
-                changePhase = false;
-                while (!changePhase){
-
-                }
         }
     }
 }

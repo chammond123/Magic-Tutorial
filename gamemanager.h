@@ -4,6 +4,7 @@
 #include<QVector>
 #include"card.h"
 #include"player.h"
+#include"gamestate.h"
 
 class gamemanager
 {
@@ -34,12 +35,7 @@ private:
         Phase::EndStep,
         Phase::Cleanup
     };
-    QVector<Card> theStack;
-    int turnCount = 0;
-    Player* activePlayer;
-    Player* passivePlayer;
-    Player* priority = activePlayer;
-    bool changePhase;
+    GameState* state;
     void mainGameLoop(Player player1, Player player2);
 
 public:
