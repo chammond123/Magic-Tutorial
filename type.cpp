@@ -1,6 +1,6 @@
 #include "type.h"
 
-enum class EnumName : int {
+enum class CardType : int {
     LAND,
     CREATURE,
     ARTIFACT,

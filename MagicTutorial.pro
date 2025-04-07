@@ -11,21 +11,26 @@ CONFIG += c++17
 SOURCES += \
     ability.cpp \
     card.cpp \
+    cardwidget.cpp \
     deck.cpp \
     main.cpp \
     mainwindow.cpp \
+    mana.cpp \
     player.cpp \
     type.cpp
 
 HEADERS += \
     ability.h \
     card.h \
+    cardwidget.h \
     deck.h \
     mainwindow.h \
+    mana.h \
     player.h \
     type.h
 
 FORMS += \
+    cardwidget.ui \
     mainwindow.ui
 
 # Default rules for deployment.
