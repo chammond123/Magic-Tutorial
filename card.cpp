@@ -13,6 +13,7 @@ CardType Card::getType() const { return type; }
 int Card::getToughness() const { return toughness; }
 int Card::getPower() const { return power; }
 QVector<ManaType> Card::getCost() const { return cost; }
+QVector<PropertyType> Card::getKeywords() const { return keywords; }
 
 bool Card::isPermanent() const {
     return (type == CardType::CREATURE ||
@@ -35,6 +36,13 @@ bool Card::canBePlayed(const QVector<ManaType> &availableMana) const{
         }
     }
     return true;
+}
+
+bool Card::hasKeyword(PropertyType keyword) const{
+    if(keywords.contains(keyword)){
+        return true;
+    }
+    return false;
 }
 
 // Card* Card::clone() const{

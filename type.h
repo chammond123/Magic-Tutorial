@@ -14,6 +14,19 @@ enum class CardType : int {
     SORCERY
 };
 
+enum class PropertyType : int {
+    AURA,
+    DEATHTOUCH,
+    DOUBLE_STRIKE,
+    EQUIPMENT,
+    FIRST_STRIKE,
+    FLYING,
+    HASTE,
+    LIFELINK,
+    REACH,
+    TRAMPLE
+};
+
 enum class ManaType : int {
     WHITE,
     RED,

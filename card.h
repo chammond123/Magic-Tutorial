@@ -25,10 +25,12 @@ public:
     int getToughness() const;
     int getPower() const;
     QVector<ManaType> getCost() const;
+    QVector<PropertyType> getKeywords() const;
     bool isPermanent() const;
 
     void useAbility();
     bool canBePlayed(const QVector<ManaType> &availableMana) const;
+    bool hasKeyword(PropertyType keyword) const;
     Card* clone() const;
 
 
@@ -42,6 +44,7 @@ private:
     int toughness;
     int power;
     QVector<ManaType> cost;
+    QVector<PropertyType> keywords;
 };
 
 #endif // CARD_H
