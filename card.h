@@ -6,7 +6,6 @@
 #include "ability.h"
 #include "type.h"
 #include <QVector>
-#include "mana.h"
 
 class Card
 {
@@ -17,12 +16,12 @@ private:
     QString name;
     QString description;
     QImage image;
-    Mana color;
+    ManaType color;
     Ability ability;
-    Type type;
+    CardType type;
     int toughness;
     int power;
-    QVector<Mana> cost;
+    QVector<ManaType> cost;
 };
 
 #endif // CARD_H
