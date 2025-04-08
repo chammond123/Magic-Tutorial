@@ -15,6 +15,7 @@ SOURCES += \
     deck.cpp \
     gamemanager.cpp \
     gamestate.cpp \
+    inputhandler.cpp \
     main.cpp \
     mainwindow.cpp \
     player.cpp \
@@ -27,6 +28,7 @@ HEADERS += \
     deck.h \
     gamemanager.h \
     gamestate.h \
+    inputhandler.h \
     mainwindow.h \
     player.h \
     type.h \
