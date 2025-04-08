@@ -50,24 +50,31 @@ PhaseRules GameState::getPhaseRules(){
         // Player can play a land, cast a card or activate an ability
         break;
     case Phase::BeginCombat:
+        return PhaseRules{true, false, false, false, false, false, false};
         // Players may play instant speed cards or activate abilites
         break;
     case Phase::DeclareAttackers:
+        return PhaseRules{false, false, false, true, false, false, false};
         // ActivePlayer selects attacking creatures
         break;
     case Phase::DeclareBlockers:
+        return PhaseRules{false, false, false, false, true, false, false};
         // PassivePlayer selects defending creatures
         break;
     case Phase::CombatDamage:
+        return PhaseRules{false, false, false, false, false, false, false};
         // Based on the delcared attackers and blockers, resolve the damage
         break;
     case Phase::PostCombatMain:
+        return PhaseRules{true, true, true, false, false, false, false};
         // Players can play a land, cast a card or activate an ability
         break;
     case Phase::EndStep:
+        return PhaseRules{true, false, false, false, false, false, false};
         // Player endstep trigger
         break;
     case Phase::Cleanup:
+        return PhaseRules{false, false, false, false, false, true, false};
         // Player discards excess cards
         break;
     }
