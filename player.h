@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include "card.h"
-#include "deck.h"
+#include "zone.h"
 #include "type.h"
 
 class Player : public QObject

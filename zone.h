@@ -1,14 +1,13 @@
-#ifndef DECK_H
-#define DECK_H
+#ifndef ZONE_H
+#define ZONE_H
 
 #include "card.h"
 #include <random>
 
-class Deck
+class Zone
 {
 private:
-    QVector<Card> cards;
-
+    QVector<Card*> cards;
     bool isFaceUp;
 
     unsigned seed;
@@ -16,26 +15,28 @@ private:
 
 public:
     /**
-     * @brief Deck Constructor
+     * @brief Default Zone Constructor
      */
-    Deck();
+    Zone();
 
     /**
      * @brief intialize
      * @param initialCards
-     * Allows for a reinitialization of a cards in a deck
+     * Allows for a reinitialization of a cards in a zone
      */
     void intialize(const QVector<Card> &initialCards);
 
     /**
      * @brief setVisibility
      * @param visibility
+     * Sets a zone's visibility state
      */
     void setVisibility(bool visibility);
 
     /**
      * @brief getVisibility
      * @return 
+     * Get's a zone's visibility state for rendering on the GUI
      */
     bool getVisibility();
 
@@ -50,4 +51,4 @@ public:
     void drawCard();
 };
 
-#endif // DECK_H
+#endif // ZONE_H
