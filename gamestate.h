@@ -44,7 +44,7 @@ private:
     int turnCount;
 
 public:
-    gamestate();
+    GameState();
 
     /**
      * @brief Sets the current phase in the game state

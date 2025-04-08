@@ -19,42 +19,42 @@ public:
     drawCommand(GameState* state, Player* player);
 
     virtual void execute();
-    virtual void isValid();
+    virtual bool isValid();
 };
 
 class playCardCommand : public Command{
     playCardCommand(GameState* state, Player* player, Card* card);
 
     virtual void execute();
-    virtual void isValid();
+    virtual bool isValid();
 };
 
 class passPriorityCommand : public Command{
     passPriorityCommand(GameState* state, Player* player);
 
     virtual void execute();
-    virtual void isValid();
+    virtual bool isValid();
 };
 
 class passTurnCommand : public Command{
     passTurnCommand(GameState* state, Player* player);
 
     virtual void execute();
-    virtual void isValid();
+    virtual bool isValid();
 };
 
 class declareAttackerCommand : public Command{
     declareAttackerCommand(GameState* state, Player* player, Card* card);
 
     virtual void execute();
-    virtual void isValid();
+    virtual bool isValid();
 };
 
 class declareBlockerCommand : public Command{
     declareBlockerCommand(GameState* state, Player* player, Card* card);
 
     virtual void execute();
-    virtual void isValid();
+    virtual bool isValid();
 };
 
 #endif // COMMAND_H
