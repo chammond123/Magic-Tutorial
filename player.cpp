@@ -4,11 +4,11 @@
 Player::Player(QObject *parent)
     : QObject{parent}
 {
-    manaPool[ManaColor::Red] = 0;
-    manaPool[ManaColor::Blue] = 0;
-    manaPool[ManaColor::White] = 0;
-    manaPool[ManaColor::Green] = 0;
-    manaPool[ManaColor::Black] = 0;
+    manaPool[ManaType::RED] = 0;
+    manaPool[ManaType::BLUE] = 0;
+    manaPool[ManaType::WHITE] = 0;
+    manaPool[ManaType::GREEN] = 0;
+    manaPool[ManaType::BLACK] = 0;
 
     health = 20;
 
@@ -28,7 +28,7 @@ void Player::takeDamage(int amount){
     emit healthChanged(health);
 }
 
-void Player::addMana(QMap<ManaColor, int>* manaCosts){
+void Player::addMana(QMap<ManaType, int>* manaCosts){
     for(auto [color, amount] : manaCosts->toStdMap()){
         manaPool[color] += amount;
     }
@@ -36,7 +36,7 @@ void Player::addMana(QMap<ManaColor, int>* manaCosts){
     emit manaPoolChanged(&manaPool);
 }
 
-void Player::useMana(QMap<ManaColor, int>* manaCosts){
+void Player::useMana(QMap<ManaType, int>* manaCosts){
     for(auto [color, amount] : manaCosts->toStdMap()){
         manaPool[color] -= amount;
     }

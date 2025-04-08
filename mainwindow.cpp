@@ -40,28 +40,28 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::receiveMana(QMap<ManaColor, int>* manaPool){
+void MainWindow::receiveMana(QMap<ManaType, int>* manaPool){
     for(auto[color, amount] : manaPool->toStdMap()){
-        if(color == ManaColor::White){
+        if(color == ManaType::WHITE){
             ui->whiteManaSpinBox->setValue(amount);
         }
-        else if(color == ManaColor::Black){
+        else if(color == ManaType::BLACK){
             ui->blackManaSpinBox->setValue(amount);
         }
-        else if(color == ManaColor::Blue){
+        else if(color == ManaType::BLUE){
             ui->blueManaSpinBox->setValue(amount);
         }
-        else if(color == ManaColor::Red){
+        else if(color == ManaType::RED){
             ui->redManaSpinBox->setValue(amount);
         }
-        else if(color == ManaColor::Green){
+        else if(color == ManaType::GREEN){
             ui->greenManaSpinBox->setValue(amount);
         }
     }
 }
 
 void MainWindow::manaAddTest(){
-    QMap<ManaColor, int> manaCosts;
+    QMap<ManaType, int> manaCosts;
 
     QString inputColor = ui->comboBox->currentText();
     int value = ui->testSpinBox->value();
@@ -69,38 +69,38 @@ void MainWindow::manaAddTest(){
     qDebug() << inputColor << " clicked with " << value << " amount";
 
     if (inputColor == "White"){
-        manaCosts[ManaColor::White] = value;
+        manaCosts[ManaType::WHITE] = value;
     } else if (inputColor == "Black"){
-        manaCosts[ManaColor::Black] = value;
+        manaCosts[ManaType::BLACK] = value;
     } else if (inputColor == "Blue"){
-        manaCosts[ManaColor::Blue] = value;
+        manaCosts[ManaType::BLUE] = value;
     } else if (inputColor == "Red"){
-        manaCosts[ManaColor::Red] = value;
+        manaCosts[ManaType::RED] = value;
     } else if (inputColor == "Green"){
-        manaCosts[ManaColor::Green] = value;
+        manaCosts[ManaType::GREEN] = value;
     }
 
     emit uiTestManaAdd(&manaCosts);
 }
 
 void MainWindow::manaPayTest(){
-    QMap<ManaColor, int> manaCosts;
+    QMap<ManaType, int> manaCosts;
 
     QString inputColor = ui->comboBox->currentText().trimmed();
     int value = ui->testSpinBox->value();
 
     qDebug() << inputColor << "clicked with" << value << " amount";
     if (inputColor == "White"){
-        manaCosts[ManaColor::White] = value;
+        manaCosts[ManaType::WHITE] = value;
         qDebug() << "White emit sent";
     } else if (inputColor == "Black"){
-        manaCosts[ManaColor::Black] = value;
+        manaCosts[ManaType::BLACK] = value;
     } else if (inputColor == "Blue"){
-        manaCosts[ManaColor::Blue] = value;
+        manaCosts[ManaType::BLUE] = value;
     } else if (inputColor == "Red"){
-        manaCosts[ManaColor::Red] = value;
+        manaCosts[ManaType::RED] = value;
     } else if (inputColor == "Green"){
-        manaCosts[ManaColor::Green] = value;
+        manaCosts[ManaType::GREEN] = value;
     }
 
     emit uiTestManaPay(&manaCosts);
