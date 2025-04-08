@@ -29,15 +29,17 @@ void Zone::setVisibility(bool visibility) {
     isFaceUp = visibility;
 }
 
-int Zone::getCount() {
-    return count;
-}
+iterator Zone::Begin() { return cards.begin(); }
+
+iterator Zone::End() { return cards.end(); }
+
+int Zone::getCount() { return count; }
 
 void Zone::shuffle() {
     std::shuffle(cards.first(), cards.last(), randomEngine);
 }
 
-bool Zone::isCard(Card* card) {
+bool Zone::findCard(Card* card) {
     return cards.contains(card);
 }
 

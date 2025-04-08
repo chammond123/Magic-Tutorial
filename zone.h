@@ -2,7 +2,9 @@
 #define ZONE_H
 
 #include "card.h"
+#include <QIterator>
 #include <random>
+using iterator = QVector<Card*>::Iterator;
 
 class Zone
 {
@@ -14,6 +16,7 @@ private:
      */
     QVector<Card*> cards;
     int count = cards.count();
+
 
     bool isFaceUp;
 
@@ -64,6 +67,20 @@ public:
     bool getVisibility();
 
     /**
+     * @brief Begin
+     * @return
+     * Makes Zone class iterable
+     */
+    iterator Begin();
+
+    /**
+     * @brief End
+     * @return
+     * Makes Zone class iterable
+     */
+    iterator End();
+
+    /**
      * @brief getCount
      * @return
      */
@@ -77,7 +94,7 @@ public:
     /**
      * @brief findCard
      */
-    bool isCard(Card* card);
+    bool findCard(Card* card);
 
     /**
      * @brief drawCard
