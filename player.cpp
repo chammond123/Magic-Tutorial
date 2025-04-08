@@ -1,5 +1,6 @@
 #include "player.h"
 #include "type.h"
+#include "zone.h"
 
 Player::Player(QObject *parent)
     : QObject{parent}
@@ -11,6 +12,8 @@ Player::Player(QObject *parent)
     manaPool[ManaType::BLACK] = 0;
 
     health = 20;
+
+    drawCard(7);
 }
 
 void Player::gainLife(int amount)
@@ -119,42 +122,43 @@ void Player::playCard(int index, QString zone)
         emit invalidAction("Card selected out of bounds");
         return;
     }
-    // Card* card = findCardInZone(index, zone);
+    Card* card = findCardInZone(index, zone);
 
     // TODO: Implement after Card has IsLand and isPermanent, as well as mana costs
-    // if(card->isLand()){
-    //     Hand.removeAt(index);
-    //     Battlefield.append(card);
+    if(card->isLand()){
+        Hand.removeAt(index);
+        Battlefield.append(card);
 
-    //     emit cardPlayed(card);
-    //     emit handChanged();
-    //     emit battlefieldChanged();
-    // }
-    // else{
-    //     if(canPayMana(card->getManaCost())){ // Need this function from Card
-    //         payMana(card->getManaCost());
-    //         Hand.removeAt(index);
+        emit cardPlayed(card);
+        emit handChanged();
+        emit battlefieldChanged();
+    }
+    else{
+        if(canPayMana(card->getManaCost())){ // Need this function from Card
+            payMana(card->getManaCost());
+            Hand.removeAt(index);
 
-    //         if(card->isPermanent()){ // Need this function from Card class
-    //             Battlefield.append(card);
-    //             emit battlefieldChanged();
-    //         }
-    //         else{
-    //             // Instant / Sorcery Card
-    //             card->DoAction(this);
-    //             Graveyard.append(card);
-    //             emit graveyardChanged();
-    //         }
+            if(card->isPermanent()){ // Need this function from Card class
+                Battlefield.append(card);
+                emit battlefieldChanged();
+            }
+            else{
+                // Instant / Sorcery Card
+                card->useAbility();
+                Graveyard.append(card);
+                emit graveyardChanged();
+            }
 
-    //         emit cardPlayed(card);
-    //         emit handChanged();
-    //         emit manaPoolChanged();
-    //     }
-    // }
+            emit cardPlayed(card);
+            emit handChanged();
+            emit manaPoolChanged(&manaPool);
+        }
+    }
 }
 
-bool Player::canPayMana(QMap<ManaType, int> manaCosts)
+bool Player::canPayMana(Card* card)
 {
+    QMap<ManaType, int> manaCosts = card->getCost();
     for (auto [color, value] : manaCosts.toStdMap()) {
         if (value > manaPool[color]) {
             return false;

@@ -26,10 +26,12 @@ public:
 
     // Mana Methods
     void payMana(int manaCost, ManaType color);
-    bool canPayMana(QMap<ManaType, int> manaCosts);
+    bool canPayMana(Card* card);
 
     // Turn Phases
     void onBlockRequested(Card *attacker, Card *defender = nullptr);
+    void untapPhase();
+    void upkeepPhase();
 
 public slots:
 
@@ -66,6 +68,7 @@ private:
     void loseGame();
     //   Card* findCardByID(int cardId, const QVector<Card*>& targetZone); TODO: Implement after Card Class
     Card *findCardInZone(int cardId, QString zoneRequested);
+    QVector<Card*> findZone(QString zoneInput);
 };
 
 #endif // PLAYER_H
