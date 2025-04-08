@@ -60,8 +60,7 @@ void Player::drawCard(int amount){
     }
 }
 
-void Player::moveCard(int cardIndex, QString sourceZone, QString targetZone){
-    Card* card = nullptr; // TODO: Implement after card class findCardInZone(cardIndex, sourceZone);
+void Player::moveCard(Card* card, QString sourceZone, QString targetZone){
 
     QVector<Card*>* source = nullptr;
     QVector<Card*>* target = nullptr;
@@ -141,6 +140,31 @@ void Player::playCard(int index, QString zone){
     // }
 }
 
+bool Player::canPayMana(QMap<ManaType,int> manaCosts){
+    for(auto[color, value] : manaCosts.toStdMap()){
+        if(value > manaPool[color]){
+            return false;
+        }
+    }
+
+    return true;
+}
+
+void Player::onAttackRequested(Card* attacker, Card* defender){
+    int damage = attacker->getPower();
+    if (defender == nullptr){
+        takeDamage(damage);
+    }
+    int toughness = defender->getToughness();
+    if (toughness > damage){
+        // Emit something to let gamemanager know the attack failed.
+        return;
+    }
+    else {
+        moveCard(defender, "battlefield", "graveyard");
+    }
+}
+
 void Player::updateAllUI(){
     emit handChanged();
     emit manaPoolChanged(&manaPool);
@@ -171,4 +195,21 @@ void Player::endTurn(){
         return;
     }
     emit requestDiscard("Hand");    // TODO: clarify zone
+}
+
+Card* Player::findCardInZone(int cardIndex, QString zoneName) {
+    if (zoneName == "hand") {
+        return Hand.at(cardIndex);
+    } else if (zoneName == "battlefield") {
+        return Battlefield.at(cardIndex);
+    } else if (zoneName == "graveyard") {
+        return Graveyard.at(cardIndex);
+    } else if (zoneName == "exile") {
+        return Exile.at(cardIndex);
+    } else if (zoneName == "library") {
+        // Library is special since you typically can't directly access cards
+        // This is just for UI debugging or special effects
+        return nullptr ;//Library.at(cardIndex);
+    }
+    return nullptr;
 }

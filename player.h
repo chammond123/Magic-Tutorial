@@ -22,18 +22,20 @@ public:
     int getHealth();
 
     // Zone Methods
+    void moveCard(Card* card, QString sourceZone, QString targetZone);
 
 
     // Mana Methods
     void payMana(int manaCost, ManaType color);
+    bool canPayMana(QMap<ManaType, int> manaCosts);
 
     // Turn Phases
+    void onBlockRequested(Card* attacker, Card* defender = nullptr);
 
 
 public slots:
 
     void playCard(int index, QString zone);
-    void moveCard(int CardIndex, QString sourceZone, QString targetZone);
     void addMana(QMap<ManaType, int>* manaCosts);
     void useMana(QMap<ManaType, int>* manaCosts);
     void mill(int amount);
@@ -42,7 +44,6 @@ public slots:
     void gainLife(int amount);
     void updateAllUI();
     void endTurn();
-
 
 
 signals:
@@ -67,9 +68,9 @@ private:
 
     void loseGame();
  //   Card* findCardByID(int cardId, const QVector<Card*>& targetZone); TODO: Implement after Card Class
-//    Card* findCardInZone(int cardId, QString zoneRequested); TODO: Implement after Card Class
+    Card* findCardInZone(int cardId, QString zoneRequested);
 
-    bool canPayMana(int manaCost, ManaType color);
+
 };
 
 #endif // PLAYER_H
