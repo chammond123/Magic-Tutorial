@@ -11,48 +11,52 @@ Player::Player(QObject *parent)
     manaPool[ManaType::BLACK] = 0;
 
     health = 20;
-
 }
 
-void Player::gainLife(int amount){
+void Player::gainLife(int amount)
+{
     qDebug() << "Gain Life called with " << amount;
     health += amount;
     qDebug() << "New Health: " << health;
     emit healthChanged(health);
 }
 
-void Player::takeDamage(int amount){
+void Player::takeDamage(int amount)
+{
     qDebug() << "Take Damage called with " << amount;
     health -= amount;
     qDebug() << "New Health: " << health;
     emit healthChanged(health);
 }
 
-void Player::addMana(QMap<ManaType, int>* manaCosts){
-    for(auto [color, amount] : manaCosts->toStdMap()){
+void Player::addMana(QMap<ManaType, int> *manaCosts)
+{
+    for (auto [color, amount] : manaCosts->toStdMap()) {
         manaPool[color] += amount;
     }
 
     emit manaPoolChanged(&manaPool);
 }
 
-void Player::useMana(QMap<ManaType, int>* manaCosts){
-    for(auto [color, amount] : manaCosts->toStdMap()){
+void Player::useMana(QMap<ManaType, int> *manaCosts)
+{
+    for (auto [color, amount] : manaCosts->toStdMap()) {
         manaPool[color] -= amount;
     }
 
     emit manaPoolChanged(&manaPool);
 }
 
-void Player::drawCard(int amount){
+void Player::drawCard(int amount)
+{
     // Check to see if any cards left
-    for (int i = 0; i < amount; i++){
-        if(false){ // Library.isEmpty()){     TODO: WILL ADD LATER WHEN DECK IS IMPLEMENTED
+    for (int i = 0; i < amount; i++) {
+        if (false) { // Library.isEmpty()){     TODO: WILL ADD LATER WHEN DECK IS IMPLEMENTED
             emit playerLost();
             return;
         }
 
-        Card* card = nullptr; //Library.drawTopCard(); TODO: ADD AFTER DECK
+        Card *card = nullptr; //Library.drawTopCard(); TODO: ADD AFTER DECK
         Hand.append(card);
         emit cardDrawn(card);
         emit handChanged();
@@ -60,23 +64,31 @@ void Player::drawCard(int amount){
     }
 }
 
-void Player::moveCard(Card* card, QString sourceZone, QString targetZone){
-
-    QVector<Card*>* source = nullptr;
-    QVector<Card*>* target = nullptr;
+void Player::moveCard(Card *card, QString sourceZone, QString targetZone)
+{
+    QVector<Card *> *source = nullptr;
+    QVector<Card *> *target = nullptr;
 
     // Map pointers to actual targets
-    if(sourceZone == "hand") source = &Hand;
-    if(sourceZone == "battlefield") source = &Battlefield;
-    if(sourceZone == "graveyard") source = &Graveyard;
-    if(sourceZone == "exile") source = &Exile;
+    if (sourceZone == "hand")
+        source = &Hand;
+    if (sourceZone == "battlefield")
+        source = &Battlefield;
+    if (sourceZone == "graveyard")
+        source = &Graveyard;
+    if (sourceZone == "exile")
+        source = &Exile;
 
-    if(targetZone == "hand") target = &Hand;
-    if(targetZone == "battlefield") target = &Battlefield;
-    if(targetZone == "graveyard") target = &Graveyard;
-    if(targetZone == "exile") target = &Exile;
+    if (targetZone == "hand")
+        target = &Hand;
+    if (targetZone == "battlefield")
+        target = &Battlefield;
+    if (targetZone == "graveyard")
+        target = &Graveyard;
+    if (targetZone == "exile")
+        target = &Exile;
 
-    if(!source || !target || !source->contains(card)){
+    if (!source || !target || !source->contains(card)) {
         emit invalidAction("Invalid Card movement");
         return;
     }
@@ -87,22 +99,23 @@ void Player::moveCard(Card* card, QString sourceZone, QString targetZone){
     updateAllUI();
 }
 
-void Player::mill(int amount){
-    for(int i = 0; i < amount; i++){
-        if(false){ // Library.isEmpty()){   TODO:  WILL ADD LATER WHEN DECK IS IMPLEMENTED
+void Player::mill(int amount)
+{
+    for (int i = 0; i < amount; i++) {
+        if (false) { // Library.isEmpty()){   TODO:  WILL ADD LATER WHEN DECK IS IMPLEMENTED
             emit playerLost();
             return;
         }
-        Card* card = nullptr; // Library.drawTopCard(); TODO: ADD AFTER DECK IS IMPLEMENTED
+        Card *card = nullptr; // Library.drawTopCard(); TODO: ADD AFTER DECK IS IMPLEMENTED
         Graveyard.append(card);
         emit libraryChanged();
         emit graveyardChanged();
     }
 }
 
-void Player::playCard(int index, QString zone){
-
-    if (index < 0 || index >= Hand.size()){
+void Player::playCard(int index, QString zone)
+{
+    if (index < 0 || index >= Hand.size()) {
         emit invalidAction("Card selected out of bounds");
         return;
     }
@@ -140,9 +153,10 @@ void Player::playCard(int index, QString zone){
     // }
 }
 
-bool Player::canPayMana(QMap<ManaType,int> manaCosts){
-    for(auto[color, value] : manaCosts.toStdMap()){
-        if(value > manaPool[color]){
+bool Player::canPayMana(QMap<ManaType, int> manaCosts)
+{
+    for (auto [color, value] : manaCosts.toStdMap()) {
+        if (value > manaPool[color]) {
             return false;
         }
     }
@@ -150,22 +164,23 @@ bool Player::canPayMana(QMap<ManaType,int> manaCosts){
     return true;
 }
 
-void Player::onBlockRequested(Card* attacker, Card* defender){
+void Player::onBlockRequested(Card *attacker, Card *defender)
+{
     int damage = attacker->getPower();
-    if (defender == nullptr){
+    if (defender == nullptr) {
         takeDamage(damage);
     }
     int toughness = defender->getToughness();
-    if (toughness > damage){
+    if (toughness > damage) {
         // Emit something to let gamemanager know the attack failed.
         return;
-    }
-    else {
+    } else {
         moveCard(defender, "battlefield", "graveyard");
     }
 }
 
-void Player::updateAllUI(){
+void Player::updateAllUI()
+{
     emit handChanged();
     emit manaPoolChanged(&manaPool);
     emit battlefieldChanged();
@@ -189,15 +204,17 @@ void Player::updateAllUI(){
 //     }
 // }
 
-void Player::endTurn(){
-    if (Hand.size() <= 7){
+void Player::endTurn()
+{
+    if (Hand.size() <= 7) {
         emit turnEnded();
         return;
     }
-    emit requestDiscard("Hand");    // TODO: clarify zone
+    emit requestDiscard("Hand"); // TODO: clarify zone
 }
 
-Card* Player::findCardInZone(int cardIndex, QString zoneName) {
+Card *Player::findCardInZone(int cardIndex, QString zoneName)
+{
     if (zoneName == "hand") {
         return Hand.at(cardIndex);
     } else if (zoneName == "battlefield") {
@@ -209,7 +226,7 @@ Card* Player::findCardInZone(int cardIndex, QString zoneName) {
     } else if (zoneName == "library") {
         // Library is special since you typically can't directly access cards
         // This is just for UI debugging or special effects
-        return nullptr ;//Library.at(cardIndex);
+        return nullptr; //Library.at(cardIndex);
     }
     return nullptr;
 }
