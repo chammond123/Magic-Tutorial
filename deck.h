@@ -28,6 +28,18 @@ public:
     void intialize(const QVector<Card> &initialCards);
 
     /**
+     * @brief setVisibility
+     * @param visibility
+     */
+    void setVisibility(bool visibility);
+
+    /**
+     * @brief getVisibility
+     * @return 
+     */
+    bool getVisibility();
+
+    /**
      * @brief shuffle
      */
     void shuffle();
