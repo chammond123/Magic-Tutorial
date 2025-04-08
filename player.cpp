@@ -150,7 +150,7 @@ bool Player::canPayMana(QMap<ManaType,int> manaCosts){
     return true;
 }
 
-void Player::onAttackRequested(Card* attacker, Card* defender){
+void Player::onBlockRequested(Card* attacker, Card* defender){
     int damage = attacker->getPower();
     if (defender == nullptr){
         takeDamage(damage);
