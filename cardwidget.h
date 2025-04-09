@@ -7,7 +7,8 @@ namespace Ui {
 class CardWidget;
 }
 
-class CardWidget : public QWidget {
+class CardWidget : public QWidget
+{
     Q_OBJECT
 
 public:

@@ -1,11 +1,19 @@
 #include "ability.h"
 
+<<<<<<< HEAD
 Ability::Ability(std::function<void(Player*, Card*)> eff){
+=======
+Ability::Ability(QString name, QString description, std::function<void(Player *, Card *)> eff)
+{
+    this->name = name;
+    stringEffect = description;
+>>>>>>> 1d477493a4ee092de6bc703c8ebb3f055cba35da
     effect = eff;
 }
 
 // Activate method
-void Ability::activate(Player* player, Card* target){
+void Ability::activate(Player *player, Card *target)
+{
     if (effect) {
         effect(player, target);
     }

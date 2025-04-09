@@ -1,11 +1,11 @@
 #ifndef CARD_H
 #define CARD_H
 
-#include <QString>
 #include <QImage>
+#include <QString>
+#include <QVector>
 #include "ability.h"
 #include "type.h"
-#include <QVector>
 #include <algorithm>
 
 class Card
@@ -31,8 +31,7 @@ public:
     void useAbility();
     bool canBePlayed(const QVector<ManaType> &availableMana) const;
     bool hasKeyword(PropertyType keyword) const;
-    Card* clone() const;
-
+    Card *clone() const;
 
 private:
     QString name;

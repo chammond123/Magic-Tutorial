@@ -8,7 +8,6 @@ class Card;
 
 class Ability
 {
-
 private:
     // QString name;
     // QString stringEffect;
