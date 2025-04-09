@@ -47,6 +47,10 @@ Card* Zone::drawTop() {
     return cards.last();
 }
 
+void Zone::addCard(Card* card) {
+    cards.append(card);
+}
+
 Zone::~Zone() {
     for (Card* cardptr : cards) {
         delete cardptr;
