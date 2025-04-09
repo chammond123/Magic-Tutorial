@@ -29,10 +29,7 @@ private:
     Player* player2;
 
     Phase currentPhase;
-    QVector<Ability> theStack;
-    // Player* activePlayer;
-    // Player* passivePlayer;
-    // Player* priority;
+    QVector<Card*> theStack;
     QVector<Card*> attackers;
     QVector<Card*> defenders;
     int turnCount;

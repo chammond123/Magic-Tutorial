@@ -39,7 +39,7 @@ bool playCardCommand::isValid(){
 
 passPriorityCommand::passPriorityCommand(GameState* state, Player* player) : state(state), player(player), card(nullptr){}
 void passPriorityCommand::execute(){
-    if (!player->makeAction){
+    if (!player->madeAction){
         emit resolveStack();
     }
     state->changePriority();
