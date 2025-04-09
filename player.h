@@ -17,6 +17,10 @@ public:
     QVector<Card*> Exile;
     QVector<Card*> Hand;
     QVector<Card*> Battlefield;
+    bool hasPlayedLand;
+    bool hasntDrawnForTurn;
+    bool holdingPriority;
+    bool isActivePlayer;
 
     // Health Methods
     int getHealth();

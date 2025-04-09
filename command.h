@@ -12,6 +12,10 @@ public:
 
     virtual void execute() = 0;
     virtual bool isValid() = 0;
+
+    Player* player;
+    GameState* state;
+    Card* card;
 };
 
 class drawCommand : public Command{
@@ -31,6 +35,13 @@ class playCardCommand : public Command{
 
 class passPriorityCommand : public Command{
     passPriorityCommand(GameState* state, Player* player);
+
+    virtual void execute();
+    virtual bool isValid();
+};
+
+class changePhaseCommand : public Command{
+    changePhaseCommand(GameState* state, Player* player, Card* card);
 
     virtual void execute();
     virtual bool isValid();

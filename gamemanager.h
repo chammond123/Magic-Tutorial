@@ -5,46 +5,26 @@
 #include"card.h"
 #include"player.h"
 #include"gamestate.h"
+#include"phase.h"
 
 class gamemanager
 {
 private:
-    enum class Phase {
-        Untap,
-        Upkeep,
-        Draw,
-        PreCombatMain,
-        BeginCombat,
-        DeclareAttackers,
-        DeclareBlockers,
-        CombatDamage,
-        PostCombatMain,
-        EndStep,
-        Cleanup
-    };
-    QVector<Phase> phases = {
-        Phase::Untap,
-        Phase::Upkeep,
-        Phase::Draw,
-        Phase::PreCombatMain,
-        Phase::BeginCombat,
-        Phase::DeclareAttackers,
-        Phase::DeclareBlockers,
-        Phase::CombatDamage,
-        Phase::PostCombatMain,
-        Phase::EndStep,
-        Phase::Cleanup
-    };
-    GameState* state;
+
     void mainGameLoop(Player player1, Player player2);
 
 public:
+    GameState* state;
     gamemanager();
 
 public slots:
-
+    void onCardDrawn(Player* player);
+    void onPlayCard(Player* player, Card* card);
+    void onPassPriority(Player* player);
+    void onChangePhase(Player* player);
+    void onPassTurn(Player* player);
+    void onDeclareAttacker(Player* player, Card* card);
+    void onDeclareBlocker(Player* player, Card* card);
 };
-
-
 
 #endif // GAMEMANAGER_H

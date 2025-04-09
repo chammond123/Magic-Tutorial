@@ -13,12 +13,7 @@ private:
 public:
     InputHandler(GameState* state);
 public slots:
-    void onCardDrawn(Player* player);
-    void onPlayCard(Player* player, Card* card);
-    void onPassPriority(Player* player);
-    void onPassTurn(Player* player);
-    void onDeclareAttacker(Player* player, Card* card);
-    void onDeclareBlocker(Player* player, Card* card);
+
 };
 
 #endif // INPUTHANDLER_H

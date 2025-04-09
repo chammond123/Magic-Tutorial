@@ -5,34 +5,28 @@
 #include"player.h"
 #include"ability.h"
 #include"card.h"
+#include"phase.h"
 
 class GameState
 {
 private:
-    enum class Phase {
-        Untap,
-        Upkeep,
-        Draw,
-        PreCombatMain,
-        BeginCombat,
-        DeclareAttackers,
-        DeclareBlockers,
-        CombatDamage,
-        PostCombatMain,
-        EndStep,
-        Cleanup
+    QVector<Phase> phases = {
+        Phase::Untap,
+        Phase::Upkeep,
+        Phase::Draw,
+        Phase::PreCombatMain,
+        Phase::BeginCombat,
+        Phase::DeclareAttackers,
+        Phase::DeclareBlockers,
+        Phase::CombatDamage,
+        Phase::PostCombatMain,
+        Phase::EndStep,
+        Phase::Cleanup
     };
-    struct PhaseRules {
-        bool canPlayInstant;
-        bool canPlaySorcery;
-        bool canDraw;
-        bool canDeclareAttack;
-        bool canDeclareDefense;
-        bool canPassTurn;
-        bool canUntap;
-    };
-    Player player1;
-    Player player2;
+    int currentPhaseIndex = 0;
+
+    Player* player1;
+    Player* player2;
 
     Phase currentPhase;
     QVector<Ability> theStack;
@@ -49,7 +43,7 @@ public:
     /**
      * @brief Sets the current phase in the game state
      */
-    void changePhase(Phase newPhase);
+    void changePhase();
 
     /**
      * @brief Changes player priority
@@ -71,6 +65,13 @@ public:
      * @return The Phase Rules for the current phase
      */
     PhaseRules getPaseRules();
+
+    /**
+     * @brief Checks if both players have passed priority without making a game action.
+     * @param The player making the check
+     */
+    bool bothPlayersPassPriority();
+
 };
 
 #endif // GAMESTATE_H

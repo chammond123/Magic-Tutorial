@@ -2,7 +2,7 @@
 
 Command::Command() {}
 
-drawCommand::drawCommand(GameState* state, Player* player){}
+drawCommand::drawCommand(GameState* state, Player* player) : state(state), player(player), card(nullptr){}
 void drawCommand::execute(){
     player.drawCard();
 }
@@ -16,8 +16,9 @@ bool drawCommand::isValid(){
     }
 }
 
-playCardCommand::playCardCommand(GameState* state, Player* player, Card* card){}
+playCardCommand::playCardCommand(GameState* state, Player* player, Card* card) : state(state), player(player), card(card){}
 void playCardCommand::execute(){
+    player->madeAction = true;
     player->playCard(card);
 }
 bool playCardCommand::isValid(){
@@ -25,7 +26,7 @@ bool playCardCommand::isValid(){
     if (player->isActivePlayer && rules.canPlaySorcery && card->isLand()){
         return true;
     }
-    else if (player->isActivePlayer && rules.canPlaySorcery && state.stackIsEmpty() && player->canPlayCard(card)){
+    else if (player->isActivePlayer && rules.canPlaySorcery && state.stackIsEmpty() && player->canPayMana(card)){
         return true;
     }
     else if (rules.canPlayInstant && player->canAfford(card)){
@@ -36,8 +37,11 @@ bool playCardCommand::isValid(){
     }
 }
 
-passPriorityCommand::passPriorityCommand(GameState* state, Player* player){}
+passPriorityCommand::passPriorityCommand(GameState* state, Player* player) : state(state), player(player), card(nullptr){}
 void passPriorityCommand::execute(){
+    if (!player->makeAction){
+        emit resolveStack();
+    }
     state->changePriority();
 }
 bool passPriorityCommand::isValid(){
@@ -50,7 +54,21 @@ bool passPriorityCommand::isValid(){
     }
 }
 
-passTurnCommand::passTurnCommand(GameState* state, Player* player){}
+changePhaseCommand::changePhaseCommand(GameState* state, Player* player) : state(state), player(player), card(nullptr){}
+void changePhaseCommand::execute(){
+    state->changePhase();
+}
+bool changePhaseCommand::isValid(){
+    PhaseRules rules = state->getPhaseRules();
+    if (player->isActivePlayer && player->holdingPriority && sate->stackIsEmpty()){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+passTurnCommand::passTurnCommand(GameState* state, Player* player) : state(state), player(player), card(nullptr){}
 void passTurnCommand::execute(){
     state->changeActivePlayer();
 }
@@ -64,7 +82,7 @@ bool passTurnCommand::isValid(){
     }
 }
 
-declareAttackerCommand::declareAttackerCommand(GameState* state, Player* player, Card* card){}
+declareAttackerCommand::declareAttackerCommand(GameState* state, Player* player, Card* card) : state(state), player(player), card(card){}
 void delareAttackerCommand::execute(){
     player.declareAttacker(); // TODO: decide what this does
 }
@@ -78,7 +96,7 @@ bool declareAttackerCommand::isValid(){
     }
 }
 
-declareBlockerCommand::declareBlockerCommand(GameState* state, Player* player, Card* card){}
+declareBlockerCommand::declareBlockerCommand(GameState* state, Player* player, Card* card) : state(state), player(player), card(card){}
 void declareBlockerCommand::execute(){
     player.declareBlocker(); // TODO: this too
 }

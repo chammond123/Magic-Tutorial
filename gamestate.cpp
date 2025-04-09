@@ -2,29 +2,55 @@
 
 gamestate::gamestate() {}
 
-void GameState::changePhase(Phase newPhase){
-    currentPhase = newPhase;
+void GameState::changePhase(){
+    if (currentPhaseIndex = phases.size()){
+        currentPhaseIndex = 0;
+    }
+    else{
+        currentPhaseIndex ++;
+    }
+    currentPhase = phases[currentPhaseIndex];
+    if (currentPhae == Phase::Untap){
+        player1->untap();
+        player2->untap();
+    }
+    else if (currentPhase == Phase::Upkeep){
+        player1->upkeepTrigger();
+        player2->upkeepTrigger();
+    }
+    else if (currentPhase == Phase::EndStep){
+        player1->endStepTrigger();
+        player2->endstepTrigger();
+    }
+    else if (currentPhase == Phase::Cleanup){
+        player1->cleanup();
+        player2->cleanup();
+    }
 }
 
 void GameState::changePriority(){
     if(player1.holdingPriority){
-        player2.holdingPriority = true;
-        player1.holdingPriority = false;
+        player1->madeAction = false;
+        player2->holdingPriority = true;
+        player1->holdingPriority = false;
     }
     else{
-        player1.holdingPriority = true;
-        player2.holdingPriority = false;
+        player2->madeAction = false;
+        player1->holdingPriority = true;
+        player2->holdingPriority = false;
     }
 }
 
 void GameState::changeActivePlayer(){
-    if(player1.activePlayer){
-        player2.activePlayer = true;
-        player1.activePlayer = false;
+    if (player1.activePlayer){
+        player2->holdingPriority = true;
+        player2->ctivePlayer = true;
+        player1->activePlayer = false;
     }
     else{
-        player1.activePlayer = true;
-        player2.activePlayer = false;
+        player1->holdingPriority = true;
+        player1->activePlayer = true;
+        player2->activePlayer = false;
     }
 }
 
@@ -78,4 +104,5 @@ PhaseRules GameState::getPhaseRules(){
         // Player discards excess cards
         break;
     }
+
 }
