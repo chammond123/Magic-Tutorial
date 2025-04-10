@@ -27,5 +27,13 @@ enum class PropertyType : int {
     TRAMPLE
 };
 
-enum class ManaType : int { WHITE, RED, BLUE, BLACK, GREEN, ANY };
+enum class ManaType : int {
+    WHITE,
+    RED,
+    BLUE,
+    BLACK,
+    GREEN,
+    COLORLESS,
+    ANY
+};
 #endif // TYPE_H

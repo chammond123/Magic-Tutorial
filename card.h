@@ -7,43 +7,32 @@
 #include "ability.h"
 #include "type.h"
 #include <algorithm>
+#include <QMap>
 
 class Card
 {
 public:
     Card();
-
-    /*
-     * Collection of getters for all instance variables
-     */
-    QString getName() const;
-    QString getDescription() const;
-    QImage getImage() const;
-    ManaType getColor() const;
-    Ability getAbility() const;
-    CardType getType() const;
-    int getToughness() const;
-    int getPower() const;
-    QVector<ManaType> getCost() const;
-    QVector<PropertyType> getKeywords() const;
-    bool isPermanent() const;
+    Card(const Card& other);
 
     void useAbility();
     bool canBePlayed(const QVector<ManaType> &availableMana) const;
     bool hasKeyword(PropertyType keyword) const;
-    Card *clone() const;
 
-private:
+public:
     QString name;
     QString description;
     QImage image;
     ManaType color;
-    Ability ability;
+    Ability ability = Ability();
     CardType type;
     int toughness;
     int power;
-    QVector<ManaType> cost;
+    QMap<ManaType, int> cost;
     QVector<PropertyType> keywords;
+    bool isTapped;
+    bool isPermanent;
+    bool isLand();
 };
 
 #endif // CARD_H
