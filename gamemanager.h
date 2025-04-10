@@ -58,6 +58,9 @@ public slots:
      * @brief Receives if a player has lost the game
      */
     void onPlayerLost();
+
+signals:
+    void updateUI();
 };
 
 #endif // GAMEMANAGER_H

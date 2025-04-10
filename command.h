@@ -74,5 +74,12 @@ public:
     virtual void execute();
     virtual bool isValid();
 };
+class tapCardCommand : public Command{
+public:
+    tapCardCommand(GameState* state, Player* player, Card* card);
+
+    virtual void execute();
+    virtual bool isValid();
+};
 
 #endif // COMMAND_H

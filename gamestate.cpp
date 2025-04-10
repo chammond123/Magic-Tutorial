@@ -11,6 +11,8 @@ void GameState::changePhase(){
     }
     currentPhase = phases[currentPhaseIndex];
     if (currentPhase == Phase::Untap){
+        player1->emptyManaPool();
+        player2->emptyManaPool();
         player1->untap();
         player2->untap();
     }
@@ -18,11 +20,27 @@ void GameState::changePhase(){
         player1->upkeepTrigger();
         player2->upkeepTrigger();
     }
+    else if(currentPhase == Phase::PreCombatMain){
+        player1->emptyManaPool();
+        player2->emptyManaPool();
+    }
+    else if(currentPhase == Phase::BeginCombat){
+        player1->emptyManaPool();
+        player2->emptyManaPool();
+    }
+    else if(currentPhase == Phase::PostCombatMain){
+        player1->emptyManaPool();
+        player2->emptyManaPool();
+    }
     else if (currentPhase == Phase::EndStep){
+        player1->emptyManaPool();
+        player2->emptyManaPool();
         player1->endStepTrigger();
         player2->endstepTrigger();
     }
     else if (currentPhase == Phase::Cleanup){
+        player1->emptyManaPool();
+        player2->emptyManaPool();
         player1->cleanup();
         player2->cleanup();
     }
