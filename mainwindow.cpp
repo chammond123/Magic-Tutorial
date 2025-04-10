@@ -20,19 +20,27 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(apiManager, &CardAPIManager::cardFetched, this, [=](const Card &card) {
         carddictionary::addCard(card);
-        qDebug() << carddictionary::getCard("Lightning Bolt").description;
-        QMap<ManaType, int> manaCost = carddictionary::getCard("Lightning Bolt").cost;
+        Card elfCard = carddictionary::getCard("Elspeth's Devotee");
+
+        qDebug() << elfCard.description;
+
+        QMap<ManaType, int> manaCost = elfCard.cost;
         for (auto [color, value] : manaCost.toStdMap()){
             QString colorString = manaTypeToString(color);
             qDebug() << colorString << " : " << value;
         }
-        ui->imageLabel->setPixmap(QPixmap::fromImage(carddictionary::getCard("Lightning Bolt").image).scaled(
+        ui->imageLabel->setPixmap(QPixmap::fromImage(elfCard.image).scaled(
             ui->imageLabel->size(),
             Qt::KeepAspectRatio,
             Qt::SmoothTransformation));
+
+        qDebug() << elfCard.toughness;
+        qDebug() << elfCard.power;
     });
 
     apiManager->fetchCardByName("Lightning Bolt");
+    apiManager->fetchCardByName("Llanowar Elves");
+    apiManager->fetchCardByName("Elspeth's Devotee");
 
 }
 
@@ -48,6 +56,8 @@ QString MainWindow::manaTypeToString(ManaType type) {
     case ManaType::GREEN: return "Green";
     case ManaType::BLACK: return "Black";
     case ManaType::WHITE: return "White";
+    case ManaType::COLORLESS: return "Colorless";
+    case ManaType::ANY: return "Any";
     default:              return "Unknown";
     }
 }

@@ -10,7 +10,7 @@ class Player : public QObject
 {
     Q_OBJECT
 public:
-    explicit Player(QObject *parent = nullptr);
+    explicit Player(QList<QString> cardList, QObject *parent = nullptr);
 
     /**
      * @brief Library, Graveyard, Exile, Hand, and Battlefields are all

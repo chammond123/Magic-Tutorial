@@ -2,9 +2,11 @@
 #include "type.h"
 #include "zone.h"
 
-Player::Player(QObject *parent)
-    : QObject{parent}
+Player::Player(QList<QString> cardList, QObject *parent)
+    : QObject{parent},
+    Library(cardList)
 {
+
     manaPool[ManaType::RED] = 0;
     manaPool[ManaType::BLUE] = 0;
     manaPool[ManaType::WHITE] = 0;
