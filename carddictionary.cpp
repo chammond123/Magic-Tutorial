@@ -2,12 +2,12 @@
 #include "carddictionary.h"
 
 // Definition of the static member
-std::map<QString, Card> carddictionary::dict;
+std::map<QString, Card> cardDictionary::dict;
 
-void carddictionary::addCard(Card card) {
+void cardDictionary::addCard(Card card) {
     dict[card.name] = card;
 }
 
-Card carddictionary::getCard(QString cardName) {
+Card cardDictionary::getCard(QString cardName) {
     return dict[cardName];
 }
