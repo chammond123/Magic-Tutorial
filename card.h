@@ -19,10 +19,14 @@ public:
     bool canBePlayed(const QVector<ManaType> &availableMana) const;
     bool hasKeyword(PropertyType keyword) const;
     //take damage
+    void takeDamage(int damage);
     //gain health
+    void gainHealth(int health);
     //reset health
+    void cleanupCard();
 
 public:
+    int currHealth = toughness;
     QString name;
     QString description;
     QImage image;

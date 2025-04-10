@@ -24,3 +24,15 @@ bool Card::hasKeyword(PropertyType keyword) const
     }
     return false;
 }
+
+void Card::takeDamage(int damage){
+    currHealth -= damage;
+}
+
+void Card::gainHealth(int health){
+    currHealth += health;
+}
+
+void Card::cleanupCard(){
+    currHealth = toughness;
+}
