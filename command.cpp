@@ -24,13 +24,13 @@ void playCardCommand::execute(){
 }
 bool playCardCommand::isValid(){
     PhaseRules rules = state->getPhaseRules();
-    if (player->isActivePlayer && rules.canPlaySorcery && card->isLand()){
+    if (player->isActivePlayer && rules.canPlaySorcery && card->isLand){
         return true;
     }
     else if (player->isActivePlayer && rules.canPlaySorcery && state->stackIsEmpty() && player->canPayMana(card)){
         return true;
     }
-    else if (rules.canPlayInstant && player->canAfford(card)){
+    else if (rules.canPlayInstant && player->canPayMana(card)){
         return true;
     }
     else{

@@ -5,6 +5,7 @@
 #include"card.h"
 #include"player.h"
 #include"gamestate.h"
+#include"command.h"
 
 class gamemanager
 {
@@ -53,6 +54,10 @@ public slots:
      * @param The card they want to declare as an attacker
      */
     void onDeclareBlocker(Player* player, Card* card);
+    /**
+     * @brief Receives if a player has lost the game
+     */
+    void onPlayerLost();
 };
 
 #endif // GAMEMANAGER_H
