@@ -191,6 +191,12 @@ void Player::emptyManaPool(){
     }
 }
 
+void Player::endStepPhase(){
+    for(Card* card : Battlefield){
+        // TODO: Update this
+    }
+}
+
 void Player::endTurn()
 {
     if (Hand.getCount() <= 7) {
