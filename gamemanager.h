@@ -5,6 +5,7 @@
 #include"card.h"
 #include"player.h"
 #include"gamestate.h"
+#include"command.h"
 
 class gamemanager
 {

@@ -28,6 +28,7 @@ public:
 };
 
 class playCardCommand : public Command{
+public:
     playCardCommand(GameState* state, Player* player, Card* card);
 
     virtual void execute();
@@ -35,6 +36,7 @@ class playCardCommand : public Command{
 };
 
 class passPriorityCommand : public Command{
+public:
     passPriorityCommand(GameState* state, Player* player);
 
     virtual void execute();
@@ -42,6 +44,7 @@ class passPriorityCommand : public Command{
 };
 
 class changePhaseCommand : public Command{
+public:
     changePhaseCommand(GameState* state, Player* player);
 
     virtual void execute();
@@ -49,6 +52,7 @@ class changePhaseCommand : public Command{
 };
 
 class passTurnCommand : public Command{
+public:
     passTurnCommand(GameState* state, Player* player);
 
     virtual void execute();
@@ -56,6 +60,7 @@ class passTurnCommand : public Command{
 };
 
 class declareAttackerCommand : public Command{
+public:
     declareAttackerCommand(GameState* state, Player* player, Card* card);
 
     virtual void execute();
@@ -63,6 +68,7 @@ class declareAttackerCommand : public Command{
 };
 
 class declareBlockerCommand : public Command{
+public:
     declareBlockerCommand(GameState* state, Player* player, Card* card);
 
     virtual void execute();

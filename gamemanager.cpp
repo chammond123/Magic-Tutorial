@@ -6,50 +6,50 @@ gamemanager::gamemanager(){
 
 
 // UI Player Commands
-gamemanager::onCardDrawn(Player* player){
-    Command cmd = drawCommand(state, player);
+void gamemanager::onCardDrawn(Player* player){
+    drawCommand cmd = drawCommand(state, player);
     if (cmd.isValid()){
         cmd.execute();
     }
 }
 
-gamemanager::onPlayCard(Player *player, Card *card){
-    Command cmd = playCardCommand(state, player, card);
+void gamemanager::onPlayCard(Player *player, Card *card){
+    playCardCommand cmd = playCardCommand(state, player, card);
     if (cmd.isValid()){
         cmd.execute();
     }
 }
 
-gamemanager::onPassPriority(Player* player){
-    Command cmd = passPriorityCommand(state, player);
+void gamemanager::onPassPriority(Player* player){
+    passPriorityCommand cmd = passPriorityCommand(state, player);
     if (cmd.isValid()){
         cmd.execute();
     }
 }
 
-gamemanager::onChangePhase(Player *player){
-    Command cmd = changePhaseCommand(state, player);
+void gamemanager::onChangePhase(Player *player){
+    changePhaseCommand cmd = changePhaseCommand(state, player);
     if (cmd.isValid()){
         cmd.execute();
     }
 }
 
-gamemanager::onDeclareAttacker(Player *player, Card *card){
-    Command cmd = passPriorityCommand(state, player, card);
+void gamemanager::onDeclareAttacker(Player *player, Card *card){
+    declareAttackerCommand cmd = declareAttackerCommand(state, player, card);
     if (cmd.isValid()){
         cmd.execute();
     }
 }
 
-gamemanager::onDeclareAttacker(Player *player, Card *card){
-    Command cmd = declareAttackerCommand(state, player, card);
+void gamemanager::onDeclareBlocker(Player *player, Card *card){
+    declareBlockerCommand cmd = declareBlockerCommand(state, player, card);
     if (cmd.isValid()){
         cmd.execute();
     }
 }
 
-gamemanager::onPassTurn(Player *player){
-    Command cmd = passTurnCommand(state, player, card);
+void gamemanager::onPassTurn(Player *player){
+    passTurnCommand cmd = passTurnCommand(state, player);
     if (cmd.isValid()){
         cmd.execute();
     }
