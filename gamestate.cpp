@@ -1,6 +1,6 @@
 #include "gamestate.h"
 
-gamestate::gamestate() {}
+GameState::gamestate() {}
 
 void GameState::changePhase(){
     if (currentPhaseIndex >= phases.size() - 1){
@@ -17,8 +17,8 @@ void GameState::changePhase(){
         player2->untap();
     }
     else if (currentPhase == Phase::Upkeep){
-        player1->upkeepTrigger();
-        player2->upkeepTrigger();
+        player1->upkeepPhase();
+        player2->upkeepPhase();
     }
     else if(currentPhase == Phase::PreCombatMain){
         player1->emptyManaPool();
@@ -35,14 +35,14 @@ void GameState::changePhase(){
     else if (currentPhase == Phase::EndStep){
         player1->emptyManaPool();
         player2->emptyManaPool();
-        player1->endStepTrigger();
-        player2->endstepTrigger();
+        player1->endStepPhase();
+        player2->endstepPhase();
     }
     else if (currentPhase == Phase::Cleanup){
         player1->emptyManaPool();
         player2->emptyManaPool();
-        player1->cleanup();
-        player2->cleanup();
+        player1->cleanupPhase();
+        player2->cleanupPhase();
     }
 }
 
@@ -63,7 +63,7 @@ void GameState::changeActivePlayer(){
     if (player1->isActivePlayer){
         player2->holdingPriority = true;
         player2->isActivePlayer = true;
-        player1->activePlayer = false;
+        player1->isActivePlayer = false;
     }
     else{
         player1->holdingPriority = true;
