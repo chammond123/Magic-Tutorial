@@ -164,13 +164,13 @@ void Player::onBlockRequested(Card *attacker, Card *defender)
 
 void Player::resolveCard(Card* card) {
     // This gets called by GameManager when spell resolves
-    useMana(&card->cost);
+    useMana(card);
 
     if (card->isPermanent) {
         moveCardZone(card, Hand, Battlefield, false);
     } else {
         // Instant/Sorcery
-        card->useAbility();
+        // card->useAbility();
         moveCardZone(card, Hand, Graveyard, true);
     }
 }

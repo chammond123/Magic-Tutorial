@@ -76,7 +76,6 @@ public slots:
 
     void playCard(Card *card);
     void addMana(QMap<ManaType, int> *manaCosts);
-    void useMana(QMap<ManaType, int> *manaCosts);
     void mill(int amount);
     void drawCard(int amount = 1);
     void takeDamage(int amount);
@@ -97,7 +96,7 @@ private:
 
     void loseGame();
     Zone* findCardZone(Card* card);
-    QVector<Card*> findZone(QString zoneInput);
+    // QVector<Card*> findZone(QString zoneInput);
 };
 
 #endif // PLAYER_H

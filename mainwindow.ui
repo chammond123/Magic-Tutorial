@@ -117,7 +117,7 @@
       <x>826</x>
       <y>10</y>
       <width>261</width>
-      <height>139</height>
+      <height>175</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
@@ -214,7 +214,7 @@
       <x>20</x>
       <y>10</y>
       <width>201</width>
-      <height>23</height>
+      <height>27</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_2">
@@ -244,6 +244,19 @@
      </item>
     </layout>
    </widget>
+   <widget class="QLabel" name="imageLabel">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>150</y>
+      <width>361</width>
+      <height>541</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>image</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -251,7 +264,7 @@
      <x>0</x>
      <y>0</y>
      <width>1099</width>
-     <height>17</height>
+     <height>24</height>
     </rect>
    </property>
   </widget>

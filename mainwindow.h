@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "type.h"
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -25,5 +26,6 @@ signals:
 
 private:
     Ui::MainWindow *ui;
+    QString manaTypeToString(ManaType type);
 };
 #endif // MAINWINDOW_H
