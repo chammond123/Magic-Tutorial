@@ -2,7 +2,7 @@
 #include "carddictionary.h"
 #include <QFile>
 
-deck::deck(QString fileName, QObject *parent)
+Deck::Deck(QString fileName, QObject *parent)
     : QObject{parent}, fileName{fileName}
 {
     QFile file(fileName);
