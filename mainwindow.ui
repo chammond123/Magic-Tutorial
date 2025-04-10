@@ -14,248 +14,24 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QSpinBox" name="testSpinBox">
+   <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>670</x>
-      <y>510</y>
-      <width>71</width>
-      <height>22</height>
+      <x>-10</x>
+      <y>0</y>
+      <width>1111</width>
+      <height>711</height>
      </rect>
     </property>
-   </widget>
-   <widget class="QPushButton" name="healthButton">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>480</y>
-      <width>80</width>
-      <height>18</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Add Health</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="damageButton">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>500</y>
-      <width>80</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Take Damage</string>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="comboBox">
-    <property name="geometry">
-     <rect>
-      <x>670</x>
-      <y>540</y>
-      <width>71</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <item>
-     <property name="text">
-      <string>White</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Black</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Blue</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Red</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Green</string>
-     </property>
-    </item>
-   </widget>
-   <widget class="QPushButton" name="addManaButton">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>540</y>
-      <width>80</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Add Mana</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="payManaButton">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>560</y>
-      <width>80</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Pay Mana</string>
-    </property>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>826</x>
-      <y>10</y>
-      <width>261</width>
-      <height>175</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="2" column="2">
-      <widget class="QSpinBox" name="blueManaSpinBox"/>
-     </item>
-     <item row="0" column="1">
-      <widget class="QSlider" name="whiteManaSlider">
-       <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_4">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="imageLabel">
        <property name="text">
-        <string>Green Mana</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QSlider" name="blueManaSlider">
-       <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QSpinBox" name="blackManaSpinBox"/>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Blue Mana</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Red Mana</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="2">
-      <widget class="QSpinBox" name="redManaSpinBox"/>
-     </item>
-     <item row="1" column="1">
-      <widget class="QSlider" name="blackManaSlider">
-       <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QSlider" name="greenManaSlider">
-       <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QSlider" name="redManaSlider">
-       <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="2">
-      <widget class="QSpinBox" name="greenManaSpinBox"/>
-     </item>
-     <item row="0" column="2">
-      <widget class="QSpinBox" name="whiteManaSpinBox"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Black Mana</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>White Mana</string>
+        <string>image</string>
        </property>
       </widget>
      </item>
     </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>10</y>
-      <width>201</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="0">
-      <widget class="QLabel" name="healthLabel">
-       <property name="text">
-        <string>Health</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QSlider" name="healthSlider">
-       <property name="maximum">
-        <number>30</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QSpinBox" name="healthSpinBox">
-       <property name="maximum">
-        <number>30</number>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QLabel" name="imageLabel">
-    <property name="geometry">
-     <rect>
-      <x>70</x>
-      <y>150</y>
-      <width>361</width>
-      <height>541</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>image</string>
-    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -264,7 +40,7 @@
      <x>0</x>
      <y>0</y>
      <width>1099</width>
-     <height>24</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>
