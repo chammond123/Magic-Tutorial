@@ -15,6 +15,7 @@ SOURCES += \
     card.cpp \
     cardapimanager.cpp \
     carddictionary.cpp \
+    command.cpp \
     gamemanager.cpp \
     gamestate.cpp \
     main.cpp \
@@ -28,6 +29,7 @@ HEADERS += \
     card.h \
     cardapimanager.h \
     carddictionary.h \
+    command.h \
     gamemanager.h \
     gamestate.h \
     mainwindow.h \
