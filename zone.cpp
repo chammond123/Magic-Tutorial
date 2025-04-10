@@ -15,14 +15,9 @@ Zone::Zone(const QList<QString> cardList) {
     //this->cards.swap(otherList);
 }
 
-Zone::Zone(std::string fileName) {
-
-    // TODO: Read in a file and initialize objects
-}
-
-void Zone::initialize(const QList<QString> cardList) {
-    // QList otherList = otherCards.toList();
-    // this->cards.swap(otherList);
+void Zone::intialize(const QVector<Card*>& otherCards) {
+    QList otherList = otherCards.toList();
+    this->cards.swap(otherList);
 }
 
 void Zone::setVisibility(bool visibility) {

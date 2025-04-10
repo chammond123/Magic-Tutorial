@@ -38,14 +38,6 @@ public:
     Zone(const QList<QString> cardList);
 
     /**
-     * @brief Overloaded Zone Constructor
-     * @param fileName
-     * Initializes a zone by grabbing a file name which
-     * contains JSON for card data
-     */
-    Zone(std::string fileName);
-
-    /**
      * @brief intialize
      * @param initialCards
      * Allows for a reinitialization of a cards in a zone
