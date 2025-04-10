@@ -104,5 +104,7 @@ PhaseRules GameState::getPhaseRules(){
         // Player discards excess cards
         break;
     }
-
+}
+bool GameState::stackIsEmpty(){
+    return theStack.isEmpty();
 }

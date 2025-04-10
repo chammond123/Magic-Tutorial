@@ -55,4 +55,7 @@ void gamemanager::onPassTurn(Player *player){
     }
 }
 
+void gamemanager::onPlayerLost(){
+    return;
+}
 // Player object communication

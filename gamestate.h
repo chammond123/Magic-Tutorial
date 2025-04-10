@@ -88,6 +88,12 @@ public:
      */
     bool bothPlayersPassPriority();
 
+    /**
+     * @brief Checks if the stack is empty
+     * @return True if is empty, False otherwise
+     */
+    bool stackIsEmpty();
+
 };
 
 #endif // GAMESTATE_H
