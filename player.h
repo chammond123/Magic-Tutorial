@@ -22,6 +22,9 @@ public:
     Zone Hand;
     Zone Battlefield;
 
+    int health;
+    QMap<ManaType, int> manaPool;
+
     // bool if player has played a land
     bool hasPlayedLand;
 
@@ -55,14 +58,14 @@ public:
      * @brief goes through player mana pool and pays for the
      * @param manaCost
      */
-    void payMana(QMap<ManaType, int> manaCost);
+    void useMana(Card* card);
     bool canPayMana(Card* card);
 
     // Turn Phases
     void onBlockRequested(Card *attacker, Card *defender = nullptr);
     void untap();
     void upkeepPhase();
-    void cleanUpPhase();
+    void cleanupPhase();
     void tapCard(Card* card);
     void emptyManaPool();
 
@@ -79,23 +82,15 @@ public slots:
 
 signals:
 
-    void healthChanged(int newLife);
     void cardDrawn(Card *card);
     void cardPlayed(Card *card);
     void turnEnded();
     void playerLost();
     void handChanged();
-    void battlefieldChanged();
-    void graveyardChanged();
-    void exileChanged();
-    void libraryChanged();
-    void manaPoolChanged(QMap<ManaType, int> *newMana);
     void requestDiscard(QString zone);
     void invalidAction(QString message);
 
 private:
-    int health;
-    QMap<ManaType, int> manaPool;
 
     void loseGame();
     Zone* findCardZone(Card* card);
