@@ -2,9 +2,9 @@
 #include "type.h"
 #include "zone.h"
 
-Player::Player(QList<QString> cardList, QObject *parent)
+Player::Player(QString fileName, QObject *parent)
     : QObject{parent},
-    Library(cardList)
+    deck(fileName)
 {
 
     manaPool[ManaType::RED] = 0;
@@ -14,6 +14,11 @@ Player::Player(QList<QString> cardList, QObject *parent)
     manaPool[ManaType::BLACK] = 0;
 
     health = 20;
+
+    // Initializes card pointers in deck zone
+    for (Card card : deck.getCardObjects()) {
+        Library.addCard(&card, true);
+    }
 
     drawCard(7);
 }

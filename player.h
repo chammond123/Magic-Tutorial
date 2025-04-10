@@ -5,16 +5,23 @@
 #include "card.h"
 #include "zone.h"
 #include "type.h"
+#include "deck.h"
 
 class Player : public QObject
 {
     Q_OBJECT
 public:
-    explicit Player(QList<QString> cardList, QObject *parent = nullptr);
+    explicit Player(QString fileName, QObject *parent = nullptr);
+
+    /**
+     * @brief deck object to contain instantiated cards
+     */
+    Deck deck;
 
     /**
      * @brief Library, Graveyard, Exile, Hand, and Battlefields are all
-     * zones the player can interact with
+     * zones the player can interact with. These are pointers to
+     * instantiated Card objects in the Deck.
      */
     Zone Library;
     Zone Graveyard;

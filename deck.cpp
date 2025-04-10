@@ -18,3 +18,7 @@ Deck::Deck(QString fileName, QObject *parent)
 
     file.close();
 }
+
+QVector<Card> Deck::getCardObjects() {
+    return this->cards;
+}

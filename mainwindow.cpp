@@ -61,3 +61,7 @@ QString MainWindow::manaTypeToString(ManaType type) {
     default:              return "Unknown";
     }
 }
+
+void MainWindow::cardZoneChanged(Card*, Zone*) {
+    return;
+}
