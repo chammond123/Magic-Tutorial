@@ -71,14 +71,14 @@ public:
      * @return
      * Makes Zone class iterable
      */
-    iterator Begin();
+    iterator begin();
 
     /**
      * @brief End
      * @return
      * Makes Zone class iterable
      */
-    iterator End();
+    iterator end();
 
     /**
      * @brief getCount

@@ -28,8 +28,9 @@ void Player::takeDamage(int amount)
 {
     qDebug() << "Take Damage called with " << amount;
     health -= amount;
-    qDebug() << "New Health: " << health;
-    emit healthChanged(health);
+    if (health <= 0){
+        emit playerLost();
+    }
 }
 
 void Player::addMana(QMap<ManaType, int> *manaCosts)
@@ -54,23 +55,26 @@ void Player::drawCard(int amount)
 {
     // Check to see if any cards left
     for (int i = 0; i < amount; i++) {
-        if (false) { // Library.isEmpty()){     TODO: WILL ADD LATER WHEN DECK IS IMPLEMENTED
+        if ( Library.getCount() > 0){
             emit playerLost();
             return;
         }
 
-        Card *card = nullptr; //Library.drawTopCard(); TODO: ADD AFTER DECK
-        Hand.append(card);
+        Card *card = Library.drawTop();
+        Hand.addCard(card);
         emit cardDrawn(card);
         emit handChanged();
         emit libraryChanged();
     }
 }
 
-void Player::moveCard(Card *card, QString sourceZone, QString targetZone)
+void Player::moveCardString(Card *card, QString sourceString, QString targetString)
 {
-    QVector<Card *> *source = nullptr;
-    QVector<Card *> *target = nullptr;
+    Zone *source = nullptr;
+    Zone *target = nullptr;
+
+    QString sourceZone = sourceString.toLower();
+    QString targetZone = targetString.toLower();
 
     // Map pointers to actual targets
     if (sourceZone == "hand")
@@ -91,74 +95,65 @@ void Player::moveCard(Card *card, QString sourceZone, QString targetZone)
     if (targetZone == "exile")
         target = &Exile;
 
-    if (!source || !target || !source->contains(card)) {
+    if (!source || !target || !source->findCard(card)) {
         emit invalidAction("Invalid Card movement");
         return;
     }
 
-    source->removeOne(card);
-    target->append(card);
+    source->removeCard(card, false);
+    target->addCard(card);
+}
 
-    updateAllUI();
+void Player::moveCardZone(Card *card, Zone&  sourceZone, Zone& targetZone)
+{
+    sourceZone.removeCard(card, false);
+    targetZone.addCard(card);
 }
 
 void Player::mill(int amount)
 {
     for (int i = 0; i < amount; i++) {
-        if (false) { // Library.isEmpty()){   TODO:  WILL ADD LATER WHEN DECK IS IMPLEMENTED
+        if (Library.getCount() > 0){
             emit playerLost();
             return;
         }
-        Card *card = nullptr; // Library.drawTopCard(); TODO: ADD AFTER DECK IS IMPLEMENTED
-        Graveyard.append(card);
+        Card *card = Library.drawTop();
+        Graveyard.addCard(card);
         emit libraryChanged();
         emit graveyardChanged();
     }
 }
 
-void Player::playCard(int index, QString zone)
+void Player::playCard(Card* card)
 {
-    if (index < 0 || index >= Hand.size()) {
-        emit invalidAction("Card selected out of bounds");
-        return;
-    }
-    Card* card = findCardInZone(index, zone);
-
     // TODO: Implement after Card has IsLand and isPermanent, as well as mana costs
     if(card->isLand()){
-        Hand.removeAt(index);
-        Battlefield.append(card);
+        Hand.removeCard(card, false);
+        Battlefield.addCard(card);
 
         emit cardPlayed(card);
         emit handChanged();
         emit battlefieldChanged();
     }
     else{
-        if(canPayMana(card->getManaCost())){ // Need this function from Card
-            payMana(card->getManaCost());
-            Hand.removeAt(index);
+        if(canPayMana(card->manaCost())){ // Need this function from Card
+            payMana(card->manaCost());
 
             if(card->isPermanent()){ // Need this function from Card class
-                Battlefield.append(card);
-                emit battlefieldChanged();
+                moveCardZone(card, Hand, Battlefield);
             }
             else{
                 // Instant / Sorcery Card
                 card->useAbility();
-                Graveyard.append(card);
-                emit graveyardChanged();
+                moveCardZone(card, Hand, Graveyard);
             }
-
-            emit cardPlayed(card);
-            emit handChanged();
-            emit manaPoolChanged(&manaPool);
         }
     }
 }
 
 bool Player::canPayMana(Card* card)
 {
-    QMap<ManaType, int> manaCosts = card->getCost();
+    QMap<ManaType, int> manaCosts = card->cost();
     for (auto [color, value] : manaCosts.toStdMap()) {
         if (value > manaPool[color]) {
             return false;
@@ -179,58 +174,64 @@ void Player::onBlockRequested(Card *attacker, Card *defender)
         // Emit something to let gamemanager know the attack failed.
         return;
     } else {
-        moveCard(defender, "battlefield", "graveyard");
+        moveCardZone(defender, Battlefield, Graveyard);
     }
 }
 
-void Player::updateAllUI()
-{
-    emit handChanged();
-    emit manaPoolChanged(&manaPool);
-    emit battlefieldChanged();
-    emit graveyardChanged();
-    emit exileChanged();
-    emit healthChanged(health);
+void Player::tapCard(Card* card){
+    card->tapped = true;
+    card->useAbility();
 }
 
-// TODO: Have Cards "Untapable and Tapable"
-// void Player::untapPhase(){
-//     for (Card* card : Battlefield){
-//         card->untap();
-//     }
-//     emit battlefieldChanged();
-// }
+void Player::untap(){
+    for (Card* card : Battlefield){
+        card->tapped = false;
+    }
+    emit battlefieldChanged();
+}
 
-// TODO: Have Cards have an "Upkeep" function
-// void Player::upkeepStep(){
-//     for(Card* card : Battlefield){
-//         card->triggerUpkeep();
-//     }
-// }
+
+void Player::upkeepPhase(){
+    for(Card* card : Battlefield){
+        card->triggerUpkeep();
+    }
+}
+
+void Player::cleanUpPhase(){
+    for(Card* card : Battlefield){
+        card->currHealth = maxHealth;
+    }
+}
+
+void Player::emptyManaPool(){
+    for(ManaType color : manaPool.keys()){
+        manaPool[color] = 0;
+    }
+}
 
 void Player::endTurn()
 {
-    if (Hand.size() <= 7) {
+    if (Hand.getCount() <= 7) {
         emit turnEnded();
         return;
     }
     emit requestDiscard("Hand"); // TODO: clarify zone
 }
 
-Card *Player::findCardInZone(int cardIndex, QString zoneName)
+Zone* Player::findCardZone(Card* card)
 {
-    if (zoneName == "hand") {
-        return Hand.at(cardIndex);
-    } else if (zoneName == "battlefield") {
-        return Battlefield.at(cardIndex);
-    } else if (zoneName == "graveyard") {
-        return Graveyard.at(cardIndex);
-    } else if (zoneName == "exile") {
-        return Exile.at(cardIndex);
-    } else if (zoneName == "library") {
+    if (Hand.findCard(card)) {
+        return &Hand;
+    } else if (Battlefield.findCard(card)) {
+        return &Battlefield;
+    } else if (Graveyard.findCard(card)) {
+        return &Graveyard;
+    } else if (Exile.findCard(card)) {
+        return &Exile;
+    } else if (Library.findCard(card)){
         // Library is special since you typically can't directly access cards
         // This is just for UI debugging or special effects
-        return nullptr; //Library.at(cardIndex);
+        return &Library;
     }
     return nullptr;
 }

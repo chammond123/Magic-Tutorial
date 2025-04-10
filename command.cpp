@@ -110,3 +110,17 @@ bool declareBlockerCommand::isValid(){
         return false;
     }
 }
+
+tapCardCommand::tapCardCommand(GameState* state, Player* player, Card* card) : Command(state, player, card){}
+void tapCardCommand::execute(){
+    player->tapCard(card);
+}
+bool tapCardCommand::isValid(){
+    PhaseRules rules = state->getPhaseRules();
+    if (card->isLand){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
