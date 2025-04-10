@@ -13,6 +13,7 @@ SOURCES += \
     card.cpp \
     command.cpp \
     deck.cpp \
+    gameboard.cpp \
     gamemanager.cpp \
     gamestate.cpp \
     cardwidget.cpp \
@@ -27,6 +28,7 @@ HEADERS += \
     card.h \
     command.h \
     deck.h \
+    gameboard.h \
     gamemanager.h \
     gamestate.h \
     cardwidget.h \

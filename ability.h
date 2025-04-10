@@ -24,7 +24,6 @@ public:
     static Ability heal(int amount);
     static Ability addMana(int amount);
     static Ability destroy();
-
 };
 
 #endif // ABILITY_H
