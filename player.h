@@ -70,6 +70,7 @@ public:
     void tapCard(Card* card);
     void emptyManaPool();
     void endStepPhase();
+    void resolveCard(Card* card);
 
 public slots:
 
