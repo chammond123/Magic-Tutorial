@@ -12,29 +12,49 @@ class Player : public QObject
 public:
     explicit Player(QObject *parent = nullptr);
 
-    Deck Library;
-    QVector<Card*> Graveyard;
-    QVector<Card*> Exile;
-    QVector<Card*> Hand;
-    QVector<Card*> Battlefield;
+    /**
+     * @brief Library, Graveyard, Exile, Hand, and Battlefields are all
+     * zones the player can interact with
+     */
+    Zone Library;
+    Zone Graveyard;
+    Zone Exile;
+    Zone Hand;
+    Zone Battlefield;
+
+    // bool if player has played a land
     bool hasPlayedLand;
+
+    // bool if player hasn't drawn
     bool hasntDrawnForTurn;
+
+    // bool if player is holding priority
     bool holdingPriority;
+
+    // bool if player is the active player
     bool isActivePlayer;
+
     bool madeAction;
-    QVector<Card *> Graveyard;
-    QVector<Card *> Exile;
-    QVector<Card *> Hand;
-    QVector<Card *> Battlefield;
 
     // Health Methods
     int getHealth();
 
     // Zone Methods
+    /**
+     * @brief allows player to take a card and move if from one zone to the next
+     * @param card selected
+     * @param source where card is located
+     * @param target where card is moving
+     */
     void moveCard(Card *card, QString sourceZone, QString targetZone);
 
     // Mana Methods
-    void payMana(int manaCost, ManaType color);
+
+    /**
+     * @brief goes through player mana pool and pays for the
+     * @param manaCost
+     */
+    void payMana(QMap<ManaType, int> manaCost);
     bool canPayMana(Card* card);
 
     // Turn Phases
@@ -44,7 +64,7 @@ public:
 
 public slots:
 
-    void playCard(int index, QString zone);
+    void playCard(Card *card);
     void addMana(QMap<ManaType, int> *manaCosts);
     void useMana(QMap<ManaType, int> *manaCosts);
     void mill(int amount);
@@ -76,7 +96,7 @@ private:
 
     void loseGame();
     //   Card* findCardByID(int cardId, const QVector<Card*>& targetZone); TODO: Implement after Card Class
-    Card *findCardInZone(int cardId, QString zoneRequested);
+    Zone* findCardZone(int cardId, QString zoneRequested);
     QVector<Card*> findZone(QString zoneInput);
 };
 
