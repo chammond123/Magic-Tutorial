@@ -48,18 +48,18 @@ void Player::drawCard(int amount)
 {
     // Check to see if any cards left
     for (int i = 0; i < amount; i++) {
-        if ( Library.getCount() > 0){
+        if ( Library.getCount() <= 0){
             emit playerLost();
             return;
         }
 
         Card *card = Library.drawTop();
-        Hand.addCard(card);
+        Hand.addCard(card, false);
         emit cardDrawn(card);
     }
 }
 
-void Player::moveCardString(Card *card, QString sourceString, QString targetString)
+void Player::moveCardString(Card *card, QString sourceString, QString targetString, bool OnTop)
 {
     Zone *source = nullptr;
     Zone *target = nullptr;
@@ -91,44 +91,44 @@ void Player::moveCardString(Card *card, QString sourceString, QString targetStri
         return;
     }
 
-    source->removeCard(card, false);
-    target->addCard(card);
+    source->removeCard(card);
+    target->addCard(card, OnTop);
 }
 
-void Player::moveCardZone(Card *card, Zone&  sourceZone, Zone& targetZone)
+void Player::moveCardZone(Card *card, Zone&  sourceZone, Zone& targetZone, bool OnTop)
 {
-    sourceZone.removeCard(card, false);
-    targetZone.addCard(card);
+    sourceZone.removeCard(card);
+    targetZone.addCard(card, OnTop);
 }
 
 void Player::mill(int amount)
 {
     for (int i = 0; i < amount; i++) {
-        if (Library.getCount() > 0){
+        if (Library.getCount() <= 0){
             emit playerLost();
             return;
         }
         Card *card = Library.drawTop();
-        Graveyard.addCard(card);
+        Graveyard.addCard(card, true);
     }
 }
 
 void Player::playCard(Card* card)
 {
     if(card->isLand){
-        moveCardZone(card, Hand, Battlefield);
+        moveCardZone(card, Hand, Battlefield, false);
     }
     else{
         if(canPayMana(card)){ // Need this function from Card
             useMana(card);
 
             if(card->isPermanent){ // Need this function from Card class
-                moveCardZone(card, Hand, Battlefield);
+                moveCardZone(card, Hand, Battlefield, false);
             }
             else{
                 // Instant / Sorcery Card
                 card->useAbility();
-                moveCardZone(card, Hand, Graveyard);
+                moveCardZone(card, Hand, Graveyard, true);
             }
         }
     }
@@ -157,7 +157,7 @@ void Player::onBlockRequested(Card *attacker, Card *defender)
         // Emit something to let gamemanager know the attack failed.
         return;
     } else {
-        moveCardZone(defender, Battlefield, Graveyard);
+        moveCardZone(defender, Battlefield, Graveyard, true);
     }
 }
 
@@ -181,7 +181,7 @@ void Player::upkeepPhase(){
 
 void Player::cleanupPhase(){
     for(Card* card : Battlefield){
-        // (TODO: Make Cleanup for card) card->currHealth = maxHealth;
+        card->cleanupCard();
     }
 }
 

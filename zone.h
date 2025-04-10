@@ -104,12 +104,12 @@ public:
     /**
      * @brief removeCard
      */
-    void removeCard(Card*, bool onTop);
+    void removeCard(Card*);
 
     /**
      * @brief addCard
      */
-    void addCard(Card*);
+    void addCard(Card*, bool onTop);
 
     /**
      * @brief drawTop

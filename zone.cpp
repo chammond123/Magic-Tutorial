@@ -29,9 +29,9 @@ void Zone::setVisibility(bool visibility) {
     isFaceUp = visibility;
 }
 
-iterator Zone::Begin() { return cards.begin(); }
+iterator Zone::begin() { return cards.begin(); }
 
-iterator Zone::End() { return cards.end(); }
+iterator Zone::end() { return cards.end(); }
 
 int Zone::getCount() { return count; }
 
@@ -47,8 +47,17 @@ Card* Zone::drawTop() {
     return cards.last();
 }
 
-void Zone::addCard(Card* card) {
-    cards.append(card);
+void Zone::addCard(Card* card, bool onTop) {
+    if (onTop){
+        cards.prepend(card);
+    }
+    else{
+        cards.append(card);
+    }
+}
+
+void Zone::removeCard(Card* card){
+    cards.removeOne(card);
 }
 
 Zone::~Zone() {
