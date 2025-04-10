@@ -1,14 +1,15 @@
 #include "command.h"
 
-Command::Command() {}
+Command::Command(GameState* state, Player* player, Card* card) :  state(state), player(player), card(card) {}
+Command::~Command() {}
 
-drawCommand::drawCommand(GameState* state, Player* player) : state(state), player(player), card(nullptr){}
+drawCommand::drawCommand(GameState* state, Player* player) : Command(state, player, nullptr){}
 void drawCommand::execute(){
-    player.drawCard();
+    player->drawCard();
 }
 bool drawCommand::isValid(){
     PhaseRules rules = state->getPhaseRules();
-    if (player.isActivePlayer && rules.canDraw && player.hasntDrawnForTurn){
+    if (player->isActivePlayer && rules.canDraw && player->hasntDrawnForTurn){
         return true;
     }
     else{
@@ -16,17 +17,17 @@ bool drawCommand::isValid(){
     }
 }
 
-playCardCommand::playCardCommand(GameState* state, Player* player, Card* card) : state(state), player(player), card(card){}
+playCardCommand::playCardCommand(GameState* state, Player* player, Card* card) : Command(state, player, card){}
 void playCardCommand::execute(){
     player->madeAction = true;
     player->playCard(card);
 }
 bool playCardCommand::isValid(){
-    PhaseRules rules = state.GetPhaseRules();
+    PhaseRules rules = state->getPhaseRules();
     if (player->isActivePlayer && rules.canPlaySorcery && card->isLand()){
         return true;
     }
-    else if (player->isActivePlayer && rules.canPlaySorcery && state.stackIsEmpty() && player->canPayMana(card)){
+    else if (player->isActivePlayer && rules.canPlaySorcery && state->stackIsEmpty() && player->canPayMana(card)){
         return true;
     }
     else if (rules.canPlayInstant && player->canAfford(card)){
@@ -37,16 +38,16 @@ bool playCardCommand::isValid(){
     }
 }
 
-passPriorityCommand::passPriorityCommand(GameState* state, Player* player) : state(state), player(player), card(nullptr){}
+passPriorityCommand::passPriorityCommand(GameState* state, Player* player) : Command(state, player, nullptr){}
 void passPriorityCommand::execute(){
     if (!player->madeAction){
-        emit resolveStack();
+        // TODO:: Something with the stack
     }
     state->changePriority();
 }
 bool passPriorityCommand::isValid(){
     PhaseRules rules = state->getPhaseRules();
-    if (player->holdsPriority){
+    if (player->holdingPriority){
         return true;
     }
     else{
@@ -54,13 +55,13 @@ bool passPriorityCommand::isValid(){
     }
 }
 
-changePhaseCommand::changePhaseCommand(GameState* state, Player* player) : state(state), player(player), card(nullptr){}
+changePhaseCommand::changePhaseCommand(GameState* state, Player* player) : Command(state, player, nullptr){}
 void changePhaseCommand::execute(){
     state->changePhase();
 }
 bool changePhaseCommand::isValid(){
     PhaseRules rules = state->getPhaseRules();
-    if (player->isActivePlayer && player->holdingPriority && sate->stackIsEmpty()){
+    if (player->isActivePlayer && player->holdingPriority && state->stackIsEmpty()){
         return true;
     }
     else{
@@ -68,13 +69,13 @@ bool changePhaseCommand::isValid(){
     }
 }
 
-passTurnCommand::passTurnCommand(GameState* state, Player* player) : state(state), player(player), card(nullptr){}
+passTurnCommand::passTurnCommand(GameState* state, Player* player) : Command(state, player, nullptr){}
 void passTurnCommand::execute(){
     state->changeActivePlayer();
 }
 bool passTurnCommand::isValid(){
     PhaseRules rules = state->getPhaseRules();
-    if (player->isActivePlayer && rules.canPass){
+    if (player->isActivePlayer && rules.canPassTurn){
         return true;
     }
     else{
@@ -82,13 +83,13 @@ bool passTurnCommand::isValid(){
     }
 }
 
-declareAttackerCommand::declareAttackerCommand(GameState* state, Player* player, Card* card) : state(state), player(player), card(card){}
-void delareAttackerCommand::execute(){
-    player.declareAttacker(); // TODO: decide what this does
+declareAttackerCommand::declareAttackerCommand(GameState* state, Player* player, Card* card) : Command(state, player, card){}
+void declareAttackerCommand::execute(){
+    //player>declareAttacker(); // TODO: decide what this does
 }
 bool declareAttackerCommand::isValid(){
     PhaseRules rules = state->getPhaseRules();
-    if (player->isActivePlayer && rules.canDeclareAttacker){
+    if (player->isActivePlayer && rules.canDeclareAttack){
         return true;
     }
     else{
@@ -96,13 +97,13 @@ bool declareAttackerCommand::isValid(){
     }
 }
 
-declareBlockerCommand::declareBlockerCommand(GameState* state, Player* player, Card* card) : state(state), player(player), card(card){}
+declareBlockerCommand::declareBlockerCommand(GameState* state, Player* player, Card* card) : Command(state, player, card){}
 void declareBlockerCommand::execute(){
-    player.declareBlocker(); // TODO: this too
+    //player->declareBlocker(); // TODO: this too
 }
 bool declareBlockerCommand::isValid(){
     PhaseRules rules = state->getPhaseRules();
-    if (!player->isActivePlayer && rules.canDeclareBlocker){
+    if (!player->isActivePlayer && rules.canDeclareDefense){
         return true;
     }
     else{

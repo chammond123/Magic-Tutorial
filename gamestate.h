@@ -2,14 +2,16 @@
 #define GAMESTATE_H
 
 #include<QVector>
-#include"player.h"
-#include"ability.h"
+#include"player.h""
 #include"card.h"
 #include"phase.h"
 
 class GameState
 {
 private:
+    /**
+     * @brief A vector holding an order set of phases
+     */
     QVector<Phase> phases = {
         Phase::Untap,
         Phase::Upkeep,
@@ -23,20 +25,37 @@ private:
         Phase::EndStep,
         Phase::Cleanup
     };
+    /**
+     * @brief Index of the current phase of the game
+     */
     int currentPhaseIndex = 0;
-
+    /**
+     * @brief A pointer to the second player object
+     */
     Player* player1;
+    /**
+     * @brief A pointer to the second player object
+     */
     Player* player2;
-
+    /**
+     * @brief Holds the current phase of the game
+     */
     Phase currentPhase;
+    /**
+     * @brief Holds the active stack in a magic round
+     */
     QVector<Card*> theStack;
+    /**
+     * @brief Attackers declared by a player
+     */
     QVector<Card*> attackers;
+    /**
+     * @brief Defenders declared by a player
+     */
     QVector<Card*> defenders;
-    int turnCount;
 
 public:
     GameState();
-
     /**
      * @brief Sets the current phase in the game state
      */
@@ -61,7 +80,7 @@ public:
      * @brief Gets the ruels for the current phase
      * @return The Phase Rules for the current phase
      */
-    PhaseRules getPaseRules();
+    PhaseRules getPhaseRules();
 
     /**
      * @brief Checks if both players have passed priority without making a game action.

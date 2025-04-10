@@ -5,25 +5,53 @@
 #include"card.h"
 #include"player.h"
 #include"gamestate.h"
-#include"phase.h"
 
 class gamemanager
 {
 private:
-
-    void mainGameLoop(Player player1, Player player2);
 
 public:
     GameState* state;
     gamemanager();
 
 public slots:
+    /**
+     * @brief Receives if a player wants to draw a card for turn
+     * @param The player who wants to draw
+     */
     void onCardDrawn(Player* player);
+    /**
+     * @brief Receives if a player wants to cast a card
+     * @param The player who wants to play a card
+     * @param The card they want to play
+     */
     void onPlayCard(Player* player, Card* card);
+    /**
+     * @brief Receives if a player wants to pass priority
+     * @param The player that wants to pass
+     */
     void onPassPriority(Player* player);
+    /**
+     * @brief Revies if a player wants to change the phase of the game
+     * @param The player that wants to change phase
+     */
     void onChangePhase(Player* player);
+    /**
+     * @brief Receives if a player wants to pass the turn
+     * @param The player that wants to pass the turn
+     */
     void onPassTurn(Player* player);
+    /**
+     * @brief Receives if a player wants to declare a creature as an attacker
+     * @param The player who wants to declare an attacker
+     * @param The card they want to declare as an attacker
+     */
     void onDeclareAttacker(Player* player, Card* card);
+    /**
+     * @brief Receives if a player wants to declare a creature as a blocker
+     * @param The player who wants to declare a blocker
+     * @param The card they want to declare as an attacker
+     */
     void onDeclareBlocker(Player* player, Card* card);
 };
 

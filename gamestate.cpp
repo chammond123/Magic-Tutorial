@@ -3,14 +3,14 @@
 gamestate::gamestate() {}
 
 void GameState::changePhase(){
-    if (currentPhaseIndex = phases.size()){
+    if (currentPhaseIndex >= phases.size() - 1){
         currentPhaseIndex = 0;
     }
     else{
         currentPhaseIndex ++;
     }
     currentPhase = phases[currentPhaseIndex];
-    if (currentPhae == Phase::Untap){
+    if (currentPhase == Phase::Untap){
         player1->untap();
         player2->untap();
     }
@@ -29,7 +29,7 @@ void GameState::changePhase(){
 }
 
 void GameState::changePriority(){
-    if(player1.holdingPriority){
+    if(player1->holdingPriority){
         player1->madeAction = false;
         player2->holdingPriority = true;
         player1->holdingPriority = false;
@@ -42,19 +42,19 @@ void GameState::changePriority(){
 }
 
 void GameState::changeActivePlayer(){
-    if (player1.activePlayer){
+    if (player1->isActivePlayer){
         player2->holdingPriority = true;
-        player2->ctivePlayer = true;
+        player2->isActivePlayer = true;
         player1->activePlayer = false;
     }
     else{
         player1->holdingPriority = true;
-        player1->activePlayer = true;
-        player2->activePlayer = false;
+        player1->isActivePlayer = true;
+        player2->isActivePlayer = false;
     }
 }
 
-void GameState::resolveCombatDamate(){
+void GameState::resolveCombatDamage(){
     return;
 }
 

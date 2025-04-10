@@ -8,6 +8,7 @@
 class Command
 {
 public:
+    Command(GameState* state, Player* player, Card* card);
     virtual ~Command();
 
     virtual void execute() = 0;
@@ -41,7 +42,7 @@ class passPriorityCommand : public Command{
 };
 
 class changePhaseCommand : public Command{
-    changePhaseCommand(GameState* state, Player* player, Card* card);
+    changePhaseCommand(GameState* state, Player* player);
 
     virtual void execute();
     virtual bool isValid();

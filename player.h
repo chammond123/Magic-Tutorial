@@ -21,6 +21,7 @@ public:
     bool hasntDrawnForTurn;
     bool holdingPriority;
     bool isActivePlayer;
+    bool madeAction;
 
     // Health Methods
     int getHealth();
