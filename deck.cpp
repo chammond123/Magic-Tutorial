@@ -2,8 +2,8 @@
 #include "carddictionary.h"
 #include <QFile>
 
-deck::deck(QString fileName, QObject *parent)
-    : QObject{parent}, fileName{fileName}
+Deck::Deck(QString fileName, QObject *parent)
+    : QObject{parent}
 {
     QFile file(fileName);
     file.open(QFile::ReadOnly);
@@ -17,4 +17,8 @@ deck::deck(QString fileName, QObject *parent)
     }
 
     file.close();
+}
+
+QVector<Card> Deck::getCardObjects() {
+    return this->cards;
 }

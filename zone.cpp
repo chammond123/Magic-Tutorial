@@ -1,5 +1,6 @@
 #include "zone.h"
 #include "card.h"
+#include "cardDictionary.h"
 #include <algorithm>
 #include <chrono>
 
@@ -10,23 +11,32 @@ Zone::Zone() {
     randomEngine = std::default_random_engine(seed);
 }
 
-Zone::Zone(const QList<QString> cardList) {
-    // QList otherList = otherCards.toList();
-    //this->cards.swap(otherList);
-}
+// Zone::Zone(const QList<QString> cardList) {
+//     // QList otherList = otherCards.toList();
+//     //this->cards.swap(otherList);
 
-void Zone::intialize(const QVector<Card*>& otherCards) {
-    QList otherList = otherCards.toList();
-    this->cards.swap(otherList);
-}
+//     // TODO: Here we want to
+
+//     for (QString cardName : cardList) {
+//         Card card = carddictionary::getCard(cardName);
+//         this->cards.append(card);
+//     }
+
+
+// }
+
+// void Zone::intialize(const QVector<Card*>& otherCards) {
+//     QList otherList = otherCards.toList();
+//     this->cards.swap(otherList);
+// }
 
 void Zone::setVisibility(bool visibility) {
     isFaceUp = visibility;
 }
 
-QVector<Card*>::iterator Zone::begin() { return cards.begin(); }
+iterator Zone::begin() { return cards.begin(); }
 
-QVector<Card*>::iterator Zone::end() { return cards.end(); }
+iterator Zone::end() { return cards.end(); }
 
 int Zone::getCount() { return count; }
 

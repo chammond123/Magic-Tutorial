@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "type.h"
+#include "zone.h"
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -19,6 +20,8 @@ public:
     ~MainWindow();
 
 public slots:
+
+    void cardZoneChanged(Card*, Zone*);
 
 
 signals:

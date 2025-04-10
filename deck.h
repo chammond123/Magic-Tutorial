@@ -7,11 +7,19 @@
 class Deck : public QObject
 {
     Q_OBJECT
+
+private:
+
+    QVector<Card> cards;
 public:
+    /**
+     * @brief Deck Constructor taking in a fileName of cards
+     * @param fileName
+     * @param parent
+     */
     explicit Deck(QString fileName, QObject *parent = nullptr);
 
-    QString fileName;
-    QVector<Card> cards;
+    QVector<Card> getCardObjects();
 
 signals:
 };
