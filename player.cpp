@@ -18,15 +18,11 @@ Player::Player(QObject *parent)
 
 void Player::gainLife(int amount)
 {
-    qDebug() << "Gain Life called with " << amount;
     health += amount;
-    qDebug() << "New Health: " << health;
-    emit healthChanged(health);
 }
 
 void Player::takeDamage(int amount)
 {
-    qDebug() << "Take Damage called with " << amount;
     health -= amount;
     if (health <= 0){
         emit playerLost();
@@ -38,17 +34,14 @@ void Player::addMana(QMap<ManaType, int> *manaCosts)
     for (auto [color, amount] : manaCosts->toStdMap()) {
         manaPool[color] += amount;
     }
-
-    emit manaPoolChanged(&manaPool);
 }
 
-void Player::useMana(QMap<ManaType, int> *manaCosts)
+void Player::useMana(Card* card)
 {
-    for (auto [color, amount] : manaCosts->toStdMap()) {
+    QMap<ManaType, int> manaCosts = card->cost;
+    for (auto [color, amount] : manaCosts.toStdMap()) {
         manaPool[color] -= amount;
     }
-
-    emit manaPoolChanged(&manaPool);
 }
 
 void Player::drawCard(int amount)
@@ -63,8 +56,6 @@ void Player::drawCard(int amount)
         Card *card = Library.drawTop();
         Hand.addCard(card);
         emit cardDrawn(card);
-        emit handChanged();
-        emit libraryChanged();
     }
 }
 
@@ -119,8 +110,6 @@ void Player::mill(int amount)
         }
         Card *card = Library.drawTop();
         Graveyard.addCard(card);
-        emit libraryChanged();
-        emit graveyardChanged();
     }
 }
 
@@ -132,8 +121,7 @@ void Player::playCard(Card* card)
         Battlefield.addCard(card);
 
         emit cardPlayed(card);
-        emit handChanged();
-        emit battlefieldChanged();
+
     }
     else{
         if(canPayMana(card->manaCost())){ // Need this function from Card
@@ -187,7 +175,6 @@ void Player::untap(){
     for (Card* card : Battlefield){
         card->tapped = false;
     }
-    emit battlefieldChanged();
 }
 
 
