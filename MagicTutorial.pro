@@ -15,10 +15,12 @@ SOURCES += \
     deck.cpp \
     gamemanager.cpp \
     gamestate.cpp \
+    cardwidget.cpp \
     main.cpp \
     mainwindow.cpp \
     player.cpp \
     type.cpp \
+    zone.cpp
 
 HEADERS += \
     ability.h \
@@ -27,12 +29,15 @@ HEADERS += \
     deck.h \
     gamemanager.h \
     gamestate.h \
+    cardwidget.h \
     mainwindow.h \
     phase.h \
     player.h \
     type.h \
+    zone.h
 
 FORMS += \
+    cardwidget.ui \
     mainwindow.ui
 
 # Default rules for deployment.
