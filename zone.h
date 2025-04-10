@@ -71,14 +71,14 @@ public:
      * @return
      * Makes Zone class iterable
      */
-    iterator begin();
+    QVector<Card*>::iterator begin();
 
     /**
      * @brief End
      * @return
      * Makes Zone class iterable
      */
-    iterator end();
+    QVector<Card*>::iterator end();
 
     /**
      * @brief getCount

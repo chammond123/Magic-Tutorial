@@ -48,9 +48,10 @@ public:
      * @param card selected
      * @param source where card is located
      * @param target where card is moving
+     * @param ontop
      */
-    void moveCardString(Card *card, QString sourceZone, QString targetZone);
-    void moveCardZone(Card *card, Zone& sourceZone, Zone& targetZone);
+    void moveCardString(Card *card, QString sourceZone, QString targetZone, bool OnTop);
+    void moveCardZone(Card *card, Zone& sourceZone, Zone& targetZone, bool OnTop);
 
     // Mana Methods
 
@@ -68,6 +69,7 @@ public:
     void cleanupPhase();
     void tapCard(Card* card);
     void emptyManaPool();
+    void endStepPhase();
 
 public slots:
 

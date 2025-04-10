@@ -29,9 +29,9 @@ void Zone::setVisibility(bool visibility) {
     isFaceUp = visibility;
 }
 
-iterator Zone::begin() { return cards.begin(); }
+QVector<Card*>::iterator Zone::begin() { return cards.begin(); }
 
-iterator Zone::end() { return cards.end(); }
+QVector<Card*>::iterator Zone::end() { return cards.end(); }
 
 int Zone::getCount() { return count; }
 
