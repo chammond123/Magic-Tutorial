@@ -2,6 +2,7 @@
 #include "cardapimanager.h"
 #include "ui_mainwindow.h"
 #include "carddictionary.h"
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -11,10 +12,18 @@ MainWindow::MainWindow(QWidget *parent)
 
     CardAPIManager *apiManager = new CardAPIManager(this);
 
-    connect(apiManager, &CardAPIManager::cardFetched,
-            this, &carddictionary::addCard);
 
-        apiManager->fetchCardByName("Lightning Bolt");
+    connect(apiManager, &CardAPIManager::errorOccurred, this, [](const QString &error) {
+        qDebug() << "API Error:" << error;
+    });
+
+    connect(apiManager, &CardAPIManager::cardFetched, this, [=](const Card &card) {
+        carddictionary::addCard(card);
+        qDebug() << carddictionary::getCard("Lightning Bolt").description;
+    });
+
+    apiManager->fetchCardByName("Lightning Bolt");
+
 }
 
 MainWindow::~MainWindow()

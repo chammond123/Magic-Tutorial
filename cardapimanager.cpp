@@ -23,7 +23,6 @@ void CardAPIManager::fetchCards()
 {
     QUrl url("https://api.scryfall.com/cards");
     QNetworkRequest request(url);
-
     QNetworkReply* reply = manager->get(request);
     pendingReplies[reply] = ReplyType::CardsList;
 }
@@ -52,6 +51,15 @@ void CardAPIManager::fetchCardsByNames(const QStringList &cardNames)
     }
 }
 
+void CardAPIManager::downloadCardImage(const Card &card, const QString &imageUrl)
+{
+    QUrl url(imageUrl);
+    QNetworkRequest request(url);
+    QNetworkReply* reply = manager->get(request);
+    pendingReplies[reply] = ReplyType::CardImage;
+    imageDownloads[reply] = card;
+}
+
 void CardAPIManager::onFinished(QNetworkReply *reply)
 {
     ReplyType type = pendingReplies.value(reply, ReplyType::Unknown);
@@ -59,64 +67,60 @@ void CardAPIManager::onFinished(QNetworkReply *reply)
 
     if (reply->error() != QNetworkReply::NoError) {
         emit errorOccurred(reply->errorString());
-
-        if (type == ReplyType::SingleCard && remainingBatchCards > 0) {
+        if ((type == ReplyType::SingleCard || type == ReplyType::CardImage) && remainingBatchCards > 0) {
             remainingBatchCards--;
-
             if (remainingBatchCards == 0) {
                 emit batchCardsFetched(batchResults);
             }
         }
-
         reply->deleteLater();
         return;
     }
 
     QByteArray responseData = reply->readAll();
-    QJsonDocument jsonDoc = QJsonDocument::fromJson(responseData);
-
-    if (jsonDoc.isNull()) {
-        emit errorOccurred("Invalid JSON response.");
-        reply->deleteLater();
-        return;
-    }
 
     if (type == ReplyType::CardsList) {
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(responseData);
         if (!jsonDoc.isObject()) {
             emit errorOccurred("Invalid JSON response format for cards list.");
             reply->deleteLater();
             return;
         }
-
         QJsonObject jsonObj = jsonDoc.object();
+        if (!jsonObj.contains("data")) {
+            emit errorOccurred("Missing 'data' field in cards list JSON.");
+            reply->deleteLater();
+            return;
+        }
         QJsonArray cardsArray = jsonObj["data"].toArray();
         emit cardsFetched(cardsArray);
     }
     else if (type == ReplyType::SingleCard) {
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(responseData);
         if (!jsonDoc.isObject()) {
             emit errorOccurred("Invalid JSON response format for single card.");
             reply->deleteLater();
             return;
         }
-
         QJsonObject cardObject = jsonDoc.object();
         Card card = parseCardFromJson(cardObject);
 
-        if (cardObject.contains("image_uris")) {
-            QString imageUrl = cardObject["image_uris"].toObject()["normal"].toString();
-            downloadCardImage(card, imageUrl);
-        } else {
-            emit cardFetched(card);
-
-            if (remainingBatchCards > 0) {
-                batchResults.append(card);
-                remainingBatchCards--;
-
-                emit batchFetchProgress(batchResults.size());
-
-                if (remainingBatchCards == 0) {
-                    emit batchCardsFetched(batchResults);
-                }
+        if (cardObject.contains("image_uris") && cardObject["image_uris"].isObject()) {
+            QJsonObject imageUris = cardObject["image_uris"].toObject();
+            QString imageUrl = imageUris["normal"].toString();
+            if (!imageUrl.isEmpty()) {
+                downloadCardImage(card, imageUrl);
+                reply->deleteLater();
+                return;
+            }
+        }
+        emit cardFetched(card);
+        if (remainingBatchCards > 0) {
+            batchResults.append(card);
+            remainingBatchCards--;
+            emit batchFetchProgress(batchResults.size());
+            if (remainingBatchCards == 0) {
+                emit batchCardsFetched(batchResults);
             }
         }
     }
@@ -127,16 +131,14 @@ void CardAPIManager::onFinished(QNetworkReply *reply)
         QImage image;
         if (image.loadFromData(responseData)) {
             card.image = image;
+        } else {
+            emit errorOccurred("Failed to load card image from data.");
         }
-
         emit cardFetched(card);
-
         if (remainingBatchCards > 0) {
             batchResults.append(card);
             remainingBatchCards--;
-
             emit batchFetchProgress(batchResults.size());
-
             if (remainingBatchCards == 0) {
                 emit batchCardsFetched(batchResults);
             }
@@ -144,16 +146,6 @@ void CardAPIManager::onFinished(QNetworkReply *reply)
     }
 
     reply->deleteLater();
-}
-
-void CardAPIManager::downloadCardImage(const Card &card, const QString &imageUrl)
-{
-    QUrl url(imageUrl);
-    QNetworkRequest request(url);
-
-    QNetworkReply* reply = manager->get(request);
-    pendingReplies[reply] = ReplyType::CardImage;
-    imageDownloads[reply] = card;
 }
 
 Card CardAPIManager::parseCardFromJson(const QJsonObject &cardJson)
@@ -207,7 +199,6 @@ Card CardAPIManager::parseCardFromJson(const QJsonObject &cardJson)
 QMap<ManaType, int> CardAPIManager::parseManaSymbols(const QString &manaCost)
 {
     QMap<ManaType, int> costMap;
-
     costMap[ManaType::WHITE] = 0;
     costMap[ManaType::BLUE] = 0;
     costMap[ManaType::BLACK] = 0;
@@ -227,14 +218,12 @@ QMap<ManaType, int> CardAPIManager::parseManaSymbols(const QString &manaCost)
                 else if (manaCost[i] == 'G') costMap[ManaType::GREEN]++;
                 else if (manaCost[i] == 'C') costMap[ManaType::COLORLESS]++;
                 else if (manaCost[i].isDigit()) {
-                    // For costs like {2}, add to the generic mana count
                     QString number;
                     while (i < manaCost.length() && manaCost[i].isDigit()) {
                         number += manaCost[i];
                         i++;
                     }
-                    i--; // Adjust for the next iteration
-
+                    i--;
                     bool ok;
                     int genericAmount = number.toInt(&ok);
                     if (ok) {
@@ -260,6 +249,7 @@ ManaType CardAPIManager::determineCardColor(const QJsonArray &colorsArray)
         if (color == "R") return ManaType::RED;
         if (color == "G") return ManaType::GREEN;
     }
+    return ManaType::COLORLESS;
 }
 
 CardType CardAPIManager::determineCardType(const QString &typeLine)
@@ -271,15 +261,14 @@ CardType CardAPIManager::determineCardType(const QString &typeLine)
     if (typeLine.contains("Enchantment", Qt::CaseInsensitive)) return CardType::ENCHANTMENT;
     if (typeLine.contains("Planeswalker", Qt::CaseInsensitive)) return CardType::PLANESWALKER;
     if (typeLine.contains("Land", Qt::CaseInsensitive)) return CardType::LAND;
+    return CardType::SORCERY;
 }
 
 QVector<PropertyType> CardAPIManager::parseKeywords(const QJsonArray &keywordsArray)
 {
     QVector<PropertyType> keywords;
-
     for (const QJsonValue &value : keywordsArray) {
         QString keyword = value.toString();
-
         if (keyword == "Flying") keywords.append(PropertyType::FLYING);
         else if (keyword == "First strike") keywords.append(PropertyType::FIRST_STRIKE);
         else if (keyword == "Deathtouch") keywords.append(PropertyType::DEATHTOUCH);

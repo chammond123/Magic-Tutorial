@@ -15,7 +15,6 @@ public:
     Card();
     Card(const Card& other);
 
-    void useAbility();
     bool canBePlayed(const QVector<ManaType> &availableMana) const;
     bool hasKeyword(PropertyType keyword) const;
     //take damage

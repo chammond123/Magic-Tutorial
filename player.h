@@ -49,8 +49,8 @@ public:
      * @param source where card is located
      * @param target where card is moving
      */
-    void moveCardString(Card *card, QString sourceZone, QString targetZone);
-    void moveCardZone(Card *card, Zone& sourceZone, Zone& targetZone);
+    void moveCardString(Card *card, QString sourceZone, QString targetZone, bool);
+    void moveCardZone(Card *card, Zone& sourceZone, Zone& targetZone, bool);
 
     // Mana Methods
 

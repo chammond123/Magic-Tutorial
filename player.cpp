@@ -127,7 +127,7 @@ void Player::playCard(Card* card)
             }
             else{
                 // Instant / Sorcery Card
-                card->useAbility();
+                // card->ability.activate();
                 moveCardZone(card, Hand, Graveyard, true);
             }
         }
@@ -163,7 +163,7 @@ void Player::onBlockRequested(Card *attacker, Card *defender)
 
 void Player::tapCard(Card* card){
     card->isTapped = true;
-    card->useAbility();
+    // card->useAbility();
 }
 
 void Player::untap(){

@@ -1,5 +1,7 @@
 #include "gamestate.h"
 
+GameState::GameState(){}
+
 void GameState::changePhase(){
     if (currentPhaseIndex >= phases.size() - 1){
         currentPhaseIndex = 0;
@@ -30,12 +32,12 @@ void GameState::changePhase(){
         player1->emptyManaPool();
         player2->emptyManaPool();
     }
-    else if (currentPhase == Phase::EndStep){
-        player1->emptyManaPool();
-        player2->emptyManaPool();
-        player1->endStepPhase();
-        player2->endstepPhase();
-    }
+    // else if (currentPhase == Phase::EndStep){
+    //     player1->emptyManaPool();
+    //     player2->emptyManaPool();
+    //     player1->endStepPhase();
+    //     player2->endstepPhase();
+    // }
     else if (currentPhase == Phase::Cleanup){
         player1->emptyManaPool();
         player2->emptyManaPool();
