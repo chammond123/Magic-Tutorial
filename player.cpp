@@ -151,6 +151,7 @@ void Player::onBlockRequested(Card *attacker, Card *defender)
     int damage = attacker->power;
     if (defender == nullptr) {
         takeDamage(damage);
+        return;
     }
     int toughness = defender->toughness;
     if (toughness > damage) {
@@ -158,6 +159,19 @@ void Player::onBlockRequested(Card *attacker, Card *defender)
         return;
     } else {
         moveCardZone(defender, Battlefield, Graveyard, true);
+    }
+}
+
+void Player::resolveCard(Card* card) {
+    // This gets called by GameManager when spell resolves
+    useMana(&card->cost);
+
+    if (card->isPermanent) {
+        moveCardZone(card, Hand, Battlefield, false);
+    } else {
+        // Instant/Sorcery
+        card->useAbility();
+        moveCardZone(card, Hand, Graveyard, true);
     }
 }
 
@@ -188,6 +202,12 @@ void Player::cleanupPhase(){
 void Player::emptyManaPool(){
     for(ManaType color : manaPool.keys()){
         manaPool[color] = 0;
+    }
+}
+
+void Player::endStepPhase(){
+    for(Card* card : Battlefield){
+        // TODO: Update this
     }
 }
 

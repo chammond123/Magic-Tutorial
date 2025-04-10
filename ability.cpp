@@ -1,7 +1,9 @@
 #include "ability.h"
 
+
 Ability::Ability(){};
 Ability::Ability(std::function<void(Player*, Card*)> eff){}
+
 
 // Activate method
 void Ability::activate(Player *player, Card *target)
