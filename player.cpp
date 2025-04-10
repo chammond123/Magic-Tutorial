@@ -18,6 +18,8 @@ Player::Player(QString fileName, QObject *parent)
     // Initializes card pointers in deck zone
     for (Card card : deck.getCardObjects()) {
         Library.addCard(&card, true);
+
+        // emit initalizeLibrary(Library.getCardPointers(), 0);
     }
 
     drawCard(7);
