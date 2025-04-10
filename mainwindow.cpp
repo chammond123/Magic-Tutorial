@@ -19,8 +19,8 @@ MainWindow::MainWindow(QWidget *parent)
     });
 
     connect(apiManager, &CardAPIManager::cardFetched, this, [=](const Card &card) {
-        carddictionary::addCard(card);
-        Card elfCard = carddictionary::getCard("Elspeth's Devotee");
+        cardDictionary::addCard(card);
+        Card elfCard = cardDictionary::getCard("Elspeth's Devotee");
 
         qDebug() << elfCard.description;
 
