@@ -46,7 +46,8 @@ public:
      * @param source where card is located
      * @param target where card is moving
      */
-    void moveCard(Card *card, QString sourceZone, QString targetZone);
+    void moveCardString(Card *card, QString sourceZone, QString targetZone);
+    void moveCardZone(Card *card, Zone& sourceZone, Zone& targetZone);
 
     // Mana Methods
 
@@ -61,6 +62,9 @@ public:
     void onBlockRequested(Card *attacker, Card *defender = nullptr);
     void untapPhase();
     void upkeepPhase();
+    void cleanUpPhase();
+    void tapCard(Card* card);
+    void emptyManaPool();
 
 public slots:
 
@@ -95,8 +99,7 @@ private:
     QMap<ManaType, int> manaPool;
 
     void loseGame();
-    //   Card* findCardByID(int cardId, const QVector<Card*>& targetZone); TODO: Implement after Card Class
-    Zone* findCardZone(int cardId, QString zoneRequested);
+    Zone* findCardZone(Card* card);
     QVector<Card*> findZone(QString zoneInput);
 };
 

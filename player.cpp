@@ -68,7 +68,7 @@ void Player::drawCard(int amount)
     }
 }
 
-void Player::moveCard(Card *card, QString sourceString, QString targetString)
+void Player::moveCardString(Card *card, QString sourceString, QString targetString)
 {
     Zone *source = nullptr;
     Zone *target = nullptr;
@@ -102,8 +102,12 @@ void Player::moveCard(Card *card, QString sourceString, QString targetString)
 
     source->removeCard(card, false);
     target->addCard(card);
+}
 
-    updateAllUI();
+void Player::moveCardZone(Card *card, Zone&  sourceZone, Zone& targetZone)
+{
+    sourceZone.removeCard(card, false);
+    targetZone.addCard(card);
 }
 
 void Player::mill(int amount)
@@ -132,17 +136,16 @@ void Player::playCard(Card* card)
         emit battlefieldChanged();
     }
     else{
-        if(canPayMana(card->getManaCost())){ // Need this function from Card
-            payMana(card->getManaCost());
-            Hand.removeCard(card, false);
+        if(canPayMana(card->manaCost())){ // Need this function from Card
+            payMana(card->manaCost());
 
             if(card->isPermanent()){ // Need this function from Card class
-                Battlefield.addCard(card);
+                moveCardZone(card, Hand, Battlefield);
             }
             else{
                 // Instant / Sorcery Card
                 card->useAbility();
-                Graveyard.addCard(card);
+                moveCardZone(card, Hand, Graveyard);
             }
         }
     }
@@ -150,7 +153,7 @@ void Player::playCard(Card* card)
 
 bool Player::canPayMana(Card* card)
 {
-    QMap<ManaType, int> manaCosts = card->getCost();
+    QMap<ManaType, int> manaCosts = card->cost();
     for (auto [color, value] : manaCosts.toStdMap()) {
         if (value > manaPool[color]) {
             return false;
@@ -171,21 +174,15 @@ void Player::onBlockRequested(Card *attacker, Card *defender)
         // Emit something to let gamemanager know the attack failed.
         return;
     } else {
-        moveCard(defender, "battlefield", "graveyard");
+        moveCardZone(defender, Battlefield, Graveyard);
     }
 }
 
-void Player::updateAllUI()
-{
-    emit handChanged();
-    emit manaPoolChanged(&manaPool);
-    emit battlefieldChanged();
-    emit graveyardChanged();
-    emit exileChanged();
-    emit healthChanged(health);
+void Player::tapCard(Card* card){
+    card->tapped = true;
+    card->useAbility();
 }
 
-// TODO: Have Cards "Untapable and Tapable"
 void Player::untapPhase(){
     for (Card* card : Battlefield){
         card->tapped = false;
@@ -193,7 +190,7 @@ void Player::untapPhase(){
     emit battlefieldChanged();
 }
 
-// TODO: Have Cards have an "Upkeep" function
+
 void Player::upkeepPhase(){
     for(Card* card : Battlefield){
         card->triggerUpkeep();
@@ -203,6 +200,12 @@ void Player::upkeepPhase(){
 void Player::cleanUpPhase(){
     for(Card* card : Battlefield){
         card->currHealth = maxHealth;
+    }
+}
+
+void Player::emptyManaPool(){
+    for(ManaType color : manaPool.keys()){
+        manaPool[color] = 0;
     }
 }
 
