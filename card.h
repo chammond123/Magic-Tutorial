@@ -32,7 +32,7 @@ public:
     QVector<PropertyType> keywords;
     bool isTapped;
     bool isPermanent;
-    bool isLand();
+    bool isLand;
 };
 
 #endif // CARD_H

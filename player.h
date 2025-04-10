@@ -65,7 +65,7 @@ public:
     void onBlockRequested(Card *attacker, Card *defender = nullptr);
     void untap();
     void upkeepPhase();
-    void cleanUpPhase();
+    void cleanupPhase();
     void tapCard(Card* card);
     void emptyManaPool();
 

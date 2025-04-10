@@ -115,19 +115,14 @@ void Player::mill(int amount)
 
 void Player::playCard(Card* card)
 {
-    // TODO: Implement after Card has IsLand and isPermanent, as well as mana costs
-    if(card->isLand()){
-        Hand.removeCard(card, false);
-        Battlefield.addCard(card);
-
-        emit cardPlayed(card);
-
+    if(card->isLand){
+        moveCardZone(card, Hand, Battlefield);
     }
     else{
-        if(canPayMana(card->manaCost())){ // Need this function from Card
-            payMana(card->manaCost());
+        if(canPayMana(card)){ // Need this function from Card
+            useMana(card);
 
-            if(card->isPermanent()){ // Need this function from Card class
+            if(card->isPermanent){ // Need this function from Card class
                 moveCardZone(card, Hand, Battlefield);
             }
             else{
@@ -141,7 +136,7 @@ void Player::playCard(Card* card)
 
 bool Player::canPayMana(Card* card)
 {
-    QMap<ManaType, int> manaCosts = card->cost();
+    QMap<ManaType, int> manaCosts = card->cost;
     for (auto [color, value] : manaCosts.toStdMap()) {
         if (value > manaPool[color]) {
             return false;
@@ -153,11 +148,11 @@ bool Player::canPayMana(Card* card)
 
 void Player::onBlockRequested(Card *attacker, Card *defender)
 {
-    int damage = attacker->getPower();
+    int damage = attacker->power;
     if (defender == nullptr) {
         takeDamage(damage);
     }
-    int toughness = defender->getToughness();
+    int toughness = defender->toughness;
     if (toughness > damage) {
         // Emit something to let gamemanager know the attack failed.
         return;
@@ -167,26 +162,26 @@ void Player::onBlockRequested(Card *attacker, Card *defender)
 }
 
 void Player::tapCard(Card* card){
-    card->tapped = true;
+    card->isTapped = true;
     card->useAbility();
 }
 
 void Player::untap(){
     for (Card* card : Battlefield){
-        card->tapped = false;
+        card->isTapped = false;
     }
 }
 
 
 void Player::upkeepPhase(){
     for(Card* card : Battlefield){
-        card->triggerUpkeep();
+        // (TODO: Make Upkeep for card) card->triggerUpkeep();
     }
 }
 
-void Player::cleanUpPhase(){
+void Player::cleanupPhase(){
     for(Card* card : Battlefield){
-        card->currHealth = maxHealth;
+        // (TODO: Make Cleanup for card) card->currHealth = maxHealth;
     }
 }
 
