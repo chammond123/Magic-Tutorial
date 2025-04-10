@@ -1,4 +1,5 @@
 QT       += core gui
+QT       += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -11,11 +12,10 @@ CONFIG += c++17
 SOURCES += \
     ability.cpp \
     card.cpp \
-    command.cpp \
-    deck.cpp \
+    cardapimanager.cpp \
+    carddictionary.cpp \
     gamemanager.cpp \
     gamestate.cpp \
-    cardwidget.cpp \
     main.cpp \
     mainwindow.cpp \
     player.cpp \
@@ -25,11 +25,10 @@ SOURCES += \
 HEADERS += \
     ability.h \
     card.h \
-    command.h \
-    deck.h \
+    cardapimanager.h \
+    carddictionary.h \
     gamemanager.h \
     gamestate.h \
-    cardwidget.h \
     mainwindow.h \
     phase.h \
     player.h \
@@ -37,7 +36,6 @@ HEADERS += \
     zone.h
 
 FORMS += \
-    cardwidget.ui \
     mainwindow.ui
 
 # Default rules for deployment.
