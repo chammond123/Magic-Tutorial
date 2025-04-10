@@ -1,7 +1,5 @@
 #include "gamestate.h"
 
-GameState::gamestate() {}
-
 void GameState::changePhase(){
     if (currentPhaseIndex >= phases.size() - 1){
         currentPhaseIndex = 0;
