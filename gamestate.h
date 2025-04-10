@@ -94,6 +94,12 @@ public:
      */
     bool stackIsEmpty();
 
+    /**
+     * @brief Returns a QString representing the state
+     * @return A QString containing the state
+     */
+    QString toString();
+
 };
 
 #endif // GAMESTATE_H

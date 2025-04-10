@@ -124,3 +124,6 @@ PhaseRules GameState::getPhaseRules(){
 bool GameState::stackIsEmpty(){
     return theStack.isEmpty();
 }
+QString GameState::toString(){
+
+}

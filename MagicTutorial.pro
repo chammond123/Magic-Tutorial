@@ -10,10 +10,12 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    CLI.cpp \
     ability.cpp \
     card.cpp \
     cardapimanager.cpp \
     carddictionary.cpp \
+    command.cpp \
     gamemanager.cpp \
     gamestate.cpp \
     main.cpp \
@@ -27,6 +29,7 @@ HEADERS += \
     card.h \
     cardapimanager.h \
     carddictionary.h \
+    command.h \
     gamemanager.h \
     gamestate.h \
     mainwindow.h \
