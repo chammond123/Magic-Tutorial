@@ -60,7 +60,7 @@ public:
 
     // Turn Phases
     void onBlockRequested(Card *attacker, Card *defender = nullptr);
-    void untapPhase();
+    void untap();
     void upkeepPhase();
     void cleanUpPhase();
     void tapCard(Card* card);
@@ -75,7 +75,6 @@ public slots:
     void drawCard(int amount = 1);
     void takeDamage(int amount);
     void gainLife(int amount);
-    void updateAllUI();
     void endTurn();
 
 signals:

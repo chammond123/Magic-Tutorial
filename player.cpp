@@ -183,7 +183,7 @@ void Player::tapCard(Card* card){
     card->useAbility();
 }
 
-void Player::untapPhase(){
+void Player::untap(){
     for (Card* card : Battlefield){
         card->tapped = false;
     }
