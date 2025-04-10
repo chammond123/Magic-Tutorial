@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "type.h"
 #include "ui_mainwindow.h"
+#include "carddictionary.h"
 
 MainWindow::MainWindow(QWidget *parent, Player *player)
     : QMainWindow(parent)
@@ -8,6 +9,13 @@ MainWindow::MainWindow(QWidget *parent, Player *player)
     , player(player)
 {
     ui->setupUi(this);
+
+    CardAPIManager *apiManager = new CardAPIManager(this);
+
+    connect(apiManager, &CardAPIManager::cardFetched,
+            this, &carddictionary::addCard);
+
+        apiManager->fetchCardByName("Lightning Bolt");
 
     connect(ui->healthButton, &QPushButton::clicked, this, [&]() {
         int value = ui->testSpinBox->value();
@@ -28,11 +36,8 @@ MainWindow::MainWindow(QWidget *parent, Player *player)
     connect(ui->payManaButton, &QPushButton::clicked, this, &MainWindow::manaPayTest);
 
     connect(ui->healthSpinBox, &QSpinBox::valueChanged, ui->healthSlider, &QSlider::setValue);
-    connect(player, &Player::healthChanged, ui->healthSpinBox, &QSpinBox::setValue);
-    connect(player, &Player::manaPoolChanged, this, &MainWindow::receiveMana);
 
     connect(this, &MainWindow::uiTestManaAdd, player, &Player::addMana);
-    connect(this, &MainWindow::uiTestManaAdd, player, &Player::useMana);
 }
 
 MainWindow::~MainWindow()

@@ -18,6 +18,9 @@ public:
     void useAbility();
     bool canBePlayed(const QVector<ManaType> &availableMana) const;
     bool hasKeyword(PropertyType keyword) const;
+    //take damage
+    //gain health
+    //reset health
 
 public:
     QString name;
@@ -32,7 +35,7 @@ public:
     QVector<PropertyType> keywords;
     bool isTapped;
     bool isPermanent;
-    bool isLand();
+    bool isLand;
 };
 
 #endif // CARD_H
