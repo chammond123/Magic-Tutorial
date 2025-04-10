@@ -1,9 +1,9 @@
 #include "ability.h"
 
 
-Ability::Ability(std::function<void(Player*, Card*)> eff){
-    effect = eff;
-}
+Ability::Ability(){};
+Ability::Ability(std::function<void(Player*, Card*)> eff){}
+
 
 // Activate method
 void Ability::activate(Player *player, Card *target)

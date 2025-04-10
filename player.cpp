@@ -18,15 +18,11 @@ Player::Player(QObject *parent)
 
 void Player::gainLife(int amount)
 {
-    qDebug() << "Gain Life called with " << amount;
     health += amount;
-    qDebug() << "New Health: " << health;
-    emit healthChanged(health);
 }
 
 void Player::takeDamage(int amount)
 {
-    qDebug() << "Take Damage called with " << amount;
     health -= amount;
     if (health <= 0){
         emit playerLost();
@@ -38,37 +34,32 @@ void Player::addMana(QMap<ManaType, int> *manaCosts)
     for (auto [color, amount] : manaCosts->toStdMap()) {
         manaPool[color] += amount;
     }
-
-    emit manaPoolChanged(&manaPool);
 }
 
-void Player::useMana(QMap<ManaType, int> *manaCosts)
+void Player::useMana(Card* card)
 {
-    for (auto [color, amount] : manaCosts->toStdMap()) {
+    QMap<ManaType, int> manaCosts = card->cost;
+    for (auto [color, amount] : manaCosts.toStdMap()) {
         manaPool[color] -= amount;
     }
-
-    emit manaPoolChanged(&manaPool);
 }
 
 void Player::drawCard(int amount)
 {
     // Check to see if any cards left
     for (int i = 0; i < amount; i++) {
-        if ( Library.getCount() > 0){
+        if ( Library.getCount() <= 0){
             emit playerLost();
             return;
         }
 
         Card *card = Library.drawTop();
-        Hand.addCard(card);
+        Hand.addCard(card, false);
         emit cardDrawn(card);
-        emit handChanged();
-        emit libraryChanged();
     }
 }
 
-void Player::moveCardString(Card *card, QString sourceString, QString targetString)
+void Player::moveCardString(Card *card, QString sourceString, QString targetString, bool OnTop)
 {
     Zone *source = nullptr;
     Zone *target = nullptr;
@@ -100,52 +91,44 @@ void Player::moveCardString(Card *card, QString sourceString, QString targetStri
         return;
     }
 
-    source->removeCard(card, false);
-    target->addCard(card);
+    source->removeCard(card);
+    target->addCard(card, OnTop);
 }
 
-void Player::moveCardZone(Card *card, Zone&  sourceZone, Zone& targetZone)
+void Player::moveCardZone(Card *card, Zone&  sourceZone, Zone& targetZone, bool OnTop)
 {
-    sourceZone.removeCard(card, false);
-    targetZone.addCard(card);
+    sourceZone.removeCard(card);
+    targetZone.addCard(card, OnTop);
 }
 
 void Player::mill(int amount)
 {
     for (int i = 0; i < amount; i++) {
-        if (Library.getCount() > 0){
+        if (Library.getCount() <= 0){
             emit playerLost();
             return;
         }
         Card *card = Library.drawTop();
-        Graveyard.addCard(card);
-        emit libraryChanged();
-        emit graveyardChanged();
+        Graveyard.addCard(card, true);
     }
 }
 
 void Player::playCard(Card* card)
 {
-    // TODO: Implement after Card has IsLand and isPermanent, as well as mana costs
-    if(card->isLand()){
-        Hand.removeCard(card, false);
-        Battlefield.addCard(card);
-
-        emit cardPlayed(card);
-        emit handChanged();
-        emit battlefieldChanged();
+    if(card->isLand){
+        moveCardZone(card, Hand, Battlefield, false);
     }
     else{
-        if(canPayMana(card->manaCost())){ // Need this function from Card
-            payMana(card->manaCost());
+        if(canPayMana(card)){ // Need this function from Card
+            useMana(card);
 
-            if(card->isPermanent()){ // Need this function from Card class
-                moveCardZone(card, Hand, Battlefield);
+            if(card->isPermanent){ // Need this function from Card class
+                moveCardZone(card, Hand, Battlefield, false);
             }
             else{
                 // Instant / Sorcery Card
                 card->useAbility();
-                moveCardZone(card, Hand, Graveyard);
+                moveCardZone(card, Hand, Graveyard, true);
             }
         }
     }
@@ -153,7 +136,7 @@ void Player::playCard(Card* card)
 
 bool Player::canPayMana(Card* card)
 {
-    QMap<ManaType, int> manaCosts = card->cost();
+    QMap<ManaType, int> manaCosts = card->cost;
     for (auto [color, value] : manaCosts.toStdMap()) {
         if (value > manaPool[color]) {
             return false;
@@ -165,47 +148,52 @@ bool Player::canPayMana(Card* card)
 
 void Player::onBlockRequested(Card *attacker, Card *defender)
 {
-    int damage = attacker->getPower();
+    int damage = attacker->power;
     if (defender == nullptr) {
         takeDamage(damage);
     }
-    int toughness = defender->getToughness();
+    int toughness = defender->toughness;
     if (toughness > damage) {
         // Emit something to let gamemanager know the attack failed.
         return;
     } else {
-        moveCardZone(defender, Battlefield, Graveyard);
+        moveCardZone(defender, Battlefield, Graveyard, true);
     }
 }
 
 void Player::tapCard(Card* card){
-    card->tapped = true;
+    card->isTapped = true;
     card->useAbility();
 }
 
 void Player::untap(){
     for (Card* card : Battlefield){
-        card->tapped = false;
+        card->isTapped = false;
     }
-    emit battlefieldChanged();
 }
 
 
 void Player::upkeepPhase(){
     for(Card* card : Battlefield){
-        card->triggerUpkeep();
+        // (TODO: Make Upkeep for card) card->triggerUpkeep();
     }
 }
 
-void Player::cleanUpPhase(){
+void Player::cleanupPhase(){
     for(Card* card : Battlefield){
-        card->currHealth = maxHealth;
+        card->cleanupCard();
     }
 }
 
 void Player::emptyManaPool(){
     for(ManaType color : manaPool.keys()){
         manaPool[color] = 0;
+    }
+}
+
+void Player::endStepPhase(){
+    for(Card* card : Battlefield){
+        // TODO: Update this
     }
 }
 

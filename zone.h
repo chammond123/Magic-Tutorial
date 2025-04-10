@@ -71,14 +71,14 @@ public:
      * @return
      * Makes Zone class iterable
      */
-    iterator begin();
+    QVector<Card*>::iterator begin();
 
     /**
      * @brief End
      * @return
      * Makes Zone class iterable
      */
-    iterator end();
+    QVector<Card*>::iterator end();
 
     /**
      * @brief getCount
@@ -104,12 +104,12 @@ public:
     /**
      * @brief removeCard
      */
-    void removeCard(Card*, bool onTop);
+    void removeCard(Card*);
 
     /**
      * @brief addCard
      */
-    void addCard(Card*);
+    void addCard(Card*, bool onTop);
 
     /**
      * @brief drawTop

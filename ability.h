@@ -15,6 +15,7 @@ private:
 
 
 public:
+    Ability();
     Ability(std::function<void(Player*, Card*)> eff);
     void activate(Player* player, Card* target);
 
