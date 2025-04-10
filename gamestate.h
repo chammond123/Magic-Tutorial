@@ -2,7 +2,7 @@
 #define GAMESTATE_H
 
 #include<QVector>
-#include"player.h""
+#include"player.h"//"
 #include"card.h"
 #include"phase.h"
 
