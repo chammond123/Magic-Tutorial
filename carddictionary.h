@@ -3,11 +3,11 @@
 #include <map>
 #include <QString>
 #include "card.h"
-class carddictionary
+class cardDictionary
 {
 private:
     // Private constructor prevents instantiation
-    carddictionary() = delete;
+    cardDictionary() = delete;
 
 public:
     static std::map<QString, Card> dict;

@@ -2,13 +2,21 @@
 #define MAINWINDOW_H
 
 #include "type.h"
+#include "zone.h"
+#include "card.h"
 #include <QMainWindow>
+#include <QPushButton>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
 }
 QT_END_NAMESPACE
+
+class CardButton : public QPushButton{
+public:
+    Card* cardPtr;
+};
 
 class MainWindow : public QMainWindow
 {
@@ -19,6 +27,21 @@ public:
     ~MainWindow();
 
 public slots:
+
+    /**
+     * @brief cardMoveFromLibray creates a QPushButton
+     * with the card pointer's data, and moves it to
+     * the specified zone on the window
+     * @param zone
+     */
+    void cardMovedFromLibray(Card*, QString zone);
+
+    /**
+     * @brief cardZoneChanged changes the placement
+     * of a card on the screen assuming the Card is
+     * already a QPushButton
+     */
+    void cardZoneChanged(Card*, QString zone);
 
 
 signals:

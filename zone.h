@@ -30,19 +30,19 @@ public:
      */
     Zone();
 
-    /**
-     * @brief Overloaded Zone Constructor
-     * @param initialCards
-     * Initializes a zone with a
-     */
-    Zone(const QVector<Card*> &initialCards);
+    // /**
+    //  * @brief Overloaded Zone Constructor
+    //  * @param cardList
+    //  * Initializes a zone with a
+    //  */
+    // Zone(const QList<QString> cardList);
 
-    /**
-     * @brief intialize
-     * @param initialCards
-     * Allows for a reinitialization of a cards in a zone
-     */
-    void intialize(const QVector<Card*> &initialCards);
+    // /**
+    //  * @brief intialize
+    //  * @param initialCards
+    //  * Allows for a reinitialization of a cards in a zone
+    //  */
+    // void initialize(const QList<QString> cardList);
 
     /**
      * @brief setVisibility
