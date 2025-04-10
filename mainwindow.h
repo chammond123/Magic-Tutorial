@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "player.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,18 +18,12 @@ public:
     ~MainWindow();
 
 public slots:
-    void receiveMana(QMap<ManaType, int> *manaPool);
-    void manaAddTest();
-    void manaPayTest();
+
 
 signals:
-    void uiTestHealth(int health);
-    void uiTestDamage(int damage);
-    void uiTestManaAdd(QMap<ManaType, int> *mana);
-    void uiTestManaPay(QMap<ManaType, int> *mana);
+
 
 private:
     Ui::MainWindow *ui;
-    Player *player;
 };
 #endif // MAINWINDOW_H
