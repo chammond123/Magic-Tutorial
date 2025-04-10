@@ -15,11 +15,6 @@ Zone::Zone(const QVector<Card*>& otherCards) {
     this->cards.swap(otherList);
 }
 
-Zone::Zone(std::string fileName) {
-
-    // TODO: Read in a file and initialize objects
-}
-
 void Zone::intialize(const QVector<Card*>& otherCards) {
     QList otherList = otherCards.toList();
     this->cards.swap(otherList);
