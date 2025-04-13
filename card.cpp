@@ -2,6 +2,10 @@
 
 Card::Card() {}
 
+Card::Card(QString name){
+    this->name = name;
+}
+
 Card::Card(const Card& other) :
     name(other.name),
     description(other.description),

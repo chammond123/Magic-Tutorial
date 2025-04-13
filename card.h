@@ -14,6 +14,8 @@ class Card
 public:
     Card();
     Card(const Card& other);
+    //For testing
+    Card(QString name);
 
     bool canBePlayed(const QVector<ManaType> &availableMana) const;
     bool hasKeyword(PropertyType keyword) const;

@@ -4,6 +4,7 @@
 #include "type.h"
 #include "zone.h"
 #include "card.h"
+#include "cardapimanager.h"
 #include <QMainWindow>
 #include <QPushButton>
 
@@ -14,8 +15,16 @@ class MainWindow;
 QT_END_NAMESPACE
 
 class CardButton : public QPushButton{
+    Q_OBJECT
 public:
     Card* cardPtr;
+    QString cardName;
+
+    explicit CardButton(Card* card, QWidget* parent = nullptr);
+    void updateVisual();
+
+public slots:
+    void updateCard(const Card &card);
 };
 
 class MainWindow : public QMainWindow
@@ -49,6 +58,7 @@ signals:
 
 private:
     Ui::MainWindow *ui;
+    CardAPIManager* apiManager;
     QString manaTypeToString(ManaType type);
 };
 #endif // MAINWINDOW_H
