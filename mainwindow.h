@@ -60,5 +60,6 @@ private:
     Ui::MainWindow *ui;
     CardAPIManager* apiManager;
     QString manaTypeToString(ManaType type);
+    QString deckString;
 };
 #endif // MAINWINDOW_H

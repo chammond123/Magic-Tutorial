@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/text">
+        <file>additional_files/deck.txt</file>
+    </qresource>
+</RCC>

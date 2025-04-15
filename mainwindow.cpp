@@ -2,6 +2,7 @@
 #include "cardapimanager.h"
 #include "ui_mainwindow.h"
 #include "carddictionary.h"
+#include "textparser.h"
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -17,37 +18,32 @@ MainWindow::MainWindow(QWidget *parent)
         qDebug() << "API Error:" << error;
     });
 
-    // connect(apiManager, &CardAPIManager::cardFetched, this, [=](const Card &card) {
-    //     cardDictionary::addCard(card);
-    //     Card elfCard = cardDictionary::getCard(card.name);
+    connect(apiManager, &CardAPIManager::cardFetched, this, [=](const Card &card) {
+        cardDictionary::addCard(card);
+        Card test = cardDictionary::getCard(card.name);
+        qDebug() << "---";
+        qDebug() << card.name;
+        qDebug() << test.description;
 
-    //     qDebug() << elfCard.description;
+        QMap<ManaType, int> manaCost = test.cost;
+        for (auto [color, value] : manaCost.toStdMap()){
+            QString colorString = manaTypeToString(color);
+            qDebug() << colorString << " : " << value;
+        }
+        // ui->imageLabel->setPixmap(QPixmap::fromImage(elfCard.image).scaled(
+        //     ui->imageLabel->size(),
+        //     Qt::KeepAspectRatio,
+        //     Qt::SmoothTransformation));
 
-    //     QMap<ManaType, int> manaCost = elfCard.cost;
-    //     for (auto [color, value] : manaCost.toStdMap()){
-    //         QString colorString = manaTypeToString(color);
-    //         qDebug() << colorString << " : " << value;
-    //     }
-    //     // ui->imageLabel->setPixmap(QPixmap::fromImage(elfCard.image).scaled(
-    //     //     ui->imageLabel->size(),
-    //     //     Qt::KeepAspectRatio,
-    //     //     Qt::SmoothTransformation));
+        qDebug() << test.toughness;
+        qDebug() << test.power;
+        qDebug() << "---";
+    });
 
-    //     qDebug() << elfCard.toughness;
-    //     qDebug() << elfCard.power;
-    // });
-
-    // apiManager->fetchCardByName("Lightning Bolt");
-    // apiManager->fetchCardByName("Llanowar Elves");
-    // apiManager->fetchCardByName("Elspeth's Devotee");
-
-    Card* test = new Card("Elspeth's Devotee");
-    Card* test1 = new Card("Black Lotus");
-    Card* test2 = new Card("Llanowar Elves");
-    cardMovedFromLibray(test, "hand");
-    cardMovedFromLibray(test1, "hand");
-    cardMovedFromLibray(test2, "hand");
-
+    for(QString cardName : TextParser::getListFromText(QFile(":/text/additional_files/deck.txt"))){
+        qDebug() << cardName;
+        apiManager->fetchCardByName(cardName);
+    }
 }
 
 MainWindow::~MainWindow()

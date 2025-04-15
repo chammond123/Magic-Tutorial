@@ -1,0 +1,27 @@
+#include "textparser.h"
+#include <QDebug>
+
+QStringList TextParser::getListFromText(QFile file){
+    QStringList deckList;
+
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Cannot open file:" << file.errorString();
+        return deckList;
+    }
+
+    QTextStream in(&file);
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+        int spaceIndex = line.indexOf(" ");
+
+        int num = line.mid(0, spaceIndex).toInt();
+        QString card = line.mid(spaceIndex + 1);
+
+        for (int i = 0; i < num; i++) {
+            deckList.append(card);
+        }
+    }
+
+    file.close();
+    return deckList;
+}

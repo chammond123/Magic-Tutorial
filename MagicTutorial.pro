@@ -21,6 +21,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     player.cpp \
+    textparser.cpp \
     type.cpp \
     zone.cpp
 
@@ -36,6 +37,7 @@ HEADERS += \
     mainwindow.h \
     phase.h \
     player.h \
+    textparser.h \
     type.h \
     zone.h
 
@@ -48,4 +50,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    Icons.qrc
+    Icons.qrc \
+    TextFiles.qrc
