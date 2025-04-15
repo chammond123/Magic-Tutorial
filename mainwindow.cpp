@@ -44,6 +44,13 @@ MainWindow::MainWindow(QWidget *parent)
         qDebug() << cardName;
         apiManager->fetchCardByName(cardName);
     }
+
+    Card* test = new Card("Elspeth's Devotee");
+    Card* test1 = new Card("Black Lotus");
+    Card* test2 = new Card("Llanowar Elves");
+    cardMovedFromLibray(test, "hand");
+    cardMovedFromLibray(test1, "hand");
+    cardMovedFromLibray(test2, "hand");
 }
 
 MainWindow::~MainWindow()
