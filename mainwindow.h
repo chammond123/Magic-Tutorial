@@ -23,6 +23,9 @@ public:
     explicit CardButton(Card* card, QWidget* parent = nullptr);
     void updateVisual();
 
+protected:
+    void mousePressEvent(QMouseEvent* event) override;
+
 public slots:
     void updateCard(const Card &card);
 };
