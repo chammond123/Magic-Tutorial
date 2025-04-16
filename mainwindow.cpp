@@ -6,6 +6,7 @@
 #include "phase.h"
 #include "textparser.h"
 #include <QDebug>
+#include <QMouseEvent>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -46,6 +47,13 @@ MainWindow::MainWindow(QWidget *parent)
         qDebug() << cardName;
         apiManager->fetchCardByName(cardName);
     }
+
+    Card* test = new Card("Elspeth's Devotee");
+    Card* test1 = new Card("Black Lotus");
+    Card* test2 = new Card("Llanowar Elves");
+    cardMovedFromLibray(test, "hand");
+    cardMovedFromLibray(test1, "hand");
+    cardMovedFromLibray(test2, "hand");
 }
 
 MainWindow::~MainWindow()
@@ -90,13 +98,14 @@ CardButton::CardButton(Card* card, QWidget* parent)
 void CardButton::updateVisual() {
     if (cardPtr) {
         setText(cardPtr->name);
-        setStyleSheet("border: 1px solid #333; background-color: white; padding: 0px;");
+        // setStyleSheet("border: 1px solid #333; background-color: white; padding: 0px;");
     }
 }
 
 void MainWindow::cardMovedFromLibray(Card* card, QString zone){
     CardButton* cardButton = new CardButton(card);
-    cardButton->setStyleSheet("border: 1px solid #333; background-color: white;");
+    // cardButton->setStyleSheet("border: 1px solid #333; background-color: white;");
+    cardButton->setFixedSize(100, 140);
 
     if(zone == "hand"){
         connect(apiManager, &CardAPIManager::cardFetched, cardButton, &CardButton::updateCard);
@@ -118,11 +127,11 @@ void CardButton::updateCard(const Card &card){
 
 
      QPixmap pixmap = QPixmap::fromImage(elfCard.image).scaled(
-         elfCard.image.size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
+        this->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
-     setIcon(QIcon(pixmap));
-     setIconSize(elfCard.image.size());
-     setToolTip(card.description);
+    this->setIcon(QIcon(pixmap));
+    this->setText("");
+    this->setIconSize(pixmap.rect().size());
 }
 
 void MainWindow::attackPhase(Player* player){
@@ -254,3 +263,11 @@ void MainWindow::clearSelection(){
     }
 
 }
+void CardButton::mousePressEvent(QMouseEvent* event) {
+    if (event->button() == Qt::LeftButton) {
+        qDebug() << "CardButton clicked:" << cardName;
+    }
+    QPushButton::mousePressEvent(event);  // Keep original click signal
+}
+
+
