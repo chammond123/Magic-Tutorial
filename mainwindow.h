@@ -9,7 +9,10 @@
 #include "gamestate.h"
 #include <QMainWindow>
 #include <QPushButton>
+
+#include "cardbutton.h"
 #include <QtWidgets/qgridlayout.h>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -17,31 +20,15 @@ class MainWindow;
 }
 QT_END_NAMESPACE
 
-class CardButton : public QPushButton{
-    Q_OBJECT
-public:
-    Card* cardPtr;
-    QString cardName;
-
-    explicit CardButton(Card* card, QWidget* parent = nullptr);
-    void updateVisual();
-
-protected:
-    void mousePressEvent(QMouseEvent* event) override;
-
-public slots:
-    void updateCard(const Card &card);
-    void toggleButton();
-
-signals:
-    void cardSelected(Card* card);
-};
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
+
+    CardButton* currentSelectedCard = nullptr;
+
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
@@ -69,15 +56,15 @@ public slots:
      * of a card on the screen assuming the Card is
      * already a QPushButton
      */
-    void cardZoneChanged(Card*, QString zone);
+    // void cardZoneChanged(Card*, QString zone);
 
-    void collectAttackers();
-    void collectBlockers();
+    void handleCardSelected(CardButton* clicked);
+    // void collectAttackers();
+    // void collectBlockers();
 
-    void updateUI(Player* player);
+    // void updateUI(Player* player);
 
-    void toggleButton();
-
+    // void toggleButton();
 
 signals:
 

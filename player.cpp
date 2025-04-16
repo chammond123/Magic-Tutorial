@@ -6,11 +6,11 @@ Player::Player(QString fileName, QObject *parent)
     : QObject{parent},
     deck(fileName)
 {
-    Library.type = ZoneType::LIBRARY;
-    Graveyard.type = ZoneType::GRAVEYARD;
-    Battlefield.type = ZoneType::BATTLEFIELD;
-    Exile.type = ZoneType::EXILE;
-    Hand.type = ZoneType::HAND;
+    // Library.type = ZoneType::LIBRARY;
+    // Graveyard.type = ZoneType::GRAVEYARD;
+    // Battlefield.type = ZoneType::BATTLEFIELD;
+    // Exile.type = ZoneType::EXILE;
+    // Hand.type = ZoneType::HAND;
 
     manaPool[ManaType::RED] = 0;
     manaPool[ManaType::BLUE] = 0;
