@@ -36,4 +36,13 @@ enum class ManaType : int {
     COLORLESS,
     ANY
 };
+
+enum class ZoneType : int {
+    LIBRARY,
+    GRAVEYARD,
+    BATTLEFIELD,
+    EXILE,
+    HAND
+};
+
 #endif // TYPE_H

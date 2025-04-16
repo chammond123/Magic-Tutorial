@@ -37,10 +37,7 @@ private:
      * @brief A pointer to the second player object
      */
     Player* player2;
-    /**
-     * @brief Holds the current phase of the game
-     */
-    Phase currentPhase;
+
     /**
      * @brief Holds the active stack in a magic round
      */
@@ -77,7 +74,7 @@ public:
     void resolveCombatDamage();
 
     /**
-     * @brief Gets the ruels for the current phase
+     * @brief Gets the rules for the current phase
      * @return The Phase Rules for the current phase
      */
     PhaseRules getPhaseRules();
@@ -87,6 +84,11 @@ public:
      * @param The player making the check
      */
     bool bothPlayersPassPriority();
+
+    /**
+     * @brief Holds the current phase of the game
+     */
+    Phase currentPhase;
 
     /**
      * @brief Checks if the stack is empty

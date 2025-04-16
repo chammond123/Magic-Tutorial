@@ -2,6 +2,8 @@
 #include "cardapimanager.h"
 #include "ui_mainwindow.h"
 #include "carddictionary.h"
+#include "gamestate.h"
+#include "phase.h"
 #include "textparser.h"
 #include <QDebug>
 
@@ -74,6 +76,7 @@ QString MainWindow::manaTypeToString(ManaType type) {
 }
 
 
+
 void MainWindow::cardMovedFromLibray(Card* card, QString zone){
     CardButton* cardButton = new CardButton(card);
     connect(cardButton, &CardButton::cardSelected, this, &MainWindow::handleCardSelected);
@@ -92,6 +95,133 @@ void MainWindow::handleCardSelected(CardButton* clicked) {
 
     currentSelectedCard = clicked;
     currentSelectedCard->setSelected(true);
+}
+
+// void MainWindow::attackPhase(Player* player){
+//     if (player->isActivePlayer){
+//         ui->playCardButton->setText("Select Attackers...");
+//     }
+//     else {
+//         ui->playCardButton->setText("Enemy Selecting Attackers");
+//         ui->playCardButton->setDisabled(true);
+//     }
+// }
+
+// void MainWindow::collectAttackers(Player* player){
+
+//     QGridLayout* battlefield;
+//     if(player->isActivePlayer){
+//         battlefield = ui->playerContainer->battlefield;
+//     }
+//     else{
+//         battlefield = ui->enemyContainer->battlefield;
+//     }
+
+//     for(int i = 0; i < battlefield->count(); i++){
+
+//         QLayoutItem* item = battlefield->itemAt(i);
+//         QWidget* widget = item->widget();
+
+//         if(CardButton* button = qobject_cast<CardButton*>(widget)){
+//             Card* card = button->cardPtr;
+//             combatants[card];
+//         }
+//     }
+// }
+
+// void MainWindow::collectBlockers(Player* player){
+
+// }
+
+// void MainWindow::updateUI(Player* player){
+//     QVector<Zone*> zones = player->getZones();
+//     QGridLayout* container;
+
+//     // Set the pointer to the right Container
+//     if(player->playerID == 0){
+//         container = ui->playerContainer;
+//     }
+//     else{
+//         container = ui->enemyContainer;
+//     }
+
+//     // Go through all containers and update UI
+//     for (Zone* zone : zones){
+//         if (zone->type == ZoneType::HAND){
+//             container = container->hand;
+//             updateZone(container, zone);
+//         }
+//         else if (zone->type == ZoneType::BATTLEFIELD){
+//             container = container->battlefield;
+//             updateZone(container, zone);
+//         }
+//         else if (zone->type == ZoneType::GRAVEYARD){
+//             container = container->graveyard;
+//             updateZone(container, zone);
+//         }
+//         else if (zone->type == ZoneType::EXILE){
+//             container = container->exile;
+//             updateZone(container, zone);
+//         }
+//     }
+// }
+
+void MainWindow::updateZone(QGridLayout* container, Zone* zone){
+
+    // Clear Zone
+    QLayoutItem* item;
+    while((item = container->takeAt(0)) != nullptr){
+        if (item->widget()){
+            delete item->widget();
+        }
+        delete item;
+    }
+
+    int i = 0;
+
+    for(Card* card : *zone){
+        CardButton* cardButton = new CardButton(card);
+        int row = i / container->rowCount();
+        int column = i % container->columnCount();
+        container->addWidget(cardButton, row, column, Qt::AlignCenter);
+        i++;
+    }
+}
+
+// void MainWindow::toggleButton(){
+//     CardButton* button = qobject_cast<CardButton*>(sender());
+//     if(!button)
+//         return;
+
+//     if(statePointer->currentPhase == Phase::DeclareAttackers ||
+//         statePointer->currentPhase == Phase::DeclareBlockers){
+//         if(selectedCards.contains(button)){
+//             selectedCards.removeOne(button);
+//             button->setChecked(false);
+//         }
+//         else{
+//             selectedCards.append(button);
+//             button->setChecked(true);
+//         }
+//     }
+//     else{
+//         if (currentCard && currentCard != button){
+//             currentCard->setChecked(false);
+//         }
+//         // Set current card to button if checked
+//         currentCard = button->isChecked() ? button : nullptr;
+//     }
+
+// }
+
+void MainWindow::clearSelection(){
+
+    selectedCards.clear();
+    currentCard = nullptr;
+
+    for(CardButton* card : activeCards){
+        card->setChecked(false);
+    }
 }
 
 
