@@ -4,7 +4,6 @@
 #include "carddictionary.h"
 #include "textparser.h"
 #include <QDebug>
-#include <QMouseEvent>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -41,6 +40,8 @@ MainWindow::MainWindow(QWidget *parent)
         qDebug() << "---";
     });
 
+
+
     for(QString cardName : TextParser::getListFromText(QFile(":/text/additional_files/deck.txt"))){
         qDebug() << cardName;
         apiManager->fetchCardByName(cardName);
@@ -73,22 +74,9 @@ QString MainWindow::manaTypeToString(ManaType type) {
 }
 
 
-CardButton::CardButton(Card* card, QWidget* parent)
-    : QPushButton(parent), cardPtr(card) {
-    cardName = card->name;
-    updateVisual();
-}
-
-void CardButton::updateVisual() {
-    if (cardPtr) {
-        setText(cardPtr->name);
-        // setStyleSheet("border: 1px solid #333; background-color: white; padding: 0px;");
-    }
-}
-
 void MainWindow::cardMovedFromLibray(Card* card, QString zone){
     CardButton* cardButton = new CardButton(card);
-    // cardButton->setStyleSheet("border: 1px solid #333; background-color: white;");
+    connect(cardButton, &CardButton::cardSelected, this, &MainWindow::handleCardSelected);
     cardButton->setFixedSize(100, 140);
 
     if(zone == "hand"){
@@ -98,31 +86,12 @@ void MainWindow::cardMovedFromLibray(Card* card, QString zone){
     }
 }
 
-void CardButton::updateCard(const Card &card){
-    if (card.name != cardName) return; // Confirm it's the correct card
+void MainWindow::handleCardSelected(CardButton* clicked) {
+    if (currentSelectedCard && currentSelectedCard != clicked)
+        currentSelectedCard->setSelected(false);
 
-     cardDictionary::addCard(card);
-    Card elfCard = cardDictionary::getCard(card.name);
-
-    //     // ui->imageLabel->setPixmap(QPixmap::fromImage(elfCard.image).scaled(
-    //     //     ui->imageLabel->size(),
-    //     //     Qt::KeepAspectRatio,
-    //     //     Qt::SmoothTransformation));
-
-
-     QPixmap pixmap = QPixmap::fromImage(elfCard.image).scaled(
-        this->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-
-    this->setIcon(QIcon(pixmap));
-    this->setText("");
-    this->setIconSize(pixmap.rect().size());
-}
-
-void CardButton::mousePressEvent(QMouseEvent* event) {
-    if (event->button() == Qt::LeftButton) {
-        qDebug() << "CardButton clicked:" << cardName;
-    }
-    QPushButton::mousePressEvent(event);  // Keep original click signal
+    currentSelectedCard = clicked;
+    currentSelectedCard->setSelected(true);
 }
 
 

@@ -7,6 +7,7 @@
 #include "cardapimanager.h"
 #include <QMainWindow>
 #include <QPushButton>
+#include "cardbutton.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -14,27 +15,14 @@ class MainWindow;
 }
 QT_END_NAMESPACE
 
-class CardButton : public QPushButton{
-    Q_OBJECT
-public:
-    Card* cardPtr;
-    QString cardName;
-
-    explicit CardButton(Card* card, QWidget* parent = nullptr);
-    void updateVisual();
-
-protected:
-    void mousePressEvent(QMouseEvent* event) override;
-
-public slots:
-    void updateCard(const Card &card);
-};
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
+
+    CardButton* currentSelectedCard = nullptr;
+
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
@@ -53,8 +41,9 @@ public slots:
      * of a card on the screen assuming the Card is
      * already a QPushButton
      */
-    void cardZoneChanged(Card*, QString zone);
+    // void cardZoneChanged(Card*, QString zone);
 
+    void handleCardSelected(CardButton* clicked);
 
 signals:
 
