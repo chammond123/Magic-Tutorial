@@ -225,11 +225,3 @@ void MainWindow::clearSelection(){
 
 }
 
-void CardButton::mousePressEvent(QMouseEvent* event) {
-    if (event->button() == Qt::LeftButton) {
-        qDebug() << "CardButton clicked:" << cardName;
-    }
-    QPushButton::mousePressEvent(event);  // Keep original click signal
-}
-
-
