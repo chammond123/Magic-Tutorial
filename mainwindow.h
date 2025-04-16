@@ -4,9 +4,12 @@
 #include "type.h"
 #include "zone.h"
 #include "card.h"
+#include "player.h"
 #include "cardapimanager.h"
+#include "gamestate.h"
 #include <QMainWindow>
 #include <QPushButton>
+#include <QtWidgets/qgridlayout.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -23,8 +26,13 @@ public:
     explicit CardButton(Card* card, QWidget* parent = nullptr);
     void updateVisual();
 
+
 public slots:
     void updateCard(const Card &card);
+    void toggleButton();
+
+signals:
+    void cardSelected(Card* card);
 };
 
 class MainWindow : public QMainWindow
@@ -34,6 +42,15 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+    QVector<CardButton*> activeCards;
+
+    CardButton* currentCard;
+    QVector<CardButton*> selectedCards;
+
+    QMap<Card*, QVector<Card*>> combatants;
+
+    void showAllCards(QWidget Zone);
 
 public slots:
 
@@ -52,8 +69,18 @@ public slots:
      */
     void cardZoneChanged(Card*, QString zone);
 
+    void collectAttackers();
+    void collectBlockers();
+
+    void updateUI(Player* player);
+
+    void toggleButton();
+
 
 signals:
+
+    void sendCombatCards(QHash<Card*, QVector<Card*>>);
+
 
 
 private:
@@ -61,5 +88,9 @@ private:
     CardAPIManager* apiManager;
     QString manaTypeToString(ManaType type);
     QString deckString;
+    GameState* statePointer;
+
+    void updateZone(QGridLayout* container, Zone* zone);
+    void clearSelection();
 };
 #endif // MAINWINDOW_H

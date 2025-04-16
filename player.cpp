@@ -6,6 +6,11 @@ Player::Player(QString fileName, QObject *parent)
     : QObject{parent},
     deck(fileName)
 {
+    Library.type = ZoneType::LIBRARY;
+    Graveyard.type = ZoneType::GRAVEYARD;
+    Battlefield.type = ZoneType::BATTLEFIELD;
+    Exile.type = ZoneType::EXILE;
+    Hand.type = ZoneType::HAND;
 
     manaPool[ManaType::RED] = 0;
     manaPool[ManaType::BLUE] = 0;
@@ -21,6 +26,7 @@ Player::Player(QString fileName, QObject *parent)
 
         // emit initalizeLibrary(Library.getCardPointers(), 0);
     }
+    Library.shuffle();
 
     drawCard(7);
 }
@@ -245,4 +251,15 @@ Zone* Player::findCardZone(Card* card)
         return &Library;
     }
     return nullptr;
+}
+
+QVector<Zone*> Player::getZones(){
+    QVector<Zone*> zones;
+    zones.append(&Library);
+    zones.append(&Graveyard);
+    zones.append(&Battlefield);
+    zones.append(&Exile);
+    zones.append(&Hand);
+
+    return zones;
 }

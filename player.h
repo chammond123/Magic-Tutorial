@@ -30,7 +30,11 @@ public:
     Zone Battlefield;
 
     int health;
+
     QMap<ManaType, int> manaPool;
+
+    // Used by UI to check which zones to update
+    int playerID;
 
     // bool if player has played a land
     bool hasPlayedLand;
@@ -45,6 +49,8 @@ public:
     bool isActivePlayer;
 
     bool madeAction;
+
+    QVector<Zone*> getZones();
 
     // Health Methods
     int getHealth();
