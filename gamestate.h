@@ -29,14 +29,6 @@ private:
      * @brief Index of the current phase of the game
      */
     int currentPhaseIndex = 0;
-    /**
-     * @brief A pointer to the second player object
-     */
-    Player* player1;
-    /**
-     * @brief A pointer to the second player object
-     */
-    Player* player2;
 
     /**
      * @brief Holds the active stack in a magic round
@@ -101,6 +93,16 @@ public:
      * @return A QString containing the state
      */
     QString toString();
+
+    /**
+     * @brief A pointer to the second player object
+     */
+    Player* player1;
+
+    /**
+     * @brief A pointer to the second player object
+     */
+    Player* player2;
 
 };
 

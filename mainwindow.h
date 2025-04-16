@@ -9,7 +9,7 @@
 #include "gamestate.h"
 #include <QMainWindow>
 #include <QPushButton>
-
+#include "gamemanager.h"
 #include "cardbutton.h"
 #include <QtWidgets/qgridlayout.h>
 
@@ -27,16 +27,21 @@ class MainWindow : public QMainWindow
 
 public:
 
+    Player* userPlayer;
+
     CardButton* currentSelectedCard = nullptr;
 
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(gamemanager *game, QWidget *parent = nullptr);
     ~MainWindow();
 
     QVector<CardButton*> activeCards;
 
     CardButton* currentCard;
-    QVector<CardButton*> selectedCards;
 
+    QVector<Card*> selectedCards;
+    QVector<CardButton*> selectedButtons;
+
+    QMap<CardButton*, QVector<CardButton*>> buttonCombatants;
     QMap<Card*, QVector<Card*>> combatants;
 
     void showAllCards(QWidget Zone);
@@ -59,18 +64,17 @@ public slots:
     // void cardZoneChanged(Card*, QString zone);
 
     void handleCardSelected(CardButton* clicked);
-    // void collectAttackers();
-    // void collectBlockers();
+    void collectAttackers();
+    void collectBlockers();
 
-    // void updateUI(Player* player);
+    void updateUI();
 
     // void toggleButton();
+    void attackPhase();
 
 signals:
 
-    void sendCombatCards(QHash<Card*, QVector<Card*>>);
-
-
+    void sendCombatCards(QMap<Card*, QVector<Card*>> combatCards);
 
 private:
     Ui::MainWindow *ui;
@@ -81,5 +85,8 @@ private:
 
     void updateZone(QGridLayout* container, Zone* zone);
     void clearSelection();
+
+    QMap<CardButton*, QVector<CardButton*>>::iterator targetIt;
+    void extractCombatants(QMap<CardButton*, QVector<CardButton*>> packedCombatCard);
 };
 #endif // MAINWINDOW_H

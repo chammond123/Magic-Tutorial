@@ -3,17 +3,20 @@
 #include "ui_mainwindow.h"
 #include "carddictionary.h"
 #include "gamestate.h"
+#include "gamemanager.h"
 #include "phase.h"
 #include "textparser.h"
 #include <QDebug>
+#include <QtGui/qevent.h>
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     setWindowTitle("Magic Tutorial");
     apiManager = new CardAPIManager(this);
+    userPlayer = statePointer->player1;
 
 
     connect(apiManager, &CardAPIManager::errorOccurred, this, [](const QString &error) {
@@ -55,6 +58,8 @@ MainWindow::MainWindow(QWidget *parent)
     cardMovedFromLibray(test, "hand");
     cardMovedFromLibray(test1, "hand");
     cardMovedFromLibray(test2, "hand");
+
+    connect(this, MainWindow::sendCombatCards, game, gamemanager::OnCombatantCardsReceived);
 }
 
 MainWindow::~MainWindow()
@@ -97,74 +102,85 @@ void MainWindow::handleCardSelected(CardButton* clicked) {
     currentSelectedCard->setSelected(true);
 }
 
-// void MainWindow::attackPhase(Player* player){
-//     if (player->isActivePlayer){
-//         ui->playCardButton->setText("Select Attackers...");
-//     }
-//     else {
-//         ui->playCardButton->setText("Enemy Selecting Attackers");
-//         ui->playCardButton->setDisabled(true);
-//     }
-// }
+void MainWindow::attackPhase(){
+    if (userPlayer->isActivePlayer){
+        ui->playCardButton->setText("Select Attackers...");
+    }
+    else {
+        ui->playCardButton->setText("Enemy Selecting Attackers");
+        ui->playCardButton->setDisabled(true);
+    }
+}
 
-// void MainWindow::collectAttackers(Player* player){
+void MainWindow::collectAttackers(){
 
-//     QGridLayout* battlefield;
-//     if(player->isActivePlayer){
-//         battlefield = ui->playerContainer->battlefield;
-//     }
-//     else{
-//         battlefield = ui->enemyContainer->battlefield;
-//     }
+    QGridLayout* battlefield;
 
-//     for(int i = 0; i < battlefield->count(); i++){
+    if(userPlayer->isActivePlayer){
+        battlefield = ui->playerContainer->battlefield;
+    }
+    else{
+        battlefield = ui->enemyContainer->battlefield;
+    }
 
-//         QLayoutItem* item = battlefield->itemAt(i);
-//         QWidget* widget = item->widget();
+    for(int i = 0; i < battlefield->count(); i++){
 
-//         if(CardButton* button = qobject_cast<CardButton*>(widget)){
-//             Card* card = button->cardPtr;
-//             combatants[card];
-//         }
-//     }
-// }
+        QLayoutItem* item = battlefield->itemAt(i);
+        QWidget* widget = item->widget();
+        CardButton* button = qobject_cast<CardButton*>(widget);
 
-// void MainWindow::collectBlockers(Player* player){
+        if(button->isChecked()){
+            buttonCombatants[button];
+        }
+    }
 
-// }
+    targetIt = buttonCombatants.begin();
+}
 
-// void MainWindow::updateUI(Player* player){
-//     QVector<Zone*> zones = player->getZones();
-//     QGridLayout* container;
+void MainWindow::collectBlockers(){
 
-//     // Set the pointer to the right Container
-//     if(player->playerID == 0){
-//         container = ui->playerContainer;
-//     }
-//     else{
-//         container = ui->enemyContainer;
-//     }
 
-//     // Go through all containers and update UI
-//     for (Zone* zone : zones){
-//         if (zone->type == ZoneType::HAND){
-//             container = container->hand;
-//             updateZone(container, zone);
-//         }
-//         else if (zone->type == ZoneType::BATTLEFIELD){
-//             container = container->battlefield;
-//             updateZone(container, zone);
-//         }
-//         else if (zone->type == ZoneType::GRAVEYARD){
-//             container = container->graveyard;
-//             updateZone(container, zone);
-//         }
-//         else if (zone->type == ZoneType::EXILE){
-//             container = container->exile;
-//             updateZone(container, zone);
-//         }
-//     }
-// }
+    if (targetIt == buttonCombatants.end()){
+        extractCombatants(buttonCombatants);
+        return;
+    }
+
+    targetIt.value() = selectedButtons;
+    targetIt++;
+}
+
+void MainWindow::updateUI(){
+    QVector<Zone*> zones = player->getZones();
+    QGridLayout* container;
+
+    // Set the pointer to the right Container
+    if(player->playerID == 0){
+        container = ui->playerContainer;
+    }
+    else{
+        container = ui->enemyContainer;
+    }
+
+    // Go through all containers and update UI
+    for (Zone* zone : zones){
+        if (zone->type == ZoneType::HAND){
+            container = container->hand;
+            updateZone(container, zone);
+        }
+        else if (zone->type == ZoneType::BATTLEFIELD){
+            container = container->battlefield;
+            updateZone(container, zone);
+        }
+        else if (zone->type == ZoneType::GRAVEYARD){
+            container = container->graveyard;
+            updateZone(container, zone);
+        }
+        else if (zone->type == ZoneType::EXILE){
+            container = container->exile;
+            updateZone(container, zone);
+        }
+    }
+}
 
 void MainWindow::updateZone(QGridLayout* container, Zone* zone){
 
@@ -211,12 +227,11 @@ void MainWindow::updateZone(QGridLayout* container, Zone* zone){
 //         // Set current card to button if checked
 //         currentCard = button->isChecked() ? button : nullptr;
 //     }
-
 // }
 
 void MainWindow::clearSelection(){
 
-    selectedCards.clear();
+    selectedButtons.clear();
     currentCard = nullptr;
 
     for(CardButton* card : activeCards){
@@ -232,4 +247,19 @@ void CardButton::mousePressEvent(QMouseEvent* event) {
     QPushButton::mousePressEvent(event);  // Keep original click signal
 }
 
+void MainWindow::extractCombatants(QMap<CardButton*, QVector<CardButton*>> packedCombatCards){
 
+    for(auto it = packedCombatCards.begin(); it != packedCombatCards.end(); it++){
+
+        Card* attacker = it.key()->cardPtr;
+        combatants[attacker];
+
+        for (auto button : it.value()){
+
+            Card* blocker = button->cardPtr;
+            combatants[attacker].append(blocker);
+        }
+    }
+
+    emit sendCombatCards(combatants);
+}
