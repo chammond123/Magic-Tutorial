@@ -44,6 +44,8 @@ public:
     //  */
     // void initialize(const QList<QString> cardList);
 
+    ZoneType type;
+
     /**
      * @brief setVisibility
      * @param visibility
