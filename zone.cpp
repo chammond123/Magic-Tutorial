@@ -11,25 +11,6 @@ Zone::Zone() {
     randomEngine = std::default_random_engine(seed);
 }
 
-// Zone::Zone(const QList<QString> cardList) {
-//     // QList otherList = otherCards.toList();
-//     //this->cards.swap(otherList);
-
-//     // TODO: Here we want to
-
-//     for (QString cardName : cardList) {
-//         Card card = carddictionary::getCard(cardName);
-//         this->cards.append(card);
-//     }
-
-
-// }
-
-// void Zone::intialize(const QVector<Card*>& otherCards) {
-//     QList otherList = otherCards.toList();
-//     this->cards.swap(otherList);
-// }
-
 void Zone::setVisibility(bool visibility) {
     isFaceUp = visibility;
 }
@@ -53,7 +34,7 @@ Card* Zone::drawTop() {
 }
 
 void Zone::addCard(Card* card, bool onTop) {
-    if (onTop){
+    if (!onTop){
         cards.prepend(card);
     }
     else{
