@@ -2,21 +2,13 @@
 #include "carddictionary.h"
 #include <QFile>
 
-Deck::Deck(QString fileName, QObject *parent)
+Deck::Deck(QStringList deckList, QObject *parent)
     // : QObject{parent}, fileName{fileName}
 {
-    QFile file(fileName);
-    file.open(QFile::ReadOnly);
-
-    if (file.isOpen()){
-        while(!file.atEnd()){
-            QString cardName = file.readLine();
-            Card card = cardDictionary::getCard(cardName);
-            cards.append(card);
-        }
+    for (const auto &cardName : deckList) {
+        Card card = cardDictionary::getCard(cardName);
+        cards.append(card);
     }
-
-    file.close();
 }
 
 QVector<Card> Deck::getCardObjects() {
