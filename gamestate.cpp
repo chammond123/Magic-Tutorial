@@ -82,18 +82,20 @@ void GameState::addToStack(StackObject stackObject)
 }
 
 void GameState::resolveStack(){
-    StackObject stackObject = theStack.pop_back();
+    // if (!theStack.empty()){
+    //     StackObject stackObject = theStack.pop_back();
 
-    if (stackObject.targets == nullptr){
-        stackObject.card->useAbility(stackObject.targets);
-    }
+    //     if (stackObject.targets.empty()){
+    //         stackObject.card->useAbility(stackObject.targets);
+    //     }
 
-    if (stackObject.card->isPermanent){
-            stackObject.player->moveCardString(card, "hand", "battlefield", false)
-        }
-    else{
-            stackObject.player->moveCardString(card, "hand", "battlefield", true);
-        }
+    //     if (stackObject.card->isPermanent){
+    //         stackObject.player->moveCardString(card, "hand", "battlefield", false)
+    //     }
+    //     else{
+    //         stackObject.player->moveCardString(card, "hand", "battlefield", true);
+    //     }
+    // }
 }
 
 PhaseRules GameState::getPhaseRules(){

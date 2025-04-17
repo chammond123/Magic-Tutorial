@@ -1,9 +1,9 @@
 #include "command.h"
 #include "stackobject.h"
-Command::Command(GameState* state, Player* player, Card* card) :  state(state), player(player), card(card) {}
+Command::Command(GameState* state, Player* player) : state(state), player(player){}
 Command::~Command() {}
 
-drawCommand::drawCommand(GameState* state, Player* player) : Command(state, player, nullptr, nullptr){}
+drawCommand::drawCommand(GameState* state, Player* player) : Command(state, player){}
 void drawCommand::execute(){
     player->drawCard();
 }
@@ -17,11 +17,12 @@ bool drawCommand::isValid(){
     }
 }
 
-playCardCommand::playCardCommand(GameState* state, Player* player, Card* card) : Command(state, player, card, targets){}
+playCardCommand::playCardCommand(GameState* state, Player* player, Card* card, Card* target) :
+    Command(state, player), card(card), target(target){}
 void playCardCommand::execute(){
     player->madeAction = true;
     player->useMana(card);
-    state->addToStack(StackObject{player, card, targets});
+    state->addToStack(StackObject{player, card, target});
 }
 bool playCardCommand::isValid(){
     PhaseRules rules = state->getPhaseRules();
@@ -39,7 +40,8 @@ bool playCardCommand::isValid(){
     }
 }
 
-passPriorityCommand::passPriorityCommand(GameState* state, Player* player) : Command(state, player, nullptr, nullptr){}
+passPriorityCommand::passPriorityCommand(GameState* state, Player* player) :
+    Command(state, player){}
 void passPriorityCommand::execute(){
     if (!player->madeAction){
         state->resolveStack();
@@ -47,7 +49,6 @@ void passPriorityCommand::execute(){
     state->changePriority();
 }
 bool passPriorityCommand::isValid(){
-    PhaseRules rules = state->getPhaseRules();
     if (player->holdingPriority){
         return true;
     }
@@ -56,12 +57,12 @@ bool passPriorityCommand::isValid(){
     }
 }
 
-changePhaseCommand::changePhaseCommand(GameState* state, Player* player) : Command(state, player, nullptr, nullptr){}
+changePhaseCommand::changePhaseCommand(GameState* state, Player* player) :
+    Command(state, player){}
 void changePhaseCommand::execute(){
     state->changePhase();
 }
 bool changePhaseCommand::isValid(){
-    PhaseRules rules = state->getPhaseRules();
     if (player->isActivePlayer && player->holdingPriority && state->stackIsEmpty()){
         return true;
     }
@@ -70,7 +71,8 @@ bool changePhaseCommand::isValid(){
     }
 }
 
-passTurnCommand::passTurnCommand(GameState* state, Player* player) : Command(state, player, nullptr, nullptr){}
+passTurnCommand::passTurnCommand(GameState* state, Player* player) :
+    Command(state, player){}
 void passTurnCommand::execute(){
     state->changeActivePlayer();
 }
@@ -84,23 +86,21 @@ bool passTurnCommand::isValid(){
     }
 }
 
-declareCombatCommand::declareCombatCommand(GameState* state, Player* player, Card* card) : Command(state, player, card, nullptr){}
-void declareAttackerCommand::execute(){
-    //player>declareAttacker(); // TODO: decide what this does
+declareCombatCommand::declareCombatCommand(GameState* state, Player* player, QMap<Card*, QVector<Card*>> CombatCreatures) :
+    Command(state, player), CombatCreatures(CombatCreatures){}
+void declareCombatCommand::execute(){
+    state->resolveCombatDamage();
 }
-bool declareAttackerCommand::isValid(){
-    PhaseRules rules = state->getPhaseRules();
-    if (rules.canDeclareAttack){
-        return true;
-    }
+bool declareCombatCommand::isValid(){
+    return true; // TODO: figure out how to validate this
 }
 
-tapCardCommand::tapCardCommand(GameState* state, Player* player, Card* card) : Command(state, player, card, nullptr){}
+tapCardCommand::tapCardCommand(GameState* state, Player* player, Card* card) :
+    Command(state, player), card(card){}
 void tapCardCommand::execute(){
     player->tapCard(card);
 }
 bool tapCardCommand::isValid(){
-    PhaseRules rules = state->getPhaseRules();
     if (card->isLand){
         return true;
     }
