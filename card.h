@@ -41,6 +41,7 @@ public:
     bool isTapped;
     bool isPermanent;
     bool isLand;
+    bool hasSummoningSickness;
 };
 
 #endif // CARD_H

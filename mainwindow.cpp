@@ -16,9 +16,8 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     ui->setupUi(this);
     setWindowTitle("Magic Tutorial");
     apiManager = new CardAPIManager(this);
+    statePointer = game->state;
     userPlayer = statePointer->player1;
-
-
 
     playerLayout = {
         ui->playerHand,
@@ -90,8 +89,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     connect(this, MainWindow::sendCombatCards, game, gamemanager::OnCombatantCardsReceived);
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     delete ui;
 }
 
@@ -107,7 +105,6 @@ QString MainWindow::manaTypeToString(ManaType type) {
     default:              return "Unknown";
     }
 }
-
 
 
 void MainWindow::cardMovedFromLibray(Card* card, QString zone){
@@ -179,6 +176,7 @@ void MainWindow::collectBlockers(){
 
 void MainWindow::updateUI(){
 
+
     QVector<Zone*> zones;
     ZoneLayout layout;
     Player* currPlayer;
@@ -234,6 +232,8 @@ void MainWindow::updateUI(){
         // Set the Health
         layout.health->setText(QString::number(currPlayer->health));
 
+        handlePhase();
+
     }
 }
 
@@ -252,6 +252,12 @@ void MainWindow::updateZone(QGridLayout* container, Zone* zone){
 
     for(Card* card : *zone){
         CardButton* cardButton = new CardButton(card);
+
+        if(card->isLand){
+            manaLayout[card->color].append(cardButton);
+            break;
+        }
+
         int row = i / container->rowCount();
         int column = i % container->columnCount();
         container->addWidget(cardButton, row, column, Qt::AlignCenter);
@@ -319,4 +325,63 @@ void MainWindow::extractCombatants(QMap<CardButton*, QVector<CardButton*>> packe
     emit sendCombatCards(combatants);
 }
 
+void MainWindow::handlePhase(){
+    PhaseRules rules = statePointer->getPhaseRules();
+    bool isActive = userPlayer->isActivePlayer;
 
+    for (CardButton* button : activeCards){
+        Card* card = button->cardPtr;
+        bool shouldEnable = false;
+
+        if(rules.canPlayInstant && card->type == CardType::INSTANT){
+            shouldEnable = true;
+        }
+        if(rules.canPlaySorcery && card->type == CardType::SORCERY){
+            shouldEnable = true;
+        }
+        if(isActive && rules.canDeclareAttack && card->type == CardType::CREATURE){
+            shouldEnable = true;
+        }
+        if(!isActive && rules.canDeclareDefense && card->type == CardType::CREATURE){
+            shouldEnable = true;
+        }
+        if(isActive && rules.canUntap && card->isLand && card->isTapped){
+            shouldEnable = true;
+        }
+        if(isActive && rules.canPlaySorcery &&
+                (card->type == CardType::LAND ||
+                 card->type == CardType::CREATURE ||
+                 card->type == CardType::ARTIFACT ||
+                 card->type == CardType::ENCHANTMENT ||
+                 card->type == CardType::PLANESWALKER ||
+                 card->type == CardType::BATTLE)) {
+            shouldEnable = true;
+        }
+
+        button->setEnabled(shouldEnable);
+    }
+}
+
+void MainWindow::startTargeting(){
+    isTargeting = true;
+    // IMPLEMENT ISTARGETING IN CARD SELECTION
+    selectedCards.empty();
+
+    for(CardButton* button : activeCards){
+        button->setEnabled(false);
+    }
+
+    QGridLayout* targetZone = ui->enemyBattlefield;
+
+    for(int i = 0; i < targetZone->count(); i++){
+
+        QLayoutItem* item = targetZone->itemAt(i);
+        QWidget* widget = item->widget();
+        CardButton* button = qobject_cast<CardButton*>(widget);
+        button->setEnabled(true);
+    }
+}
+
+void MainWindow::showAllCards(){
+    return;
+}

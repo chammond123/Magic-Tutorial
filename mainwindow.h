@@ -52,13 +52,15 @@ public:
 
     CardButton* currentCard;
 
+    QMap<ManaType, QVector<CardButton*>> manaLayout;
+
     QVector<Card*> selectedCards;
     QVector<CardButton*> selectedButtons;
 
     QMap<CardButton*, QVector<CardButton*>> buttonCombatants;
     QMap<Card*, QVector<Card*>> combatants;
 
-    void showAllCards(QWidget Zone);
+    void showAllCards();
 
 public slots:
 
@@ -82,6 +84,7 @@ public slots:
     void collectBlockers();
 
     void updateUI();
+    void startTargeting();
 
     // void toggleButton();
     void attackPhase();
@@ -104,6 +107,9 @@ private:
     void extractCombatants(QMap<CardButton*, QVector<CardButton*>> packedCombatCard);
     ZoneLayout playerLayout;
     ZoneLayout enemyLayout;
+    void handlePhase();
+
+    bool isTargeting;
 };
 
 
