@@ -86,7 +86,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     cardMovedFromLibray(test1, "hand");
     cardMovedFromLibray(test2, "hand");
 
-    connect(this, MainWindow::sendCombatCards, game, gamemanager::OnCombatantCardsReceived);
+    connect(this, &MainWindow::sendCombatCards, game, &gamemanager::onCombatCardsReceived);
 }
 
 MainWindow::~MainWindow() {

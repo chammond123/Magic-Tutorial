@@ -2,9 +2,9 @@
 #include "type.h"
 #include "zone.h"
 
-Player::Player(QString fileName, QObject *parent)
+Player::Player(QStringList deckList, QObject *parent)
     : QObject{parent},
-    deck(fileName)
+    deck(deckList)
 {
     Library.type = ZoneType::LIBRARY;
     Graveyard.type = ZoneType::GRAVEYARD;

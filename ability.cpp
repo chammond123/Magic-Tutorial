@@ -1,67 +1,43 @@
 #include "ability.h"
+#include "card.h"
+#include "player.h"
 
+// Constructor to initialize ability with type, amount, and effect
+Ability::Ability(abilityType type, int amount, std::function<void(Player*, Card*)> eff)
+    : type(type), amount(amount), effect(eff) {}
 
-Ability::Ability(){};
-Ability::Ability(std::function<void(Player*, Card*)> eff){}
-
-
-// Activate method
-void Ability::activate(Player *player, Card *target)
-{
-    if (effect) {
-        effect(player, target);
+// Implementation for using ability on a Player
+void Ability::use(Player* player) {
+    if (effect && player) {
+        effect(player, nullptr);
     }
 }
 
-Ability Ability::addMana(int amount){
-    return Ability( [amount](Player* player, Card*) {
-        //Add mana to the player object
-        // if (player) player->addMana(amount);
-        // emit a signal to update the ui
-    });
+// Implementation for using ability on a Card
+void Ability::use(Card* card) {
+    if (effect && card) {
+        effect(nullptr, card);
+    }
 }
 
-Ability Ability::buff(int amount){
-    return Ability([amount](Player* , Card* target){
+// Static methods to create abilities
 
-    });
-}
-
-Ability Ability::damageCreature(int amount){
-    return Ability([amount](Player* , Card* target){
-        if(target){
-            //target->takeDamage(amount);
+Ability Ability::damageTarget(int amount) {
+    return Ability(abilityType::DAMAGE, amount, [amount](Player* p, Card* c){
+        if (p) {
+            p->takeDamage(amount);  // Apply damage to Player
+        } else if (c) {
+            c->takeDamage(amount);  // Apply damage to Card
         }
     });
 }
 
-Ability Ability::damagePlayer(int amount){
-    // add things
-}
-
-Ability Ability::heal(int amount){
-    return Ability([amount](Player* player, Card*){
-        if(player){
-            // player->addHealth(amount);
+Ability Ability::addMana(int amount, ManaType mana) {
+    return Ability(abilityType::ADD_MANA, amount, [amount, mana](Player* p, Card*) {
+        if (p) {
+            QMap<ManaType, int> manaMap;
+            manaMap[mana] = amount;
+            p->addMana(&manaMap);  // Add mana to Player's pool
         }
     });
 }
-
-Ability Ability::destroy(){
-    return Ability([](Player*, Card* target){
-        if(target){
-            // target->destroy();
-        }
-    });
-}
-
-
-// void GameManager::activateCardAbility(Card& card, int abilityIndex, Player* player, Card* targetCard) {
-//     if (abilityIndex >= 0 && abilityIndex < card.abilities.size()) {
-//         Ability& ability = card.abilities[abilityIndex];
-//         ability.activate(player, targetCard);
-//     }
-// }
-
-
-

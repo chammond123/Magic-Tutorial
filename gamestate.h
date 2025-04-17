@@ -34,7 +34,7 @@ private:
     /**
      * @brief Holds the active stack in a magic round
      */
-    QVector<Card*> theStack;
+    QVector<StackObject> theStack;
     /**
      * @brief Attackers declared by a player
      */
