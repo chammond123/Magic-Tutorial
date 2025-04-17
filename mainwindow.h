@@ -39,18 +39,19 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-
     Player* userPlayer;
     Player* enemyPlayer;
 
     CardButton* currentSelectedCard = nullptr;
+
+    QMap<ManaType, QList<CardButton*>> landGroups;
 
     MainWindow(gamemanager *game, QWidget *parent = nullptr);
     ~MainWindow();
 
     QVector<CardButton*> activeCards;
 
-    // CardButton* currentCard;
+    CardButton* currentCard;
 
     QVector<Card*> selectedCards;
     QVector<CardButton*> selectedButtons;
@@ -59,6 +60,7 @@ public:
     QMap<Card*, QVector<Card*>> combatants;
 
     void showAllCards(QWidget Zone);
+
 
 public slots:
 
@@ -92,6 +94,8 @@ public slots:
      */
     void updateMagnifier(Card* card);
 
+    void on_playCardButton_clicked();
+
 signals:
 
     void sendCombatCards(QMap<Card*, QVector<Card*>> combatCards);
@@ -110,6 +114,10 @@ private:
     void extractCombatants(QMap<CardButton*, QVector<CardButton*>> packedCombatCard);
     ZoneLayout playerLayout;
     ZoneLayout enemyLayout;
+
+    bool isLand(Card* card);
+    bool isCreature(Card* card);
+
 };
 
 

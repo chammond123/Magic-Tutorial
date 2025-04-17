@@ -8,6 +8,8 @@
 #include "textparser.h"
 #include <QDebug>
 #include <QtGui/qevent.h>
+#include <QMessageBox>
+#include <type.h>
 
 MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     : QMainWindow(parent)
@@ -20,7 +22,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     ui->CardDescription->setFocusPolicy(Qt::NoFocus);
 
     apiManager = new CardAPIManager(this);
-    userPlayer = statePointer->player1;
+    userPlayer = nullptr;
 
 
 
@@ -55,6 +57,8 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
         qDebug() << "API Error:" << error;
     });
 
+    // connect(ui->playCardButton, &QPushButton::clicked, this, &MainWindow::on_playCardButton_clicked);
+
     connect(apiManager, &CardAPIManager::cardFetched, this, [=](const Card &card) {
         cardDictionary::addCard(card);
         Card test = cardDictionary::getCard(card.name);
@@ -87,9 +91,11 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     Card* test = new Card("Elspeth's Devotee");
     Card* test1 = new Card("Black Lotus");
     Card* test2 = new Card("Llanowar Elves");
+    Card* test3 = new Card("Mountain");
     cardMovedFromLibray(test, "hand");
     cardMovedFromLibray(test1, "hand");
     cardMovedFromLibray(test2, "hand");
+    cardMovedFromLibray(test3, "hand");
 
     // connect(this, MainWindow::sendCombatCards, game, gamemanager::OnCombatantCardsReceived);
 }
@@ -112,6 +118,58 @@ QString MainWindow::manaTypeToString(ManaType type) {
     }
 }
 
+bool MainWindow::isLand(Card* card){
+    return card->type == CardType::LAND;
+}
+
+bool MainWindow::isCreature(Card* card){
+    return card->type == CardType::CREATURE;
+}
+
+void MainWindow::on_playCardButton_clicked(){
+    // Just for testing need to handle more condiction phrases, cost, priority
+
+    //emit playcard(player Pointer, currentCard, nullptr)
+
+    qDebug() << "playCardButton called";
+    qDebug() << "played card: " + currentSelectedCard->cardName;
+
+    if (!currentSelectedCard) {
+        QMessageBox::information(this, "No card selected", "Select a card to play.");
+        return;
+    }
+
+    Card* card = currentSelectedCard->cardPtr;
+
+    if(card->isLand){
+        ManaType manaType = card->color;
+        landGroups[manaType].append(currentSelectedCard);
+
+        ui->playerHand->removeWidget(currentSelectedCard);
+        currentSelectedCard->setParent(nullptr);
+        currentSelectedCard->deleteLater();
+        currentSelectedCard->setSelected(false);
+        currentSelectedCard = nullptr;
+
+        qDebug() << "Played land to mana stack.";
+
+
+    }
+
+    else if (card->isPermanent){
+        // need to handle mana cost and something else
+        ui->playerBattlefield->addWidget(currentSelectedCard);
+        ui->playerHand->removeWidget(currentSelectedCard);
+
+        currentSelectedCard->setSelected(false);
+        currentSelectedCard = nullptr;
+
+        qDebug() << "Played creature to battlefield.";
+    }
+    else {
+        QMessageBox::warning(this, "Can't play card", "This type of card can't be played directly.");
+    }
+}
 
 
 void MainWindow::cardMovedFromLibray(Card* card, QString zone){
@@ -128,19 +186,19 @@ void MainWindow::cardMovedFromLibray(Card* card, QString zone){
 }
 
 void MainWindow::handleCardSelected(CardButton* clicked) {
-    if(statePointer->currentPhase == Phase::DeclareAttackers ||
-        statePointer->currentPhase == Phase::DeclareBlockers){
-        if(selectedButtons.contains(clicked)){
-            selectedButtons.removeOne(clicked);
-            clicked->setSelected(false);
-        }
-        else{
-            selectedButtons.append(clicked);
-            clicked->setSelected(true);
-        }
-    }
+    // if(statePointer->currentPhase == Phase::DeclareAttackers ||
+    //     statePointer->currentPhase == Phase::DeclareBlockers){
+    //     if(selectedButtons.contains(clicked)){
+    //         selectedButtons.removeOne(clicked);
+    //         clicked->setSelected(false);
+    //     }
+    //     else{
+    //         selectedButtons.append(clicked);
+    //         clicked->setSelected(true);
+    //     }
+    // }
 
-    else if(currentSelectedCard == nullptr){
+    if(currentSelectedCard == nullptr){
         currentSelectedCard = clicked;
         currentSelectedCard->setSelected(true);
     }
