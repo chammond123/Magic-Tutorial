@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "qlabel.h"
 #include "type.h"
 #include "zone.h"
 #include "card.h"
@@ -14,12 +15,24 @@
 #include <QtWidgets/qgridlayout.h>
 
 
+struct ZoneLayout {
+    QGridLayout* hand;
+    QGridLayout* battlefield;
+    QLabel* graveyard;
+    QLabel* exile;
+    QLabel* red;
+    QLabel* green;
+    QLabel* blue;
+    QLabel* white;
+    QLabel* black;
+    QLabel* health;
+};
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
 }
 QT_END_NAMESPACE
-
 
 class MainWindow : public QMainWindow
 {
@@ -89,5 +102,9 @@ private:
 
     QMap<CardButton*, QVector<CardButton*>>::iterator targetIt;
     void extractCombatants(QMap<CardButton*, QVector<CardButton*>> packedCombatCard);
+    ZoneLayout playerLayout;
+    ZoneLayout enemyLayout;
 };
+
+
 #endif // MAINWINDOW_H

@@ -60,7 +60,7 @@
        <height>221</height>
       </rect>
      </property>
-     <layout class="QVBoxLayout" name="deckZone_2">
+     <layout class="QVBoxLayout" name="playerDeckZone">
       <item>
        <widget class="QLabel" name="label_13">
         <property name="text">
@@ -93,7 +93,7 @@
        <height>61</height>
       </rect>
      </property>
-     <layout class="QHBoxLayout" name="mana_2">
+     <layout class="QHBoxLayout" name="playerMana">
       <item>
        <widget class="QLabel" name="label_6">
         <property name="text">
@@ -140,7 +140,7 @@
        <height>141</height>
       </rect>
      </property>
-     <layout class="QGridLayout" name="hand"/>
+     <layout class="QGridLayout" name="playerHand"/>
     </widget>
     <widget class="QLabel" name="PlayerHealth">
      <property name="geometry">
@@ -204,7 +204,7 @@
        <height>71</height>
       </rect>
      </property>
-     <layout class="QHBoxLayout" name="mana">
+     <layout class="QHBoxLayout" name="enemyMana">
       <item>
        <widget class="QLabel" name="label_7">
         <property name="text">
@@ -251,7 +251,7 @@
        <height>181</height>
       </rect>
      </property>
-     <layout class="QVBoxLayout" name="deckZone">
+     <layout class="QVBoxLayout" name="enemyDeckZone">
       <item>
        <widget class="QLabel" name="label_16">
         <property name="text">
@@ -297,7 +297,7 @@
        <height>91</height>
       </rect>
      </property>
-     <layout class="QGridLayout" name="battlefield"/>
+     <layout class="QGridLayout" name="enemyBattlefield"/>
     </widget>
    </widget>
   </widget>
@@ -307,7 +307,7 @@
      <x>0</x>
      <y>0</y>
      <width>1226</width>
-     <height>24</height>
+     <height>17</height>
     </rect>
    </property>
   </widget>

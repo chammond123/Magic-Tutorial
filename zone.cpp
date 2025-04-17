@@ -30,7 +30,7 @@ bool Zone::findCard(Card* card) {
 }
 
 Card* Zone::drawTop() {
-    return cards.last();
+    return cards.first();
 }
 
 void Zone::addCard(Card* card, bool onTop) {

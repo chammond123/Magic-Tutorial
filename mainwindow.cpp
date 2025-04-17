@@ -19,6 +19,34 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     userPlayer = statePointer->player1;
 
 
+
+    playerLayout = {
+        ui->playerHand,
+        ui->playerBattlefield,
+        ui->playerGraveyard,
+        ui->playerExile,
+        ui->playerRed,
+        ui->playerGreen,
+        ui->playerBlue,
+        ui->playerWhite,
+        ui->playerBlack,
+        ui->PlayerHealth
+    };
+
+    enemyLayout = {
+        nullptr,
+        ui->enemyBattlefield,
+        ui->enemyGraveyard,
+        ui->enemyExile,
+        ui->enemyRed,
+        ui->enemyGreen,
+        ui->enemyBlue,
+        ui->enemyWhite,
+        ui->enemyBlack,
+        ui->EnemyHealth
+    };
+
+
     connect(apiManager, &CardAPIManager::errorOccurred, this, [](const QString &error) {
         qDebug() << "API Error:" << error;
     });
@@ -90,7 +118,7 @@ void MainWindow::cardMovedFromLibray(Card* card, QString zone){
     if(zone == "hand"){
         connect(apiManager, &CardAPIManager::cardFetched, cardButton, &CardButton::updateCard);
         apiManager->fetchCardByName(card->name);
-        ui->hand->addWidget(cardButton, 0, ui->hand->count(), Qt::AlignCenter);
+        ui->playerHand->addWidget(cardButton, 0, ui->playerHand->count(), Qt::AlignCenter);
     }
 }
 
@@ -107,7 +135,7 @@ void MainWindow::attackPhase(){
         ui->playCardButton->setText("Select Attackers...");
     }
     else {
-        ui->playCardButton->setText("Enemy Selecting Attackers");
+        ui->playCardButton->setText("Enemy Selecting");
         ui->playCardButton->setDisabled(true);
     }
 }
@@ -117,10 +145,10 @@ void MainWindow::collectAttackers(){
     QGridLayout* battlefield;
 
     if(userPlayer->isActivePlayer){
-        battlefield = ui->playerContainer->battlefield;
+        battlefield = ui->playerBattlefield;
     }
     else{
-        battlefield = ui->enemyContainer->battlefield;
+        battlefield = ui->enemyBattlefield;
     }
 
     for(int i = 0; i < battlefield->count(); i++){
@@ -151,37 +179,61 @@ void MainWindow::collectBlockers(){
 
 void MainWindow::updateUI(){
 
+    QVector<Zone*> zones;
+    ZoneLayout layout;
+    Player* currPlayer;
+
     for (int i = 0; i < 2; i++){
-        QGridLayout* container;
-        QVector<Zone*> zones;
+
+        // Set the zones, layout, and player
         if (i == 0){
             zones = userPlayer->getZones();
-            container = ui->playerContainer;
+            layout = playerLayout;
+            currPlayer = userPlayer;
         }
         else{
             zones = enemyPlayer->getZones();
-            container = ui->enemyContainer;
+            layout = enemyLayout;
+            currPlayer = enemyPlayer;
         }
 
-        // Go through all containers and update UI
+        // Go through all zones and update containers
         for (Zone* zone : zones){
             if (zone->type == ZoneType::HAND){
-                container = container->hand;
-                updateZone(container, zone);
+                if(layout.hand){
+                    updateZone(layout.hand, zone);
+                }
             }
             else if (zone->type == ZoneType::BATTLEFIELD){
-                container = container->battlefield;
-                updateZone(container, zone);
+                updateZone(layout.battlefield, zone);
             }
             else if (zone->type == ZoneType::GRAVEYARD){
-                container = container->graveyard;
-                updateZone(container, zone);
+                Card* card = zone->drawTop();
+                QPixmap image = QPixmap::fromImage(card->image);
+                layout.graveyard->setPixmap(image.scaled(layout.graveyard->size()));
             }
             else if (zone->type == ZoneType::EXILE){
-                container = container->exile;
-                updateZone(container, zone);
+                Card* card = zone->drawTop();
+                QPixmap image = QPixmap::fromImage(card->image);
+                layout.exile->setPixmap(image.scaled(layout.exile->size()));
             }
         }
+
+        // Set the Mana
+        for (auto [color, amount] : currPlayer->manaPool.toStdMap()){
+            switch (color) {
+            case ManaType::RED:   layout.red->setText(QString::number(amount));
+            case ManaType::BLUE:  layout.blue->setText(QString::number(amount));
+            case ManaType::GREEN: layout.green->setText(QString::number(amount));
+            case ManaType::BLACK: layout.black->setText(QString::number(amount));
+            case ManaType::WHITE: layout.white->setText(QString::number(amount));
+            default:              break;
+            }
+        }
+
+        // Set the Health
+        layout.health->setText(QString::number(currPlayer->health));
+
     }
 }
 
@@ -266,3 +318,5 @@ void MainWindow::extractCombatants(QMap<CardButton*, QVector<CardButton*>> packe
 
     emit sendCombatCards(combatants);
 }
+
+
