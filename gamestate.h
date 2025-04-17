@@ -2,9 +2,10 @@
 #define GAMESTATE_H
 
 #include<QVector>
-#include"player.h"//"
+#include"player.h"
 #include"card.h"
 #include"phase.h"
+#include"stackobject.h"
 
 class GameState
 {
@@ -64,6 +65,17 @@ public:
      * @brief Based on declared attackers and defenders resolve damage
      */
     void resolveCombatDamage();
+
+    /**
+     * @brief Resolves the top card in the stack
+     */
+    void resolveStack();
+
+    /**
+     * @brief Adds a stack object to the stack
+     * @param A stack object
+     */
+    void addToStack(StackObject stackObject);
 
     /**
      * @brief Gets the rules for the current phase

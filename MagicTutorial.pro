@@ -39,6 +39,7 @@ HEADERS += \
     mainwindow.h \
     phase.h \
     player.h \
+    stackobject.h \
     textparser.h \
     type.h \
     zone.h
