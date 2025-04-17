@@ -13,11 +13,11 @@ private:
     QVector<Card> cards;
 public:
     /**
-     * @brief Deck Constructor taking in a fileName of cards
-     * @param fileName
+     * @brief Deck Constructor that instantiates all cards
+     * @param deckList
      * @param parent
      */
-    explicit Deck(QString fileName, QObject *parent = nullptr);
+    explicit Deck(QStringList deckList, QObject *parent = nullptr);
 
     QVector<Card> getCardObjects();
 

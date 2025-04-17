@@ -2,13 +2,15 @@
 #define GAMEMANAGER_H
 
 #include<QVector>
+#include<QMap>
 #include"card.h"
 #include"player.h"
 #include"gamestate.h"
 #include"command.h"
 
-class gamemanager
+class gamemanager : public QObject
 {
+    Q_OBJECT
 private:
 
 public:
@@ -26,7 +28,7 @@ public slots:
      * @param The player who wants to play a card
      * @param The card they want to play
      */
-    void onPlayCard(Player* player, Card* card);
+    void onPlayCard(Player* player, Card* card, Card* target);
     /**
      * @brief Receives if a player wants to pass priority
      * @param The player that wants to pass
@@ -47,13 +49,7 @@ public slots:
      * @param The player who wants to declare an attacker
      * @param The card they want to declare as an attacker
      */
-    void onDeclareAttacker(Player* player, Card* card);
-    /**
-     * @brief Receives if a player wants to declare a creature as a blocker
-     * @param The player who wants to declare a blocker
-     * @param The card they want to declare as an attacker
-     */
-    void onDeclareBlocker(Player* player, Card* card);
+    void onCombatCardsReceived(QMap<Card*, QVector<Card*>> CombatCreatures);
     /**
      * @brief Receives if a player has lost the game
      */

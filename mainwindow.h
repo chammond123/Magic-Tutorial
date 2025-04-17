@@ -1,12 +1,32 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "qlabel.h"
 #include "type.h"
 #include "zone.h"
 #include "card.h"
+#include "player.h"
 #include "cardapimanager.h"
+#include "gamestate.h"
 #include <QMainWindow>
 #include <QPushButton>
+#include "gamemanager.h"
+#include "cardbutton.h"
+#include <QtWidgets/qgridlayout.h>
+
+
+struct ZoneLayout {
+    QGridLayout* hand;
+    QGridLayout* battlefield;
+    QLabel* graveyard;
+    QLabel* exile;
+    QLabel* red;
+    QLabel* green;
+    QLabel* blue;
+    QLabel* white;
+    QLabel* black;
+    QLabel* health;
+};
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -14,26 +34,31 @@ class MainWindow;
 }
 QT_END_NAMESPACE
 
-class CardButton : public QPushButton{
-    Q_OBJECT
-public:
-    Card* cardPtr;
-    QString cardName;
-
-    explicit CardButton(Card* card, QWidget* parent = nullptr);
-    void updateVisual();
-
-public slots:
-    void updateCard(const Card &card);
-};
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+
+    Player* userPlayer;
+    Player* enemyPlayer;
+
+    CardButton* currentSelectedCard = nullptr;
+
+    MainWindow(gamemanager *game, QWidget *parent = nullptr);
     ~MainWindow();
+
+    QVector<CardButton*> activeCards;
+
+    CardButton* currentCard;
+
+    QVector<Card*> selectedCards;
+    QVector<CardButton*> selectedButtons;
+
+    QMap<CardButton*, QVector<CardButton*>> buttonCombatants;
+    QMap<Card*, QVector<Card*>> combatants;
+
+    void showAllCards(QWidget Zone);
 
 public slots:
 
@@ -50,16 +75,36 @@ public slots:
      * of a card on the screen assuming the Card is
      * already a QPushButton
      */
-    void cardZoneChanged(Card*, QString zone);
+    // void cardZoneChanged(Card*, QString zone);
 
+    void handleCardSelected(CardButton* clicked);
+    void collectAttackers();
+    void collectBlockers();
+
+    void updateUI();
+
+    // void toggleButton();
+    void attackPhase();
 
 signals:
 
+    void sendCombatCards(QMap<Card*, QVector<Card*>> combatCards);
 
 private:
     Ui::MainWindow *ui;
     CardAPIManager* apiManager;
     QString manaTypeToString(ManaType type);
     QString deckString;
+    GameState* statePointer;
+
+    void updateZone(QGridLayout* container, Zone* zone);
+    void clearSelection();
+
+    QMap<CardButton*, QVector<CardButton*>>::iterator targetIt;
+    void extractCombatants(QMap<CardButton*, QVector<CardButton*>> packedCombatCard);
+    ZoneLayout playerLayout;
+    ZoneLayout enemyLayout;
 };
+
+
 #endif // MAINWINDOW_H

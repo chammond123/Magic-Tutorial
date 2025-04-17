@@ -14,8 +14,8 @@ void gamemanager::onCardDrawn(Player* player){
     }
 }
 
-void gamemanager::onPlayCard(Player *player, Card *card){
-    playCardCommand cmd = playCardCommand(state, player, card);
+void gamemanager::onPlayCard(Player *player, Card *card, Card* target){
+    playCardCommand cmd = playCardCommand(state, player, card, target);
     if (cmd.isValid()){
         cmd.execute();
         // emit updateUI();
@@ -35,19 +35,13 @@ void gamemanager::onChangePhase(Player *player){
     if (cmd.isValid()){
         cmd.execute();
         // emit updateUI();
+        // emit updateUIPhase();
     }
 }
 
-void gamemanager::onDeclareAttacker(Player *player, Card *card){
-    declareAttackerCommand cmd = declareAttackerCommand(state, player, card);
-    if (cmd.isValid()){
-        cmd.execute();
-        // emit updateUI();
-    }
-}
-
-void gamemanager::onDeclareBlocker(Player *player, Card *card){
-    declareBlockerCommand cmd = declareBlockerCommand(state, player, card);
+void gamemanager::onCombatCardsReceived(QMap<Card*, QVector<Card*>> CombatCreatures){
+    Player* player = nullptr;
+    declareCombatCommand cmd = declareCombatCommand(state, player, CombatCreatures);
     if (cmd.isValid()){
         cmd.execute();
         // emit updateUI();

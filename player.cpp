@@ -2,10 +2,15 @@
 #include "type.h"
 #include "zone.h"
 
-Player::Player(QString fileName, QObject *parent)
+Player::Player(QStringList deckList, QObject *parent)
     : QObject{parent},
-    deck(fileName)
+    deck(deckList)
 {
+    Library.type = ZoneType::LIBRARY;
+    Graveyard.type = ZoneType::GRAVEYARD;
+    Battlefield.type = ZoneType::BATTLEFIELD;
+    Exile.type = ZoneType::EXILE;
+    Hand.type = ZoneType::HAND;
 
     manaPool[ManaType::RED] = 0;
     manaPool[ManaType::BLUE] = 0;
@@ -21,6 +26,7 @@ Player::Player(QString fileName, QObject *parent)
 
         // emit initalizeLibrary(Library.getCardPointers(), 0);
     }
+    Library.shuffle();
 
     drawCard(7);
 }
@@ -62,7 +68,8 @@ void Player::drawCard(int amount)
             return;
         }
 
-        Card *card = Library.drawTop();
+        Card* card = Library.drawTop();
+        Library.removeCard(card);
         Hand.addCard(card, false);
         emit cardDrawn(card);
     }
@@ -245,4 +252,15 @@ Zone* Player::findCardZone(Card* card)
         return &Library;
     }
     return nullptr;
+}
+
+QVector<Zone*> Player::getZones(){
+    QVector<Zone*> zones;
+    zones.append(&Library);
+    zones.append(&Graveyard);
+    zones.append(&Battlefield);
+    zones.append(&Exile);
+    zones.append(&Hand);
+
+    return zones;
 }

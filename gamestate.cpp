@@ -76,6 +76,28 @@ void GameState::resolveCombatDamage(){
     return;
 }
 
+void GameState::addToStack(StackObject stackObject)
+{
+    theStack.append(stackObject);
+}
+
+void GameState::resolveStack(){
+    // if (!theStack.empty()){
+    //     StackObject stackObject = theStack.pop_back();
+
+    //     if (stackObject.targets.empty()){
+    //         stackObject.card->useAbility(stackObject.targets);
+    //     }
+
+    //     if (stackObject.card->isPermanent){
+    //         stackObject.player->moveCardString(card, "hand", "battlefield", false)
+    //     }
+    //     else{
+    //         stackObject.player->moveCardString(card, "hand", "battlefield", true);
+    //     }
+    // }
+}
+
 PhaseRules GameState::getPhaseRules(){
     switch(currentPhase){
     case Phase::Untap:

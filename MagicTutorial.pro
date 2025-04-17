@@ -13,6 +13,7 @@ SOURCES += \
     ability.cpp \
     card.cpp \
     cardapimanager.cpp \
+    cardbutton.cpp \
     carddictionary.cpp \
     command.cpp \
     deck.cpp \
@@ -29,6 +30,7 @@ HEADERS += \
     ability.h \
     card.h \
     cardapimanager.h \
+    cardbutton.h \
     carddictionary.h \
     command.h \
     deck.h \
@@ -37,6 +39,7 @@ HEADERS += \
     mainwindow.h \
     phase.h \
     player.h \
+    stackobject.h \
     textparser.h \
     type.h \
     zone.h

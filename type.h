@@ -42,4 +42,13 @@ enum class abilityType : int {
     DRAW,
     ADD_MANA
 };
+
+enum class ZoneType : int {
+    LIBRARY,
+    GRAVEYARD,
+    BATTLEFIELD,
+    EXILE,
+    HAND
+};
+
 #endif // TYPE_H

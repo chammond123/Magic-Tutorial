@@ -2,9 +2,10 @@
 #define GAMESTATE_H
 
 #include<QVector>
-#include"player.h"//"
+#include"player.h"
 #include"card.h"
 #include"phase.h"
+#include"stackobject.h"
 
 class GameState
 {
@@ -29,22 +30,11 @@ private:
      * @brief Index of the current phase of the game
      */
     int currentPhaseIndex = 0;
-    /**
-     * @brief A pointer to the second player object
-     */
-    Player* player1;
-    /**
-     * @brief A pointer to the second player object
-     */
-    Player* player2;
-    /**
-     * @brief Holds the current phase of the game
-     */
-    Phase currentPhase;
+
     /**
      * @brief Holds the active stack in a magic round
      */
-    QVector<Card*> theStack;
+    QVector<StackObject> theStack;
     /**
      * @brief Attackers declared by a player
      */
@@ -77,7 +67,18 @@ public:
     void resolveCombatDamage();
 
     /**
-     * @brief Gets the ruels for the current phase
+     * @brief Resolves the top card in the stack
+     */
+    void resolveStack();
+
+    /**
+     * @brief Adds a stack object to the stack
+     * @param A stack object
+     */
+    void addToStack(StackObject stackObject);
+
+    /**
+     * @brief Gets the rules for the current phase
      * @return The Phase Rules for the current phase
      */
     PhaseRules getPhaseRules();
@@ -87,6 +88,11 @@ public:
      * @param The player making the check
      */
     bool bothPlayersPassPriority();
+
+    /**
+     * @brief Holds the current phase of the game
+     */
+    Phase currentPhase;
 
     /**
      * @brief Checks if the stack is empty
@@ -99,6 +105,16 @@ public:
      * @return A QString containing the state
      */
     QString toString();
+
+    /**
+     * @brief A pointer to the second player object
+     */
+    Player* player1;
+
+    /**
+     * @brief A pointer to the second player object
+     */
+    Player* player2;
 
 };
 
