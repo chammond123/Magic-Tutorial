@@ -62,21 +62,21 @@
      </property>
      <layout class="QVBoxLayout" name="playerDeckZone">
       <item>
-       <widget class="QLabel" name="label_13">
+       <widget class="QLabel" name="playerExile">
         <property name="text">
          <string>Exile</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_12">
+       <widget class="QLabel" name="playerGraveyard">
         <property name="text">
          <string>Graveyard</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="playerDeck">
         <property name="text">
          <string>Deck</string>
         </property>
@@ -95,35 +95,35 @@
      </property>
      <layout class="QHBoxLayout" name="playerMana">
       <item>
-       <widget class="QLabel" name="label_6">
+       <widget class="QLabel" name="playerWhite">
         <property name="text">
          <string>White</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_5">
+       <widget class="QLabel" name="playerBlue">
         <property name="text">
          <string>Blue</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_4">
+       <widget class="QLabel" name="playerRed">
         <property name="text">
          <string>Fire</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_3">
+       <widget class="QLabel" name="playerGreen">
         <property name="text">
          <string>Green</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="playerBlack">
         <property name="text">
          <string>Black Mana</string>
         </property>
@@ -206,35 +206,35 @@
      </property>
      <layout class="QHBoxLayout" name="enemyMana">
       <item>
-       <widget class="QLabel" name="label_7">
+       <widget class="QLabel" name="enemyWhite">
         <property name="text">
          <string>White</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_8">
+       <widget class="QLabel" name="enemyBlue">
         <property name="text">
          <string>Blue</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_9">
+       <widget class="QLabel" name="enemyRed">
         <property name="text">
          <string>Fire</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_10">
+       <widget class="QLabel" name="enemyGreen">
         <property name="text">
          <string>Green</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_11">
+       <widget class="QLabel" name="enemyBlack">
         <property name="text">
          <string>Black Mana</string>
         </property>
@@ -253,21 +253,21 @@
      </property>
      <layout class="QVBoxLayout" name="enemyDeckZone">
       <item>
-       <widget class="QLabel" name="label_16">
+       <widget class="QLabel" name="enemyDeck">
         <property name="text">
          <string>Deck</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_15">
+       <widget class="QLabel" name="enemyGraveyard">
         <property name="text">
          <string>Graveyard</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_14">
+       <widget class="QLabel" name="enemyExile">
         <property name="text">
          <string>Exile</string>
         </property>
