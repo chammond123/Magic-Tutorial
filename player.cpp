@@ -68,7 +68,8 @@ void Player::drawCard(int amount)
             return;
         }
 
-        Card *card = Library.drawTop();
+        Card* card = Library.drawTop();
+        Library.removeCard(card);
         Hand.addCard(card, false);
         emit cardDrawn(card);
     }

@@ -47,13 +47,7 @@ public slots:
      * @param The player who wants to declare an attacker
      * @param The card they want to declare as an attacker
      */
-    void onDeclareAttacker(Player* player, Card* card);
-    /**
-     * @brief Receives if a player wants to declare a creature as a blocker
-     * @param The player who wants to declare a blocker
-     * @param The card they want to declare as an attacker
-     */
-    void onDeclareBlocker(Player* player, Card* card);
+    void onCombatCardsReceived(Player* player, Card* card);
     /**
      * @brief Receives if a player has lost the game
      */
