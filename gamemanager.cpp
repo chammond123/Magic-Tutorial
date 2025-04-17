@@ -35,19 +35,12 @@ void gamemanager::onChangePhase(Player *player){
     if (cmd.isValid()){
         cmd.execute();
         // emit updateUI();
+        // emit updateUIPhase();
     }
 }
 
-void gamemanager::onDeclareAttacker(Player *player, Card *card){
-    declareAttackerCommand cmd = declareAttackerCommand(state, player, card);
-    if (cmd.isValid()){
-        cmd.execute();
-        // emit updateUI();
-    }
-}
-
-void gamemanager::onDeclareBlocker(Player *player, Card *card){
-    declareBlockerCommand cmd = declareBlockerCommand(state, player, card);
+void gamemanager::onCombatCardsReceived(Player *player, Card *card){
+    declareCombatCommand cmd = declareCombatCommand(state, player, card);
     if (cmd.isValid()){
         cmd.execute();
         // emit updateUI();

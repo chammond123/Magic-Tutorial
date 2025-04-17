@@ -8,7 +8,7 @@
 class Command
 {
 public:
-    Command(GameState* state, Player* player, Card* card);
+    Command(GameState* state, Player* player, Card* card, QVector* targets);
     virtual ~Command();
 
     virtual void execute() = 0;
@@ -17,6 +17,7 @@ public:
     Player* player;
     GameState* state;
     Card* card;
+    QVector* targets;
 };
 
 class drawCommand : public Command{
@@ -59,21 +60,14 @@ public:
     virtual bool isValid();
 };
 
-class declareAttackerCommand : public Command{
+class declareCombatCommand : public Command{
 public:
-    declareAttackerCommand(GameState* state, Player* player, Card* card);
+    declareCombatCommand(GameState* state, Player* player, Card* card);
 
     virtual void execute();
     virtual bool isValid();
 };
 
-class declareBlockerCommand : public Command{
-public:
-    declareBlockerCommand(GameState* state, Player* player, Card* card);
-
-    virtual void execute();
-    virtual bool isValid();
-};
 class tapCardCommand : public Command{
 public:
     tapCardCommand(GameState* state, Player* player, Card* card);
