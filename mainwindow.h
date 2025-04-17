@@ -28,6 +28,7 @@ class MainWindow : public QMainWindow
 public:
 
     Player* userPlayer;
+    Player* enemyPlayer;
 
     CardButton* currentSelectedCard = nullptr;
 

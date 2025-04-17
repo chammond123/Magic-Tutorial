@@ -40,9 +40,9 @@
     <property name="geometry">
      <rect>
       <x>370</x>
-      <y>390</y>
+      <y>300</y>
       <width>851</width>
-      <height>271</height>
+      <height>361</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -55,12 +55,12 @@
      <property name="geometry">
       <rect>
        <x>720</x>
-       <y>10</y>
+       <y>120</y>
        <width>121</width>
        <height>221</height>
       </rect>
      </property>
-     <layout class="QVBoxLayout" name="PlayerDeckZone">
+     <layout class="QVBoxLayout" name="deckZone_2">
       <item>
        <widget class="QLabel" name="label_13">
         <property name="text">
@@ -87,13 +87,13 @@
     <widget class="QWidget" name="horizontalLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>100</x>
-       <y>10</y>
+       <x>60</x>
+       <y>110</y>
        <width>591</width>
        <height>61</height>
       </rect>
      </property>
-     <layout class="QHBoxLayout" name="PlayerMana">
+     <layout class="QHBoxLayout" name="mana_2">
       <item>
        <widget class="QLabel" name="label_6">
         <property name="text">
@@ -135,18 +135,18 @@
      <property name="geometry">
       <rect>
        <x>100</x>
-       <y>120</y>
+       <y>200</y>
        <width>501</width>
        <height>141</height>
       </rect>
      </property>
-     <layout class="QGridLayout" name="PlayerHand"/>
+     <layout class="QGridLayout" name="hand"/>
     </widget>
     <widget class="QLabel" name="PlayerHealth">
      <property name="geometry">
       <rect>
-       <x>620</x>
-       <y>200</y>
+       <x>610</x>
+       <y>310</y>
        <width>101</width>
        <height>31</height>
       </rect>
@@ -158,8 +158,8 @@
     <widget class="QPushButton" name="playCardButton">
      <property name="geometry">
       <rect>
-       <x>630</x>
-       <y>170</y>
+       <x>610</x>
+       <y>270</y>
        <width>83</width>
        <height>29</height>
       </rect>
@@ -168,6 +168,17 @@
       <string>Play</string>
      </property>
     </widget>
+    <widget class="QWidget" name="gridLayoutWidget_3">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>851</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="playerBattlefield"/>
+    </widget>
    </widget>
    <widget class="QFrame" name="enemyContainer">
     <property name="geometry">
@@ -175,7 +186,7 @@
       <x>370</x>
       <y>0</y>
       <width>851</width>
-      <height>201</height>
+      <height>291</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -193,7 +204,7 @@
        <height>71</height>
       </rect>
      </property>
-     <layout class="QHBoxLayout" name="EnemyMana">
+     <layout class="QHBoxLayout" name="mana">
       <item>
        <widget class="QLabel" name="label_7">
         <property name="text">
@@ -240,7 +251,7 @@
        <height>181</height>
       </rect>
      </property>
-     <layout class="QVBoxLayout" name="EnemyDeckZone">
+     <layout class="QVBoxLayout" name="deckZone">
       <item>
        <widget class="QLabel" name="label_16">
         <property name="text">
@@ -277,28 +288,17 @@
       <string>Enemy Health</string>
      </property>
     </widget>
-   </widget>
-   <widget class="QWidget" name="gridLayoutWidget_2">
-    <property name="geometry">
-     <rect>
-      <x>370</x>
-      <y>200</y>
-      <width>851</width>
-      <height>91</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="enemyBattlefield"/>
-   </widget>
-   <widget class="QWidget" name="gridLayoutWidget_3">
-    <property name="geometry">
-     <rect>
-      <x>370</x>
-      <y>299</y>
-      <width>851</width>
-      <height>91</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="playerBattlefield"/>
+    <widget class="QWidget" name="gridLayoutWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>200</y>
+       <width>851</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="battlefield"/>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

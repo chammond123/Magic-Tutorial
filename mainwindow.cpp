@@ -90,7 +90,7 @@ void MainWindow::cardMovedFromLibray(Card* card, QString zone){
     if(zone == "hand"){
         connect(apiManager, &CardAPIManager::cardFetched, cardButton, &CardButton::updateCard);
         apiManager->fetchCardByName(card->name);
-        ui->PlayerHand->addWidget(cardButton, 0, ui->PlayerHand->count(), Qt::AlignCenter);
+        ui->hand->addWidget(cardButton, 0, ui->hand->count(), Qt::AlignCenter);
     }
 }
 
@@ -150,34 +150,37 @@ void MainWindow::collectBlockers(){
 }
 
 void MainWindow::updateUI(){
-    QVector<Zone*> zones = player->getZones();
-    QGridLayout* container;
 
-    // Set the pointer to the right Container
-    if(player->playerID == 0){
-        container = ui->playerContainer;
-    }
-    else{
-        container = ui->enemyContainer;
-    }
+    for (int i = 0; i < 2; i++){
+        QGridLayout* container;
+        QVector<Zone*> zones;
+        if (i == 0){
+            zones = userPlayer->getZones();
+            container = ui->playerContainer;
+        }
+        else{
+            zones = enemyPlayer->getZones();
+            container = ui->enemyContainer;
+        }
 
-    // Go through all containers and update UI
-    for (Zone* zone : zones){
-        if (zone->type == ZoneType::HAND){
-            container = container->hand;
-            updateZone(container, zone);
-        }
-        else if (zone->type == ZoneType::BATTLEFIELD){
-            container = container->battlefield;
-            updateZone(container, zone);
-        }
-        else if (zone->type == ZoneType::GRAVEYARD){
-            container = container->graveyard;
-            updateZone(container, zone);
-        }
-        else if (zone->type == ZoneType::EXILE){
-            container = container->exile;
-            updateZone(container, zone);
+        // Go through all containers and update UI
+        for (Zone* zone : zones){
+            if (zone->type == ZoneType::HAND){
+                container = container->hand;
+                updateZone(container, zone);
+            }
+            else if (zone->type == ZoneType::BATTLEFIELD){
+                container = container->battlefield;
+                updateZone(container, zone);
+            }
+            else if (zone->type == ZoneType::GRAVEYARD){
+                container = container->graveyard;
+                updateZone(container, zone);
+            }
+            else if (zone->type == ZoneType::EXILE){
+                container = container->exile;
+                updateZone(container, zone);
+            }
         }
     }
 }
