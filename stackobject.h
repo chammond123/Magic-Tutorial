@@ -6,7 +6,7 @@
 struct StackObject{
     Player* player;
     Card* card;
-    QVector* targets;
+    QVector<Card*> targets;
 };
 
 #endif // STACKOBJECT_H

@@ -4,11 +4,12 @@
 #include "gamestate.h"
 #include "player.h"
 #include "card.h"
+#include <QVector>
 
 class Command
 {
 public:
-    Command(GameState* state, Player* player, Card* card, QVector* targets);
+    Command(GameState* state, Player* player, Card* card, QVector<Card>* targets);
     virtual ~Command();
 
     virtual void execute() = 0;
@@ -17,7 +18,7 @@ public:
     Player* player;
     GameState* state;
     Card* card;
-    QVector* targets;
+    QVector<Card*> targets;
 };
 
 class drawCommand : public Command{
