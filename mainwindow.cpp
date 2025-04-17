@@ -13,6 +13,10 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     setWindowTitle("Magic Tutorial");
+
+    ui->CardDescription->setReadOnly(true);
+    ui->CardDescription->setFocusPolicy(Qt::NoFocus);
+
     apiManager = new CardAPIManager(this);
 
 
@@ -80,6 +84,7 @@ QString MainWindow::manaTypeToString(ManaType type) {
 void MainWindow::cardMovedFromLibray(Card* card, QString zone){
     CardButton* cardButton = new CardButton(card);
     connect(cardButton, &CardButton::cardSelected, this, &MainWindow::handleCardSelected);
+    connect(cardButton, &CardButton::hovered, this, &MainWindow::updateMagnifier);
     cardButton->setFixedSize(100, 140);
 
     if(zone == "hand"){
@@ -90,11 +95,40 @@ void MainWindow::cardMovedFromLibray(Card* card, QString zone){
 }
 
 void MainWindow::handleCardSelected(CardButton* clicked) {
-    if (currentSelectedCard && currentSelectedCard != clicked)
-        currentSelectedCard->setSelected(false);
+    if(statePointer->currentPhase == Phase::DeclareAttackers ||
+        statePointer->currentPhase == Phase::DeclareBlockers){
+        if(selectedCards.contains(clicked)){
+            selectedCards.removeOne(clicked);
+            clicked->setSelected(false);
+        }
+        else{
+            selectedCards.append(clicked);
+            clicked->setSelected(true);
+        }
+    }
 
+    else if (currentSelectedCard && currentSelectedCard != clicked){
+           currentSelectedCard->setSelected(false);
+    }
     currentSelectedCard = clicked;
     currentSelectedCard->setSelected(true);
+}
+
+void MainWindow::updateMagnifier(Card* card) {
+    if (!card) return;
+
+    // Scale and display the image
+    Card cardFromDictionary = cardDictionary::getCard(card->name);
+
+    QPixmap pixmap = QPixmap::fromImage(cardFromDictionary.image).scaled(
+        ui->MagnifierImage->size(),
+        Qt::KeepAspectRatio,
+        Qt::SmoothTransformation
+        );
+    ui->MagnifierImage->setPixmap(pixmap);
+
+    // Show the card description
+    ui->CardDescription->setText(cardFromDictionary.description);
 }
 
 // void MainWindow::attackPhase(Player* player){

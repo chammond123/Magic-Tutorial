@@ -66,6 +66,12 @@ public slots:
 
     // void toggleButton();
 
+    /**
+     * @brief updateMagnifier
+     * @param card
+     */
+    void updateMagnifier(Card* card);
+
 signals:
 
     void sendCombatCards(QHash<Card*, QVector<Card*>>);

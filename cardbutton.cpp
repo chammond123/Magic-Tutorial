@@ -17,10 +17,9 @@ CardButton::CardButton(Card* card, QWidget* parent)
 void CardButton::updateCard(const Card &card){
     if (card.name != cardName) return; // Confirm it's the correct card
 
-    cardDictionary::addCard(card);
-    Card elfCard = cardDictionary::getCard(card.name);
+    Card cardFromDictionary = cardDictionary::getCard(card.name);
 
-    QPixmap pixmap = QPixmap::fromImage(elfCard.image).scaled(
+    QPixmap pixmap = QPixmap::fromImage(cardFromDictionary.image).scaled(
         this->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
     this->setIcon(QIcon(pixmap));
@@ -39,9 +38,15 @@ void CardButton::setSelected(bool value) {
     if(value){
         selected = true;
         qDebug() << cardName << "selected";
+        // qDebug() << cardPtr->description ;
     } else {
         selected = false;
         qDebug() << cardName << "deselected";
     }
+}
+
+void CardButton::enterEvent(QEnterEvent* event) {
+    emit hovered(cardPtr);
+    QPushButton::enterEvent(event);
 }
 

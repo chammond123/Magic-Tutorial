@@ -20,9 +20,11 @@ public:
 
 signals:
     void cardSelected(CardButton* button);
+    void hovered(Card* card);
 
 protected:
     void mousePressEvent(QMouseEvent* event) override;
+    void enterEvent(QEnterEvent* event) override;
 
 public slots:
     void updateCard(const Card &card);
