@@ -23,15 +23,32 @@ int main(int argc, char *argv[])
         qDebug() << "Static Card Dictionary updated after a card was fetched";
     });
 
+
     // Instantiating a deck list
     QStringList deckList = TextParser::getListFromText(QFile(":/text/additional_files/deck.txt"));
 
     // Fetching from the API
     apiManager->fetchCardsByNames(deckList);
 
-    // Player userPlayer()
+    Player userPlayer(deckList);
+    Player enemyPlayer(deckList);
+
+    GameState originalState;
+    GameState secondState;
+
+    originalState.player1 = &userPlayer;
+    originalState.player2 = &enemyPlayer;
+
+        // Crafted Gamestate
+        // another crafted gamestate
+        //MainWindow w(first crafted gamestate)
+
+        // Connection for mainwindow signal to main.cpp lambda to change
+        // MainWindows gamestate to the 2nd crafted gamestate
 
     MainWindow w(nullptr);
+
+    // QObject::connect(w, some signal saying UI needs a new game state, signal to ui to update gamestate)
     w.show();
     return a.exec();
 }
