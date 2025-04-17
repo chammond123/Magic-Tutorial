@@ -36,4 +36,10 @@ enum class ManaType : int {
     COLORLESS,
     ANY
 };
+
+enum class abilityType : int {
+    DAMAGE,
+    DRAW,
+    ADD_MANA
+};
 #endif // TYPE_H
