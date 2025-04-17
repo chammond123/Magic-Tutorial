@@ -2,9 +2,10 @@
 #define GAMESTATE_H
 
 #include<QVector>
-#include"player.h"//"
+#include"player.h"
 #include"card.h"
 #include"phase.h"
+#include"stackobject.h"
 
 class GameState
 {
@@ -29,14 +30,6 @@ private:
      * @brief Index of the current phase of the game
      */
     int currentPhaseIndex = 0;
-    /**
-     * @brief A pointer to the second player object
-     */
-    Player* player1;
-    /**
-     * @brief A pointer to the second player object
-     */
-    Player* player2;
 
     /**
      * @brief Holds the active stack in a magic round
@@ -74,6 +67,17 @@ public:
     void resolveCombatDamage();
 
     /**
+     * @brief Resolves the top card in the stack
+     */
+    void resolveStack();
+
+    /**
+     * @brief Adds a stack object to the stack
+     * @param A stack object
+     */
+    void addToStack(StackObject stackObject);
+
+    /**
      * @brief Gets the rules for the current phase
      * @return The Phase Rules for the current phase
      */
@@ -101,6 +105,16 @@ public:
      * @return A QString containing the state
      */
     QString toString();
+
+    /**
+     * @brief A pointer to the second player object
+     */
+    Player* player1;
+
+    /**
+     * @brief A pointer to the second player object
+     */
+    Player* player2;
 
 };
 

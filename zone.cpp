@@ -34,7 +34,7 @@ Card* Zone::drawTop() {
 }
 
 void Zone::addCard(Card* card, bool onTop) {
-    if (onTop){
+    if (!onTop){
         cards.prepend(card);
     }
     else{

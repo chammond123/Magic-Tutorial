@@ -6,11 +6,11 @@ Player::Player(QStringList deckList, QObject *parent)
     : QObject{parent},
     deck(deckList)
 {
-    // Library.type = ZoneType::LIBRARY;
-    // Graveyard.type = ZoneType::GRAVEYARD;
-    // Battlefield.type = ZoneType::BATTLEFIELD;
-    // Exile.type = ZoneType::EXILE;
-    // Hand.type = ZoneType::HAND;
+    Library.type = ZoneType::LIBRARY;
+    Graveyard.type = ZoneType::GRAVEYARD;
+    Battlefield.type = ZoneType::BATTLEFIELD;
+    Exile.type = ZoneType::EXILE;
+    Hand.type = ZoneType::HAND;
 
     manaPool[ManaType::RED] = 0;
     manaPool[ManaType::BLUE] = 0;
@@ -68,7 +68,8 @@ void Player::drawCard(int amount)
             return;
         }
 
-        Card *card = Library.drawTop();
+        Card* card = Library.drawTop();
+        Library.removeCard(card);
         Hand.addCard(card, false);
         emit cardDrawn(card);
     }
