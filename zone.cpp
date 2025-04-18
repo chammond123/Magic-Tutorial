@@ -30,6 +30,9 @@ bool Zone::findCard(Card* card) {
 }
 
 Card* Zone::drawTop() {
+    if (cards.isEmpty()){
+        return nullptr;
+    }
     return cards.last();
 }
 
@@ -47,9 +50,9 @@ void Zone::removeCard(Card* card){
 }
 
 Zone::~Zone() {
-    for (Card* cardptr : cards) {
-        delete cardptr;
-    }
+    // for (Card* cardptr : cards) {
+    //     delete cardptr;
+    // }
     cards.clear();
 }
 

@@ -14,6 +14,7 @@ class Card
 public:
     Card();
     Card(const Card& other);
+    Card& operator=(const Card& other);
     //For testing
     Card(QString name);
 

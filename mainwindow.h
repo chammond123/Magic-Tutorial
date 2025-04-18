@@ -51,8 +51,6 @@ public:
 
     QVector<CardButton*> activeCards;
 
-    CardButton* currentCard;
-
     QVector<Card*> selectedCards;
     QVector<CardButton*> selectedButtons;
 
@@ -70,7 +68,7 @@ public slots:
      * the specified zone on the window
      * @param zone
      */
-    void cardMovedFromLibray(Card*, QString zone);
+    void cardMovedFromLibrary(Card*, QString zone);
 
     /**
      * @brief cardZoneChanged changes the placement
@@ -117,6 +115,15 @@ private:
 
     bool isLand(Card* card);
     bool isCreature(Card* card);
+
+    // FOR TESTING PURPOSES
+    Card card1;
+    Card card2;
+    Card card3;
+    Card card4;
+    void setupHand();
+    bool createFlag = true;
+    Player user;
 
 };
 
