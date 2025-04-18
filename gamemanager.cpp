@@ -1,9 +1,14 @@
 #include "gamemanager.h"
 
-gamemanager::gamemanager(){
+gamemanager::gamemanager(QObject *parent)
+    : QObject{parent}
+{
     state = new GameState();
 }
 
+gamemanager::~gamemanager(){
+    delete state;
+}
 
 // UI Player Commands
 void gamemanager::onCardDrawn(Player* player){

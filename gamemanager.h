@@ -15,7 +15,8 @@ private:
 
 public:
     GameState* state;
-    gamemanager();
+    gamemanager(QObject *parent);
+    ~gamemanager();
 
 public slots:
     /**

@@ -21,8 +21,13 @@ playCardCommand::playCardCommand(GameState* state, Player* player, Card* card, C
     Command(state, player), card(card), target(target){}
 void playCardCommand::execute(){
     player->madeAction = true;
-    player->useMana(card);
-    state->addToStack(StackObject{player, card, target});
+    if (card->isLand){
+        //player->moveCardZone(card, "hand", "battlefeild", false);
+    }
+    else{
+        player->useMana(card);
+        state->addToStack(StackObject{player, card, target});
+    }
 }
 bool playCardCommand::isValid(){
     PhaseRules rules = state->getPhaseRules();
