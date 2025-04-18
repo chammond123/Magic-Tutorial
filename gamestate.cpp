@@ -121,7 +121,7 @@ void GameState::resolveStack(){
     if (!theStack.empty()){
         StackObject stackObject = theStack.takeLast();
 
-        if (stackObject.target == nullptr){
+        if (stackObject.target != nullptr){
             stackObject.card->ability.use(stackObject.target);
         }
 
