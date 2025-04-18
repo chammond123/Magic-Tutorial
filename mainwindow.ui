@@ -18,9 +18,9 @@
     <property name="geometry">
      <rect>
       <x>370</x>
-      <y>390</y>
+      <y>400</y>
       <width>851</width>
-      <height>271</height>
+      <height>261</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -33,7 +33,7 @@
      <property name="geometry">
       <rect>
        <x>720</x>
-       <y>10</y>
+       <y>30</y>
        <width>121</width>
        <height>221</height>
       </rect>
@@ -57,53 +57,6 @@
        <widget class="QLabel" name="label">
         <property name="text">
          <string>Deck</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-    <widget class="QWidget" name="horizontalLayoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>10</y>
-       <width>591</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <layout class="QHBoxLayout" name="PlayerMana">
-      <item>
-       <widget class="QLabel" name="playerWhite">
-        <property name="text">
-         <string>White</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="playerBlue">
-        <property name="text">
-         <string>Blue</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="playerRed">
-        <property name="text">
-         <string>Fire</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="playerGreen">
-        <property name="text">
-         <string>Green</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="playerBlack">
-        <property name="text">
-         <string>Black Mana</string>
         </property>
        </widget>
       </item>
@@ -145,6 +98,96 @@
      <property name="text">
       <string>Play</string>
      </property>
+    </widget>
+    <widget class="QWidget" name="verticalLayoutWidget_3">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>20</y>
+       <width>511</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="playerMana">
+      <item>
+       <layout class="QHBoxLayout" name="playerManaIcon">
+        <item>
+         <widget class="QPushButton" name="playerWhiteIcon">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="playerBlueIcon">
+          <property name="text">
+           <string>PushButton</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="playerRedIcon">
+          <property name="text">
+           <string>PushButton</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="playerGreenIcon">
+          <property name="text">
+           <string>PushButton</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="playerBlackIcon">
+          <property name="text">
+           <string>PushButton</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="playerManaLabel">
+        <item>
+         <widget class="QLabel" name="playerWhite">
+          <property name="text">
+           <string>White</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="playerBlue">
+          <property name="text">
+           <string>Blue</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="playerRed">
+          <property name="text">
+           <string>Fire</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="playerGreen">
+          <property name="text">
+           <string>Green</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="playerBlack">
+          <property name="text">
+           <string>Black Mana</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
     </widget>
    </widget>
    <widget class="QFrame" name="enemyContainer">
@@ -273,7 +316,7 @@
       <x>370</x>
       <y>299</y>
       <width>851</width>
-      <height>91</height>
+      <height>101</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="playerBattlefield"/>

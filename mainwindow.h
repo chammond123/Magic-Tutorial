@@ -94,6 +94,8 @@ public slots:
 
     void on_playCardButton_clicked();
 
+    void showLandPopup(ManaType type);
+
 signals:
 
     void sendCombatCards(QMap<Card*, QVector<Card*>> combatCards);
@@ -121,6 +123,9 @@ private:
     Card card2;
     Card card3;
     Card card4;
+    Card card5;
+    Card card6;
+    Card card7;
     void setupHand();
     bool createFlag = true;
     Player user;

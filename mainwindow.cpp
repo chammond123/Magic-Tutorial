@@ -9,6 +9,7 @@
 #include <QtGui/qevent.h>
 #include <QMessageBox>
 #include <type.h>
+#include <QScrollArea>
 
 MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -56,6 +57,26 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     });
 
     // connect(ui->playCardButton, &QPushButton::clicked, this, &MainWindow::on_playCardButton_clicked);
+
+    connect(ui->playerRedIcon, &QPushButton::clicked, this, [=]() {
+        showLandPopup(ManaType::RED);
+    });
+
+    connect(ui->playerWhiteIcon, &QPushButton::clicked, this, [=]() {
+        showLandPopup(ManaType::WHITE);
+    });
+
+    connect(ui->playerGreenIcon, &QPushButton::clicked, this, [=]() {
+        showLandPopup(ManaType::GREEN);
+    });
+
+    connect(ui->playerBlueIcon, &QPushButton::clicked, this, [=]() {
+        showLandPopup(ManaType::BLUE);
+    });
+
+    connect(ui->playerBlackIcon, &QPushButton::clicked, this, [=]() {
+        showLandPopup(ManaType::BLACK);
+    });
 
     connect(apiManager, &CardAPIManager::cardFetched, this, [=](const Card &card) {
 
@@ -115,6 +136,9 @@ void MainWindow::setupHand(){
     card2 = cardDictionary::getCard("Coral Merfolk");
     card3 = cardDictionary::getCard("Goblin Bully");
     card4 = cardDictionary::getCard("Mountain");
+    card5 = cardDictionary::getCard("Mountain");
+    card6 = cardDictionary::getCard("Mountain");
+    card7 = cardDictionary::getCard("Mountain");
 
     // Card* test = &card1;
     // Card* test1 = &card2;
@@ -131,6 +155,9 @@ void MainWindow::setupHand(){
     userPlayer->Hand.addCard(&card2, false);
     userPlayer->Hand.addCard(&card3, true);
     userPlayer->Hand.addCard(&card4, false);
+    userPlayer->Hand.addCard(&card5, false);
+    userPlayer->Hand.addCard(&card6, false);
+    userPlayer->Hand.addCard(&card7, false);
 
     qDebug() << "Added all cards to Library";
 
@@ -154,6 +181,37 @@ QString MainWindow::manaTypeToString(ManaType type) {
     }
 }
 
+void MainWindow::showLandPopup(ManaType manaType){
+    QDialog* dialog = new QDialog(this);
+    dialog->setWindowTitle("Lands: " + manaTypeToString(manaType));
+    dialog->setMinimumSize(400, 300);
+
+    QScrollArea* scrollArea = new QScrollArea(dialog);
+    QWidget* container = new QWidget();
+    QVBoxLayout* layout = new QVBoxLayout(container);
+
+    qDebug() << "Mana stack size:" << landGroups[manaType].size();
+    qDebug() << manaTypeToString(manaType);
+
+    for (CardButton* land : landGroups[manaType]) {
+        qDebug() << "not added";
+        layout->addWidget(land);
+        qDebug() << "added";
+    }
+
+
+    qDebug() << "a";
+
+    container->setLayout(layout);
+    scrollArea->setWidget(container);
+    scrollArea->setWidgetResizable(true);
+
+    QVBoxLayout* mainLayout = new QVBoxLayout(dialog);
+    mainLayout->addWidget(scrollArea);
+    dialog->setLayout(mainLayout);
+    dialog->exec();  // modal
+}
+
 void MainWindow::on_playCardButton_clicked(){
     // Just for testing need to handle more condiction phrases, cost, priority
 
@@ -170,15 +228,24 @@ void MainWindow::on_playCardButton_clicked(){
     Card* card = currentSelectedCard->cardPtr;
     qDebug() << "got card " << card->name;
 
+    qDebug() << ui->playerHand->count();
+
     if(card->type == CardType::LAND){
         userPlayer->moveCardZone(card, userPlayer->Hand, userPlayer->Battlefield, false);
+
+        // ManaType mana = card->color;
+        // qDebug() << manaTypeToString((mana));
+
+        currentSelectedCard->setParent(this);
+
+        // Add to land group
+        landGroups[ManaType::RED].append(currentSelectedCard);
 
         currentSelectedCard->setChecked(false);
         currentSelectedCard = nullptr;
 
         qDebug() << "Played land to mana stack.";
-
-
+        qDebug() << ui->playerHand->count();
     }
 
     else if (card->isPermanent){
