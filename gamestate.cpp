@@ -72,8 +72,44 @@ void GameState::changeActivePlayer(){
     }
 }
 
-void GameState::resolveCombatDamage(){
-    return;
+void GameState::resolveCombatDamage(QMap<Card*, QVector<Card*>> CombatCreatures){
+    Player* attackingPlayer;
+    Player* defendingPlayer;
+    if (player1->isActivePlayer){
+        attackingPlayer = player1;
+        defendingPlayer = player2;
+    }
+    else{
+        attackingPlayer = player2;
+        defendingPlayer = player1;
+    }
+    for (Card* attacker : CombatCreatures.keys()){
+        // Holds the attackers power, whenever damage is delt to a creature the excess is stored here
+        int powerLeftToDeal = attacker->power;
+
+        // If the attacker has no blockers, deal damage to the player equal to its toughness
+        if (CombatCreatures[attacker].empty()){
+            defendingPlayer->takeDamage(attacker->power);
+        }
+        // Otherwise deal damage to the blocking creatures with powerLeftToDeal
+        else{
+            for (Card* defender : CombatCreatures[attacker]){
+                if (powerLeftToDeal > 0){
+                    defender->takeDamage(powerLeftToDeal);
+                    powerLeftToDeal -= defender->toughness;
+                    attacker->takeDamage(defender->toughness);
+                }
+                // If the defending creature dies, send it to the graveyard
+                if (defender->toughness <= 0){
+                    defendingPlayer->moveCardString(defender, "battlefeild", "graveyard", true);
+                }
+            }
+            // If the attacking creature dies, send it to the graveyard
+            if (attacker->toughness <= 0){
+                attackingPlayer->moveCardString(attacker, "battlefeild", "graveyard", true);
+            }
+        }
+    }
 }
 
 void GameState::addToStack(StackObject stackObject)
@@ -82,20 +118,20 @@ void GameState::addToStack(StackObject stackObject)
 }
 
 void GameState::resolveStack(){
-    // if (!theStack.empty()){
-    //     StackObject stackObject = theStack.pop_back();
+    if (!theStack.empty()){
+        StackObject stackObject = theStack.takeLast();
 
-    //     if (stackObject.targets.empty()){
-    //         stackObject.card->useAbility(stackObject.targets);
-    //     }
+        if (stackObject.target == nullptr){
+            stackObject.card->ability.use(stackObject.target);
+        }
 
-    //     if (stackObject.card->isPermanent){
-    //         stackObject.player->moveCardString(card, "hand", "battlefield", false)
-    //     }
-    //     else{
-    //         stackObject.player->moveCardString(card, "hand", "battlefield", true);
-    //     }
-    // }
+        if (stackObject.card->isPermanent){
+            stackObject.player->moveCardString(stackObject.card, "hand", "battlefield", false);
+        }
+        else{
+            stackObject.player->moveCardString(stackObject.card, "hand", "battlefield", true);
+        }
+    }
 }
 
 PhaseRules GameState::getPhaseRules(){

@@ -94,7 +94,7 @@ bool passTurnCommand::isValid(){
 declareCombatCommand::declareCombatCommand(GameState* state, Player* player, QMap<Card*, QVector<Card*>> CombatCreatures) :
     Command(state, player), CombatCreatures(CombatCreatures){}
 void declareCombatCommand::execute(){
-    state->resolveCombatDamage();
+    state->resolveCombatDamage(CombatCreatures);
 }
 bool declareCombatCommand::isValid(){
     return true; // TODO: figure out how to validate this

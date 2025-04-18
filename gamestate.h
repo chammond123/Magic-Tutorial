@@ -64,7 +64,7 @@ public:
     /**
      * @brief Based on declared attackers and defenders resolve damage
      */
-    void resolveCombatDamage();
+    void resolveCombatDamage(QMap<Card*, QVector<Card*>> CombatCreatures);
 
     /**
      * @brief Resolves the top card in the stack
