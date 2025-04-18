@@ -1,5 +1,6 @@
 #ifndef PHASE_H
 #define PHASE_H
+
 enum class Phase {
     Untap,
     Upkeep,
@@ -13,6 +14,7 @@ enum class Phase {
     EndStep,
     Cleanup
 };
+
 struct PhaseRules {
     bool canPlayInstant;
     bool canPlaySorcery;

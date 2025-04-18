@@ -18,7 +18,8 @@ Card::Card(const Card& other) :
     cost(other.cost),
     keywords(other.keywords),
     isTapped(other.isTapped),
-    isPermanent(other.isPermanent)
+    isPermanent(other.isPermanent),
+    hasSummoningSickness(other.hasSummoningSickness)
 {}
 
 bool Card::hasKeyword(PropertyType keyword) const
@@ -39,4 +40,8 @@ void Card::gainHealth(int health){
 
 void Card::cleanupCard(){
     currHealth = toughness;
+}
+
+void Card::setAbility(Ability* a){
+    ability = *a;
 }

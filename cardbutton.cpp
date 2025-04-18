@@ -27,12 +27,12 @@ void CardButton::updateCard(const Card &card){
     this->setIconSize(pixmap.rect().size());
 }
 
-void CardButton::mousePressEvent(QMouseEvent* event) {
-    if (event->button() == Qt::LeftButton) {
-        emit cardSelected(this); // let MainWindow handle exclusive selection
-    }
-    QPushButton::mousePressEvent(event);
-}
+// void CardButton::mousePressEvent(QMouseEvent* event) {
+//     if (event->button() == Qt::LeftButton) {
+//         emit cardSelected(this); // let MainWindow handle exclusive selection
+//     }
+//     QPushButton::mousePressEvent(event);
+// }
 
 void CardButton::setSelected(bool value) {
     if(value){

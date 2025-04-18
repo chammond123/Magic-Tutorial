@@ -37,6 +37,12 @@ enum class ManaType : int {
     ANY
 };
 
+enum class abilityType : int {
+    DAMAGE,
+    DRAW,
+    ADD_MANA
+};
+
 enum class ZoneType : int {
     LIBRARY,
     GRAVEYARD,

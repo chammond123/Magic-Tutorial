@@ -14,7 +14,10 @@ QStringList TextParser::getListFromText(QFile file){
         QString line = in.readLine();
         int spaceIndex = line.indexOf(" ");
 
+        // Number of cards
         int num = line.mid(0, spaceIndex).toInt();
+
+        // Type of card
         QString card = line.mid(spaceIndex + 1);
 
         for (int i = 0; i < num; i++) {

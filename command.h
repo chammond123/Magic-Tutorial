@@ -4,20 +4,19 @@
 #include "gamestate.h"
 #include "player.h"
 #include "card.h"
+#include <QVector>
 
 class Command
 {
 public:
-    Command(GameState* state, Player* player, Card* card, QVector* targets);
+    Player* player;
+    GameState* state;
+
+    Command(GameState* state, Player* player);
     virtual ~Command();
 
     virtual void execute() = 0;
     virtual bool isValid() = 0;
-
-    Player* player;
-    GameState* state;
-    Card* card;
-    QVector* targets;
 };
 
 class drawCommand : public Command{
@@ -30,7 +29,9 @@ public:
 
 class playCardCommand : public Command{
 public:
-    playCardCommand(GameState* state, Player* player, Card* card);
+    Card* card;
+    Card* target;
+    playCardCommand(GameState* state, Player* player, Card* card, Card* target);
 
     virtual void execute();
     virtual bool isValid();
@@ -62,7 +63,8 @@ public:
 
 class declareCombatCommand : public Command{
 public:
-    declareCombatCommand(GameState* state, Player* player, Card* card);
+    QMap<Card*, QVector<Card*>> CombatCreatures;
+    declareCombatCommand(GameState* state, Player* player, QMap<Card*, QVector<Card*>> CombatCreatures);
 
     virtual void execute();
     virtual bool isValid();
@@ -70,6 +72,7 @@ public:
 
 class tapCardCommand : public Command{
 public:
+    Card* card;
     tapCardCommand(GameState* state, Player* player, Card* card);
 
     virtual void execute();

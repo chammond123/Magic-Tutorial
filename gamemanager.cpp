@@ -1,9 +1,14 @@
 #include "gamemanager.h"
 
-gamemanager::gamemanager(){
+gamemanager::gamemanager(QObject *parent)
+    : QObject{parent}
+{
     state = new GameState();
 }
 
+gamemanager::~gamemanager(){
+    delete state;
+}
 
 // UI Player Commands
 void gamemanager::onCardDrawn(Player* player){
@@ -14,8 +19,8 @@ void gamemanager::onCardDrawn(Player* player){
     }
 }
 
-void gamemanager::onPlayCard(Player *player, Card *card){
-    playCardCommand cmd = playCardCommand(state, player, card);
+void gamemanager::onPlayCard(Player *player, Card *card, Card* target){
+    playCardCommand cmd = playCardCommand(state, player, card, target);
     if (cmd.isValid()){
         cmd.execute();
         // emit updateUI();
@@ -39,8 +44,9 @@ void gamemanager::onChangePhase(Player *player){
     }
 }
 
-void gamemanager::onCombatCardsReceived(Player *player, Card *card){
-    declareCombatCommand cmd = declareCombatCommand(state, player, card);
+void gamemanager::onCombatCardsReceived(QMap<Card*, QVector<Card*>> CombatCreatures){
+    Player* player = nullptr;
+    declareCombatCommand cmd = declareCombatCommand(state, player, CombatCreatures);
     if (cmd.isValid()){
         cmd.execute();
         // emit updateUI();

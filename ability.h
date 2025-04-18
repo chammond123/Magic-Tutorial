@@ -2,6 +2,8 @@
 #define ABILITY_H
 
 #include <QString>
+#include <functional>
+#include "type.h"
 
 class Player;
 class Card;
@@ -9,21 +11,22 @@ class Card;
 class Ability
 {
 private:
-    // QString name;
-    // QString stringEffect;
     std::function<void(Player* player, Card* card)> effect;
-
+    abilityType type;
+    int amount;
 
 public:
-    Ability();
-    Ability(std::function<void(Player*, Card*)> eff);
-    void activate(Player* player, Card* target);
+    // Constructor to initialize ability with type, amount, and effect
+    Ability(abilityType type = abilityType(), int amount = 0, std::function<void(Player*, Card*)> eff = nullptr);
 
-    static Ability damageCreature(int amount);
-    static Ability damagePlayer(int amount);
-    static Ability buff(int amount);
+    // Use ability on a target (either Player or Card)
+    void use(Player* player);
+    void use(Card* card);
+
+    // Static functions for creating specific abilities
+    static Ability damageTarget(int amount);
     static Ability heal(int amount);
-    static Ability addMana(int amount);
+    static Ability addMana(int amount, ManaType mana);
     static Ability destroy();
 };
 

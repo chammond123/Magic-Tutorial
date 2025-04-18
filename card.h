@@ -4,10 +4,10 @@
 #include <QImage>
 #include <QString>
 #include <QVector>
-#include "ability.h"
 #include "type.h"
 #include <algorithm>
 #include <QMap>
+#include "ability.h"
 
 class Card
 {
@@ -26,6 +26,8 @@ public:
     //reset health
     void cleanupCard();
 
+    void setAbility(Ability* a);
+
 public:
     int currHealth = toughness;
     QString name;
@@ -41,6 +43,7 @@ public:
     bool isTapped;
     bool isPermanent;
     bool isLand;
+    bool hasSummoningSickness;
 };
 
 #endif // CARD_H

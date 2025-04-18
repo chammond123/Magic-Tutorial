@@ -11,7 +11,7 @@ class Player : public QObject
 {
     Q_OBJECT
 public:
-    explicit Player(QString fileName, QObject *parent = nullptr);
+    explicit Player(QStringList deckList, QObject *parent = nullptr);
 
     /**
      * @brief deck object to contain instantiated cards
