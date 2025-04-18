@@ -5,6 +5,7 @@
 #include "card.h"
 #include "cardapimanager.h"
 
+#include <QDebug>
 #include <QApplication>
 
 int main(int argc, char *argv[])
@@ -16,14 +17,14 @@ int main(int argc, char *argv[])
      */
 
     CardAPIManager *apiManager = new CardAPIManager();
-
+    qDebug() << "made it through API initialization.";
     // Connecting the API Manager's signal
     QObject::connect(apiManager, &CardAPIManager::cardFetched, [=](const Card &card) {
         cardDictionary::addCard(card);
         qDebug() << "Static Card Dictionary updated after a card was fetched";
     });
 
-
+    qDebug() << "made it through API connection.";
     // Instantiating a deck list
     QStringList deckList = TextParser::getListFromText(QFile(":/text/additional_files/deck.txt"));
 
@@ -32,7 +33,7 @@ int main(int argc, char *argv[])
 
     Player userPlayer(deckList);
     Player enemyPlayer(deckList);
-
+    qDebug() << "made it through deck initialization.";
     GameState originalState;
     GameState secondState;
 
@@ -45,10 +46,11 @@ int main(int argc, char *argv[])
 
         // Connection for mainwindow signal to main.cpp lambda to change
         // MainWindows gamestate to the 2nd crafted gamestate
-
+    qDebug() << "made it through object initialization.";
     MainWindow w(nullptr);
 
     // QObject::connect(w, some signal saying UI needs a new game state, signal to ui to update gamestate)
     w.show();
+    qDebug() << "made it to window shown.";
     return a.exec();
 }
