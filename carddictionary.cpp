@@ -43,11 +43,11 @@ void cardDictionary::giveAbility(Card* c){
     }
 
     if (c->name == "Counterspell"){
-        //Implement Counterspell
+        c->setAbility(Ability::counter());
     }
 
     if (c->name == "Fervor"){
-        //Implement Fervor
+        c->setAbility(Ability::bypassSummonSickness());
     }
 
 }

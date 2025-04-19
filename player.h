@@ -50,6 +50,8 @@ public:
 
     bool madeAction;
 
+    bool hasSummoningSickness;
+
     QVector<Zone*> getZones();
 
     // Health Methods

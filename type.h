@@ -42,7 +42,8 @@ enum class abilityType : int {
     DAMAGE,
     DRAW,
     ADD_MANA,
-    COUNTER
+    COUNTER,
+    BYPASS_SUMMONING_SICKNESS
 };
 
 enum class ZoneType : int {

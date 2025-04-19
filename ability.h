@@ -30,6 +30,7 @@ public:
     static Ability destroy();
     static Ability drawCards(int amount);
     static Ability counter();
+    static Ability bypassSummonSickness();
 };
 
 #endif // ABILITY_H
