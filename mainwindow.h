@@ -118,6 +118,8 @@ private:
     bool isLand(Card* card);
     bool isCreature(Card* card);
 
+    QString parseDescription(Card* card);
+
     // FOR TESTING PURPOSES
     Card card1;
     Card card2;

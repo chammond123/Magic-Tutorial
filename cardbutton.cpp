@@ -16,6 +16,11 @@ CardButton::CardButton(Card* card, QWidget* parent)
     QPushButton {
         border: 3px solid transparent;
         border-radius: 7px;
+        padding: 3px;
+    }
+    QPushButton:checked {
+        border: 3px solid blue;
+        border-radius: 5px;
     }
 )");
 
@@ -85,4 +90,3 @@ void CardButton::resizeEvent(QResizeEvent* event) {
     this->setIcon(QIcon(pixmap));
     this->setIconSize(this->size()- QSize(6,6));
 }
-

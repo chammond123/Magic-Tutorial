@@ -100,11 +100,6 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
         qDebug() << test.power;
         qDebug() << "---";
 
-        // if (cardDictionary::dict.size() == 11 && createFlag){
-        //     qDebug() << "SETUP CALLED";
-        //     setupHand();
-        //     createFlag = false;
-        // }
     });
 
     for(QString cardName : TextParser::getListFromText(QFile(":/text/additional_files/deck.txt"))){
@@ -158,6 +153,8 @@ void MainWindow::setupHand(){
     userPlayer->Hand.addCard(&card5, false);
     userPlayer->Hand.addCard(&card6, false);
     userPlayer->Hand.addCard(&card7, false);
+
+
 
     qDebug() << "Added all cards to Library";
 
@@ -271,8 +268,6 @@ void MainWindow::cardMovedFromLibrary(Card* card, QString zone){
     cardButton->setFixedSize(100, 140);
 
     if(zone == "hand"){
-        // connect(apiManager, &CardAPIManager::cardFetched, cardButton, &CardButton::updateCard);
-        // apiManager->fetchCardByName(card->name);
         ui->playerHand->addWidget(cardButton, 0, ui->playerHand->count(), Qt::AlignCenter);
     }
 }
@@ -302,6 +297,7 @@ void MainWindow::handleCardSelected(CardButton* clicked) {
     else if (currentSelectedCard->isChecked()){
         currentSelectedCard->setChecked(false);
         currentSelectedCard = nullptr;
+
     }
 
     qDebug() << clicked->cardName << " is Checked: " << clicked->isChecked();
@@ -504,5 +500,3 @@ void MainWindow::extractCombatants(QMap<CardButton*, QVector<CardButton*>> packe
 
     emit sendCombatCards(combatants);
 }
-
-
