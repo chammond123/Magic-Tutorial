@@ -112,10 +112,10 @@ void GameState::resolveCombatDamage(QMap<Card*, QVector<Card*>> CombatCreatures)
     }
 }
 
-void GameState::addToStack(StackObject stackObject)
-{
-    theStack.append(stackObject);
-}
+// void GameState::addToStack(StackObject stackObject)
+// {
+//     theStack.append(stackObject);
+// }
 
 void GameState::resolveStack(){
     if (!theStack.empty()){

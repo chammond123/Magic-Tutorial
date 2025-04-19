@@ -57,6 +57,8 @@ private:
     ManaType determineCardColor(const QJsonArray &colorsArray);
     CardType determineCardType(const QString &typeLine);
     QVector<PropertyType> parseKeywords(const QJsonArray &keywordsArray);
+
+    QMap<QString, QString> symbolMap;
 };
 
 #endif // CARDAPIMANAGER_H

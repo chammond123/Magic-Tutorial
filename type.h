@@ -3,7 +3,8 @@
 
 #include <QString>
 
-enum class CardType : int {
+enum class
+    CardType : int {
     LAND,
     CREATURE,
     ARTIFACT,

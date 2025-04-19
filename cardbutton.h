@@ -25,6 +25,7 @@ signals:
 protected:
     // void mousePressEvent(QMouseEvent* event) override;
     void enterEvent(QEnterEvent* event) override;
+    void resizeEvent(QResizeEvent* event) override;
 
 public slots:
     void updateCard(const Card &card);
