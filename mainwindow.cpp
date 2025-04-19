@@ -55,6 +55,8 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     });
 
     connect(apiManager, &CardAPIManager::cardFetched, this, [=](const Card &card) {
+        Card addCard = Card(card);
+
         cardDictionary::addCard(card);
         Card test = cardDictionary::getCard(card.name);
         qDebug() << "---";
@@ -110,7 +112,6 @@ QString MainWindow::manaTypeToString(ManaType type) {
     default:              return "Unknown";
     }
 }
-
 
 void MainWindow::cardMovedFromLibray(Card* card, QString zone){
     CardButton* cardButton = new CardButton(card);

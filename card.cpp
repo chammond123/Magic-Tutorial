@@ -42,6 +42,6 @@ void Card::cleanupCard(){
     currHealth = toughness;
 }
 
-void Card::setAbility(Ability* a){
-    ability = *a;
+void Card::setAbility(Ability a){
+    ability = a;
 }

@@ -26,7 +26,7 @@ public:
     //reset health
     void cleanupCard();
 
-    void setAbility(Ability* a);
+    void setAbility(Ability a);
 
 public:
     int currHealth = toughness;

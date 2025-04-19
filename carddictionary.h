@@ -8,6 +8,7 @@ class cardDictionary
 private:
     // Private constructor prevents instantiation
     cardDictionary() = delete;
+    static void giveAbility(Card* c);
 
 public:
     static std::map<QString, Card> dict;

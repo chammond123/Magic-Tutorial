@@ -41,3 +41,11 @@ Ability Ability::addMana(int amount, ManaType mana) {
         }
     });
 }
+
+Ability Ability::drawCards(int amount) {
+    return Ability(abilityType::DRAW, amount, [amount](Player* p, Card*) {
+        if (p) {
+            p->drawCard(amount);  // Add mana to Player's pool
+        }
+    });
+}

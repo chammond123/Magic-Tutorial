@@ -28,6 +28,7 @@ public:
     static Ability heal(int amount);
     static Ability addMana(int amount, ManaType mana);
     static Ability destroy();
+    static Ability drawCards(int amount);
 };
 
 #endif // ABILITY_H
