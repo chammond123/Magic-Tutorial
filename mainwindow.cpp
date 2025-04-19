@@ -13,7 +13,7 @@
 
 MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
-    , user(":/text/additional_files/deck.txt")
+    , statePointer(new GameState()), user(":/text/additional_files/deck.txt")
 {
     ui->setupUi(this);
     setWindowTitle("Magic Tutorial");
@@ -100,6 +100,22 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
         qDebug() << test.power;
         qDebug() << "---";
 
+    });
+
+    connect(ui->phaseButton, &QPushButton::clicked, this, [=](){
+        qDebug() << "Clicked!";
+        if (!statePointer) {
+            qWarning() << "State pointer is null!";
+            return;
+        }
+
+        statePointer->changePhase();
+        if (statePointer->currentPhase == Phase::DeclareAttackers){
+            qDebug() << "Current Phase: Attacking";
+        }
+        else if (statePointer->currentPhase == Phase::DeclareBlockers){
+            qDebug() << "Current Phase: Defending";
+        }
     });
 
     for(QString cardName : TextParser::getListFromText(QFile(":/text/additional_files/deck.txt"))){
@@ -273,17 +289,19 @@ void MainWindow::cardMovedFromLibrary(Card* card, QString zone){
 }
 
 void MainWindow::handleCardSelected(CardButton* clicked) {
-    // if(statePointer->currentPhase == Phase::DeclareAttackers ||
-    //     statePointer->currentPhase == Phase::DeclareBlockers){
-    //     if(selectedButtons.contains(clicked)){
-    //         selectedButtons.removeOne(clicked);
-    //         clicked->setSelected(false);
-    //     }
-    //     else{
-    //         selectedButtons.append(clicked);
-    //         clicked->setSelected(true);
-    //     }
-    // }
+    if(statePointer->currentPhase == Phase::DeclareAttackers ||
+        statePointer->currentPhase == Phase::DeclareBlockers){
+        if(selectedButtons.contains(clicked)){
+            selectedButtons.removeOne(clicked);
+            clicked->setSelected(false);
+            qDebug() << "Removed " << clicked->cardPtr->name;
+        }
+        else{
+            selectedButtons.append(clicked);
+            clicked->setSelected(true);
+            qDebug() << "Added " << clicked->cardPtr->name;
+        }
+    }
 
     if(currentSelectedCard == nullptr){
         currentSelectedCard = clicked;

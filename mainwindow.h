@@ -131,6 +131,7 @@ private:
     void setupHand();
     bool createFlag = true;
     Player user;
+    GameState state;
 
 };
 
