@@ -40,7 +40,8 @@ enum class ManaType : int {
 enum class abilityType : int {
     DAMAGE,
     DRAW,
-    ADD_MANA
+    ADD_MANA,
+    COUNTER
 };
 
 enum class ZoneType : int {

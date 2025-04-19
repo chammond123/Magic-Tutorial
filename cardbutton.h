@@ -23,7 +23,7 @@ signals:
     void hovered(Card* card);
 
 protected:
-    void mousePressEvent(QMouseEvent* event) override;
+    // void mousePressEvent(QMouseEvent* event) override;
     void enterEvent(QEnterEvent* event) override;
 
 public slots:

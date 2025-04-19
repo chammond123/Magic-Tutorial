@@ -32,6 +32,12 @@ Ability Ability::damageTarget(int amount) {
     });
 }
 
+Ability Ability::counter() {
+    return Ability( abilityType::COUNTER, 0, [](Player* p, Card* c){
+            if (c) c->isCountered = true;
+        });
+}
+
 Ability Ability::addMana(int amount, ManaType mana) {
     return Ability(abilityType::ADD_MANA, amount, [amount, mana](Player* p, Card*) {
         if (p) {

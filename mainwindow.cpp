@@ -55,8 +55,6 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     });
 
     connect(apiManager, &CardAPIManager::cardFetched, this, [=](const Card &card) {
-        Card addCard = Card(card);
-
         cardDictionary::addCard(card);
         Card test = cardDictionary::getCard(card.name);
         qDebug() << "---";

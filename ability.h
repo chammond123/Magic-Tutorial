@@ -29,6 +29,7 @@ public:
     static Ability addMana(int amount, ManaType mana);
     static Ability destroy();
     static Ability drawCards(int amount);
+    static Ability counter();
 };
 
 #endif // ABILITY_H

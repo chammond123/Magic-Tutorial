@@ -44,6 +44,7 @@ public:
     bool isPermanent;
     bool isLand;
     bool hasSummoningSickness;
+    bool isCountered = false;
 };
 
 #endif // CARD_H
