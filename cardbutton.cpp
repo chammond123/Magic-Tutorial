@@ -3,6 +3,8 @@
 #include <QMouseEvent>
 #include <QDebug>
 #include <QGraphicsDropShadowEffect>
+#include <QPainter>
+#include <QPainterPath>
 
 CardButton::CardButton(Card* card, QWidget* parent)
     : QPushButton(parent), cardPtr(card) {
@@ -27,54 +29,36 @@ CardButton::CardButton(Card* card, QWidget* parent)
     this->setCheckable(true);
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    connect(this, &QPushButton::toggled, this, [this](bool checked) {
-        if (checked) {
-            auto* shadow = new QGraphicsDropShadowEffect(this);
-            shadow->setBlurRadius(15);
-            shadow->setColor(QColor(0, 0, 0));
-            shadow->setOffset(0, 0);
-            this->setGraphicsEffect(shadow);
-        } else {
-            this->setGraphicsEffect(nullptr);
-        }
-    });
+    // connect(this, &QPushButton::toggled, this, [this](bool checked) {
+    //     if (checked) {
+    //         auto* shadow = new QGraphicsDropShadowEffect(this);
+    //         shadow->setBlurRadius(15);
+    //         shadow->setColor(QColor(0, 0, 0));
+    //         shadow->setOffset(0, 0);
+    //         this->setGraphicsEffect(shadow);
+    //     } else {
+    //         this->setGraphicsEffect(nullptr);
+    //     }
+    // });
 }
 
-// void CardButton::updateVisual() {
-//     if (cardPtr) {
-//         setText(cardPtr->name);
-//     }
-// }
 
-void CardButton::updateCard(const Card &card){
-    if (card.name != cardName) return; // Confirm it's the correct card
 
-    Card cardFromDictionary = cardDictionary::getCard(card.name);
+void CardButton::resetCard(){
 
-    QPixmap pixmap = QPixmap::fromImage(cardFromDictionary.image).scaled(
-        this->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    QPixmap pixmap = QPixmap::fromImage(cardPtr->image).scaled(
+        this->size() - QSize(6,6), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
     this->setIcon(QIcon(pixmap));
     this->setText("");
-    this->setIconSize(pixmap.rect().size());
+    this->setIconSize(this->size() - QSize(6,6));
 }
 
-// void CardButton::mousePressEvent(QMouseEvent* event) {
-//     if (event->button() == Qt::LeftButton) {
-//         emit cardSelected(this); // let MainWindow handle exclusive selection
-//     }
-//     QPushButton::mousePressEvent(event);
-// }
-
-void CardButton::setSelected(bool value) {
-    if(value){
-        selected = true;
-        qDebug() << cardName << "selected";
-        // qDebug() << cardPtr->description ;
-    } else {
-        selected = false;
-        qDebug() << cardName << "deselected";
+void CardButton::mousePressEvent(QMouseEvent* event) {
+    if (event->button() == Qt::LeftButton) {
+        emit cardSelected(this); // let MainWindow handle exclusive selection
     }
+    // QPushButton::mousePressEvent(event);
 }
 
 void CardButton::enterEvent(QEnterEvent* event) {
@@ -90,3 +74,27 @@ void CardButton::resizeEvent(QResizeEvent* event) {
     this->setIcon(QIcon(pixmap));
     this->setIconSize(this->size()- QSize(6,6));
 }
+
+QPixmap CardButton::getOverlayedPixmap(int selectionIndex) {
+    QPixmap original = QPixmap::fromImage(cardPtr->image).scaled(
+        this->size() - QSize(6,6), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+    QPixmap overlayed = original;
+    QPainter painter(&overlayed);
+
+    // Step 1: Darken it
+    painter.fillRect(overlayed.rect(), QColor(0, 0, 0, 120));  // semi-transparent black
+
+    // Step 2: Draw number
+    QFont font = painter.font();
+    font.setBold(true);
+    font.setPointSize(24); // Adjust size to taste
+    painter.setFont(font);
+    painter.setPen(Qt::white);
+    painter.drawText(overlayed.rect(), Qt::AlignCenter, QString::number(selectionIndex + 1));
+
+    painter.end();
+    return overlayed;
+}
+
+

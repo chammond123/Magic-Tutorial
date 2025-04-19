@@ -58,6 +58,7 @@ public:
     QMap<Card*, QVector<Card*>> combatants;
 
     void showAllCards();
+    void overlayCards();
 
 
 public slots:
@@ -68,7 +69,7 @@ public slots:
      * the specified zone on the window
      * @param zone
      */
-    void cardMovedFromLibrary(Card*, QString zone);
+    // void cardMovedFromLibrary(Card*, QString zone);
 
     /**
      * @brief cardZoneChanged changes the placement
@@ -134,8 +135,6 @@ private:
     Card card7;
     void setupHand();
     bool createFlag = true;
-    Player user;
-    GameState state;
 
 };
 

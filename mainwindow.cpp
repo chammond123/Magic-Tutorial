@@ -13,7 +13,6 @@
 
 MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
-    , statePointer(new GameState()), user(":/text/additional_files/deck.txt")
 {
     ui->setupUi(this);
     setWindowTitle("Magic Tutorial");
@@ -103,13 +102,14 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     });
 
     connect(ui->phaseButton, &QPushButton::clicked, this, [=](){
-        qDebug() << "Clicked!";
+        qDebug() << "Next Phase!";
         if (!statePointer) {
             qWarning() << "State pointer is null!";
             return;
         }
 
         statePointer->changePhase();
+        clearSelection();
         if (statePointer->currentPhase == Phase::DeclareAttackers){
             qDebug() << "Current Phase: Attacking";
         }
@@ -123,7 +123,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
         apiManager->fetchCardByName(cardName);
     }
 
-    QTimer::singleShot(1000, this, [=](){
+    QTimer::singleShot(2000, this, [=](){
         qDebug() << "SETUP CALLED";
         setupHand();
     });
@@ -138,8 +138,6 @@ MainWindow::~MainWindow() {
 
 //FOR TESTING
 void MainWindow::setupHand(){
-
-    userPlayer = &user;
 
     card1 = cardDictionary::getCard("Lightning Bolt");
     qDebug() << "CARD NAME: " << card1.name;
@@ -277,45 +275,49 @@ void MainWindow::on_playCardButton_clicked(){
 }
 
 
-void MainWindow::cardMovedFromLibrary(Card* card, QString zone){
-    CardButton* cardButton = new CardButton(card);
-    connect(cardButton, &CardButton::cardSelected, this, &MainWindow::handleCardSelected);
-    connect(cardButton, &CardButton::hovered, this, &MainWindow::updateMagnifier);
-    cardButton->setFixedSize(100, 140);
+// void MainWindow::cardMovedFromLibrary(Card* card, QString zone){
+//     CardButton* cardButton = new CardButton(card);
+//     connect(cardButton, &CardButton::cardSelected, this, &MainWindow::handleCardSelected);
+//     connect(cardButton, &CardButton::hovered, this, &MainWindow::updateMagnifier);
+//     cardButton->setFixedSize(100, 140);
 
-    if(zone == "hand"){
-        ui->playerHand->addWidget(cardButton, 0, ui->playerHand->count(), Qt::AlignCenter);
-    }
-}
+//     if(zone == "hand"){
+//         ui->playerHand->addWidget(cardButton, 0, ui->playerHand->count(), Qt::AlignCenter);
+//     }
+// }
 
 void MainWindow::handleCardSelected(CardButton* clicked) {
     if(statePointer->currentPhase == Phase::DeclareAttackers ||
         statePointer->currentPhase == Phase::DeclareBlockers){
         if(selectedButtons.contains(clicked)){
             selectedButtons.removeOne(clicked);
-            clicked->setSelected(false);
+            clicked->setChecked(false);
+            currentSelectedCard = nullptr;
             qDebug() << "Removed " << clicked->cardPtr->name;
         }
         else{
             selectedButtons.append(clicked);
-            clicked->setSelected(true);
+            clicked->setChecked(true);
+            currentSelectedCard = clicked;
             qDebug() << "Added " << clicked->cardPtr->name;
         }
+        overlayCards();
     }
+    else{
+        if(currentSelectedCard == nullptr){
+            currentSelectedCard = clicked;
+            currentSelectedCard->setChecked(true);
+        }
+        else if (currentSelectedCard != clicked){
+            currentSelectedCard->setChecked(false);
+            currentSelectedCard = clicked;
+            currentSelectedCard->setChecked(true);
+        }
+        else if (currentSelectedCard->isChecked()){
+            currentSelectedCard->setChecked(false);
+            currentSelectedCard = nullptr;
 
-    if(currentSelectedCard == nullptr){
-        currentSelectedCard = clicked;
-        currentSelectedCard->setChecked(true);
-    }
-    else if (currentSelectedCard != clicked){
-        currentSelectedCard->setChecked(false);
-        currentSelectedCard = clicked;
-        currentSelectedCard->setChecked(true);
-    }
-    else if (currentSelectedCard->isChecked()){
-        currentSelectedCard->setChecked(false);
-        currentSelectedCard = nullptr;
-
+        }
     }
 
     qDebug() << clicked->cardName << " is Checked: " << clicked->isChecked();
@@ -392,6 +394,11 @@ void MainWindow::updateUI(){
     ZoneLayout layout;
     Player* currPlayer;
 
+    if(!userPlayer){
+        qDebug() << "NO USER";
+        return;
+    }
+
     for (int i = 0; i < 1; i++){
 
         // Set the zones, layout, and player
@@ -439,7 +446,7 @@ void MainWindow::updateUI(){
         // Set the Mana
         for (auto [color, amount] : currPlayer->manaPool.toStdMap()){
             switch (color) {
-            // case ManaType::RED:   layout.red->setText(QString::number(amount));
+            case ManaType::RED:   layout.red->setText(QString::number(amount));
             case ManaType::BLUE:  layout.blue->setText(QString::number(amount));
             case ManaType::GREEN: layout.green->setText(QString::number(amount));
             case ManaType::BLACK: layout.black->setText(QString::number(amount));
@@ -451,7 +458,7 @@ void MainWindow::updateUI(){
         // Set the Health
         layout.health->setText(QString::number(currPlayer->health));
 
-        handlePhase();
+        // handlePhase();
 
         update();
     }
@@ -480,7 +487,7 @@ void MainWindow::updateZone(QGridLayout* container, Zone* zone){
         cardButton->setFixedSize(100, 140);
 
         if(card->type == CardType::LAND && zone->type == ZoneType::BATTLEFIELD){
-            // landGroups[card->color].append(cardButton);
+            landGroups[card->color].append(cardButton);
             ui->playerRed->setPixmap(QPixmap::fromImage(card->image).scaled(ui->playerRed->size()));
             currentSelectedCard = nullptr;
             continue;
@@ -499,7 +506,9 @@ void MainWindow::clearSelection(){
     currentSelectedCard = nullptr;
 
     for(CardButton* card : activeCards){
-        card->setChecked(false);
+        if(!card){
+            card->setChecked(false);
+        }
     }
 
 }
@@ -580,4 +589,18 @@ void MainWindow::startTargeting(){
 
 void MainWindow::showAllCards(){
     return;
+}
+
+void MainWindow::overlayCards(){
+    if(!activeCards.isEmpty()){
+        for(CardButton* button : activeCards){
+            button->resetCard();
+        }
+    }
+
+    for(int i = 0; i < selectedButtons.count(); i++){
+        CardButton* currButton = selectedButtons.at(i);
+        QPixmap newIcon = currButton->getOverlayedPixmap(i);
+        currButton->setIcon(QIcon(newIcon));
+    }
 }

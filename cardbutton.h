@@ -9,26 +9,22 @@ class CardButton : public QPushButton{
 public:
     Card* cardPtr;
     QString cardName;
-    bool selected = false;
 
     explicit CardButton(Card* card, QWidget* parent = nullptr);
 
-    // void updateVisual();
-
-    void setSelected(bool selected);
-    bool isSelected();
+    QPixmap getOverlayedPixmap(int selectionIndex);
 
 signals:
     void cardSelected(CardButton* button);
     void hovered(Card* card);
 
 protected:
-    // void mousePressEvent(QMouseEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
     void enterEvent(QEnterEvent* event) override;
     void resizeEvent(QResizeEvent* event) override;
 
 public slots:
-    void updateCard(const Card &card);
+    void resetCard();
 };
 
 

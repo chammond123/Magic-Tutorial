@@ -47,7 +47,10 @@ int main(int argc, char *argv[])
         // Connection for mainwindow signal to main.cpp lambda to change
         // MainWindows gamestate to the 2nd crafted gamestate
     qDebug() << "made it through object initialization.";
-    MainWindow w(nullptr);
+
+    gamemanager game(nullptr);
+    game.state = &originalState;
+    MainWindow w(&game);
 
     // QObject::connect(w, some signal saying UI needs a new game state, signal to ui to update gamestate)
     w.show();
