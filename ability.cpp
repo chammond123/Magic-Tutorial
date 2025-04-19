@@ -38,6 +38,12 @@ Ability Ability::counter() {
         });
 }
 
+Ability Ability::bypassSummonSickness() {
+    return Ability( abilityType::BYPASS_SUMMONING_SICKNESS, 0, [](Player* p, Card* c){
+        if (p) p->hasSummoningSickness = false;
+    });
+}
+
 Ability Ability::addMana(int amount, ManaType mana) {
     return Ability(abilityType::ADD_MANA, amount, [amount, mana](Player* p, Card*) {
         if (p) {
