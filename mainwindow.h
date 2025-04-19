@@ -39,20 +39,17 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-
     Player* userPlayer;
     Player* enemyPlayer;
 
     CardButton* currentSelectedCard = nullptr;
 
+    QMap<ManaType, QList<CardButton*>> landGroups;
+
     MainWindow(gamemanager *game, QWidget *parent = nullptr);
     ~MainWindow();
 
     QVector<CardButton*> activeCards;
-
-    // CardButton* currentCard;
-
-    QMap<ManaType, QVector<CardButton*>> manaLayout;
 
     QVector<Card*> selectedCards;
     QVector<CardButton*> selectedButtons;
@@ -62,6 +59,7 @@ public:
 
     void showAllCards();
 
+
 public slots:
 
     /**
@@ -70,7 +68,7 @@ public slots:
      * the specified zone on the window
      * @param zone
      */
-    void cardMovedFromLibray(Card*, QString zone);
+    void cardMovedFromLibrary(Card*, QString zone);
 
     /**
      * @brief cardZoneChanged changes the placement
@@ -95,6 +93,10 @@ public slots:
      */
     void updateMagnifier(Card* card);
 
+    void on_playCardButton_clicked();
+
+    void showLandPopup(ManaType type);
+
 signals:
 
     void sendCombatCards(QMap<Card*, QVector<Card*>> combatCards);
@@ -116,6 +118,25 @@ private:
     void handlePhase();
 
     bool isTargeting;
+
+    bool isLand(Card* card);
+    bool isCreature(Card* card);
+
+    QString parseDescription(Card* card);
+
+    // FOR TESTING PURPOSES
+    Card card1;
+    Card card2;
+    Card card3;
+    Card card4;
+    Card card5;
+    Card card6;
+    Card card7;
+    void setupHand();
+    bool createFlag = true;
+    Player user;
+    GameState state;
+
 };
 
 
