@@ -133,6 +133,9 @@ private:
     Card card5;
     Card card6;
     Card card7;
+    Card card8;
+    Card card9;
+    Card card10;
     void setupHand();
     bool createFlag = true;
 

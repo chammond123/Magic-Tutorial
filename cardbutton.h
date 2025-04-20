@@ -13,6 +13,7 @@ public:
     explicit CardButton(Card* card, QWidget* parent = nullptr);
 
     QPixmap getOverlayedPixmap(int selectionIndex);
+    void enableCard(bool enabled);
 
 signals:
     void cardSelected(CardButton* button);
@@ -22,6 +23,7 @@ protected:
     void mousePressEvent(QMouseEvent* event) override;
     void enterEvent(QEnterEvent* event) override;
     void resizeEvent(QResizeEvent* event) override;
+
 
 public slots:
     void resetCard();

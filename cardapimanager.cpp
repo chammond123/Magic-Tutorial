@@ -224,6 +224,8 @@ Card CardAPIManager::parseCardFromJson(const QJsonObject &cardJson)
                             card.type == CardType::ENCHANTMENT ||
                             card.type == CardType::PLANESWALKER ||
                             card.type == CardType::LAND);
+
+        card.isLand = (card.type == CardType::LAND);
     }
 
     if (card.type == CardType::CREATURE) {
