@@ -96,11 +96,13 @@ public slots:
 
     void on_playCardButton_clicked();
 
-    void showLandPopup(ManaType type);
+    void cardBeingTapped(CardButton* card, bool tapped);
 
 signals:
 
     void sendCombatCards(QMap<Card*, QVector<Card*>> combatCards);
+
+    // void allowTap(bool nextState);
 
 private:
     Ui::MainWindow *ui;
@@ -124,6 +126,12 @@ private:
     bool isCreature(Card* card);
 
     QString parseDescription(Card* card);
+
+
+    //For mana zone
+    void showLandPopup(ManaType type);
+    void updateManaButton(ManaType type);
+
 
     // FOR TESTING PURPOSES
     Card card1;

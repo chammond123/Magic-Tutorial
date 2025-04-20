@@ -57,6 +57,11 @@ void CardButton::resetCard(){
 void CardButton::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
         emit cardSelected(this); // let MainWindow handle exclusive selection
+        qDebug() << "left click called";
+    } else if (event->button() == Qt::RightButton){
+        // setTapped(!tapped);  // Toggle tap state
+        emit cardTapped(this, tapped);
+        qDebug() << "right click called";
     }
     // QPushButton::mousePressEvent(event);
 }
@@ -73,6 +78,7 @@ void CardButton::resizeEvent(QResizeEvent* event) {
         this->size() - QSize(6,6), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     this->setIcon(QIcon(pixmap));
     this->setIconSize(this->size()- QSize(6,6));
+    updateTapped();
 }
 
 QPixmap CardButton::getOverlayedPixmap(int selectionIndex) {
@@ -95,6 +101,38 @@ QPixmap CardButton::getOverlayedPixmap(int selectionIndex) {
 
     painter.end();
     return overlayed;
+}
+
+void CardButton::setTapped(bool t) {
+    tapped = t;
+    updateTapped();
+}
+
+void CardButton::updateTapped() {
+    QImage baseImage = cardPtr->image;
+
+    if (tapped) {
+        // Create a darkened copy of the image
+        QImage darkened = baseImage;
+        for (int y = 0; y < darkened.height(); ++y) {
+            for (int x = 0; x < darkened.width(); ++x) {
+                QColor color = darkened.pixelColor(x, y);
+                color = color.darker(180);  // 80% dark
+                darkened.setPixelColor(x, y, color);
+            }
+        }
+        baseImage = darkened;
+    }
+
+    // 🟡 Critical fix: always scale AFTER modifying the image
+    QPixmap pixmap = QPixmap::fromImage(baseImage).scaled(
+        this->size() - QSize(6, 6),
+        Qt::KeepAspectRatio,
+        Qt::SmoothTransformation
+        );
+
+    this->setIcon(QIcon(pixmap));
+    this->setIconSize(this->size() - QSize(6, 6));  // Match scaled size
 }
 
 

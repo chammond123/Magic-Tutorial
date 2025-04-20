@@ -10,6 +10,7 @@
 #include <QMessageBox>
 #include <type.h>
 #include <QScrollArea>
+#include <QIcon>
 
 MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -56,6 +57,28 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     });
 
     // connect(ui->playCardButton, &QPushButton::clicked, this, &MainWindow::on_playCardButton_clicked);
+
+    //update Icon for zones
+    ui->playerDeck->setFixedSize(100,140);
+    ui->playerDeck->setPixmap(QPixmap(":/Icons/Icons/BackCard.png").scaled(ui->playerDeck->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
+    //set up for mana
+    // int landCount = landGroups[ManaType::RED].size();
+    // ui->playerRedIcon->setText(QString(" %1").arg(landCount));
+    ui->playerRedIcon->setText("0");
+    ui->playerRedIcon->setIcon(QIcon(":/Icons/Icons/Red.png"));
+
+    ui->playerBlackIcon->setText("0");
+    ui->playerBlackIcon->setIcon(QIcon(":/Icons/Icons/Black.png"));
+
+    ui->playerWhiteIcon->setText("0");
+    ui->playerWhiteIcon->setIcon(QIcon(":/Icons/Icons/white.png"));
+
+    ui->playerGreenIcon->setText("0");
+    ui->playerGreenIcon->setIcon(QIcon(":/Icons/Icons/Green.png"));
+
+    ui->playerBlueIcon->setText("0");
+    ui->playerBlueIcon->setIcon(QIcon(":/Icons/Icons/Blue.png"));
 
     connect(ui->playerRedIcon, &QPushButton::clicked, this, [=]() {
         showLandPopup(ManaType::RED);
@@ -192,6 +215,37 @@ QString MainWindow::manaTypeToString(ManaType type) {
     }
 }
 
+// Need to add more logic
+void MainWindow::cardBeingTapped(CardButton* cardButton, bool tapped){
+    // check with game state to allow the card to be tapped or untapped
+    //Now just hard coded for testing
+    if(currentSelectedCard != cardButton){
+        handleCardSelected(cardButton);
+    }
+    qDebug() << currentSelectedCard->cardName;
+    currentSelectedCard->setTapped(!tapped);
+
+    //add logic if card is a land
+    // add logic if card is a creature
+}
+
+void MainWindow::updateManaButton(ManaType type) {
+    int count = landGroups[type].size();
+    QPushButton* button = nullptr;
+
+    switch (type) {
+        case ManaType::WHITE: button = ui->playerWhiteIcon; break;
+        case ManaType::BLUE:  button = ui->playerBlueIcon; break;
+        case ManaType::RED:  button = ui->playerRedIcon; break;
+        case ManaType::BLACK:  button = ui->playerBlackIcon; break;
+        case ManaType::GREEN:  button = ui->playerGreenIcon; break;
+    }
+
+    if (button) {
+        button->setText(QString(" %1").arg(count));
+    }
+}
+
 void MainWindow::showLandPopup(ManaType manaType){
     QDialog* dialog = new QDialog(this);
     dialog->setWindowTitle("Lands: " + manaTypeToString(manaType));
@@ -205,9 +259,8 @@ void MainWindow::showLandPopup(ManaType manaType){
     qDebug() << manaTypeToString(manaType);
 
     for (CardButton* land : landGroups[manaType]) {
-        qDebug() << "not added";
+        qDebug() << land->tapped;
         layout->addWidget(land);
-        qDebug() << "added";
     }
 
 
@@ -250,6 +303,7 @@ void MainWindow::on_playCardButton_clicked(){
         currentSelectedCard->setParent(this);
 
         // Add to land group
+        // Hard coded need to change
         landGroups[ManaType::RED].append(currentSelectedCard);
 
         currentSelectedCard->setChecked(false);
@@ -257,6 +311,9 @@ void MainWindow::on_playCardButton_clicked(){
 
         qDebug() << "Played land to mana stack.";
         qDebug() << ui->playerHand->count();
+
+        // Hard coded need to change
+        updateManaButton(ManaType::RED);
     }
 
     else if (card->isPermanent){
@@ -446,11 +503,11 @@ void MainWindow::updateUI(){
         // Set the Mana
         for (auto [color, amount] : currPlayer->manaPool.toStdMap()){
             switch (color) {
-            case ManaType::RED:   layout.red->setText(QString::number(amount));
-            case ManaType::BLUE:  layout.blue->setText(QString::number(amount));
-            case ManaType::GREEN: layout.green->setText(QString::number(amount));
-            case ManaType::BLACK: layout.black->setText(QString::number(amount));
-            case ManaType::WHITE: layout.white->setText(QString::number(amount));
+            case ManaType::RED:   layout.red->setText(QString("Red Mana: ") + QString::number(amount));
+            case ManaType::BLUE:  layout.blue->setText(QString("Blue Mana: ") + QString::number(amount));
+            case ManaType::GREEN: layout.green->setText(QString("Green Mana: ") + QString::number(amount));
+            case ManaType::BLACK: layout.black->setText(QString("Black Mana: ") + QString::number(amount));
+            case ManaType::WHITE: layout.white->setText(QString("White Mana: ") + QString::number(amount));
             default:              break;
             }
         }
@@ -484,11 +541,13 @@ void MainWindow::updateZone(QGridLayout* container, Zone* zone){
 
         connect(cardButton, &CardButton::cardSelected, this, &MainWindow::handleCardSelected);
         connect(cardButton, &CardButton::hovered, this, &MainWindow::updateMagnifier);
+        connect(cardButton, &CardButton::cardTapped, this, &MainWindow::cardBeingTapped);
+        // connect(this, &MainWindow::allowTap, cardButton, &CardButton::setTapped);
         cardButton->setFixedSize(100, 140);
 
         if(card->type == CardType::LAND && zone->type == ZoneType::BATTLEFIELD){
             landGroups[card->color].append(cardButton);
-            ui->playerRed->setPixmap(QPixmap::fromImage(card->image).scaled(ui->playerRed->size()));
+            // ui->playerRed->setPixmap(QPixmap::fromImage(card->image).scaled(ui->playerRed->size()));
             currentSelectedCard = nullptr;
             continue;
         }
