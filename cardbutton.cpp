@@ -89,7 +89,7 @@ QPixmap CardButton::getOverlayedPixmap(int selectionIndex) {
     QPainter painter(&overlayed);
 
     // Step 1: Darken it
-    painter.fillRect(overlayed.rect(), QColor(0, 0, 0, 120));  // semi-transparent black
+    painter.fillRect(overlayed.rect(), QColor(0, 0, 0, 60));  // semi-transparent black
 
     // Step 2: Draw number
     QFont font = painter.font();
@@ -135,4 +135,23 @@ void CardButton::updateTapped() {
     this->setIconSize(this->size() - QSize(6, 6));  // Match scaled size
 }
 
+void CardButton::enableCard(bool enabled){
+    if(enabled){
+        resetCard();
+    }
+    else{
+        QPixmap original = QPixmap::fromImage(cardPtr->image).scaled(
+            this->size() - QSize(6,6), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
+        QPixmap overlayed = original;
+        QPainter painter(&overlayed);
+
+        painter.fillRect(overlayed.rect(), QColor(0, 0, 0, 120));
+
+        painter.end();
+        this->setIcon(overlayed);
+    }
+
+    QWidget::setEnabled(enabled);
+
+}

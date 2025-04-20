@@ -14,6 +14,7 @@ public:
     explicit CardButton(Card* card, QWidget* parent = nullptr);
 
     QPixmap getOverlayedPixmap(int selectionIndex);
+    void enableCard(bool enabled);
 
 private:
     void updateTapped();
@@ -28,6 +29,7 @@ signals:
     void cardSelected(CardButton* button);
     void hovered(Card* card);
     void cardTapped(CardButton* card, bool tapped);
+
 
 public slots:
     void resetCard();

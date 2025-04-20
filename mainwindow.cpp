@@ -24,6 +24,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     apiManager = new CardAPIManager(this);
     statePointer = game->state;
     userPlayer = statePointer->player1;
+    enemyPlayer = statePointer->player2;
 
     playerLayout = {
         ui->playerHand,
@@ -125,13 +126,17 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     });
 
     connect(ui->phaseButton, &QPushButton::clicked, this, [=](){
+        // TESTING, WILL REMOVE
         qDebug() << "Next Phase!";
         if (!statePointer) {
             qWarning() << "State pointer is null!";
             return;
         }
 
+        userPlayer->hasPlayedLand = false;
+
         statePointer->changePhase();
+        statePointer->changeActivePlayer();
         clearSelection();
         if (statePointer->currentPhase == Phase::DeclareAttackers){
             qDebug() << "Current Phase: Attacking";
@@ -139,7 +144,11 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
         else if (statePointer->currentPhase == Phase::DeclareBlockers){
             qDebug() << "Current Phase: Defending";
         }
+        updateUI();
     });
+
+    // TESTING
+    // connect(ui->targetButton, &QPushButton::clicked, this, &MainWindow::startTargeting);
 
     for(QString cardName : TextParser::getListFromText(QFile(":/text/additional_files/deck.txt"))){
         qDebug() << cardName;
@@ -171,6 +180,9 @@ void MainWindow::setupHand(){
     card5 = cardDictionary::getCard("Mountain");
     card6 = cardDictionary::getCard("Mountain");
     card7 = cardDictionary::getCard("Mountain");
+    card8 = cardDictionary::getCard("Hill Giant");
+    card9 = cardDictionary::getCard("Canyon Minotaur");
+    card10 = cardDictionary::getCard("Bonebreaker Giant");
 
     // Card* test = &card1;
     // Card* test1 = &card2;
@@ -190,6 +202,10 @@ void MainWindow::setupHand(){
     userPlayer->Hand.addCard(&card5, false);
     userPlayer->Hand.addCard(&card6, false);
     userPlayer->Hand.addCard(&card7, false);
+
+    enemyPlayer->Battlefield.addCard(&card8, false);
+    enemyPlayer->Battlefield.addCard(&card9, false);
+    enemyPlayer->Battlefield.addCard(&card10, false);
 
 
 
@@ -261,6 +277,10 @@ void MainWindow::showLandPopup(ManaType manaType){
     for (CardButton* land : landGroups[manaType]) {
         qDebug() << land->tapped;
         layout->addWidget(land);
+        if(land->isEnabled()){
+            land->enableCard(false);
+        }
+        qDebug() << "added";
     }
 
 
@@ -273,7 +293,9 @@ void MainWindow::showLandPopup(ManaType manaType){
     QVBoxLayout* mainLayout = new QVBoxLayout(dialog);
     mainLayout->addWidget(scrollArea);
     dialog->setLayout(mainLayout);
+
     dialog->exec();  // modal
+
 }
 
 void MainWindow::on_playCardButton_clicked(){
@@ -314,6 +336,8 @@ void MainWindow::on_playCardButton_clicked(){
 
         // Hard coded need to change
         updateManaButton(ManaType::RED);
+
+        userPlayer->hasPlayedLand = true;
     }
 
     else if (card->isPermanent){
@@ -324,9 +348,10 @@ void MainWindow::on_playCardButton_clicked(){
         currentSelectedCard = nullptr;
 
         qDebug() << "Played creature to battlefield.";
+        clearSelection();
     }
     else {
-        userPlayer->moveCardString(card, "hand", "graveyard", true);
+        userPlayer->moveCardString(card, "hand", "exile", true);
     }
     updateUI();
 }
@@ -446,6 +471,8 @@ void MainWindow::collectBlockers(){
 
 void MainWindow::updateUI(){
 
+    activeCards.clear();
+
     qDebug() << "updateUI called";
     QVector<Zone*> zones;
     ZoneLayout layout;
@@ -456,7 +483,7 @@ void MainWindow::updateUI(){
         return;
     }
 
-    for (int i = 0; i < 1; i++){
+    for (int i = 0; i < 2; i++){
 
         // Set the zones, layout, and player
         if (i == 0){
@@ -464,11 +491,11 @@ void MainWindow::updateUI(){
             layout = playerLayout;
             currPlayer = userPlayer;
         }
-        // else{
-        //     zones = enemyPlayer->getZones();
-        //     layout = enemyLayout;
-        //     currPlayer = enemyPlayer;
-        // }
+        else{
+            zones = enemyPlayer->getZones();
+            layout = enemyLayout;
+            currPlayer = enemyPlayer;
+        }
         if(!currPlayer){
             qDebug() << "Lost Player";
             break;
@@ -483,6 +510,7 @@ void MainWindow::updateUI(){
                 updateZone(layout.battlefield, zone);
             }
             else if (zone->type == ZoneType::GRAVEYARD){
+                // TODO: put graveyard cards into exile
                 Card* card = zone->drawTop();
                 if (!card){
                     continue;
@@ -491,6 +519,7 @@ void MainWindow::updateUI(){
                 layout.graveyard->setPixmap(image.scaled(layout.graveyard->size()));
             }
             else if (zone->type == ZoneType::EXILE){
+                // TODO: put exile cards into exile
                 Card* card = zone->drawTop();
                 if (!card){
                     continue;
@@ -515,9 +544,11 @@ void MainWindow::updateUI(){
         // Set the Health
         layout.health->setText(QString::number(currPlayer->health));
 
-        // handlePhase();
+        handlePhase();
 
         update();
+
+
     }
 }
 
@@ -555,7 +586,7 @@ void MainWindow::updateZone(QGridLayout* container, Zone* zone){
         container->addWidget(cardButton, 0, container->count(), Qt::AlignCenter);
 
     }
-    update();
+    // update();
 }
 
 
@@ -569,6 +600,7 @@ void MainWindow::clearSelection(){
             card->setChecked(false);
         }
     }
+    update();
 
 }
 
@@ -609,12 +641,11 @@ void MainWindow::handlePhase(){
         if(!isActive && rules.canDeclareDefense && card->type == CardType::CREATURE){
             shouldEnable = true;
         }
-        if(isActive && rules.canUntap && card->isLand && card->isTapped){
+        if(isActive && card->type == CardType::LAND && !userPlayer->hasPlayedLand){
             shouldEnable = true;
         }
         if(isActive && rules.canPlaySorcery &&
-                (card->type == CardType::LAND ||
-                 card->type == CardType::CREATURE ||
+                (card->type == CardType::CREATURE ||
                  card->type == CardType::ARTIFACT ||
                  card->type == CardType::ENCHANTMENT ||
                  card->type == CardType::PLANESWALKER ||
@@ -622,17 +653,18 @@ void MainWindow::handlePhase(){
             shouldEnable = true;
         }
 
-        button->setEnabled(shouldEnable);
+        button->enableCard(shouldEnable);
+        // update();
     }
 }
 
 void MainWindow::startTargeting(){
     isTargeting = true;
     // IMPLEMENT ISTARGETING IN CARD SELECTION
-    selectedCards.empty();
+    selectedCards.clear();
 
     for(CardButton* button : activeCards){
-        button->setEnabled(false);
+        button->enableCard(false);
     }
 
     QGridLayout* targetZone = ui->enemyBattlefield;
@@ -642,7 +674,7 @@ void MainWindow::startTargeting(){
         QLayoutItem* item = targetZone->itemAt(i);
         QWidget* widget = item->widget();
         CardButton* button = qobject_cast<CardButton*>(widget);
-        button->setEnabled(true);
+        button->enableCard(true);
     }
 }
 
