@@ -14,7 +14,7 @@ public:
     GameState* state;
 
     Command(GameState* state, Player* player);
-    virtual ~Command();
+    virtual ~Command() noexcept;
 
     virtual void execute() = 0;
     virtual bool isValid() = 0;

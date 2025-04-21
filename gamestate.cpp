@@ -1,6 +1,8 @@
 #include "gamestate.h"
 
-GameState::GameState(){}
+GameState::GameState(){
+    currentPhase = Phase::Untap;
+}
 
 void GameState::changePhase(){
     if (currentPhaseIndex >= phases.size() - 1){
