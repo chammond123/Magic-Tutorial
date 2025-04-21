@@ -30,8 +30,8 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     playerLayout = {
         ui->playerHand,
         ui->playerBattlefield,
-        ui->playerGraveyard,
-        ui->playerExile,
+        ui->playerGraveyard2,
+        ui->playerExile2,
         ui->playerRed,
         ui->playerGreen,
         ui->playerBlue,
@@ -60,7 +60,20 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
 
     // connect(ui->playCardButton, &QPushButton::clicked, this, &MainWindow::on_playCardButton_clicked);
 
+    //Connect Exile and Graveyard
+    connect(ui->playerGraveyard, &QPushButton::clicked, this, [=]() {
+        showZoneDialog(&graveyardButtons, "Graveyard");
+        updateUI();
+    });
+
+    connect(ui->playerExile, &QPushButton::clicked, this, [=]() {
+        showZoneDialog(&exileButtons, "Exile");
+        updateUI();
+    });
+
     //update Icon for zones
+    ui->playerExile->setFixedSize(100,70);
+    ui->playerGraveyard->setFixedSize(100,70);
     ui->playerDeck->setFixedSize(100,140);
     ui->playerDeck->setPixmap(QPixmap(":/Icons/Icons/BackCard.png").scaled(ui->playerDeck->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
@@ -256,6 +269,7 @@ void MainWindow::updateManaButton(ManaType type) {
         case ManaType::RED:  button = ui->playerRedIcon; break;
         case ManaType::BLACK:  button = ui->playerBlackIcon; break;
         case ManaType::GREEN:  button = ui->playerGreenIcon; break;
+        default: break;
     }
 
     if (button) {
@@ -300,6 +314,37 @@ void MainWindow::showLandPopup(ManaType manaType){
 
     dialog->exec();  // modal
 
+}
+
+void MainWindow::showZoneDialog(QVector<CardButton*>* zoneCards, const QString& title) {
+    if (!zoneCards) return;
+
+    QDialog* dialog = new QDialog(this);
+    dialog->setWindowTitle(title);
+    dialog->setMinimumSize(600, 250);
+
+    QScrollArea* scrollArea = new QScrollArea(dialog);
+    scrollArea->setWidgetResizable(true);
+
+    QWidget* container = new QWidget;
+    QHBoxLayout* layout = new QHBoxLayout(container);
+
+
+    qDebug() << zoneCards->size();
+    for (CardButton* cardButton : *zoneCards) {
+        qDebug() << "Enter loop";
+        cardButton->setParent(container);   // move it into the dialog
+        cardButton->setVisible(true);       // ensure it's shown
+        layout->addWidget(cardButton);      // attach to layout
+    }
+
+    scrollArea->setWidget(container);
+
+    QVBoxLayout* mainLayout = new QVBoxLayout(dialog);
+    mainLayout->addWidget(scrollArea);
+    dialog->setLayout(mainLayout);
+
+    dialog->exec();  // modal popup
 }
 
 void MainWindow::on_playCardButton_clicked(){
@@ -509,6 +554,7 @@ void MainWindow::updateUI(){
                 }
                 QPixmap image = QPixmap::fromImage(card->image);
                 layout.graveyard->setPixmap(image.scaled(layout.graveyard->size()));
+                updateZone(nullptr, zone);
             }
             else if (zone->type == ZoneType::EXILE){
                 // TODO: put exile cards into exile
@@ -518,8 +564,13 @@ void MainWindow::updateUI(){
                 }
                 QPixmap image = QPixmap::fromImage(card->image);
                 layout.exile->setPixmap(image.scaled(layout.exile->size()));
+                updateZone(nullptr, zone);
             }
         }
+
+        // update Stack zone
+        //need to implement stackZone
+        // updateZone(ui->stack, //zone);
 
         qDebug() << "update Mana";
         // Set the Mana
@@ -549,16 +600,43 @@ void MainWindow::updateUI(){
 void MainWindow::updateZone(QGridLayout* container, Zone* zone){
     qDebug() << "Updating Zone";
 
-    if (container == nullptr){
-        return;
-    }
-    // Clear Zone
-    QLayoutItem* item;
-    while((item = container->takeAt(0)) != nullptr){
-        if (item->widget()){
-            delete item->widget();
+    //Testing purpose
+    if(zone->type != ZoneType::GRAVEYARD && zone->type != ZoneType::EXILE){
+        if (container == nullptr){
+            return;
         }
-        delete item;
+
+        // Clear Zone
+        QLayoutItem* item;
+        while((item = container->takeAt(0)) != nullptr){
+            if (item->widget()){
+                delete item->widget();
+            }
+            delete item;
+        }
+    }
+
+
+    // if (container == nullptr){
+    //     return;
+    // }
+
+    // // Clear Zone
+    // QLayoutItem* item;
+    // while((item = container->takeAt(0)) != nullptr){
+    //     if (item->widget()){
+    //         delete item->widget();
+    //     }
+    //     delete item;
+    // }
+
+    // should we another container and another Stack zone so we can move cardButton from player hand to the stack before hitting the field?
+
+    //Clear out the vector containing card in graveyard and exile
+    if (zone->type == ZoneType::GRAVEYARD) {
+        graveyardButtons.clear();
+    } else if (zone->type == ZoneType::EXILE) {
+        exileButtons.clear();
     }
 
     for(Card* card : *zone){
@@ -568,7 +646,7 @@ void MainWindow::updateZone(QGridLayout* container, Zone* zone){
         connect(cardButton, &CardButton::cardSelected, this, &MainWindow::handleCardSelected);
         connect(cardButton, &CardButton::hovered, this, &MainWindow::updateMagnifier);
         connect(cardButton, &CardButton::cardTapped, this, &MainWindow::cardBeingTapped);
-        // connect(this, &MainWindow::allowTap, cardButton, &CardButton::setTapped);
+
         cardButton->setFixedSize(100, 140);
 
         if(card->type == CardType::LAND && zone->type == ZoneType::BATTLEFIELD){
@@ -578,7 +656,22 @@ void MainWindow::updateZone(QGridLayout* container, Zone* zone){
             continue;
         }
 
-        container->addWidget(cardButton, 0, container->count(), Qt::AlignCenter);
+        // add cardButton to its vector
+        if (zone->type == ZoneType::GRAVEYARD) {
+            qDebug() << "card appened";
+            graveyardButtons.append(cardButton);
+        } else if (zone->type == ZoneType::EXILE) {
+            qDebug() << "card appened";
+            exileButtons.append(cardButton);
+        }
+
+
+        //Test
+        if(zone->type != ZoneType::GRAVEYARD && zone->type != ZoneType::EXILE){
+            container->addWidget(cardButton, 0, container->count(), Qt::AlignCenter);
+        }
+
+        // container->addWidget(cardButton, 0, container->count(), Qt::AlignCenter);
 
     }
     // update();
