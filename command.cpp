@@ -1,5 +1,9 @@
 #include "command.h"
 #include "stackobject.h"
+#include "player.h"
+#include "gamestate.h"
+#include "card.h"
+
 Command::Command(GameState* state, Player* player) : state(state), player(player){}
 Command::~Command() {}
 

@@ -1,9 +1,10 @@
 #ifndef COMMAND_H
 #define COMMAND_H
 
-#include "gamestate.h"
-#include "player.h"
+class Player;
+class GameState;
 #include "card.h"
+
 #include <QVector>
 
 class Command
@@ -13,16 +14,10 @@ public:
     GameState* state;
 
     Command(GameState* state, Player* player);
-    // Command(GameState* state, Player* player, Card* card, QVector<Card*>* targets);
     virtual ~Command();
 
     virtual void execute() = 0;
     virtual bool isValid() = 0;
-
-    // Player* player;
-    // GameState* state;
-    // Card* card;
-    // QVector<Card*>* targets;
 };
 
 class drawCommand : public Command{

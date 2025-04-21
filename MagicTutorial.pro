@@ -22,6 +22,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     player.cpp \
+    scenebot.cpp \
     textparser.cpp \
     type.cpp \
     zone.cpp
@@ -39,6 +40,7 @@ HEADERS += \
     mainwindow.h \
     phase.h \
     player.h \
+    scenebot.h \
     stackobject.h \
     textparser.h \
     type.h \
