@@ -1,6 +1,9 @@
 #include "gamestate.h"
 
-GameState::GameState(){}
+GameState::GameState(){
+    // TODO: UPDATE LOGIC, this is just a temporary fix in the meantime
+    currentPhase = Phase::Untap;
+}
 
 void GameState::changePhase(){
     if (currentPhaseIndex >= phases.size() - 1){
@@ -179,6 +182,9 @@ PhaseRules GameState::getPhaseRules(){
         return PhaseRules{false, false, false, false, false, true, false};
         // Player discards excess cards
         break;
+    default:
+        qDebug() << "Warning: Unhandled phase in getPhaseRules!";
+        return PhaseRules{}; // return default (all false)
     }
 }
 bool GameState::stackIsEmpty(){

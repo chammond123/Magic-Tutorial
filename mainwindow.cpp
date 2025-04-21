@@ -4,6 +4,7 @@
 #include "carddictionary.h"
 #include "gamemanager.h"
 #include "textparser.h"
+#include "phase.h"
 #include <QTimer>
 #include <QDebug>
 #include <QtGui/qevent.h>
@@ -148,7 +149,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     });
 
     // TESTING
-    // connect(ui->targetButton, &QPushButton::clicked, this, &MainWindow::startTargeting);
+    connect(ui->targetButton, &QPushButton::clicked, this, &MainWindow::startTargeting);
 
     for(QString cardName : TextParser::getListFromText(QFile(":/text/additional_files/deck.txt"))){
         qDebug() << cardName;
@@ -241,7 +242,7 @@ void MainWindow::cardBeingTapped(CardButton* cardButton, bool tapped){
     qDebug() << currentSelectedCard->cardName;
     currentSelectedCard->setTapped(!tapped);
 
-    //add logic if card is a land
+    // add logic if card is a land
     // add logic if card is a creature
 }
 
@@ -278,6 +279,9 @@ void MainWindow::showLandPopup(ManaType manaType){
         qDebug() << land->tapped;
         layout->addWidget(land);
         if(land->isEnabled()){
+            land->enableCard(true);
+        }
+        else{
             land->enableCard(false);
         }
         qDebug() << "added";
@@ -355,18 +359,6 @@ void MainWindow::on_playCardButton_clicked(){
     }
     updateUI();
 }
-
-
-// void MainWindow::cardMovedFromLibrary(Card* card, QString zone){
-//     CardButton* cardButton = new CardButton(card);
-//     connect(cardButton, &CardButton::cardSelected, this, &MainWindow::handleCardSelected);
-//     connect(cardButton, &CardButton::hovered, this, &MainWindow::updateMagnifier);
-//     cardButton->setFixedSize(100, 140);
-
-//     if(zone == "hand"){
-//         ui->playerHand->addWidget(cardButton, 0, ui->playerHand->count(), Qt::AlignCenter);
-//     }
-// }
 
 void MainWindow::handleCardSelected(CardButton* clicked) {
     if(statePointer->currentPhase == Phase::DeclareAttackers ||
@@ -529,6 +521,7 @@ void MainWindow::updateUI(){
             }
         }
 
+        qDebug() << "update Mana";
         // Set the Mana
         for (auto [color, amount] : currPlayer->manaPool.toStdMap()){
             switch (color) {
@@ -541,18 +534,20 @@ void MainWindow::updateUI(){
             }
         }
 
+        qDebug() << "update Health";
+
         // Set the Health
         layout.health->setText(QString::number(currPlayer->health));
 
+        qDebug() << "update Phases";
         handlePhase();
-
         update();
-
-
+        qDebug() << "updateUI has finished";
     }
 }
 
 void MainWindow::updateZone(QGridLayout* container, Zone* zone){
+    qDebug() << "Updating Zone";
 
     if (container == nullptr){
         return;
@@ -591,12 +586,13 @@ void MainWindow::updateZone(QGridLayout* container, Zone* zone){
 
 
 void MainWindow::clearSelection(){
+    qDebug() << "clearing Selection";
 
     selectedButtons.clear();
     currentSelectedCard = nullptr;
 
     for(CardButton* card : activeCards){
-        if(!card){
+        if(card){
             card->setChecked(false);
         }
     }
@@ -622,12 +618,34 @@ void MainWindow::extractCombatants(QMap<CardButton*, QVector<CardButton*>> packe
 }
 
 void MainWindow::handlePhase(){
+    if (!statePointer) {
+        qDebug() << "Error: statePointer is null in handlePhase";
+        return;
+    }
+
     PhaseRules rules = statePointer->getPhaseRules();
+
+    if (!userPlayer) {
+        qDebug() << "Error: userPlayer is null in handlePhase";
+        return;
+    }
+
     bool isActive = userPlayer->isActivePlayer;
+    qDebug() << "Handling Phases";
 
     for (CardButton* button : activeCards){
+        if (!button) {
+            qDebug() << "Warning: Null button found in activeCards";
+            continue;
+        }
         Card* card = button->cardPtr;
         bool shouldEnable = false;
+
+        if (!button->cardPtr) {
+            qDebug() << "Warning: Null card pointer in button";
+            button->enableCard(false);
+            continue;
+        }
 
         if(rules.canPlayInstant && card->type == CardType::INSTANT){
             shouldEnable = true;
