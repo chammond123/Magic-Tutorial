@@ -3,6 +3,7 @@
 #include "player.h"
 #include "gamestate.h"
 #include "card.h"
+#include "bot.h"
 
 Command::Command(GameState* state) : state(state){}
 Command::~Command() {}
@@ -29,9 +30,10 @@ void passPriorityCommand::execute(){
     if (!player->madeAction){
         state->resolveStack();
     }
-    // if (state->hasBotPlayer){
-    //     state->player2->
-    // }
+    Bot* botPlayer = dynamic_cast<Bot*>(state->player2);
+    if (botPlayer){
+        botPlayer->takeTurn(state);
+    }
     state->changePriority();
 }
 

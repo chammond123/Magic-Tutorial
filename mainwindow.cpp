@@ -13,6 +13,8 @@
 #include <type.h>
 #include <QScrollArea>
 #include <QIcon>
+#include <QGraphicsView>
+#include <QGraphicsPixmapItem>
 
 MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -238,6 +240,9 @@ QString MainWindow::manaTypeToString(ManaType type) {
 
 // Need to add more logic
 void MainWindow::cardBeingTapped(CardButton* cardButton, bool tapped){
+    //Test on game end
+    onGameEnded(true);
+
     // check with game state to allow the card to be tapped or untapped
     //Now just hard coded for testing
     if(currentSelectedCard != cardButton){
@@ -376,7 +381,7 @@ void MainWindow::on_playCardButton_clicked(){
         currentSelectedCard->setParent(this);
 
         // Add to land group
-        // Hard coded need to change
+        // TODO: Hard coded need to change
         landGroups[ManaType::RED].append(currentSelectedCard);
 
         currentSelectedCard->setChecked(false);
@@ -826,3 +831,79 @@ void MainWindow::overlayCards(){
         currButton->setIcon(QIcon(newIcon));
     }
 }
+
+void MainWindow::onGameEnded(bool playerWon) {
+    endWorld = new b2World(b2Vec2(0, 0));  // no gravity
+
+    endScene = new QGraphicsScene(this);
+    endView = new QGraphicsView(endScene, this);
+    endView->setGeometry(this->rect());
+    endView->setStyleSheet("background: transparent;");
+    // endView->setFrameShape(QFrame::NoFrame);
+    // endView->setSceneRect(0, 0, width(), height());
+    // endView->setAttribute(Qt::WA_TransparentForMouseEvents);
+    // endView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    endView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    endView->show();
+
+    // 3. Spawn cards from the center and push outward
+    for (int i = 0; i < 30; ++i) {
+        QPixmap pix(":/Icons/Icons/BackCard.png");
+        QGraphicsPixmapItem* card = endScene->addPixmap(pix.scaled(60, 90));
+        card->setOffset(-30, -45);  // center origin
+        card->setPos(width() / 2, height() / 2);
+
+        b2BodyDef def;
+        def.type = b2_dynamicBody;
+        def.position.Set(width() / 2, height() / 2);
+        def.angle = (rand() % 360) * b2_pi / 180.0f;
+
+        b2Body* body = endWorld->CreateBody(&def);
+
+        b2PolygonShape shape;
+        shape.SetAsBox(30, 45);
+
+        b2FixtureDef fixture;
+        fixture.shape = &shape;
+        fixture.density = 1.0f;
+        fixture.restitution = 0.8f;
+        body->CreateFixture(&fixture);
+
+        //Explosion
+        float x = (rand());
+        float y = (rand());
+        body->ApplyLinearImpulse(b2Vec2(x, y), body->GetWorldCenter(), true);
+
+        endfallingCards.append(qMakePair(card, body));
+    }
+
+    // Message
+    QLabel* label = new QLabel(this);
+    label->setText(playerWon ? "🎉 You Win! 🎉" : "😞 You Lose 😞");
+    label->setStyleSheet("color: white; background-color: rgba(0,0,0,180); font-size: 28px; padding: 20px; border-radius: 10px;");
+    label->setAlignment(Qt::AlignCenter);
+    label->setGeometry((width() - 300) / 2, height() / 2 - 60, 300, 80);
+    label->raise();
+    label->show();
+
+
+    endTimer = new QTimer(this);
+    connect(endTimer, &QTimer::timeout, this, &MainWindow::updateEndExplosion);
+    endTimer->start(20);
+}
+
+void MainWindow::updateEndExplosion() {
+    endWorld->Step(1.0 / 30.0, 3, 1);
+
+    for (auto& pair : endfallingCards) {
+        QGraphicsPixmapItem* card = pair.first;
+        b2Body* body = pair.second;
+
+        b2Vec2 pos = body->GetPosition();
+        float angle = body->GetAngle();
+
+        card->setPos(pos.x, pos.y);
+        card->setRotation(angle * 180 / b2_pi);
+    }
+}
+

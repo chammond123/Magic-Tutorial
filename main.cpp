@@ -6,6 +6,8 @@
 #include "card.h"
 #include "cardapimanager.h"
 #include <QProgressDialog>
+#include "bot.h"
+
 #include <QDebug>
 #include <QApplication>
 
@@ -39,21 +41,36 @@ int main(int argc, char *argv[])
 
     QObject::connect(&loadScreen, &loadScreen::loadingComplete, [&]() {
 
-        Player *userPlayer = new Player(playerDeckList);
-        userPlayer->isActivePlayer = true;
-        userPlayer->holdingPriority = true;
+        // Player *userPlayer = new Player(playerDeckList);
+        // userPlayer->isActivePlayer = true;
+        // userPlayer->holdingPriority = true;
 
-        Player *enemyPlayer = new Player(playerDeckList);
-        enemyPlayer->isActivePlayer = false;
-        enemyPlayer->holdingPriority = false;
+        // Player *enemyPlayer = new Player(playerDeckList);
+        // enemyPlayer->isActivePlayer = false;
+        // enemyPlayer->holdingPriority = false;
 
+        // qDebug() << "made it through deck initialization.";
+
+        // GameState *originalState = new GameState();
+        // // GameState secondState;
+
+        // originalState->player1 = userPlayer;
+        // originalState->player2 = enemyPlayer;
+        Player userPlayer(playerDeckList);
+        Bot bot(playerDeckList);
+        // for testing
+        userPlayer.isActivePlayer = true;
+        userPlayer.holdingPriority = true;
+        Player enemyPlayer(playerDeckList);
+        // for testing
+        enemyPlayer.isActivePlayer = false;
+        enemyPlayer.holdingPriority = false;
         qDebug() << "made it through deck initialization.";
+        GameState originalState;
+        GameState secondState;
 
-        GameState *originalState = new GameState();
-        // GameState secondState;
-
-        originalState->player1 = userPlayer;
-        originalState->player2 = enemyPlayer;
+        originalState.player1 = &userPlayer;
+        originalState.player2 = &bot;
 
         // Crafted Gamestate
         // another crafted gamestate
