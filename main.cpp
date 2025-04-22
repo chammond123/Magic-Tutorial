@@ -4,6 +4,7 @@
 #include "carddictionary.h"
 #include "card.h"
 #include "cardapimanager.h"
+#include "bot.h"
 
 #include <QDebug>
 #include <QApplication>
@@ -32,6 +33,7 @@ int main(int argc, char *argv[])
     apiManager->fetchCardsByNames(deckList);
 
     Player userPlayer(deckList);
+    Bot bot(deckList);
     // for testing
     userPlayer.isActivePlayer = true;
     userPlayer.holdingPriority = true;
@@ -44,7 +46,7 @@ int main(int argc, char *argv[])
     GameState secondState;
 
     originalState.player1 = &userPlayer;
-    originalState.player2 = &enemyPlayer;
+    originalState.player2 = &bot;
 
         // Crafted Gamestate
         // another crafted gamestate

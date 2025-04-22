@@ -9,21 +9,25 @@ void Bot::takeTurn(GameState* gameState) {
     switch (gameState->currentPhase) {
     case Phase::PreCombatMain:
         playCard(gameState);
+        passTurn(gameState);
         break;
     case Phase::DeclareAttackers:
         declareAttackers(gameState);
+        passTurn(gameState);
         break;
     case Phase::DeclareBlockers:
         declareBlockers(gameState);
+        passTurn(gameState);
         break;
     case Phase::PostCombatMain:
         playCard(gameState);
+        passTurn(gameState);
         break;
     case Phase::EndStep:
         endTurn(gameState);
+        passTurn(gameState);
         break;
     default:
-        passTurn(gameState);
         break;
     }
 }
