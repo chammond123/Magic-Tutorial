@@ -12,16 +12,6 @@ void drawCommand::execute(){
     Player* player = state->getPriorityPlayer();
     player->drawCard();
 }
-bool drawCommand::isValid(){
-    Player* player = state->getPriorityPlayer();
-    PhaseRules rules = state->getPhaseRules();
-    if (player->isActivePlayer && rules.canDraw && player->hasntDrawnForTurn){
-        return true;
-    }
-    else{
-        return false;
-    }
-}
 
 playCardCommand::playCardCommand(GameState* state, Card* card, Card* target) :
     Command(state), card(card), target(target){}
@@ -34,22 +24,6 @@ void playCardCommand::execute(){
     else{
         player->useMana(card);
         state->addToStack(StackObject{state->getPriorityPlayer(), card, target});
-    }
-}
-bool playCardCommand::isValid(){
-    Player* player = state->getPriorityPlayer();
-    PhaseRules rules = state->getPhaseRules();
-    if (player->isActivePlayer && rules.canPlaySorcery && card->isLand){
-        return true;
-    }
-    else if (player->isActivePlayer && rules.canPlaySorcery && state->stackIsEmpty() && player->canPayMana(card)){
-        return true;
-    }
-    else if (rules.canPlayInstant && player->canPayMana(card)){
-        return true;
-    }
-    else{
-        return false;
     }
 }
 
@@ -66,15 +40,6 @@ void passPriorityCommand::execute(){
     // }
     state->changePriority();
 }
-bool passPriorityCommand::isValid(){
-    Player* player = state->getPriorityPlayer();
-    if (player->holdingPriority){
-        return true;
-    }
-    else{
-        return false;
-    }
-}
 
 changePhaseCommand::changePhaseCommand(GameState* state) :
     Command(state){}
@@ -82,23 +47,11 @@ void changePhaseCommand::execute(){
     qDebug() << "Change Phase executed";
     state->changePhase();
 }
-bool changePhaseCommand::isValid(){
-    Player* player = state->getPriorityPlayer();
-    if (player->isActivePlayer && player->holdingPriority && state->stackIsEmpty()){
-        return true;
-    }
-    else{
-        return false;
-    }
-}
 
 declareCombatCommand::declareCombatCommand(GameState* state, QMap<Card*, QVector<Card*>> CombatCreatures) :
     Command(state), CombatCreatures(CombatCreatures){}
 void declareCombatCommand::execute(){
     state->resolveCombatDamage(CombatCreatures);
-}
-bool declareCombatCommand::isValid(){
-    return true; // TODO: figure out how to validate this
 }
 
 tapCardCommand::tapCardCommand(GameState* state, Card* card) :
@@ -106,12 +59,4 @@ tapCardCommand::tapCardCommand(GameState* state, Card* card) :
 void tapCardCommand::execute(){
     Player* player = state->getPriorityPlayer();
     player->tapCard(card);
-}
-bool tapCardCommand::isValid(){
-    if (card->isLand){
-        return true;
-    }
-    else{
-        return false;
-    }
 }

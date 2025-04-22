@@ -16,7 +16,6 @@ public:
     virtual ~Command() noexcept;
 
     virtual void execute() = 0;
-    virtual bool isValid() = 0;
 };
 
 class drawCommand : public Command{
@@ -24,9 +23,7 @@ public:
     drawCommand(GameState* state);
 
     virtual void execute();
-    virtual bool isValid();
 };
-
 class playCardCommand : public Command{
 public:
     Card* card;
@@ -34,7 +31,6 @@ public:
     playCardCommand(GameState* state, Card* card, Card* target);
 
     virtual void execute();
-    virtual bool isValid();
 };
 
 class passPriorityCommand : public Command{
@@ -42,7 +38,6 @@ public:
     passPriorityCommand(GameState* state);
 
     virtual void execute();
-    virtual bool isValid();
 };
 
 class changePhaseCommand : public Command{
@@ -50,7 +45,6 @@ public:
     changePhaseCommand(GameState* state);
 
     virtual void execute();
-    virtual bool isValid();
 };
 
 class declareCombatCommand : public Command{
@@ -59,7 +53,6 @@ public:
     declareCombatCommand(GameState* state, QMap<Card*, QVector<Card*>> CombatCreatures);
 
     virtual void execute();
-    virtual bool isValid();
 };
 
 class tapCardCommand : public Command{
@@ -68,7 +61,6 @@ public:
     tapCardCommand(GameState* state, Card* card);
 
     virtual void execute();
-    virtual bool isValid();
 };
 
 #endif // COMMAND_H

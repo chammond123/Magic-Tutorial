@@ -50,10 +50,6 @@ void GameState::changePhase(){
 }
 
 void GameState::changePriority(){
-    qDebug() << "entered change priority";
-    qDebug() << "pre-execution:";
-    qDebug() << player1->holdingPriority;
-    qDebug() << player2->holdingPriority;
     if(player1->holdingPriority){
         player1->madeAction = false;
         player2->holdingPriority = true;
@@ -64,19 +60,18 @@ void GameState::changePriority(){
         player1->holdingPriority = true;
         player2->holdingPriority = false;
     }
-    qDebug() << "post-execution:";
-    qDebug() << player1->holdingPriority;
-    qDebug() << player2->holdingPriority;
 }
 
 void GameState::changeActivePlayer(){
     if (player1->isActivePlayer){
         player2->holdingPriority = true;
+        player1->holdingPriority = false;
         player2->isActivePlayer = true;
         player1->isActivePlayer = false;
     }
     else{
         player1->holdingPriority = true;
+        player2->holdingPriority = false;
         player1->isActivePlayer = true;
         player2->isActivePlayer = false;
     }
@@ -248,24 +243,22 @@ void GameState::validateBattlefield(Player* player){
 }
 
 void GameState::validatePlayerActions(Player* player){
-
-
+    player->canDrawCard = false;
+    player->canPassPriority = false;
+    player->canChangePhase = false;
+    qDebug() << "active player check:";
+    qDebug() << player->isActivePlayer;
+    qDebug() << player->holdingPriority;
+    qDebug() << theStack.empty();
     if (player->isActivePlayer && player->hasntDrawnForTurn){
         player->canDrawCard = true;
     }
-    qDebug() << "holdingPriority:" << player->holdingPriority;
     if (player->holdingPriority){
         player->canPassPriority = true;
     }
-    if (player->isActivePlayer && theStack.empty()){
+    if (player->isActivePlayer && theStack.empty() && player->holdingPriority){
         player->canChangePhase = true;
     }
-    else{
-        player->canDrawCard = false;
-        player->canPassPriority = false;
-        player->canChangePhase = false;
-    }
-    qDebug() << player->canChangePhase;
 }
 
 void GameState::getValidActions(){

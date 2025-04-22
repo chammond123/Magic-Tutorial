@@ -15,18 +15,14 @@ gamemanager::~gamemanager(){
 // UI Player Commands
 void gamemanager::onCardDrawn(){
     drawCommand cmd = drawCommand(state);
-    if (cmd.isValid()){
-        cmd.execute();
-        emit updateUI();
-    }
+    cmd.execute();
+    emit updateUI();
 }
 
 void gamemanager::onPlayCard(Card *card, Card* target){
     playCardCommand cmd = playCardCommand(state, card, target);
-    if (cmd.isValid()){
-        cmd.execute();
-        emit updateUI();
-    }
+    cmd.execute();
+    emit updateUI();
 }
 
 void gamemanager::onPassPriority(){
@@ -45,10 +41,8 @@ void gamemanager::onChangePhase(){
 
 void gamemanager::onCombatCardsReceived(QMap<Card*, QVector<Card*>> CombatCreatures){
     declareCombatCommand cmd = declareCombatCommand(state, CombatCreatures);
-    if (cmd.isValid()){
-        cmd.execute();
-        emit updateUI();
-    }
+    cmd.execute();
+    emit updateUI();
 }
 
 void gamemanager::onPlayerLost(){
