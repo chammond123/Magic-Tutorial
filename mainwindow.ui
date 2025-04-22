@@ -101,6 +101,19 @@
       <string>Play</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="priorityButton">
+     <property name="geometry">
+      <rect>
+       <x>650</x>
+       <y>120</y>
+       <width>80</width>
+       <height>18</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Pass Priority</string>
+     </property>
+    </widget>
     <widget class="QWidget" name="verticalLayoutWidget_3">
      <property name="geometry">
       <rect>

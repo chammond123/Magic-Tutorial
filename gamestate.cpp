@@ -1,7 +1,6 @@
 #include "gamestate.h"
 
 GameState::GameState(){
-    // TODO: UPDATE LOGIC, this is just a temporary fix in the meantime
     currentPhase = Phase::Untap;
 }
 
@@ -22,6 +21,14 @@ void GameState::changePhase(){
     else if (currentPhase == Phase::Upkeep){
         player1->upkeepPhase();
         player2->upkeepPhase();
+    }
+    else if (currentPhase == Phase::Draw){
+        if (player1->isActivePlayer && turnCount != 1){
+            player1->drawCard();
+        }
+        else if (player2->isActivePlayer && turnCount != 1){
+            player2->drawCard();
+        }
     }
     else if(currentPhase == Phase::PreCombatMain){
         player1->emptyManaPool();
@@ -46,6 +53,7 @@ void GameState::changePhase(){
         player2->emptyManaPool();
         player1->cleanupPhase();
         player2->cleanupPhase();
+        changeActivePlayer();
     }
 }
 
@@ -65,11 +73,13 @@ void GameState::changePriority(){
 void GameState::changeActivePlayer(){
     if (player1->isActivePlayer){
         player2->holdingPriority = true;
+        player1->holdingPriority = false;
         player2->isActivePlayer = true;
         player1->isActivePlayer = false;
     }
     else{
         player1->holdingPriority = true;
+        player2->holdingPriority = false;
         player1->isActivePlayer = true;
         player2->isActivePlayer = false;
     }
@@ -192,4 +202,81 @@ bool GameState::stackIsEmpty(){
 }
 QString GameState::toString(){
     return "";
+}
+Player* GameState::getPriorityPlayer(){
+    if (player1->holdingPriority){
+        return player1;
+    }
+    else{
+        return player2;
+    }
+}
+
+void GameState::validateHand(Player* player){
+    PhaseRules rules = getPhaseRules();
+    for (Card* card : player->Hand){
+        if (rules.canPlayInstant && card->type == CardType::INSTANT && player->canPayMana(card)){
+            card->shouldEnable = true;
+        }
+        else if (player->isActivePlayer && rules.canPlaySorcery && card->type == CardType::SORCERY && player->canPayMana(card) && stackIsEmpty()){
+            card->shouldEnable = true;
+        }
+        else if (player->isActivePlayer && rules.canPlaySorcery && card->type == CardType::LAND && stackIsEmpty()){
+            card->shouldEnable = true;
+        }
+        else if (player->isActivePlayer && rules.canPlaySorcery && stackIsEmpty() && player->canPayMana(card) &&
+                 (card->type == CardType::CREATURE ||
+                  card->type == CardType::ARTIFACT ||
+                  card->type == CardType::ENCHANTMENT ||
+                  card->type == CardType::PLANESWALKER ||
+                  card->type == CardType::BATTLE)) {
+            card->shouldEnable = true;
+        }
+        else{
+            card->shouldEnable = false;
+        }
+    }
+}
+
+void GameState::validateBattlefield(Player* player){
+    PhaseRules rules = getPhaseRules();
+    for (Card* card : player->Battlefield){
+        if (player->isActivePlayer && rules.canDeclareAttack && card->type == CardType::CREATURE && !card->isTapped && (!card->hasSummoningSickness or !player->hasSummoningSickness)){
+            card->shouldEnable = true;
+        }
+        if (!player->isActivePlayer && rules.canDeclareDefense && card->type == CardType::CREATURE){
+            card->shouldEnable = true;
+        }
+        else{
+            card->shouldEnable = false;
+        }
+    }
+}
+
+void GameState::validatePlayerActions(Player* player){
+    player->canDrawCard = false;
+    player->canPassPriority = false;
+    player->canChangePhase = false;
+    qDebug() << "active player check:";
+    qDebug() << player->isActivePlayer;
+    qDebug() << player->holdingPriority;
+    qDebug() << theStack.empty();
+    if (player->isActivePlayer && player->hasntDrawnForTurn){
+        player->canDrawCard = true;
+    }
+    if (player->holdingPriority){
+        player->canPassPriority = true;
+    }
+    if (player->isActivePlayer && theStack.empty() && player->holdingPriority){
+        player->canChangePhase = true;
+    }
+}
+
+void GameState::getValidActions(){
+    validateHand(player1);
+    validateHand(player2);
+    validateBattlefield(player1);
+    validateBattlefield(player2);
+    validatePlayerActions(player1);
+    validatePlayerActions(player2);
 }

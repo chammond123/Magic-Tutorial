@@ -23,6 +23,7 @@ SOURCES += \
     mainwindow.cpp \
     manacollection.cpp \
     player.cpp \
+    scenebot.cpp \
     textparser.cpp \
     type.cpp \
     zone.cpp
@@ -41,6 +42,7 @@ HEADERS += \
     manacollection.h \
     phase.h \
     player.h \
+    scenebot.h \
     stackobject.h \
     textparser.h \
     type.h \

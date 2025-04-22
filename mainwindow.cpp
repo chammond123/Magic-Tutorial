@@ -26,7 +26,14 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     apiManager = new CardAPIManager(this);
     statePointer = game->state;
     userPlayer = statePointer->player1;
+    userPlayer->holdingPriority = true;
+    QMap<ManaType, int>* mana = new QMap<ManaType, int>;
+    (*mana)[ManaType::RED] = 1;
+    userPlayer->addMana(mana);
+    userPlayer->isActivePlayer = true;
     enemyPlayer = statePointer->player2;
+    enemyPlayer->isActivePlayer = false;
+    enemyPlayer->holdingPriority = false;
 
     playerLayout = {
         ui->playerHand,
@@ -152,27 +159,38 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
 
     });
 
-    connect(ui->phaseButton, &QPushButton::clicked, this, [=](){
-        // TESTING, WILL REMOVE
-        qDebug() << "Next Phase!";
-        if (!statePointer) {
-            qWarning() << "State pointer is null!";
-            return;
-        }
+    // connect(ui->phaseButton, &QPushButton::clicked, this, [=](){
+    //     // TESTING, WILL REMOVE
+    //     qDebug() << "Next Phase!";
+    //     if (!statePointer) {
+    //         qWarning() << "State pointer is null!";
+    //         return;
+    //     }
 
-        userPlayer->hasPlayedLand = false;
+    //     userPlayer->hasPlayedLand = false;
 
-        statePointer->changePhase();
-        statePointer->changeActivePlayer();
-        clearSelection();
-        if (statePointer->currentPhase == Phase::DeclareAttackers){
-            qDebug() << "Current Phase: Attacking";
-        }
-        else if (statePointer->currentPhase == Phase::DeclareBlockers){
-            qDebug() << "Current Phase: Defending";
-        }
-        updateUI();
-    });
+    //     statePointer->changePhase();
+    //     //statePointer->changeActivePlayer();
+    //     clearSelection();
+    //     if(statePointer->currentPhase == Phase::PreCombatMain){
+    //         qDebug() << "Current Phase: PreCombat";
+    //     }
+    //     else if (statePointer->currentPhase == Phase::DeclareAttackers){
+    //         qDebug() << "Current Phase: Attacking";
+    //     }
+    //     else if (statePointer->currentPhase == Phase::DeclareBlockers){
+    //         qDebug() << "Current Phase: Defending";
+    //     }
+    //     else if(statePointer->currentPhase == Phase::PostCombatMain){
+    //         qDebug() << "Current Phase: PostCombat";
+    //     }
+    //     updateUI();
+    // });
+
+    connect(ui->phaseButton, &QPushButton::clicked, game, &gamemanager::onChangePhase);
+    connect(ui->priorityButton, &QPushButton::clicked, game, &gamemanager::onPassPriority);
+
+    connect(game, &gamemanager::updateUI, this, &MainWindow::updateUI);
 
     // TESTING
     connect(ui->targetButton, &QPushButton::clicked, this, &MainWindow::startTargeting);
@@ -771,20 +789,10 @@ void MainWindow::extractCombatants(QMap<CardButton*, QVector<CardButton*>> packe
 }
 
 void MainWindow::handlePhase(){
-    if (!statePointer) {
-        qDebug() << "Error: statePointer is null in handlePhase";
-        return;
-    }
+    statePointer->getValidActions();
 
-    PhaseRules rules = statePointer->getPhaseRules();
-
-    if (!userPlayer) {
-        qDebug() << "Error: userPlayer is null in handlePhase";
-        return;
-    }
-
-    bool isActive = userPlayer->isActivePlayer;
-    qDebug() << "Handling Phases";
+    // PhaseRules rules = statePointer->getPhaseRules();
+    // bool isActive = userPlayer->isActivePlayer;
 
     for (CardButton* button : activeCards){
         if (!button) {
@@ -792,39 +800,34 @@ void MainWindow::handlePhase(){
             continue;
         }
         Card* card = button->cardPtr;
-        bool shouldEnable = false;
+        // bool shouldEnable = false;
 
-        if (!button->cardPtr) {
-            qDebug() << "Warning: Null card pointer in button";
-            button->enableCard(false);
-            continue;
-        }
-
-        if(rules.canPlayInstant && card->type == CardType::INSTANT){
-            shouldEnable = true;
-        }
-        if(rules.canPlaySorcery && card->type == CardType::SORCERY){
-            shouldEnable = true;
-        }
-        if(isActive && rules.canDeclareAttack && card->type == CardType::CREATURE){
-            shouldEnable = true;
-        }
-        if(!isActive && rules.canDeclareDefense && card->type == CardType::CREATURE){
-            shouldEnable = true;
-        }
-        if(isActive && card->type == CardType::LAND && !userPlayer->hasPlayedLand){
-            shouldEnable = true;
-        }
-        if(isActive && rules.canPlaySorcery &&
-                (card->type == CardType::CREATURE ||
-                 card->type == CardType::ARTIFACT ||
-                 card->type == CardType::ENCHANTMENT ||
-                 card->type == CardType::PLANESWALKER ||
-                 card->type == CardType::BATTLE)) {
-            shouldEnable = true;
-        }
-
-        button->enableCard(shouldEnable);
+        // if(rules.canPlayInstant && card->type == CardType::INSTANT){
+        //     shouldEnable = true;
+        // }
+        // if(rules.canPlaySorcery && card->type == CardType::SORCERY){
+        //     shouldEnable = true;
+        // }
+        // if(isActive && rules.canDeclareAttack && card->type == CardType::CREATURE){
+        //     shouldEnable = true;
+        // }
+        // if(!isActive && rules.canDeclareDefense && card->type == CardType::CREATURE){
+        //     shouldEnable = true;
+        // }
+        // if(isActive && card->type == CardType::LAND && !userPlayer->hasPlayedLand){
+        //     shouldEnable = true;
+        // }
+        // if(isActive && rules.canPlaySorcery &&
+        //         (card->type == CardType::CREATURE ||
+        //          card->type == CardType::ARTIFACT ||
+        //          card->type == CardType::ENCHANTMENT ||
+        //          card->type == CardType::PLANESWALKER ||
+        //          card->type == CardType::BATTLE)) {
+        //     shouldEnable = true;
+        // }
+        button->enableCard(card->shouldEnable);
+        ui->priorityButton->setEnabled(statePointer->player1->canChangePhase);
+        ui->phaseButton->setEnabled(statePointer->player1->canPassPriority);
         // update();
     }
 }
