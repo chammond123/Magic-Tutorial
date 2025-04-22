@@ -69,6 +69,7 @@ void CardAPIManager::fetchCardByName(const QString &cardName)
     url.setQuery(query);
 
     QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json; charset=utf-8");
     QNetworkReply* reply = manager->get(request);
     pendingReplies[reply] = ReplyType::SingleCard;
 }
@@ -112,6 +113,7 @@ void CardAPIManager::onFinished(QNetworkReply *reply)
     }
 
     QByteArray responseData = reply->readAll();
+
 
     if (type == ReplyType::CardsList) {
         QJsonDocument jsonDoc = QJsonDocument::fromJson(responseData);
@@ -216,7 +218,7 @@ Card CardAPIManager::parseCardFromJson(const QJsonObject &cardJson)
     }
 
     if (cardJson.contains("type_line")) {
-        QString typeText = cardJson["type_line"].toString();
+        QString typeText = cardJson["type_line"].toString().toUtf8();
         card.type = determineCardType(typeText);
 
         card.isPermanent = (card.type == CardType::CREATURE ||
@@ -241,6 +243,11 @@ Card CardAPIManager::parseCardFromJson(const QJsonObject &cardJson)
     if (cardJson.contains("keywords")) {
         QJsonArray keywordsArray = cardJson["keywords"].toArray();
         card.keywords = parseKeywords(keywordsArray);
+    }
+
+    if (cardJson.contains("flavor_text")){
+        QString flavorText = cardJson["type_line"].toString().toUtf8();
+        card.flavorText = flavorText;
     }
 
     card.isTapped = false;

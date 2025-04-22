@@ -38,10 +38,6 @@ void cardDictionary::giveAbility(Card* c){
         c->setAbility(Ability::damageTarget(3));
     }
 
-    if (c->name == "Lightning Bolt"){
-        c->setAbility(Ability::damageTarget(3));
-    }
-
     if (c->name == "Counterspell"){
         c->setAbility(Ability::counter());
     }
