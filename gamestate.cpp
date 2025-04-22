@@ -1,4 +1,5 @@
 #include "gamestate.h"
+#include "bot.h"
 
 GameState::GameState(){
     currentPhase = Phase::Untap;
@@ -56,6 +57,11 @@ void GameState::changePhase(){
         player1->cleanupPhase();
         player2->cleanupPhase();
         changeActivePlayer();
+        changePhase();
+        if (player2->isActivePlayer) {
+            Bot* botPlayer = static_cast<Bot*>(player2);
+            botPlayer->takeTurn(this);
+        }
     }
 }
 
@@ -64,11 +70,13 @@ void GameState::changePriority(){
         player1->madeAction = false;
         player2->holdingPriority = true;
         player1->holdingPriority = false;
+        qDebug() << "Player 1 passed priority to Player 2.";
     }
     else{
         player2->madeAction = false;
         player1->holdingPriority = true;
         player2->holdingPriority = false;
+        qDebug() << "Player 2 passed priority to Player 1.";
     }
 }
 
@@ -146,7 +154,7 @@ void GameState::resolveStack(){
             stackObject.player->moveCardString(stackObject.card, "hand", "battlefield", false);
         }
         else{
-            stackObject.player->moveCardString(stackObject.card, "hand", "battlefield", true);
+            stackObject.player->moveCardString(stackObject.card, "hand", "graveyard", true);
         }
     }
 }
@@ -268,12 +276,12 @@ void GameState::validatePlayerActions(Player* player){
     player->canPassPriority = false;
     player->canChangePhase = false;
     qDebug() << "active player check:";
-    qDebug() << player->isActivePlayer;
-    qDebug() << player->holdingPriority;
-    qDebug() << theStack.empty();
-    if (player->isActivePlayer && player->hasntDrawnForTurn){
-        player->canDrawCard = true;
-    }
+    // qDebug() << player->isActivePlayer;
+    // qDebug() << player->holdingPriority;
+    // qDebug() << theStack.empty();
+    // if (player->isActivePlayer && player->hasntDrawnForTurn){
+    //     player->canDrawCard = true;
+    // }
     if (player->holdingPriority){
         player->canPassPriority = true;
     }

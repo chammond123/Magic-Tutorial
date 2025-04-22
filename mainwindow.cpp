@@ -238,16 +238,13 @@ void MainWindow::cardBeingTapped(CardButton* cardButton, bool tapped){
     if(currentSelectedCard != cardButton){
         handleCardSelected(cardButton);
     }
-    qDebug() << currentSelectedCard->cardName;
+    // qDebug() << currentSelectedCard->cardName;
 
     if(!tapped){
         emit tapCard(currentSelectedCard->cardPtr);
     }
 
     currentSelectedCard->setTapped(!tapped);
-
-    // add logic if card is a land
-    // add logic if card is a creature
 }
 
 void MainWindow::updateManaButton(ManaType type, ZoneLayout layout) {
@@ -335,13 +332,13 @@ void MainWindow::handleCardSelected(CardButton* clicked) {
             selectedButtons.removeOne(clicked);
             clicked->setChecked(false);
             currentSelectedCard = nullptr;
-            qDebug() << "Removed " << clicked->cardPtr->name;
+            // qDebug() << "Removed " << clicked->cardPtr->name;
         }
         else{
             selectedButtons.append(clicked);
             clicked->setChecked(true);
             currentSelectedCard = clicked;
-            qDebug() << "Added " << clicked->cardPtr->name;
+            // qDebug() << "Added " << clicked->cardPtr->name;
         }
         overlayCards();
     }
@@ -482,7 +479,7 @@ void MainWindow::updateUI(){
         // update Stack zone
 
 
-        qDebug() << "update Mana";
+        // qDebug() << "update Mana";
         // Set the Mana
         for (auto [color, amount] : currPlayer->manaPool.toStdMap()){
             switch (color) {
@@ -504,7 +501,6 @@ void MainWindow::updateUI(){
         // Set the Health
         layout.health->setText(QString::number(currPlayer->health));
 
-        // QString("Phase: ") +
         layout = playerLayout;
         layout.phaseLabel->setText(QString("Phase: ") + phaseTypeToString(statePointer->currentPhase));
 
@@ -652,7 +648,7 @@ void MainWindow::showCollection(QString title){
         else{
             card->enableCard(false);
         }
-        qDebug() << "added";
+        // qDebug() << "added";
     }
 
     container->setLayout(layout);
@@ -668,7 +664,7 @@ void MainWindow::showCollection(QString title){
 
 
 void MainWindow::clearSelection(){
-    qDebug() << "clearing Selection";
+    // qDebug() << "clearing Selection";
 
     selectedButtons.clear();
     currentSelectedCard = nullptr;
@@ -705,7 +701,7 @@ void MainWindow::handlePhase(){
 
     for (CardButton* button : activeCards){
         if (!button) {
-            qDebug() << "Warning: Null button found in activeCards";
+            // qDebug() << "Warning: Null button found in activeCards";
             continue;
         }
         Card* card = button->cardPtr;
@@ -735,8 +731,8 @@ void MainWindow::handlePhase(){
         //     shouldEnable = true;
         // }
         button->enableCard(card->shouldEnable);
-        ui->priorityButton->setEnabled(statePointer->player1->canChangePhase);
-        ui->phaseButton->setEnabled(statePointer->player1->canPassPriority);
+        ui->priorityButton->setEnabled(statePointer->player1->canPassPriority);
+        ui->phaseButton->setEnabled(statePointer->player1->canChangePhase);
         // update();
     }
 }

@@ -44,7 +44,6 @@ void passPriorityCommand::execute(){
 changePhaseCommand::changePhaseCommand(GameState* state) :
     Command(state){}
 void changePhaseCommand::execute(){
-    state->resolveStack();
     qDebug() << "Change Phase executed";
     state->changePhase();
 }
