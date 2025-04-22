@@ -29,7 +29,13 @@ struct ZoneLayout {
     QLabel* blue;
     QLabel* white;
     QLabel* black;
+    QPushButton* redCount;
+    QPushButton* greenCount;
+    QPushButton* blueCount;
+    QPushButton* whiteCount;
+    QPushButton* blackCount;
     QLabel* health;
+    QMap<ManaType, QList<CardButton*>>* landGroups;
 };
 
 QT_BEGIN_NAMESPACE
@@ -48,7 +54,8 @@ public:
 
     CardButton* currentSelectedCard = nullptr;
 
-    QMap<ManaType, QList<CardButton*>> landGroups;
+    QMap<ManaType, QList<CardButton*>> playerLandGroups;
+    QMap<ManaType, QList<CardButton*>> enemyLandGroups;
 
     MainWindow(gamemanager *game, QWidget *parent = nullptr);
     ~MainWindow();
@@ -120,7 +127,7 @@ private:
     void updateEndExplosion();
 
 
-    void updateZone(QGridLayout* container, Zone* zone);
+    void updateZone(QGridLayout* container, Zone* zone, QMap<ManaType, QList<CardButton *> > *landGroups);
     void updateDeck(Zone* zone, QString title, QPushButton *deckButton);
     void clearSelection();
     void showCollection(QString title);
@@ -138,8 +145,8 @@ private:
 
 
     //For mana zone
-    void showLandPopup(ManaType type);
-    void updateManaButton(ManaType type);
+    void showLandPopup(ManaType type, ZoneLayout layout);
+    void updateManaButton(ManaType type, ZoneLayout layout);
 
 
     // FOR TESTING PURPOSES

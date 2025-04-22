@@ -209,8 +209,8 @@ Card CardAPIManager::parseCardFromJson(const QJsonObject &cardJson)
         card.cost = parseManaSymbols(manaCost);
     }
 
-    if (cardJson.contains("colors")) {
-        card.color = determineCardColor(cardJson["colors"].toArray());
+    if (cardJson.contains("color_identity")) {
+        card.color = determineCardColor(cardJson["color_identity"].toArray());
     } else {
         card.color = ManaType::COLORLESS;
     }

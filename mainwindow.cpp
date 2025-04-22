@@ -49,7 +49,13 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
         ui->playerBlue,
         ui->playerWhite,
         ui->playerBlack,
-        ui->PlayerHealth
+        ui->playerRedIcon,
+        ui->playerGreenIcon,
+        ui->playerBlueIcon,
+        ui->playerWhiteIcon,
+        ui->playerBlackIcon,
+        ui->PlayerHealth,
+        &playerLandGroups
     };
 
     enemyLayout = {
@@ -64,7 +70,13 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
         ui->enemyBlue,
         ui->enemyWhite,
         ui->enemyBlack,
-        ui->EnemyHealth
+        ui->enemyRedIcon,
+        ui->enemyGreenIcon,
+        ui->enemyBlueIcon,
+        ui->enemyWhiteIcon,
+        ui->enemyBlackIcon,
+        ui->EnemyHealth,
+        &enemyLandGroups
     };
 
 
@@ -82,37 +94,43 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
 
     ui->playerRedIcon->setText("0");
     ui->playerRedIcon->setIcon(QIcon(":/Icons/Icons/Red.png"));
+    ui->enemyRedIcon->setIcon(QIcon(":/Icons/Icons/Red.png"));
 
     ui->playerBlackIcon->setText("0");
     ui->playerBlackIcon->setIcon(QIcon(":/Icons/Icons/Black.png"));
+    ui->enemyBlackIcon->setIcon(QIcon(":/Icons/Icons/Black.png"));
+
 
     ui->playerWhiteIcon->setText("0");
     ui->playerWhiteIcon->setIcon(QIcon(":/Icons/Icons/white.png"));
+    ui->enemyWhiteIcon->setIcon(QIcon(":/Icons/Icons/white.png"));
 
     ui->playerGreenIcon->setText("0");
     ui->playerGreenIcon->setIcon(QIcon(":/Icons/Icons/Green.png"));
+    ui->enemyGreenIcon->setIcon(QIcon(":/Icons/Icons/Green.png"));
 
     ui->playerBlueIcon->setText("0");
     ui->playerBlueIcon->setIcon(QIcon(":/Icons/Icons/Blue.png"));
+    ui->enemyBlueIcon->setIcon(QIcon(":/Icons/Icons/Blue.png"));
 
     connect(ui->playerRedIcon, &QPushButton::clicked, this, [=]() {
-        showLandPopup(ManaType::RED);
+        showLandPopup(ManaType::RED, playerLayout);
     });
 
     connect(ui->playerWhiteIcon, &QPushButton::clicked, this, [=]() {
-        showLandPopup(ManaType::WHITE);
+        showLandPopup(ManaType::WHITE, playerLayout);
     });
 
     connect(ui->playerGreenIcon, &QPushButton::clicked, this, [=]() {
-        showLandPopup(ManaType::GREEN);
+        showLandPopup(ManaType::GREEN, playerLayout);
     });
 
     connect(ui->playerBlueIcon, &QPushButton::clicked, this, [=]() {
-        showLandPopup(ManaType::BLUE);
+        showLandPopup(ManaType::BLUE, playerLayout);
     });
 
     connect(ui->playerBlackIcon, &QPushButton::clicked, this, [=]() {
-        showLandPopup(ManaType::BLACK);
+        showLandPopup(ManaType::BLACK, playerLayout);
     });
 
     connect(ui->playerGraveyardButton, &QPushButton::clicked, this, [=]() {
@@ -122,6 +140,28 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     connect(ui->playerExileButton, &QPushButton::clicked, this, [=]() {
         showCollection("Exile");
     });
+
+    connect(ui->enemyRedIcon, &QPushButton::clicked, this, [=]() {
+        showLandPopup(ManaType::RED, enemyLayout);
+    });
+
+    connect(ui->enemyWhiteIcon, &QPushButton::clicked, this, [=]() {
+        showLandPopup(ManaType::WHITE, enemyLayout);
+    });
+
+    connect(ui->enemyGreenIcon, &QPushButton::clicked, this, [=]() {
+        showLandPopup(ManaType::GREEN, enemyLayout);
+    });
+
+    connect(ui->enemyBlueIcon, &QPushButton::clicked, this, [=]() {
+        showLandPopup(ManaType::BLUE, enemyLayout);
+    });
+
+    connect(ui->enemyBlackIcon, &QPushButton::clicked, this, [=]() {
+        showLandPopup(ManaType::BLACK, enemyLayout);
+    });
+
+
 
     connect(ui->phaseButton, &QPushButton::clicked, game, &gamemanager::onChangePhase);
     connect(ui->priorityButton, &QPushButton::clicked, game, &gamemanager::onPassPriority);
@@ -190,16 +230,16 @@ void MainWindow::cardBeingTapped(CardButton* cardButton, bool tapped){
     // add logic if card is a creature
 }
 
-void MainWindow::updateManaButton(ManaType type) {
-    int count = landGroups[type].size();
+void MainWindow::updateManaButton(ManaType type, ZoneLayout layout) {
+    int count = layout.landGroups->value(type).size();
     QPushButton* button = nullptr;
 
     switch (type) {
-        case ManaType::WHITE: button = ui->playerWhiteIcon; break;
-        case ManaType::BLUE:  button = ui->playerBlueIcon; break;
-        case ManaType::RED:  button = ui->playerRedIcon; break;
-        case ManaType::BLACK:  button = ui->playerBlackIcon; break;
-        case ManaType::GREEN:  button = ui->playerGreenIcon; break;
+        case ManaType::WHITE:  button = layout.whiteCount; break;
+        case ManaType::BLUE:   button = layout.blueCount; break;
+        case ManaType::RED:    button = layout.redCount; break;
+        case ManaType::BLACK:  button = layout.blackCount; break;
+        case ManaType::GREEN:  button = layout.greenCount; break;
         default: break;
     }
 
@@ -208,7 +248,7 @@ void MainWindow::updateManaButton(ManaType type) {
     }
 }
 
-void MainWindow::showLandPopup(ManaType manaType){
+void MainWindow::showLandPopup(ManaType manaType, ZoneLayout zoneLayout){
     QDialog* dialog = new QDialog(this);
     dialog->setWindowTitle("Lands: " + manaTypeToString(manaType));
     dialog->setMinimumSize(400, 300);
@@ -217,10 +257,10 @@ void MainWindow::showLandPopup(ManaType manaType){
     QWidget* container = new QWidget();
     QVBoxLayout* layout = new QVBoxLayout(container);
 
-    qDebug() << "Mana stack size:" << landGroups[manaType].size();
+    qDebug() << "Mana stack size:" << zoneLayout.landGroups->value(manaType).size();
     qDebug() << manaTypeToString(manaType);
 
-    for (CardButton* land : landGroups[manaType]) {
+    for (CardButton* land : zoneLayout.landGroups->value(manaType)) {
         qDebug() << land->tapped;
         layout->addWidget(land);
         if(land->isEnabled()){
@@ -231,9 +271,6 @@ void MainWindow::showLandPopup(ManaType manaType){
         }
         qDebug() << "added";
     }
-
-
-    qDebug() << "a";
 
     container->setLayout(layout);
     scrollArea->setWidget(container);
@@ -457,13 +494,15 @@ void MainWindow::updateUI(){
             break;
         }
 
+        layout.landGroups->clear();
+
         // Go through all zones and update containers
         for (Zone* zone : zones){
             if (zone->type == ZoneType::HAND){
-                updateZone(layout.hand, zone);
+                updateZone(layout.hand, zone, layout.landGroups);
             }
             else if (zone->type == ZoneType::BATTLEFIELD){
-                updateZone(layout.battlefield, zone);
+                updateZone(layout.battlefield, zone, layout.landGroups);
             }
             else if (zone->type == ZoneType::GRAVEYARD){
                 updateDeck(zone, layout.graveName, layout.graveyard);
@@ -490,6 +529,10 @@ void MainWindow::updateUI(){
             }
         }
 
+        for (ManaType color : layout.landGroups->keys()){
+            updateManaButton(color, layout);
+        }
+
         qDebug() << "update Health";
 
         // Set the Health
@@ -503,7 +546,7 @@ void MainWindow::updateUI(){
     }
 }
 
-void MainWindow::updateZone(QGridLayout* container, Zone* zone){
+void MainWindow::updateZone(QGridLayout* container, Zone* zone, QMap<ManaType, QList<CardButton *>>* landGroups){
     qDebug() << "Updating Zone";
     if (container == nullptr){
         return;
@@ -532,7 +575,7 @@ void MainWindow::updateZone(QGridLayout* container, Zone* zone){
 
 
         if(card->type == CardType::LAND && zone->type == ZoneType::BATTLEFIELD){
-            landGroups[card->color].append(cardButton);
+            (*landGroups)[card->color].append(cardButton);
             currentSelectedCard = nullptr;
             continue;
         }
