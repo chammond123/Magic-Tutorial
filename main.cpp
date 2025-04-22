@@ -15,29 +15,16 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-
-
     /**
      * Test Phases / Game States
      */
 
-    // CardAPIManager *apiManager = new CardAPIManager();
-    // qDebug() << "made it through API initialization.";
 
     // Instantiating a deck list
     QStringList deckList = TextParser::getListFromText(QFile(":/text/additional_files/uniqueCards.txt"));
     QStringList playerDeckList = TextParser::getListFromText(QFile(":/text/additional_files/deck.txt"));
 
-    // Connecting the API Manager's signal
-    // QObject::connect(apiManager, &CardAPIManager::cardFetched, [=](const Card &card) {
-    //     cardDictionary::addCard(card);
-    //     qDebug() << "Static Card Dictionary updated after a card was fetched";
-    // });
-
     loadScreen loadScreen;
-
-
-    qDebug() << "made it through API connection.";
 
     QObject::connect(&loadScreen, &loadScreen::loadingComplete, [&]() {
 
@@ -58,6 +45,7 @@ int main(int argc, char *argv[])
         originalState->player2 = enemyPlayer;
         // Player userPlayer(playerDeckList);
         Bot bot(playerDeckList);
+
         // for testing
         // userPlayer.isActivePlayer = true;
         // userPlayer.holdingPriority = true;
@@ -84,7 +72,6 @@ int main(int argc, char *argv[])
         game->state = originalState;
         MainWindow *w = new MainWindow(game);
 
-        // QObject::connect(w, some signal saying UI needs a new game state, signal to ui to update gamestate)
         w->show();
         qDebug() << "made it to window shown.";
     });

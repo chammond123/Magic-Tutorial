@@ -55,6 +55,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
         ui->playerWhiteIcon,
         ui->playerBlackIcon,
         ui->PlayerHealth,
+        ui->phaseLabel,
         &playerLandGroups
     };
 
@@ -76,6 +77,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
         ui->enemyWhiteIcon,
         ui->enemyBlackIcon,
         ui->EnemyHealth,
+        ui->phaseLabel,
         &enemyLandGroups
     };
 
@@ -170,7 +172,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
 
     // TESTING
     connect(ui->tapButton, &QPushButton::clicked, this, [=]() {
-        emit tapCard(currentSelectedCard->cardPtr);
+        cardBeingTapped(currentSelectedCard, currentSelectedCard->tapped);
     });
 
     QTimer::singleShot(200, this, [=](){
@@ -181,7 +183,6 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     connect(this, &MainWindow::playCard, game, &gamemanager::onPlayCard);
 
     connect(this, &MainWindow::sendCombatCards, game, &gamemanager::onCombatCardsReceived);
-
 }
 
 MainWindow::~MainWindow() {
@@ -213,10 +214,24 @@ QString MainWindow::manaTypeToString(ManaType type) {
     }
 }
 
+QString MainWindow::phaseTypeToString(Phase phase) {
+        switch (phase) {
+    case Phase::Untap:   return "Untap";
+    case Phase::Upkeep:   return "Upkeep";
+    case Phase::Draw:   return "Draw";
+    case Phase::PreCombatMain:   return "PreCombatMain";
+    case Phase::BeginCombat:   return "BeginCombat";
+    case Phase::DeclareAttackers:   return "DeclareAttackers";
+    case Phase::DeclareBlockers:   return "DeclareBlockers";
+    case Phase::CombatDamage:   return "CombatDamage";
+    case Phase::PostCombatMain:   return "PostCombatMain";
+    case Phase::EndStep:   return "EndStep";
+    case Phase::Cleanup:   return "Cleanup";
+    default:              return "Unknown";
+    }
+}
 // Need to add more logic
 void MainWindow::cardBeingTapped(CardButton* cardButton, bool tapped){
-    //Test on game end
-    onGameEnded(true);
 
     // check with game state to allow the card to be tapped or untapped
     //Now just hard coded for testing
@@ -224,6 +239,11 @@ void MainWindow::cardBeingTapped(CardButton* cardButton, bool tapped){
         handleCardSelected(cardButton);
     }
     qDebug() << currentSelectedCard->cardName;
+
+    if(!tapped){
+        emit tapCard(currentSelectedCard->cardPtr);
+    }
+
     currentSelectedCard->setTapped(!tapped);
 
     // add logic if card is a land
@@ -464,8 +484,7 @@ void MainWindow::updateUI(){
         }
 
         // update Stack zone
-        //need to implement stackZone
-        // updateZone(ui->stack, //zone);
+
 
         qDebug() << "update Mana";
         // Set the Mana
@@ -488,10 +507,43 @@ void MainWindow::updateUI(){
 
         // Set the Health
         layout.health->setText(QString::number(currPlayer->health));
+
+        // QString("Phase: ") +
+        layout = playerLayout;
+        layout.phaseLabel->setText(QString("Phase: ") + phaseTypeToString(statePointer->currentPhase));
+
+        qDebug() << "update Phases";
+        handlePhase();
+
+        update();
+        qDebug() << "updateUI has finished";
     }
 
-    handlePhase();
-    update();
+    //update Stack
+    QGridLayout* container = ui->stack;
+
+    // Clear current stack view
+    QLayoutItem* item;
+    while ((item = container->takeAt(0)) != nullptr) {
+        if (item->widget()){
+            delete item->widget();
+        }
+        delete item;            // delete the layout wrapper
+    }
+
+    // Re-add current stack contents
+    for (const StackObject &object : statePointer->theStack) {
+        qDebug() << "accessing the stack";
+
+        CardButton* cardButton = new CardButton(object.card);
+        activeCards.append(cardButton);
+
+        connect(cardButton, &CardButton::cardSelected, this, &MainWindow::handleCardSelected);
+        connect(cardButton, &CardButton::hovered, this, &MainWindow::updateMagnifier);
+        connect(cardButton, &CardButton::cardTapped, this, &MainWindow::cardBeingTapped);
+        cardButton->setFixedSize(100, 140);
+        container->addWidget(cardButton);
+    }
 }
 
 void MainWindow::updateZone(QGridLayout* container, Zone* zone, QMap<ManaType, QList<CardButton *>>* landGroups){
@@ -737,7 +789,7 @@ void MainWindow::onGameEnded(bool playerWon) {
     // endView->setFrameShape(QFrame::NoFrame);
     // endView->setSceneRect(0, 0, width(), height());
     // endView->setAttribute(Qt::WA_TransparentForMouseEvents);
-    // endView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    endView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     endView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     endView->show();
 
