@@ -35,6 +35,7 @@ struct ZoneLayout {
     QPushButton* whiteCount;
     QPushButton* blackCount;
     QLabel* health;
+    QLabel* phaseLabel;
     QMap<ManaType, QList<CardButton*>>* landGroups;
 };
 
@@ -83,7 +84,7 @@ public slots:
     bool promptForMana();
 
     void updateUI();
-    void startTargeting();
+    void startTargeting(Card* sourceCard);
 
     void attackPhase();
 
@@ -96,6 +97,8 @@ public slots:
     void onPlayCardButtonClicked();
 
     void cardBeingTapped(CardButton* card, bool tapped);
+
+    void onGameEnded(bool playerWon);
 
     // void showZoneDialog(QVector<CardButton*>* zoneCards, const QString& title);
 
@@ -112,6 +115,8 @@ private:
     Ui::MainWindow *ui;
     CardAPIManager* apiManager;
     QString manaTypeToString(ManaType type);
+    QString phaseTypeToString(Phase phase);
+    QString cardTypeToString(CardType type);
     QString deckString;
     GameState* statePointer;
 
@@ -122,7 +127,6 @@ private:
     QTimer* endTimer = nullptr;
     QVector<QPair<QGraphicsPixmapItem*, b2Body*>> endfallingCards;
 
-    void onGameEnded(bool playerWon);
     void updateEndFall();
     void updateEndExplosion();
 
@@ -137,6 +141,8 @@ private:
     ZoneLayout playerLayout;
     ZoneLayout enemyLayout;
     void handlePhase();
+
+    Card* targetSource;
 
     bool isTargeting;
 

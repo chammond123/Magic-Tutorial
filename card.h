@@ -49,6 +49,7 @@ public:
     bool isLand;
     bool hasSummoningSickness;
     bool isCountered = false;
+    QString flavorText;
 };
 
 #endif // CARD_H
