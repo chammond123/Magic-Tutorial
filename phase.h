@@ -15,9 +15,6 @@ enum class Phase {
     Cleanup
 };
 
-
-
-
 struct PhaseRules {
     bool canPlayInstant;
     bool canPlaySorcery;

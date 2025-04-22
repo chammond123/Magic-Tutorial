@@ -324,59 +324,6 @@ void MainWindow::onPlayCardButtonClicked(){
     emit playCard(currentSelectedCard->cardPtr, nullptr);
 
     clearSelection();
-
-    // if (!currentSelectedCard) {
-    //     QMessageBox::information(this, "No card selected", "Select a card to play.");
-    //     return;
-    // }
-
-    // qDebug() << "playCardButton called";
-    // qDebug() << "played card: " + currentSelectedCard->cardName;
-
-    // Card* card = currentSelectedCard->cardPtr;
-    // qDebug() << "got card " << card->name;
-
-    // qDebug() << ui->playerHand->count();
-
-    // if(card->type == CardType::LAND){
-    //     userPlayer->moveCardZone(card, userPlayer->Hand, userPlayer->Battlefield, false);
-
-    //     // ManaType mana = card->color;
-    //     // qDebug() << manaTypeToString((mana));
-
-    //     currentSelectedCard->setParent(this);
-
-    //     // Add to land group
-    //     // TODO: Hard coded need to change
-    //     landGroups[ManaType::RED].append(currentSelectedCard);
-
-    //     currentSelectedCard->setChecked(false);
-    //     currentSelectedCard = nullptr;
-
-    //     qDebug() << "Played land to mana stack.";
-    //     qDebug() << ui->playerHand->count();
-
-    //     // Hard coded need to change
-    //     updateManaButton(ManaType::RED);
-
-    //     userPlayer->hasPlayedLand = true;
-    // }
-
-    // else if (card->isPermanent){
-    //     // FOR TESTING PURPOSES
-    //     userPlayer->moveCardZone(card, userPlayer->Hand, userPlayer->Battlefield, false);
-
-    //     currentSelectedCard->setChecked(false);
-    //     currentSelectedCard = nullptr;
-
-    //     qDebug() << "Played creature to battlefield.";
-    //     clearSelection();
-    // }
-    // else {
-    //     userPlayer->moveCardString(card, "hand", "graveyard", true);
-    //     clearSelection();
-    // }
-    // updateUI();
 }
 
 void MainWindow::handleCardSelected(CardButton* clicked) {
