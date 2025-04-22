@@ -36,6 +36,7 @@ struct ZoneLayout {
     QPushButton* blackCount;
     QLabel* health;
     QLabel* phaseLabel;
+    QLabel* activePlayerLabel;
     QMap<ManaType, QList<CardButton*>>* landGroups;
 };
 

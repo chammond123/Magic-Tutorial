@@ -56,6 +56,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
         ui->playerBlackIcon,
         ui->PlayerHealth,
         ui->phaseLabel,
+        ui->activePlayerLabel,
         &playerLandGroups
     };
 
@@ -78,6 +79,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
         ui->enemyBlackIcon,
         ui->EnemyHealth,
         ui->phaseLabel,
+        ui->activePlayerLabel,
         &enemyLandGroups
     };
 
@@ -548,8 +550,13 @@ void MainWindow::updateUI(){
         // Set the Health
         layout.health->setText(QString::number(currPlayer->health));
 
+        // Set Phase Label
         layout = playerLayout;
         layout.phaseLabel->setText(QString("Phase: ") + phaseTypeToString(statePointer->currentPhase));
+
+        // Set Active Player Label
+        layout.activePlayerLabel->setText(QString(statePointer->player1->isActivePlayer ? "You are" : "The enemy is") + " the active player");
+
 
         qDebug() << "update Phases";
         handlePhase();
