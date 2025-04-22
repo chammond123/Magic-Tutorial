@@ -85,19 +85,19 @@ void CardButton::resetCard(){
     QPixmap pixmap = QPixmap::fromImage(cardPtr->image).scaled(
         this->size() - QSize(6,6), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
-    QTransform transform;
+    // QTransform transform;
 
-    if(cardPtr->isTapped) {
-        transform.rotate(90);
-        setFixedSize(140, 100);
-    }
-    else {
-        transform.rotate(0);
-        setFixedSize(100, 140);
-    }
-    QPixmap rotated = pixmap.transformed(transform, Qt::SmoothTransformation);
+    // if(cardPtr->isTapped) {
+    //     transform.rotate(90);
+    //     setFixedSize(140, 100);
+    // }
+    // else {
+    //     transform.rotate(0);
+    //     setFixedSize(100, 140);
+    // }
+    // QPixmap rotated = pixmap.transformed(transform, Qt::SmoothTransformation);
 
-    this->setIcon(QIcon(rotated));
+    this->setIcon(QIcon(pixmap));
     this->setText("");
     this->setIconSize(this->size() - QSize(6,6));
 }

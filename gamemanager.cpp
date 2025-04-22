@@ -14,6 +14,10 @@ gamemanager::~gamemanager(){
 
 // UI Player Commands
 void gamemanager::onPlayCard(Card *card, Card* target){
+    if(!card){
+        qDebug() << "NO CARD";
+        return;
+    }
     playCardCommand cmd = playCardCommand(state, card, target);
     cmd.execute();
     emit updateUI();

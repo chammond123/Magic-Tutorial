@@ -15,12 +15,11 @@ private:
      * Last element represents top of card stack
      */
     QVector<Card*> cards;
-    int count;
-
 
     bool isFaceUp;
 
     unsigned seed;
+
     std::default_random_engine randomEngine;
 
 public:

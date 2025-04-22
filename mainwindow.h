@@ -96,9 +96,12 @@ signals:
 
     void sendCombatCards(QMap<Card*, QVector<Card*>> combatCards);
 
-    // void allowTap(bool nextState);
+    void playCard(Card* card, Card* target);
+
+    void tapCard(Card* card);
 
 private:
+
     Ui::MainWindow *ui;
     CardAPIManager* apiManager;
     QString manaTypeToString(ManaType type);
