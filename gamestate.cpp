@@ -137,8 +137,15 @@ void GameState::resolveStack(){
     if (!theStack.empty()){
         StackObject stackObject = theStack.takeLast();
 
-        if (stackObject.target != nullptr){
-            stackObject.card->ability.use(stackObject.target);
+        if (!std::holds_alternative<std::nullptr_t>(stackObject.target)){
+            if(std::holds_alternative<Player*>(stackObject.target)){
+                Player* t = get<Player*>(stackObject.target);
+                stackObject.card->ability.use(t);
+            }
+            else if(std::holds_alternative<Card*>(stackObject.target)){
+                Card* c = get<Card*>(stackObject.target);
+                stackObject.card->ability.use(c);
+            }
         }
 
         if (stackObject.card->isPermanent){

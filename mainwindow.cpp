@@ -713,31 +713,7 @@ void MainWindow::handlePhase(){
             continue;
         }
         Card* card = button->cardPtr;
-        // bool shouldEnable = false;
 
-        // if(rules.canPlayInstant && card->type == CardType::INSTANT){
-        //     shouldEnable = true;
-        // }
-        // if(rules.canPlaySorcery && card->type == CardType::SORCERY){
-        //     shouldEnable = true;
-        // }
-        // if(isActive && rules.canDeclareAttack && card->type == CardType::CREATURE){
-        //     shouldEnable = true;
-        // }
-        // if(!isActive && rules.canDeclareDefense && card->type == CardType::CREATURE){
-        //     shouldEnable = true;
-        // }
-        // if(isActive && card->type == CardType::LAND && !userPlayer->hasPlayedLand){
-        //     shouldEnable = true;
-        // }
-        // if(isActive && rules.canPlaySorcery &&
-        //         (card->type == CardType::CREATURE ||
-        //          card->type == CardType::ARTIFACT ||
-        //          card->type == CardType::ENCHANTMENT ||
-        //          card->type == CardType::PLANESWALKER ||
-        //          card->type == CardType::BATTLE)) {
-        //     shouldEnable = true;
-        // }
         button->enableCard(card->shouldEnable);
         ui->priorityButton->setEnabled(statePointer->player1->canChangePhase);
         ui->phaseButton->setEnabled(statePointer->player1->canPassPriority);
