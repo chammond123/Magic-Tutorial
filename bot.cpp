@@ -28,6 +28,7 @@ void Bot::takeTurn(GameState* gameState) {
         passTurn(gameState);
         break;
     default:
+        passTurn(gameState);
         break;
     }
 }
