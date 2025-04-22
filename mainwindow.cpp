@@ -416,7 +416,7 @@ void MainWindow::on_playCardButton_clicked(){
         currentSelectedCard->setParent(this);
 
         // Add to land group
-        // Hard coded need to change
+        // TODO: Hard coded need to change
         landGroups[ManaType::RED].append(currentSelectedCard);
 
         currentSelectedCard->setChecked(false);

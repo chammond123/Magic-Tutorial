@@ -11,6 +11,7 @@ CONFIG += c++17
 
 SOURCES += \
     ability.cpp \
+    bot.cpp \
     card.cpp \
     cardapimanager.cpp \
     cardbutton.cpp \
@@ -30,6 +31,7 @@ SOURCES += \
 
 HEADERS += \
     ability.h \
+    bot.h \
     card.h \
     cardapimanager.h \
     cardbutton.h \
