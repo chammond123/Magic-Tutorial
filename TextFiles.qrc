@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/text">
         <file>additional_files/deck.txt</file>
+        <file>additional_files/uniqueCards.txt</file>
     </qresource>
 </RCC>

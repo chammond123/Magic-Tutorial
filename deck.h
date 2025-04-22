@@ -8,9 +8,10 @@ class Deck : public QObject
 {
     Q_OBJECT
 
+
 private:
 
-    QVector<Card> cards;
+    QVector<Card*> cards;
 public:
     /**
      * @brief Deck Constructor that instantiates all cards
@@ -19,7 +20,9 @@ public:
      */
     explicit Deck(QStringList deckList, QObject *parent = nullptr);
 
-    QVector<Card> getCardObjects();
+    QVector<Card*> getCardObjects();
+
+    ~Deck();
 
 signals:
 };

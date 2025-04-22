@@ -195,14 +195,12 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     connect(game, &gamemanager::updateUI, this, &MainWindow::updateUI);
 
     // TESTING
-    connect(ui->targetButton, &QPushButton::clicked, this, &MainWindow::startTargeting);
+    connect(ui->tapButton, &QPushButton::clicked, this, [=]() {
+        userPlayer->tapCard(currentSelectedCard->cardPtr);
+        updateUI();
+    });
 
-    for(QString cardName : TextParser::getListFromText(QFile(":/text/additional_files/deck.txt"))){
-        qDebug() << cardName;
-        apiManager->fetchCardByName(cardName);
-    }
-
-    QTimer::singleShot(2000, this, [=](){
+    QTimer::singleShot(200, this, [=](){
         qDebug() << "SETUP CALLED";
         setupHand();
     });
@@ -218,51 +216,13 @@ MainWindow::~MainWindow() {
 //FOR TESTING
 void MainWindow::setupHand(){
 
-    card1 = cardDictionary::getCard("Lightning Bolt");
-    qDebug() << "CARD NAME: " << card1.name;
-
-    card2 = cardDictionary::getCard("Coral Merfolk");
-    card3 = cardDictionary::getCard("Goblin Bully");
-    card4 = cardDictionary::getCard("Shock");
-    card5 = cardDictionary::getCard("Shock");
-    card6 = cardDictionary::getCard("Counterspell");
-    card7 = cardDictionary::getCard("Mountain");
-    card8 = cardDictionary::getCard("Hill Giant");
-    card9 = cardDictionary::getCard("Canyon Minotaur");
-    card10 = cardDictionary::getCard("Bonebreaker Giant");
-
-    // Card* test = &card1;
-    // Card* test1 = &card2;
-    // Card* test2 = &card3;
-    // Card* test3 = &card4;
     if(userPlayer){
         qDebug() << "Found User!";
     }
     else {
         return;
     }
-
-    userPlayer->Hand.addCard(&card1, false);
-    userPlayer->Hand.addCard(&card2, false);
-    userPlayer->Hand.addCard(&card3, true);
-    userPlayer->Hand.addCard(&card4, false);
-    userPlayer->Hand.addCard(&card5, false);
-    userPlayer->Hand.addCard(&card6, false);
-    userPlayer->Hand.addCard(&card7, false);
-
-    enemyPlayer->Battlefield.addCard(&card8, false);
-    enemyPlayer->Battlefield.addCard(&card9, false);
-    enemyPlayer->Battlefield.addCard(&card10, false);
-
-
-
-    qDebug() << "Added all cards to Library";
-
     updateUI();
-    // cardMovedFromLibrary(test, "hand");
-    // cardMovedFromLibrary(test1, "hand");
-    // cardMovedFromLibrary(test2, "hand");
-    // cardMovedFromLibrary(test3, "hand");
 }
 
 QString MainWindow::manaTypeToString(ManaType type) {
@@ -663,8 +623,9 @@ void MainWindow::updateZone(QGridLayout* container, Zone* zone){
         connect(cardButton, &CardButton::cardSelected, this, &MainWindow::handleCardSelected);
         connect(cardButton, &CardButton::hovered, this, &MainWindow::updateMagnifier);
         connect(cardButton, &CardButton::cardTapped, this, &MainWindow::cardBeingTapped);
+        QSize targetSize = card->isTapped ? QSize(140, 100) : QSize(100, 140);
+        cardButton->setFixedSize(targetSize);
 
-        cardButton->setFixedSize(100, 140);
 
         if(card->type == CardType::LAND && zone->type == ZoneType::BATTLEFIELD){
             landGroups[card->color].append(cardButton);

@@ -66,6 +66,7 @@ SOURCES += \
     deck.cpp \
     gamemanager.cpp \
     gamestate.cpp \
+    loadscreen.cpp \
     main.cpp \
     mainwindow.cpp \
     manacollection.cpp \
@@ -133,6 +134,7 @@ HEADERS += \
     deck.h \
     gamemanager.h \
     gamestate.h \
+    loadscreen.h \
     mainwindow.h \
     manacollection.h \
     phase.h \
@@ -144,6 +146,7 @@ HEADERS += \
     zone.h
 
 FORMS += \
+    loadscreen.ui \
     mainwindow.ui \
     manacollection.ui
 

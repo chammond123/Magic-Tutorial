@@ -18,9 +18,9 @@
     <property name="geometry">
      <rect>
       <x>370</x>
-      <y>560</y>
+      <y>600</y>
       <width>931</width>
-      <height>301</height>
+      <height>261</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -29,54 +29,6 @@
     <property name="frameShadow">
      <enum>QFrame::Shadow::Raised</enum>
     </property>
-    <widget class="QWidget" name="verticalLayoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>830</x>
-       <y>10</y>
-       <width>101</width>
-       <height>291</height>
-      </rect>
-     </property>
-     <layout class="QVBoxLayout" name="playerDeckZone">
-      <item>
-       <widget class="QPushButton" name="playerExileButton">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Ignored">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Exile</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignmentFlag::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="playerGraveyardButton">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Ignored">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Graveyard</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="playerDeck">
-        <property name="text">
-         <string>Deck</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
     <widget class="QWidget" name="gridLayoutWidget">
      <property name="geometry">
       <rect>
@@ -91,10 +43,10 @@
     <widget class="QPushButton" name="playCardButton">
      <property name="geometry">
       <rect>
-       <x>750</x>
-       <y>80</y>
+       <x>740</x>
+       <y>120</y>
        <width>71</width>
-       <height>29</height>
+       <height>31</height>
       </rect>
      </property>
      <property name="text">
@@ -104,10 +56,10 @@
     <widget class="QPushButton" name="priorityButton">
      <property name="geometry">
       <rect>
-       <x>650</x>
-       <y>120</y>
-       <width>80</width>
-       <height>18</height>
+       <x>740</x>
+       <y>10</y>
+       <width>71</width>
+       <height>31</height>
       </rect>
      </property>
      <property name="text">
@@ -223,8 +175,8 @@
      <property name="geometry">
       <rect>
        <x>740</x>
-       <y>50</y>
-       <width>80</width>
+       <y>40</y>
+       <width>71</width>
        <height>31</height>
       </rect>
      </property>
@@ -232,25 +184,25 @@
       <string>Next Phase</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="targetButton">
+    <widget class="QPushButton" name="tapButton">
      <property name="geometry">
       <rect>
-       <x>739</x>
-       <y>10</y>
-       <width>81</width>
+       <x>740</x>
+       <y>150</y>
+       <width>71</width>
        <height>32</height>
       </rect>
      </property>
      <property name="text">
-      <string>Start Targeting</string>
+      <string>Tap Card</string>
      </property>
     </widget>
     <widget class="QWidget" name="horizontalLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>740</x>
-       <y>120</y>
-       <width>81</width>
+       <x>830</x>
+       <y>40</y>
+       <width>102</width>
        <height>31</height>
       </rect>
      </property>
@@ -270,6 +222,19 @@
        </widget>
       </item>
      </layout>
+    </widget>
+    <widget class="QLabel" name="playerDeck">
+     <property name="geometry">
+      <rect>
+       <x>820</x>
+       <y>80</y>
+       <width>111</width>
+       <height>181</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Deck</string>
+     </property>
     </widget>
    </widget>
    <widget class="QFrame" name="enemyContainer">
@@ -398,7 +363,7 @@
       <x>370</x>
       <y>240</y>
       <width>931</width>
-      <height>161</height>
+      <height>181</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="enemyBattlefield"/>
@@ -407,9 +372,9 @@
     <property name="geometry">
      <rect>
       <x>370</x>
-      <y>400</y>
+      <y>420</y>
       <width>931</width>
-      <height>161</height>
+      <height>181</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="playerBattlefield"/>
@@ -448,66 +413,48 @@
     </property>
     <layout class="QGridLayout" name="stack"/>
    </widget>
-   <widget class="QLabel" name="playerExile2">
+   <widget class="QPushButton" name="playerExileButton">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>740</y>
-      <width>71</width>
-      <height>71</height>
+      <x>30</x>
+      <y>670</y>
+      <width>131</width>
+      <height>181</height>
      </rect>
     </property>
-    <property name="font">
-     <font>
-      <family>Garamond</family>
-      <bold>true</bold>
-     </font>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Minimum" vsizetype="Ignored">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
-    <property name="frameShape">
-     <enum>QFrame::Shape::Box</enum>
+    <property name="toolTip">
+     <string>Exile Pile</string>
     </property>
-    <property name="frameShadow">
-     <enum>QFrame::Shadow::Sunken</enum>
+    <property name="toolTipDuration">
+     <number>-2</number>
     </property>
     <property name="text">
      <string>Exile</string>
     </property>
-    <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignCenter</set>
-    </property>
    </widget>
-   <widget class="QLabel" name="playerGraveyard2">
+   <widget class="QPushButton" name="playerGraveyardButton">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>747</y>
-      <width>61</width>
-      <height>61</height>
+      <x>180</x>
+      <y>670</y>
+      <width>121</width>
+      <height>181</height>
      </rect>
     </property>
-    <property name="font">
-     <font>
-      <family>Garamond</family>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::Shape::Box</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Shadow::Sunken</enum>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Minimum" vsizetype="Ignored">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
     <property name="text">
-     <string notr="true">Graveyard</string>
-    </property>
-    <property name="textFormat">
-     <enum>Qt::TextFormat::AutoText</enum>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignCenter</set>
-    </property>
-    <property name="textInteractionFlags">
-     <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+     <string>Graveyard</string>
     </property>
    </widget>
   </widget>
@@ -517,7 +464,7 @@
      <x>0</x>
      <y>0</y>
      <width>1548</width>
-     <height>25</height>
+     <height>17</height>
     </rect>
    </property>
   </widget>

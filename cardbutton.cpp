@@ -1,16 +1,33 @@
 #include "cardbutton.h"
 #include "carddictionary.h"
+#include "qgraphicstransform.h"
 #include <QMouseEvent>
 #include <QDebug>
 #include <QGraphicsDropShadowEffect>
 #include <QPainter>
+#include <QGraphicsEffect>
 #include <QPainterPath>
 
 CardButton::CardButton(Card* card, QWidget* parent)
     : QPushButton(parent), cardPtr(card) {
     cardName = card->name;
+
+    QSize targetSize = card->isTapped ? QSize(140, 100) : QSize(100, 140);
+
     QPixmap pixmap = QPixmap::fromImage(card->image).scaled(
-        this->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        targetSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    // QTransform transform;
+
+    // if(card->isTapped) {
+    //     transform.rotate(90);
+    //     // setFixedSize(140, 100);
+    // }
+    // else {
+    //     transform.rotate(0);
+    //     // setFixedSize(100, 140);
+    // }
+    // QPixmap rotated = pixmap.transformed(transform);
+
     this->setIcon(QIcon(pixmap));
     this->setText("");
 
@@ -40,6 +57,15 @@ CardButton::CardButton(Card* card, QWidget* parent)
     //         this->setGraphicsEffect(nullptr);
     //     }
     // });
+
+
+    // QGraphicsRotation* rotationEffect = new QGraphicsRotation();
+    // rotationEffect->setAngle(cardPtr->isTapped ? 90 : 0);
+
+    // // Apply rotation effect to button's graphics effect
+    // QGraphicsEffect* effect = new QGraphicsEffect();
+    // effect->setTransform(transform);
+    // setGraphicsEffect(effect);
 }
 
 
@@ -59,7 +85,19 @@ void CardButton::resetCard(){
     QPixmap pixmap = QPixmap::fromImage(cardPtr->image).scaled(
         this->size() - QSize(6,6), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
-    this->setIcon(QIcon(pixmap));
+    QTransform transform;
+
+    if(cardPtr->isTapped) {
+        transform.rotate(90);
+        setFixedSize(140, 100);
+    }
+    else {
+        transform.rotate(0);
+        setFixedSize(100, 140);
+    }
+    QPixmap rotated = pixmap.transformed(transform, Qt::SmoothTransformation);
+
+    this->setIcon(QIcon(rotated));
     this->setText("");
     this->setIconSize(this->size() - QSize(6,6));
 }
