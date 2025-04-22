@@ -51,7 +51,8 @@ enum class ZoneType : int {
     GRAVEYARD,
     BATTLEFIELD,
     EXILE,
-    HAND
+    HAND,
+    STACK
 };
 
 #endif // TYPE_H

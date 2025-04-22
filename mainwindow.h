@@ -47,6 +47,8 @@ public:
     CardButton* currentSelectedCard = nullptr;
 
     QMap<ManaType, QList<CardButton*>> landGroups;
+    QVector<CardButton*> graveyardButtons;
+    QVector<CardButton*> exileButtons;
 
     MainWindow(gamemanager *game, QWidget *parent = nullptr);
     ~MainWindow();
@@ -88,6 +90,8 @@ public slots:
     void on_playCardButton_clicked();
 
     void cardBeingTapped(CardButton* card, bool tapped);
+
+    void showZoneDialog(QVector<CardButton*>* zoneCards, const QString& title);
 
 signals:
 

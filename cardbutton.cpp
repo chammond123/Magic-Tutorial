@@ -88,7 +88,7 @@ void CardButton::resizeEvent(QResizeEvent* event) {
         this->size() - QSize(6,6), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     this->setIcon(QIcon(pixmap));
     this->setIconSize(this->size()- QSize(6,6));
-    // updateTapped();
+    updateTapped();
 }
 
 QPixmap CardButton::getOverlayedPixmap(int selectionIndex) {
@@ -114,7 +114,7 @@ QPixmap CardButton::getOverlayedPixmap(int selectionIndex) {
 }
 
 void CardButton::setTapped(bool t) {
-    // tapped = t;
+    tapped = t;
     updateTapped();
 }
 
