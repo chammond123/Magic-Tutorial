@@ -214,8 +214,22 @@ QString MainWindow::manaTypeToString(ManaType type) {
     }
 }
 
+QString MainWindow::cardTypeToString(CardType type) {
+    switch (type) {
+    case CardType::LAND:    return "Land";
+    case CardType::CREATURE:  return "Creature";
+    case CardType::ARTIFACT:  return "Artifact";
+    case CardType::ENCHANTMENT:  return "Enchantment";
+    case CardType::PLANESWALKER:  return "Planeswalker";
+    case CardType::BATTLE:  return "Battle";
+    case CardType::INSTANT:  return "Instant";
+    case CardType::SORCERY:        return "Sorcery";
+    default:              return "Unknown";
+    }
+}
+
 QString MainWindow::phaseTypeToString(Phase phase) {
-        switch (phase) {
+    switch (phase) {
     case Phase::Untap:   return "Untap";
     case Phase::Upkeep:   return "Upkeep";
     case Phase::Draw:   return "Draw";
@@ -432,7 +446,36 @@ void MainWindow::updateMagnifier(Card* card) {
     ui->MagnifierImage->setPixmap(pixmap);
 
     // Show the card description
-    ui->CardDescription->setText(cardFromDictionary.description);
+    QString info;
+    info += "<b>Name:</b> " + cardFromDictionary.name + "<br>";
+    info += "<b>Type:</b> " + cardTypeToString(cardFromDictionary.type) + "<br>";
+
+    QString costLine;
+    for (auto it = cardFromDictionary.cost.begin(); it != cardFromDictionary.cost.end(); ++it) {
+        if (it.value() > 0) {
+            costLine += QString("%1 %2, ")
+            .arg(it.value())
+                .arg(MainWindow::manaTypeToString(it.key()));
+        }
+    }
+    if (!costLine.isEmpty()) {
+        costLine.chop(2);
+        info += "<b>Cost:</b> " + costLine + "<br>";
+    } else {
+        info += "<b>Cost:</b> 0<br>";
+    }
+
+    if (cardFromDictionary.type == CardType::CREATURE) {
+        info += QString("<b>Power/Toughness:</b> %1/%2<br>")
+        .arg(cardFromDictionary.power)
+            .arg(cardFromDictionary.toughness);
+    }
+
+    info += "<hr>";
+    info += "<b>Description:</b><br>" + cardFromDictionary.description;
+
+    // Show formatted description in the magnifier
+    ui->CardDescription->setText(info);
 }
 
 void MainWindow::attackPhase(){
