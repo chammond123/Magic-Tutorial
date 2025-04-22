@@ -97,6 +97,8 @@ public slots:
 
     void cardBeingTapped(CardButton* card, bool tapped);
 
+    void onGameEnded(bool playerWon);
+
     // void showZoneDialog(QVector<CardButton*>* zoneCards, const QString& title);
 
 signals:
@@ -122,7 +124,6 @@ private:
     QTimer* endTimer = nullptr;
     QVector<QPair<QGraphicsPixmapItem*, b2Body*>> endfallingCards;
 
-    void onGameEnded(bool playerWon);
     void updateEndFall();
     void updateEndExplosion();
 

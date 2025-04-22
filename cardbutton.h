@@ -23,7 +23,6 @@ protected:
     void mousePressEvent(QMouseEvent* event) override;
     void enterEvent(QEnterEvent* event) override;
     void resizeEvent(QResizeEvent* event) override;
-    // void mouseDoubleClickEvent(QMouseEvent* event) override;
 
 signals:
     void cardSelected(CardButton* button);
@@ -35,8 +34,6 @@ public slots:
     void resetCard();
     void setTapped(bool tapped);
 };
-
-
 
 
 #endif // CARDBUTTON_H
