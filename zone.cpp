@@ -19,10 +19,23 @@ iterator Zone::begin() { return cards.begin(); }
 
 iterator Zone::end() { return cards.end(); }
 
-int Zone::getCount() { return count; }
+int Zone::getCount() { return cards.count(); }
 
 void Zone::shuffle() {
-    std::shuffle(cards.first(), cards.last(), randomEngine);
+    // std::shuffle(cards.first(), cards.last(), randomEngine);
+    // Create a temporary vector and copy cards
+    QVector<Card*> tempVector = cards;
+    cards.clear();
+
+    // Fisher-Yates shuffle algorithm
+    while (!tempVector.isEmpty()) {
+        // Generate a random index
+        std::uniform_int_distribution<int> dist(0, tempVector.size() - 1);
+        int randomIndex = dist(randomEngine);
+
+        // Move the randomly selected card to our original vector
+        cards.append(tempVector.takeAt(randomIndex));
+    }
 }
 
 bool Zone::findCard(Card* card) {
@@ -33,11 +46,11 @@ Card* Zone::drawTop() {
     if (cards.isEmpty()){
         return nullptr;
     }
-    return cards.last();
+    return cards.first();
 }
 
 void Zone::addCard(Card* card, bool onTop) {
-    if (!onTop){
+    if (onTop){
         cards.prepend(card);
     }
     else{

@@ -22,10 +22,8 @@ Player::Player(QStringList deckList, QObject *parent)
     health = 20;
 
     // Initializes card pointers in deck zone
-    for (Card card : deck.getCardObjects()) {
-        Library.addCard(&card, true);
-
-        // emit initalizeLibrary(Library.getCardPointers(), 0);
+    for (Card* card : deck.getCardObjects()) {
+        Library.addCard(card, true);
     }
     Library.shuffle();
 
@@ -71,6 +69,7 @@ void Player::useMana(Card* card)
 
 void Player::drawCard(int amount)
 {
+    qDebug() << "Drawing Cards!";
     // Check to see if any cards left
     for (int i = 0; i < amount; i++) {
         if ( Library.getCount() <= 0){
@@ -79,8 +78,9 @@ void Player::drawCard(int amount)
         }
 
         Card* card = Library.drawTop();
-        Library.removeCard(card);
-        Hand.addCard(card, false);
+        moveCardZone(card, Library, Hand, false);
+        // Library.removeCard(card);
+        // Hand.addCard(card, false);
         emit cardDrawn(card);
     }
 }
@@ -125,6 +125,7 @@ void Player::moveCardZone(Card *card, Zone&  sourceZone, Zone& targetZone, bool 
 {
     sourceZone.removeCard(card);
     targetZone.addCard(card, OnTop);
+    qDebug() << "moved card";
 }
 
 void Player::mill(int amount)

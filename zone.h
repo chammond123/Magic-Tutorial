@@ -15,7 +15,7 @@ private:
      * Last element represents top of card stack
      */
     QVector<Card*> cards;
-    int count = cards.count();
+    int count;
 
 
     bool isFaceUp;

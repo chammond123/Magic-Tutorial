@@ -6,11 +6,18 @@ Deck::Deck(QStringList deckList, QObject *parent)
     // : QObject{parent}, fileName{fileName}
 {
     for (const auto &cardName : deckList) {
-        Card card = cardDictionary::getCard(cardName);
+        Card* card = new Card(cardDictionary::getCard(cardName));
         cards.append(card);
     }
 }
 
-QVector<Card> Deck::getCardObjects() {
+QVector<Card*> Deck::getCardObjects() {
     return this->cards;
+}
+
+Deck::~Deck(){
+    for (Card* card : cards){
+        delete card;
+    }
+    cards.clear();
 }

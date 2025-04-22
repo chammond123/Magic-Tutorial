@@ -234,6 +234,7 @@ Card CardAPIManager::parseCardFromJson(const QJsonObject &cardJson)
         }
         if (cardJson.contains("toughness")) {
             card.toughness = cardJson["toughness"].toString().toInt();
+            card.currHealth = card.toughness;
         }
     }
 
