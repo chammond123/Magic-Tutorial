@@ -32,6 +32,7 @@ public:
     int health;
 
     QMap<ManaType, int> manaPool;
+    QMap<ManaType, int> selectedMana;
 
     // Used by UI to check which zones to update
     int playerID;
@@ -56,6 +57,7 @@ public:
 
     // Health Methods
     int getHealth();
+
 
     // Zone Methods
     /**

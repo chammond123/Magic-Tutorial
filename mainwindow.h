@@ -47,8 +47,6 @@ public:
     CardButton* currentSelectedCard = nullptr;
 
     QMap<ManaType, QList<CardButton*>> landGroups;
-    QVector<CardButton*> graveyardButtons;
-    QVector<CardButton*> exileButtons;
 
     MainWindow(gamemanager *game, QWidget *parent = nullptr);
     ~MainWindow();
@@ -62,7 +60,6 @@ public:
     QMap<Card*, QVector<Card*>> combatants;
 
     QMap<QString, QList<CardButton*>> containerCards;
-    // QList<CardButton*> exileCards;
 
     void overlayCards();
 
@@ -74,7 +71,7 @@ public slots:
     void collectAttackers();
     void collectBlockers();
 
-    void promptForMana();
+    bool promptForMana();
 
     void updateUI();
     void startTargeting();
@@ -91,7 +88,7 @@ public slots:
 
     void cardBeingTapped(CardButton* card, bool tapped);
 
-    void showZoneDialog(QVector<CardButton*>* zoneCards, const QString& title);
+    // void showZoneDialog(QVector<CardButton*>* zoneCards, const QString& title);
 
 signals:
 
@@ -121,8 +118,6 @@ private:
 
     bool isLand(Card* card);
     bool isCreature(Card* card);
-
-    QString parseDescription(Card* card);
 
 
     //For mana zone

@@ -55,7 +55,16 @@ void Player::useMana(Card* card)
 {
     QMap<ManaType, int> manaCosts = card->cost;
     for (auto [color, amount] : manaCosts.toStdMap()) {
+        if(color == ManaType::ANY){
+            continue;
+        }
         manaPool[color] -= amount;
+    }
+
+    if (manaCosts[ManaType::ANY] > 0){
+        for(auto [color, amount] : selectedMana.toStdMap()){
+            manaPool[color] -= amount;
+        }
     }
 }
 
@@ -153,10 +162,25 @@ void Player::playCard(Card* card)
 bool Player::canPayMana(Card* card)
 {
     QMap<ManaType, int> manaCosts = card->cost;
+    int costTotal = 0;
+    int totalMana = 0;
+
     for (auto [color, value] : manaCosts.toStdMap()) {
+        if (color == ManaType::ANY){
+            continue;
+        }
         if (value > manaPool[color]) {
             return false;
         }
+        costTotal += value;
+    }
+
+    for (int value : manaPool){
+        totalMana += value;
+    }
+
+    if (costTotal > totalMana){
+        return false;
     }
 
     return true;
@@ -193,7 +217,6 @@ void Player::resolveCard(Card* card) {
 
 void Player::tapCard(Card* card){
     card->isTapped = true;
-    // card->useAbility();
 }
 
 void Player::untap(){

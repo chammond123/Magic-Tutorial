@@ -17,6 +17,7 @@ public:
     explicit ManaCollection(Player* player, Card* card, QWidget *parent = nullptr);
     ~ManaCollection();
     QMap<ManaType, int> manaPayments;
+    QMap<ManaType, int> getUserMana();
 
 
 private:

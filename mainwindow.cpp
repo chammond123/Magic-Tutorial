@@ -8,6 +8,7 @@
 #include <QTimer>
 #include <QDebug>
 #include <QtGui/qevent.h>
+#include "ManaCollection.h"
 #include <QMessageBox>
 #include <type.h>
 #include <QScrollArea>
@@ -30,8 +31,10 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     playerLayout = {
         ui->playerHand,
         ui->playerBattlefield,
-        ui->playerGraveyard,
-        ui->playerExile,
+        ui->playerGraveyardButton,
+        "Graveyard",
+        ui->playerExileButton,
+        "Exile",
         ui->playerRed,
         ui->playerGreen,
         ui->playerBlue,
@@ -43,8 +46,10 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     enemyLayout = {
         nullptr,
         ui->enemyBattlefield,
-        ui->enemyDeck,
-        ui->enemyExile,
+        nullptr,
+        "EnemyGraveyard",
+        nullptr,
+        "EnemyExile",
         ui->enemyRed,
         ui->enemyGreen,
         ui->enemyBlue,
@@ -60,7 +65,20 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
 
     // connect(ui->playCardButton, &QPushButton::clicked, this, &MainWindow::on_playCardButton_clicked);
 
+    //Connect Exile and Graveyard
+    // connect(ui->playerGraveyard, &QPushButton::clicked, this, [=]() {
+    //     showZoneDialog(&graveyardButtons, "Graveyard");
+    //     updateUI();
+    // });
+
+    // connect(ui->playerExile, &QPushButton::clicked, this, [=]() {
+    //     showZoneDialog(&exileButtons, "Exile");
+    //     updateUI();
+    // });
+
     //update Icon for zones
+    // ui->playerExile->setFixedSize(100,70);
+    // ui->playerGraveyard->setFixedSize(100,70);
     ui->playerDeck->setFixedSize(100,140);
     ui->playerDeck->setPixmap(QPixmap(":/Icons/Icons/BackCard.png").scaled(ui->playerDeck->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
@@ -100,6 +118,14 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
 
     connect(ui->playerBlackIcon, &QPushButton::clicked, this, [=]() {
         showLandPopup(ManaType::BLACK);
+    });
+
+    connect(ui->playerGraveyardButton, &QPushButton::clicked, this, [=]() {
+        showCollection("Graveyard");
+    });
+
+    connect(ui->playerExileButton, &QPushButton::clicked, this, [=]() {
+        showCollection("Exile");
     });
 
     connect(apiManager, &CardAPIManager::cardFetched, this, [=](const Card &card) {
@@ -177,9 +203,9 @@ void MainWindow::setupHand(){
 
     card2 = cardDictionary::getCard("Coral Merfolk");
     card3 = cardDictionary::getCard("Goblin Bully");
-    card4 = cardDictionary::getCard("Mountain");
-    card5 = cardDictionary::getCard("Mountain");
-    card6 = cardDictionary::getCard("Mountain");
+    card4 = cardDictionary::getCard("Shock");
+    card5 = cardDictionary::getCard("Shock");
+    card6 = cardDictionary::getCard("Counterspell");
     card7 = cardDictionary::getCard("Mountain");
     card8 = cardDictionary::getCard("Hill Giant");
     card9 = cardDictionary::getCard("Canyon Minotaur");
@@ -256,6 +282,7 @@ void MainWindow::updateManaButton(ManaType type) {
         case ManaType::RED:  button = ui->playerRedIcon; break;
         case ManaType::BLACK:  button = ui->playerBlackIcon; break;
         case ManaType::GREEN:  button = ui->playerGreenIcon; break;
+        default: break;
     }
 
     if (button) {
@@ -301,6 +328,48 @@ void MainWindow::showLandPopup(ManaType manaType){
     dialog->exec();  // modal
 
 }
+
+bool MainWindow::promptForMana(){
+    ManaCollection* manaPrompt = new ManaCollection(userPlayer, currentSelectedCard->cardPtr, this);
+
+    if(manaPrompt->exec() == QDialog::Accepted){
+        userPlayer->selectedMana = manaPrompt->getUserMana();
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+// void MainWindow::showZoneDialog(QVector<CardButton*>* zoneCards, const QString& title) {
+//     if (!zoneCards) return;
+
+//     QDialog* dialog = new QDialog(this);
+//     dialog->setWindowTitle(title);
+//     dialog->setMinimumSize(600, 250);
+
+//     QScrollArea* scrollArea = new QScrollArea(dialog);
+//     scrollArea->setWidgetResizable(true);
+
+//     QWidget* container = new QWidget;
+//     QHBoxLayout* layout = new QHBoxLayout(container);
+
+
+//     qDebug() << zoneCards->size();
+//     for (CardButton* cardButton : *zoneCards) {
+//         qDebug() << "Enter loop";
+//         cardButton->setParent(container);   // move it into the dialog
+//         cardButton->setVisible(true);       // ensure it's shown
+//         layout->addWidget(cardButton);      // attach to layout
+//     }
+
+//     scrollArea->setWidget(container);
+
+//     QVBoxLayout* mainLayout = new QVBoxLayout(dialog);
+//     mainLayout->addWidget(scrollArea);
+//     dialog->setLayout(mainLayout);
+
+//     dialog->exec();  // modal popup
+// }
 
 void MainWindow::on_playCardButton_clicked(){
     // Just for testing need to handle more condiction phrases, cost, priority
@@ -355,7 +424,8 @@ void MainWindow::on_playCardButton_clicked(){
         clearSelection();
     }
     else {
-        userPlayer->moveCardString(card, "hand", "exile", true);
+        userPlayer->moveCardString(card, "hand", "graveyard", true);
+        clearSelection();
     }
     updateUI();
 }
@@ -502,34 +572,26 @@ void MainWindow::updateUI(){
                 updateZone(layout.battlefield, zone);
             }
             else if (zone->type == ZoneType::GRAVEYARD){
-                // TODO: put graveyard cards into exile
-                Card* card = zone->drawTop();
-                if (!card){
-                    continue;
-                }
-                QPixmap image = QPixmap::fromImage(card->image);
-                layout.graveyard->setPixmap(image.scaled(layout.graveyard->size()));
+                updateDeck(zone, layout.graveName, layout.graveyard);
             }
             else if (zone->type == ZoneType::EXILE){
-                // TODO: put exile cards into exile
-                Card* card = zone->drawTop();
-                if (!card){
-                    continue;
-                }
-                QPixmap image = QPixmap::fromImage(card->image);
-                layout.exile->setPixmap(image.scaled(layout.exile->size()));
+                updateDeck(zone, layout.exileName, layout.exile);
             }
         }
+
+        // update Stack zone
+        //need to implement stackZone
+        // updateZone(ui->stack, //zone);
 
         qDebug() << "update Mana";
         // Set the Mana
         for (auto [color, amount] : currPlayer->manaPool.toStdMap()){
             switch (color) {
-            case ManaType::RED:   layout.red->setText(QString("Red Mana: ") + QString::number(amount));
-            case ManaType::BLUE:  layout.blue->setText(QString("Blue Mana: ") + QString::number(amount));
-            case ManaType::GREEN: layout.green->setText(QString("Green Mana: ") + QString::number(amount));
-            case ManaType::BLACK: layout.black->setText(QString("Black Mana: ") + QString::number(amount));
-            case ManaType::WHITE: layout.white->setText(QString("White Mana: ") + QString::number(amount));
+            case ManaType::RED:   layout.red->setText(QString("Red Mana: ") + QString::number(amount)); break;
+            case ManaType::BLUE:  layout.blue->setText(QString("Blue Mana: ") + QString::number(amount)); break;
+            case ManaType::GREEN: layout.green->setText(QString("Green Mana: ") + QString::number(amount)); break;
+            case ManaType::BLACK: layout.black->setText(QString("Black Mana: ") + QString::number(amount)); break;
+            case ManaType::WHITE: layout.white->setText(QString("White Mana: ") + QString::number(amount)); break;
             default:              break;
             }
         }
@@ -541,6 +603,7 @@ void MainWindow::updateUI(){
 
         qDebug() << "update Phases";
         handlePhase();
+
         update();
         qDebug() << "updateUI has finished";
     }
@@ -552,6 +615,13 @@ void MainWindow::updateZone(QGridLayout* container, Zone* zone){
     if (container == nullptr){
         return;
     }
+
+
+
+    if (container == nullptr){
+        return;
+    }
+
     // Clear Zone
     QLayoutItem* item;
     while((item = container->takeAt(0)) != nullptr){
@@ -561,6 +631,8 @@ void MainWindow::updateZone(QGridLayout* container, Zone* zone){
         delete item;
     }
 
+    // should we another container and another Stack zone so we can move cardButton from player hand to the stack before hitting the field?
+
     for(Card* card : *zone){
         CardButton* cardButton = new CardButton(card);
         activeCards.append(cardButton);
@@ -568,20 +640,103 @@ void MainWindow::updateZone(QGridLayout* container, Zone* zone){
         connect(cardButton, &CardButton::cardSelected, this, &MainWindow::handleCardSelected);
         connect(cardButton, &CardButton::hovered, this, &MainWindow::updateMagnifier);
         connect(cardButton, &CardButton::cardTapped, this, &MainWindow::cardBeingTapped);
-        // connect(this, &MainWindow::allowTap, cardButton, &CardButton::setTapped);
+
         cardButton->setFixedSize(100, 140);
 
         if(card->type == CardType::LAND && zone->type == ZoneType::BATTLEFIELD){
             landGroups[card->color].append(cardButton);
-            // ui->playerRed->setPixmap(QPixmap::fromImage(card->image).scaled(ui->playerRed->size()));
             currentSelectedCard = nullptr;
             continue;
         }
 
-        container->addWidget(cardButton, 0, container->count(), Qt::AlignCenter);
+
+        //Test
+        if(zone->type != ZoneType::GRAVEYARD && zone->type != ZoneType::EXILE){
+            container->addWidget(cardButton, 0, container->count(), Qt::AlignCenter);
+        }
+
+        // container->addWidget(cardButton, 0, container->count(), Qt::AlignCenter);
 
     }
     // update();
+}
+
+void MainWindow::updateDeck(Zone* zone, QString title, QPushButton *deckButton){
+    if(!zone){
+        qDebug() << "Zone Not Found";
+        return;
+    }
+
+    containerCards[title].clear();
+
+    for(Card* card : *zone){
+        CardButton* button = new CardButton(card);
+        activeCards.append(button);
+        containerCards[title].prepend(button);
+
+        connect(button, &CardButton::cardSelected, this, &MainWindow::handleCardSelected);
+        connect(button, &CardButton::hovered, this, &MainWindow::updateMagnifier);
+        connect(button, &CardButton::cardTapped, this, &MainWindow::cardBeingTapped);
+        button->setFixedSize(100, 140);
+
+        qDebug() << "Added Card: " << card->name << "Count: " << containerCards[title].count();
+        qDebug() << "Card in graveyard: " << containerCards["Graveyard"].count() << "Cards in Exile: " << containerCards["Exile"].count();
+    }
+
+    if(!deckButton){
+        return;
+    }
+
+    Card* card = zone->drawTop();
+
+    if(!card){
+        deckButton->setIcon(QIcon());
+        if (zone->type == ZoneType::GRAVEYARD){
+            deckButton->setText("Graveyard");
+        }
+        else{
+            deckButton->setText("Exile");
+        }
+        return;
+    }
+    deckButton->setText("");
+    QPixmap image = QPixmap::fromImage(card->image.scaled(deckButton->size() - QSize(10,10), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    deckButton->setIcon(QIcon(image));
+    deckButton->setIconSize(deckButton->size());
+}
+
+void MainWindow::showCollection(QString title){
+
+    QDialog* dialog = new QDialog(this);
+    dialog->setWindowTitle(title);
+    dialog->setMinimumSize(400, 300);
+
+    QScrollArea* scrollArea = new QScrollArea(dialog);
+    QWidget* container = new QWidget();
+    QVBoxLayout* layout = new QVBoxLayout(container);
+
+    qDebug() << "Collection size: " << containerCards[title].size();
+
+    for (CardButton* card : containerCards[title]) {
+        layout->addWidget(card);
+        if(card->isEnabled()){
+            card->enableCard(true);
+        }
+        else{
+            card->enableCard(false);
+        }
+        qDebug() << "added";
+    }
+
+    container->setLayout(layout);
+    scrollArea->setWidget(container);
+    scrollArea->setWidgetResizable(true);
+
+    QVBoxLayout* mainLayout = new QVBoxLayout(dialog);
+    mainLayout->addWidget(scrollArea);
+    dialog->setLayout(mainLayout);
+
+    dialog->exec();
 }
 
 
@@ -592,9 +747,7 @@ void MainWindow::clearSelection(){
     currentSelectedCard = nullptr;
 
     for(CardButton* card : activeCards){
-        if(card){
-            card->setChecked(false);
-        }
+        card->setChecked(false);
     }
     update();
 
@@ -694,10 +847,6 @@ void MainWindow::startTargeting(){
         CardButton* button = qobject_cast<CardButton*>(widget);
         button->enableCard(true);
     }
-}
-
-void MainWindow::showAllCards(){
-    return;
 }
 
 void MainWindow::overlayCards(){
