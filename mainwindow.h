@@ -36,6 +36,7 @@ struct ZoneLayout {
     QPushButton* blackCount;
     QLabel* health;
     QLabel* phaseLabel;
+    QLabel* activePlayerLabel;
     QMap<ManaType, QList<CardButton*>>* landGroups;
 };
 
@@ -114,6 +115,7 @@ private:
     CardAPIManager* apiManager;
     QString manaTypeToString(ManaType type);
     QString phaseTypeToString(Phase phase);
+    QString cardTypeToString(CardType type);
     QString deckString;
     GameState* statePointer;
 

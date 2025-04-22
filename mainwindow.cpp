@@ -60,6 +60,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
         ui->playerBlackIcon,
         ui->PlayerHealth,
         ui->phaseLabel,
+        ui->activePlayerLabel,
         &playerLandGroups
     };
 
@@ -82,6 +83,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
         ui->enemyBlackIcon,
         ui->EnemyHealth,
         ui->phaseLabel,
+        ui->activePlayerLabel,
         &enemyLandGroups
     };
 
@@ -217,8 +219,22 @@ QString MainWindow::manaTypeToString(ManaType type) {
     }
 }
 
+QString MainWindow::cardTypeToString(CardType type) {
+    switch (type) {
+    case CardType::LAND:    return "Land";
+    case CardType::CREATURE:  return "Creature";
+    case CardType::ARTIFACT:  return "Artifact";
+    case CardType::ENCHANTMENT:  return "Enchantment";
+    case CardType::PLANESWALKER:  return "Planeswalker";
+    case CardType::BATTLE:  return "Battle";
+    case CardType::INSTANT:  return "Instant";
+    case CardType::SORCERY:        return "Sorcery";
+    default:              return "Unknown";
+    }
+}
+
 QString MainWindow::phaseTypeToString(Phase phase) {
-        switch (phase) {
+    switch (phase) {
     case Phase::Untap:   return "Untap";
     case Phase::Upkeep:   return "Upkeep";
     case Phase::Draw:   return "Draw";
@@ -351,13 +367,13 @@ void MainWindow::handleCardSelected(CardButton* clicked) {
             selectedButtons.removeOne(clicked);
             clicked->setChecked(false);
             currentSelectedCard = nullptr;
-            qDebug() << "Removed " << clicked->cardPtr->name;
+            // qDebug() << "Removed " << clicked->cardPtr->name;
         }
         else{
             selectedButtons.append(clicked);
             clicked->setChecked(true);
             currentSelectedCard = clicked;
-            qDebug() << "Added " << clicked->cardPtr->name;
+            // qDebug() << "Added " << clicked->cardPtr->name;
         }
         overlayCards();
     }
@@ -395,7 +411,36 @@ void MainWindow::updateMagnifier(Card* card) {
     ui->MagnifierImage->setPixmap(pixmap);
 
     // Show the card description
-    ui->CardDescription->setText(cardFromDictionary.description);
+    QString info;
+    info += "<b>Name:</b> " + cardFromDictionary.name + "<br>";
+    info += "<b>Type:</b> " + cardTypeToString(cardFromDictionary.type) + "<br>";
+
+    QString costLine;
+    for (auto it = cardFromDictionary.cost.begin(); it != cardFromDictionary.cost.end(); ++it) {
+        if (it.value() > 0) {
+            costLine += QString("%1 %2, ")
+            .arg(it.value())
+                .arg(MainWindow::manaTypeToString(it.key()));
+        }
+    }
+    if (!costLine.isEmpty()) {
+        costLine.chop(2);
+        info += "<b>Cost:</b> " + costLine + "<br>";
+    } else {
+        info += "<b>Cost:</b> 0<br>";
+    }
+
+    if (cardFromDictionary.type == CardType::CREATURE) {
+        info += QString("<b>Power/Toughness:</b> %1/%2<br>")
+        .arg(cardFromDictionary.power)
+            .arg(cardFromDictionary.toughness);
+    }
+
+    info += "<hr>";
+    info += "<b>Description:</b><br>" + cardFromDictionary.description;
+
+    // Show formatted description in the magnifier
+    ui->CardDescription->setText(info);
 }
 
 void MainWindow::attackPhase(){
@@ -507,7 +552,7 @@ void MainWindow::updateUI(){
         // update Stack zone
 
 
-        qDebug() << "update Mana";
+        // qDebug() << "update Mana";
         // Set the Mana
         for (auto [color, amount] : currPlayer->manaPool.toStdMap()){
             switch (color) {
@@ -529,9 +574,13 @@ void MainWindow::updateUI(){
         // Set the Health
         layout.health->setText(QString::number(currPlayer->health));
 
-        // QString("Phase: ") +
+        // Set Phase Label
         layout = playerLayout;
         layout.phaseLabel->setText(QString("Phase: ") + phaseTypeToString(statePointer->currentPhase));
+
+        // Set Active Player Label
+        layout.activePlayerLabel->setText(QString(statePointer->player1->isActivePlayer ? "You are" : "The enemy is") + " the active player");
+
 
         qDebug() << "update Phases";
         handlePhase();
@@ -677,7 +726,7 @@ void MainWindow::showCollection(QString title){
         else{
             card->enableCard(false);
         }
-        qDebug() << "added";
+        // qDebug() << "added";
     }
 
     container->setLayout(layout);
@@ -693,7 +742,7 @@ void MainWindow::showCollection(QString title){
 
 
 void MainWindow::clearSelection(){
-    qDebug() << "clearing Selection";
+    // qDebug() << "clearing Selection";
 
     selectedButtons.clear();
     currentSelectedCard = nullptr;
@@ -730,38 +779,14 @@ void MainWindow::handlePhase(){
 
     for (CardButton* button : activeCards){
         if (!button) {
-            qDebug() << "Warning: Null button found in activeCards";
+            // qDebug() << "Warning: Null button found in activeCards";
             continue;
         }
         Card* card = button->cardPtr;
-        // bool shouldEnable = false;
 
-        // if(rules.canPlayInstant && card->type == CardType::INSTANT){
-        //     shouldEnable = true;
-        // }
-        // if(rules.canPlaySorcery && card->type == CardType::SORCERY){
-        //     shouldEnable = true;
-        // }
-        // if(isActive && rules.canDeclareAttack && card->type == CardType::CREATURE){
-        //     shouldEnable = true;
-        // }
-        // if(!isActive && rules.canDeclareDefense && card->type == CardType::CREATURE){
-        //     shouldEnable = true;
-        // }
-        // if(isActive && card->type == CardType::LAND && !userPlayer->hasPlayedLand){
-        //     shouldEnable = true;
-        // }
-        // if(isActive && rules.canPlaySorcery &&
-        //         (card->type == CardType::CREATURE ||
-        //          card->type == CardType::ARTIFACT ||
-        //          card->type == CardType::ENCHANTMENT ||
-        //          card->type == CardType::PLANESWALKER ||
-        //          card->type == CardType::BATTLE)) {
-        //     shouldEnable = true;
-        // }
         button->enableCard(card->shouldEnable);
-        ui->priorityButton->setEnabled(statePointer->player1->canChangePhase);
-        ui->phaseButton->setEnabled(statePointer->player1->canPassPriority);
+        ui->priorityButton->setEnabled(statePointer->player1->canPassPriority);
+        ui->phaseButton->setEnabled(statePointer->player1->canChangePhase);
         // update();
     }
 }

@@ -21,8 +21,9 @@ public:
 class playCardCommand : public Command{
 public:
     Card* card;
-    Card* target;
-    playCardCommand(GameState* state, Card* card, Card* target);
+    std::variant<Player*, Card*, std::nullptr_t> target;
+
+    playCardCommand(GameState* state, Card* card, std::variant<Player*, Card*, std::nullptr_t> target);
 
     virtual void execute();
 };
