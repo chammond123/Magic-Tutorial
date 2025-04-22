@@ -63,6 +63,7 @@ void GameState::changePhase(){
             botPlayer->takeTurn(this);
         }
     }
+
 }
 
 void GameState::changePriority(){
@@ -260,6 +261,8 @@ void GameState::validateHand(Player* player){
 void GameState::validateBattlefield(Player* player){
     PhaseRules rules = getPhaseRules();
     for (Card* card : player->Battlefield){
+        card->shouldEnable = false;
+
         if (player->isActivePlayer && rules.canDeclareAttack && card->type == CardType::CREATURE && !card->isTapped && (!card->hasSummoningSickness or !player->hasSummoningSickness)){
             card->shouldEnable = true;
         }
@@ -271,9 +274,6 @@ void GameState::validateBattlefield(Player* player){
         }
         if (card->type == CardType::ARTIFACT){
             card->shouldEnable = true;
-        }
-        else{
-            card->shouldEnable = false;
         }
     }
 }

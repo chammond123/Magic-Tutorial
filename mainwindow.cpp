@@ -31,7 +31,11 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     isTargeting = false;
     userPlayer->holdingPriority = true;
     QMap<ManaType, int>* mana = new QMap<ManaType, int>;
-    (*mana)[ManaType::RED] = 1;
+    (*mana)[ManaType::RED] = 10;
+    (*mana)[ManaType::WHITE] = 10;
+    (*mana)[ManaType::BLUE] = 10;
+    (*mana)[ManaType::GREEN] = 10;
+    (*mana)[ManaType::BLACK] = 10;
     userPlayer->addMana(mana);
     userPlayer->isActivePlayer = true;
     enemyPlayer = statePointer->player2;
@@ -57,6 +61,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
         ui->playerBlackIcon,
         ui->PlayerHealth,
         ui->phaseLabel,
+        ui->activePlayerLabel,
         &playerLandGroups
     };
 
@@ -79,6 +84,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
         ui->enemyBlackIcon,
         ui->EnemyHealth,
         ui->phaseLabel,
+        ui->activePlayerLabel,
         &enemyLandGroups
     };
 
@@ -174,11 +180,9 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     connect(game, &gamemanager::promptTargeting, this, &MainWindow::startTargeting);
 
     // TESTING
-    connect(ui->tapButton, &QPushButton::clicked, this, [=]() {
-        cardBeingTapped(currentSelectedCard, currentSelectedCard->tapped);
-    });
+    connect(ui->tapButton, &QPushButton::clicked, this, &MainWindow::cardBeingTapped);
 
-    QTimer::singleShot(200, this, [=](){
+    QTimer::singleShot(100, this, [=](){
         qDebug() << "SETUP CALLED";
         setupHand();
     });
@@ -201,6 +205,7 @@ void MainWindow::setupHand(){
     else {
         return;
     }
+
     updateUI();
 }
 
@@ -248,20 +253,23 @@ QString MainWindow::phaseTypeToString(Phase phase) {
     }
 }
 // Need to add more logic
-void MainWindow::cardBeingTapped(CardButton* cardButton, bool tapped){
-
-    // check with game state to allow the card to be tapped or untapped
-    //Now just hard coded for testing
-    if(currentSelectedCard != cardButton){
-        handleCardSelected(cardButton);
+void MainWindow::cardBeingTapped(){
+    if (!currentSelectedCard){
+        QMessageBox::information(this, "No Card Selected", "Select a card to play.");
+        return;
     }
-    // qDebug() << currentSelectedCard->cardName;
+    Card* card = currentSelectedCard->cardPtr;
 
-    if(!tapped){
-        emit tapCard(currentSelectedCard->cardPtr);
+    if(card->isTapped){
+        QMessageBox::warning(this, "Card already tapped", "Card has already been tapped.");
+        return;
     }
 
-    currentSelectedCard->setTapped(!tapped);
+    emit tapCard(currentSelectedCard->cardPtr);
+
+    qDebug() << "tapped card";
+
+    clearSelection();
 }
 
 void MainWindow::updateManaButton(ManaType type, ZoneLayout layout) {
@@ -295,14 +303,7 @@ void MainWindow::showLandPopup(ManaType manaType, ZoneLayout zoneLayout){
     qDebug() << manaTypeToString(manaType);
 
     for (CardButton* land : zoneLayout.landGroups->value(manaType)) {
-        qDebug() << land->tapped;
         layout->addWidget(land);
-        if(land->isEnabled()){
-            land->enableCard(true);
-        }
-        else{
-            land->enableCard(false);
-        }
         qDebug() << "added";
     }
 
@@ -318,8 +319,8 @@ void MainWindow::showLandPopup(ManaType manaType, ZoneLayout zoneLayout){
 
 }
 
-bool MainWindow::promptForMana(){
-    ManaCollection* manaPrompt = new ManaCollection(userPlayer, currentSelectedCard->cardPtr, this);
+bool MainWindow::promptForMana(Card* card){
+    ManaCollection* manaPrompt = new ManaCollection(userPlayer, card, this);
 
     if(manaPrompt->exec() == QDialog::Accepted){
         userPlayer->selectedMana = manaPrompt->getUserMana();
@@ -336,14 +337,28 @@ void MainWindow::onPlayCardButtonClicked(){
         QMessageBox::information(this, "No Card Selected", "Select a card to play.");
         return;
     }
+    Card* card = currentSelectedCard->cardPtr;
 
     if(isTargeting){
-        emit playCard(targetSource, currentSelectedCard->cardPtr);
+        emit playCard(targetSource, card);
         isTargeting = false;
         return;
     }
 
-    emit playCard(currentSelectedCard->cardPtr, nullptr);
+    if(card->cost[ManaType::ANY] > 0){
+        if(promptForMana(card)){
+            if(isTargeting){
+                emit playCard(targetSource, card);
+                return;
+            }
+            else {
+                emit playCard(card, nullptr);
+                return;
+            }
+        }
+    }
+
+    emit playCard(card, nullptr);
 
     clearSelection();
 }
@@ -351,6 +366,7 @@ void MainWindow::onPlayCardButtonClicked(){
 void MainWindow::handleCardSelected(CardButton* clicked) {
     if(statePointer->currentPhase == Phase::DeclareAttackers ||
         statePointer->currentPhase == Phase::DeclareBlockers){
+
         if(selectedButtons.contains(clicked)){
             selectedButtons.removeOne(clicked);
             clicked->setChecked(false);
@@ -482,6 +498,15 @@ void MainWindow::updateUI(){
 
     activeCards.clear();
 
+    // FOR TESTING, REMOVE
+    QMap<ManaType, int>* mana = new QMap<ManaType, int>;
+    (*mana)[ManaType::RED] = 10;
+    (*mana)[ManaType::WHITE] = 10;
+    (*mana)[ManaType::BLUE] = 10;
+    (*mana)[ManaType::GREEN] = 10;
+    (*mana)[ManaType::BLACK] = 10;
+    userPlayer->addMana(mana);
+
     qDebug() << "updateUI called";
     QVector<Zone*> zones;
     ZoneLayout layout;
@@ -553,8 +578,13 @@ void MainWindow::updateUI(){
         // Set the Health
         layout.health->setText(QString::number(currPlayer->health));
 
+        // Set Phase Label
         layout = playerLayout;
         layout.phaseLabel->setText(QString("Phase: ") + phaseTypeToString(statePointer->currentPhase));
+
+        // Set Active Player Label
+        layout.activePlayerLabel->setText(QString(statePointer->player1->isActivePlayer ? "You are" : "The enemy is") + " the active player");
+
 
         qDebug() << "update Phases";
         handlePhase();
