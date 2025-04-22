@@ -22,6 +22,14 @@ void GameState::changePhase(){
         player1->upkeepPhase();
         player2->upkeepPhase();
     }
+    else if (currentPhase == Phase::Draw){
+        if (player1->isActivePlayer && turnCount != 1){
+            player1->drawCard();
+        }
+        else if (player2->isActivePlayer && turnCount != 1){
+            player2->drawCard();
+        }
+    }
     else if(currentPhase == Phase::PreCombatMain){
         player1->emptyManaPool();
         player2->emptyManaPool();

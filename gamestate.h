@@ -57,6 +57,10 @@ private:
      * @param The players whos actions to validate
      */
     void validatePlayerActions(Player* player);
+    /**
+     * @brief Holds how many turns have taken place
+     */
+    int turnCount;
 
 public:
     GameState();

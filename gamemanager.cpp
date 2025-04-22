@@ -13,12 +13,6 @@ gamemanager::~gamemanager(){
 }
 
 // UI Player Commands
-void gamemanager::onCardDrawn(){
-    drawCommand cmd = drawCommand(state);
-    cmd.execute();
-    emit updateUI();
-}
-
 void gamemanager::onPlayCard(Card *card, Card* target){
     playCardCommand cmd = playCardCommand(state, card, target);
     cmd.execute();

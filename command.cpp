@@ -7,12 +7,6 @@
 Command::Command(GameState* state) : state(state){}
 Command::~Command() {}
 
-drawCommand::drawCommand(GameState* state) : Command(state){}
-void drawCommand::execute(){
-    Player* player = state->getPriorityPlayer();
-    player->drawCard();
-}
-
 playCardCommand::playCardCommand(GameState* state, Card* card, Card* target) :
     Command(state), card(card), target(target){}
 void playCardCommand::execute(){

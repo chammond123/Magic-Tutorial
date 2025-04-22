@@ -20,11 +20,6 @@ public:
 
 public slots:
     /**
-     * @brief Receives if a player wants to draw a card for turn
-     * @param The player who wants to draw
-     */
-    void onCardDrawn();
-    /**
      * @brief Receives if a player wants to cast a card
      * @param The player who wants to play a card
      * @param The card they want to play

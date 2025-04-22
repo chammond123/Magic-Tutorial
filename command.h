@@ -18,12 +18,6 @@ public:
     virtual void execute() = 0;
 };
 
-class drawCommand : public Command{
-public:
-    drawCommand(GameState* state);
-
-    virtual void execute();
-};
 class playCardCommand : public Command{
 public:
     Card* card;
