@@ -4,6 +4,7 @@
 #include "gamestate.h"
 #include "card.h"
 #include "bot.h"
+#include <type_traits>
 
 Command::Command(GameState* state) : state(state){}
 Command::~Command() {}
@@ -26,15 +27,17 @@ passPriorityCommand::passPriorityCommand(GameState* state) :
     Command(state){}
 void passPriorityCommand::execute(){
     qDebug() << "Command executed";
+
+    state->changePriority();
+
     Player* player = state->getPriorityPlayer();
     if (!player->madeAction){
         state->resolveStack();
     }
-    Bot* botPlayer = dynamic_cast<Bot*>(state->player2);
-    if (botPlayer){
+    if (state->player2->holdingPriority){
+        Bot* botPlayer = static_cast<Bot*>(player);
         botPlayer->takeTurn(state);
     }
-    state->changePriority();
 }
 
 changePhaseCommand::changePhaseCommand(GameState* state) :
