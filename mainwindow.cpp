@@ -55,6 +55,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
         ui->playerWhiteIcon,
         ui->playerBlackIcon,
         ui->PlayerHealth,
+        ui->phaseLabel,
         &playerLandGroups
     };
 
@@ -76,6 +77,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
         ui->enemyWhiteIcon,
         ui->enemyBlackIcon,
         ui->EnemyHealth,
+        ui->phaseLabel,
         &enemyLandGroups
     };
 
@@ -212,6 +214,22 @@ QString MainWindow::manaTypeToString(ManaType type) {
     }
 }
 
+QString MainWindow::phaseTypeToString(Phase phase) {
+        switch (phase) {
+    case Phase::Untap:   return "Untap";
+    case Phase::Upkeep:   return "Upkeep";
+    case Phase::Draw:   return "Draw";
+    case Phase::PreCombatMain:   return "PreCombatMain";
+    case Phase::BeginCombat:   return "BeginCombat";
+    case Phase::DeclareAttackers:   return "DeclareAttackers";
+    case Phase::DeclareBlockers:   return "DeclareBlockers";
+    case Phase::CombatDamage:   return "CombatDamage";
+    case Phase::PostCombatMain:   return "PostCombatMain";
+    case Phase::EndStep:   return "EndStep";
+    case Phase::Cleanup:   return "Cleanup";
+    default:              return "Unknown";
+    }
+}
 // Need to add more logic
 void MainWindow::cardBeingTapped(CardButton* cardButton, bool tapped){
 
@@ -539,6 +557,10 @@ void MainWindow::updateUI(){
         // Set the Health
         layout.health->setText(QString::number(currPlayer->health));
 
+        // QString("Phase: ") +
+        layout = playerLayout;
+        layout.phaseLabel->setText(QString("Phase: ") + phaseTypeToString(statePointer->currentPhase));
+
         qDebug() << "update Phases";
         handlePhase();
 
@@ -552,12 +574,16 @@ void MainWindow::updateUI(){
     // Clear current stack view
     QLayoutItem* item;
     while ((item = container->takeAt(0)) != nullptr) {
-        delete item->widget();  // delete the widget
+        if (item->widget()){
+            delete item->widget();
+        }
         delete item;            // delete the layout wrapper
     }
 
     // Re-add current stack contents
     for (const StackObject &object : statePointer->theStack) {
+        qDebug() << "accessing the stack";
+
         CardButton* cardButton = new CardButton(object.card);
         activeCards.append(cardButton);
 

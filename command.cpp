@@ -58,5 +58,12 @@ tapCardCommand::tapCardCommand(GameState* state, Card* card) :
     Command(state), card(card){}
 void tapCardCommand::execute(){
     Player* player = state->getPriorityPlayer();
-    player->tapCard(card);
+    if (card->type == CardType::LAND){
+        card->ability.use(player);
+        player->tapCard(card);
+    }
+    else if (card->type == CardType::ARTIFACT){
+        card->ability.use(player);
+        player->moveCardString(card, "battlefield", "graveyard", true);
+    }
 }
