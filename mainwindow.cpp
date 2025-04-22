@@ -72,7 +72,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
         qDebug() << "API Error:" << error;
     });
 
-    connect(ui->playCardButton, &QPushButton::clicked, this, &MainWindow::on_playCardButton_clicked);
+    connect(ui->playCardButton, &QPushButton::clicked, this, &MainWindow::onPlayCardButtonClicked);
 
     //update Icon for zones
     ui->playerDeck->setFixedSize(100,140);
@@ -259,10 +259,16 @@ bool MainWindow::promptForMana(){
     }
 }
 
-void MainWindow::on_playCardButton_clicked(){
+void MainWindow::onPlayCardButtonClicked(){
     // Just for testing need to handle more condiction phrases, cost, priority
+    if (!currentSelectedCard){
+        QMessageBox::information(this, "No Card Selected", "Select a card to play.");
+        return;
+    }
 
     emit playCard(currentSelectedCard->cardPtr, nullptr);
+
+    clearSelection();
 
     // if (!currentSelectedCard) {
     //     QMessageBox::information(this, "No card selected", "Select a card to play.");
@@ -499,13 +505,6 @@ void MainWindow::updateUI(){
 
 void MainWindow::updateZone(QGridLayout* container, Zone* zone){
     qDebug() << "Updating Zone";
-
-    if (container == nullptr){
-        return;
-    }
-
-
-
     if (container == nullptr){
         return;
     }
@@ -528,8 +527,8 @@ void MainWindow::updateZone(QGridLayout* container, Zone* zone){
         connect(cardButton, &CardButton::cardSelected, this, &MainWindow::handleCardSelected);
         connect(cardButton, &CardButton::hovered, this, &MainWindow::updateMagnifier);
         connect(cardButton, &CardButton::cardTapped, this, &MainWindow::cardBeingTapped);
-        QSize targetSize = card->isTapped ? QSize(140, 100) : QSize(100, 140);
-        cardButton->setFixedSize(targetSize);
+        // QSize targetSize = card->isTapped ? QSize(140, 100) : QSize(100, 140);
+        cardButton->setFixedSize(100, 140);
 
 
         if(card->type == CardType::LAND && zone->type == ZoneType::BATTLEFIELD){
@@ -540,11 +539,11 @@ void MainWindow::updateZone(QGridLayout* container, Zone* zone){
 
 
         //Test
-        if(zone->type != ZoneType::GRAVEYARD && zone->type != ZoneType::EXILE){
-            container->addWidget(cardButton, 0, container->count(), Qt::AlignCenter);
-        }
+        // if(zone->type != ZoneType::GRAVEYARD && zone->type != ZoneType::EXILE){
+        //     container->addWidget(cardButton, 0, container->count(), Qt::AlignCenter);
+        // }
 
-        // container->addWidget(cardButton, 0, container->count(), Qt::AlignCenter);
+        container->addWidget(cardButton, 0, container->count(), Qt::AlignCenter);
 
     }
     // update();

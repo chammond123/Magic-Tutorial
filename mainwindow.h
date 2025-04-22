@@ -86,7 +86,7 @@ public slots:
      */
     void updateMagnifier(Card* card);
 
-    void on_playCardButton_clicked();
+    void onPlayCardButtonClicked();
 
     void cardBeingTapped(CardButton* card, bool tapped);
 
