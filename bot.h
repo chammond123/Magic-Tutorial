@@ -20,7 +20,9 @@ private:
 
     void endTurn(GameState* gameState);
 
-    void passTurn(GameState* gameState);
+    void passPriority(GameState* gameState);
+
+    void changePhase(GameState* gameState);
 
     int calculateManaValue(Card* card);
 };

@@ -63,6 +63,7 @@ void GameState::changePhase(){
             botPlayer->takeTurn(this);
         }
     }
+
 }
 
 void GameState::changePriority(){
