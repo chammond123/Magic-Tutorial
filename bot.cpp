@@ -2,6 +2,7 @@
 #include "gamestate.h"
 #include "command.h"
 #include "carddictionary.h"
+#include <QDebug>
 
 Bot::Bot(QStringList deckList) : Player(deckList) {}
 
@@ -37,6 +38,7 @@ void Bot::playCard(GameState* gameState) {
     if (!hasPlayedLand) {
         for (Card* card : Hand) {
             if (card->type == CardType::LAND) {
+                qDebug() << "Chose to play " << card->name << " for the land part";
                 playCardCommand cmd(gameState, card, nullptr);
                 cmd.execute();
                 hasPlayedLand = true;
@@ -57,6 +59,7 @@ void Bot::playCard(GameState* gameState) {
     });
 
     if (!playableCards.isEmpty()) {
+        qDebug() << "Chose to play " << playableCards.first()->name << " for the land part";
         playCardCommand cmd(gameState, playableCards.first(), nullptr);
         cmd.execute();
     }
