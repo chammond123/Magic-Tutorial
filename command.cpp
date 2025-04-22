@@ -15,7 +15,7 @@ void playCardCommand::execute(){
     Player* player = state->getPriorityPlayer();
     state->getPriorityPlayer()->madeAction = true;
     if (card->isLand){
-        //player->moveCardZone(card, "hand", "battlefeild", false);
+        player->moveCardZone(card, "hand", "battlefeild", false);
         player->hasPlayedLand = true;
     }
     else{
