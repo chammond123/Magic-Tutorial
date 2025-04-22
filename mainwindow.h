@@ -13,6 +13,8 @@
 #include "gamemanager.h"
 #include "cardbutton.h"
 #include <QtWidgets/qgridlayout.h>
+#include <Box2D/Box2D.h>
+#include <QGraphicsScene>
 
 
 struct ZoneLayout {
@@ -102,6 +104,18 @@ private:
     QString manaTypeToString(ManaType type);
     QString deckString;
     GameState* statePointer;
+
+    //For ending scene
+    QGraphicsScene* endScene = nullptr;
+    QGraphicsView* endView = nullptr;
+    b2World* endWorld = nullptr;
+    QTimer* endTimer = nullptr;
+    QVector<QPair<QGraphicsPixmapItem*, b2Body*>> endfallingCards;
+
+    void onGameEnded(bool playerWon);
+    void updateEndFall();
+    void updateEndExplosion();
+
 
     void updateZone(QGridLayout* container, Zone* zone);
     void updateDeck(Zone* zone, QString title, QPushButton *deckButton);
