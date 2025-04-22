@@ -221,7 +221,7 @@ void GameState::validateHand(Player* player){
         else if (player->isActivePlayer && rules.canPlaySorcery && card->type == CardType::SORCERY && player->canPayMana(card) && stackIsEmpty()){
             card->shouldEnable = true;
         }
-        else if (player->isActivePlayer && rules.canPlaySorcery && card->type == CardType::LAND && stackIsEmpty()){
+        else if (player->isActivePlayer && rules.canPlaySorcery && card->type == CardType::LAND && stackIsEmpty() && !player->hasPlayedLand){
             card->shouldEnable = true;
         }
         else if (player->isActivePlayer && rules.canPlaySorcery && stackIsEmpty() && player->canPayMana(card) &&

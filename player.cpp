@@ -222,6 +222,7 @@ void Player::tapCard(Card* card){
 }
 
 void Player::untap(){
+    hasPlayedLand = false;
     for (Card* card : Battlefield){
         card->isTapped = false;
     }
