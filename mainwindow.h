@@ -18,8 +18,10 @@
 struct ZoneLayout {
     QGridLayout* hand;
     QGridLayout* battlefield;
-    QLabel* graveyard;
-    QLabel* exile;
+    QPushButton* graveyard;
+    QString graveName;
+    QPushButton* exile;
+    QString exileName;
     QLabel* red;
     QLabel* green;
     QLabel* blue;
@@ -49,7 +51,7 @@ public:
     MainWindow(gamemanager *game, QWidget *parent = nullptr);
     ~MainWindow();
 
-    QVector<CardButton*> activeCards;
+    QList<CardButton*> activeCards;
 
     QVector<Card*> selectedCards;
     QVector<CardButton*> selectedButtons;
@@ -57,35 +59,24 @@ public:
     QMap<CardButton*, QVector<CardButton*>> buttonCombatants;
     QMap<Card*, QVector<Card*>> combatants;
 
-    void showAllCards();
+    QMap<QString, QList<CardButton*>> containerCards;
+    // QList<CardButton*> exileCards;
+
     void overlayCards();
 
 
 public slots:
 
-    /**
-     * @brief cardMoveFromLibray creates a QPushButton
-     * with the card pointer's data, and moves it to
-     * the specified zone on the window
-     * @param zone
-     */
-    // void cardMovedFromLibrary(Card*, QString zone);
-
-    /**
-     * @brief cardZoneChanged changes the placement
-     * of a card on the screen assuming the Card is
-     * already a QPushButton
-     */
-    // void cardZoneChanged(Card*, QString zone);
 
     void handleCardSelected(CardButton* clicked);
     void collectAttackers();
     void collectBlockers();
 
+    void promptForMana();
+
     void updateUI();
     void startTargeting();
 
-    // void toggleButton();
     void attackPhase();
 
     /**
@@ -112,7 +103,9 @@ private:
     GameState* statePointer;
 
     void updateZone(QGridLayout* container, Zone* zone);
+    void updateDeck(Zone* zone, QString title, QPushButton *deckButton);
     void clearSelection();
+    void showCollection(QString title);
 
     QMap<CardButton*, QVector<CardButton*>>::iterator targetIt;
     void extractCombatants(QMap<CardButton*, QVector<CardButton*>> packedCombatCard);

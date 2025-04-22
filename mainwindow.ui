@@ -17,9 +17,9 @@
    <widget class="QFrame" name="playerContainer">
     <property name="geometry">
      <rect>
-      <x>370</x>
+      <x>350</x>
       <y>560</y>
-      <width>931</width>
+      <width>951</width>
       <height>301</height>
      </rect>
     </property>
@@ -33,59 +33,35 @@
      <property name="geometry">
       <rect>
        <x>830</x>
-       <y>0</y>
+       <y>10</y>
        <width>101</width>
-       <height>301</height>
+       <height>291</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="playerDeckZone">
       <item>
-       <widget class="QLabel" name="playerExile">
-        <property name="font">
-         <font>
-          <family>Garamond</family>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::Shape::Box</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Shadow::Sunken</enum>
+       <widget class="QPushButton" name="playerExileButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Ignored">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
         <property name="text">
          <string>Exile</string>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignmentFlag::AlignCenter</set>
-        </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="playerGraveyard">
-        <property name="font">
-         <font>
-          <family>Garamond</family>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::Shape::Box</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Shadow::Sunken</enum>
+       <widget class="QPushButton" name="playerGraveyardButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Ignored">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
         <property name="text">
-         <string notr="true">Graveyard</string>
-        </property>
-        <property name="textFormat">
-         <enum>Qt::TextFormat::AutoText</enum>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignmentFlag::AlignCenter</set>
-        </property>
-        <property name="textInteractionFlags">
-         <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+         <string>Graveyard</string>
         </property>
        </widget>
       </item>
@@ -101,9 +77,9 @@
     <widget class="QWidget" name="gridLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>20</x>
        <y>100</y>
-       <width>741</width>
+       <width>711</width>
        <height>201</height>
       </rect>
      </property>
@@ -256,9 +232,9 @@
     <widget class="QWidget" name="horizontalLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>770</x>
+       <x>740</x>
        <y>120</y>
-       <width>51</width>
+       <width>81</width>
        <height>31</height>
       </rect>
      </property>
@@ -283,9 +259,9 @@
    <widget class="QFrame" name="enemyContainer">
     <property name="geometry">
      <rect>
-      <x>370</x>
+      <x>350</x>
       <y>0</y>
-      <width>931</width>
+      <width>951</width>
       <height>241</height>
      </rect>
     </property>
@@ -426,9 +402,9 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>490</y>
-      <width>319</width>
-      <height>221</height>
+      <y>460</y>
+      <width>291</width>
+      <height>191</height>
      </rect>
     </property>
    </widget>
@@ -437,8 +413,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>361</width>
-      <height>481</height>
+      <width>321</width>
+      <height>451</height>
      </rect>
     </property>
     <property name="text">
