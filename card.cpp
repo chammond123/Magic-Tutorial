@@ -4,6 +4,12 @@ Card::Card() {}
 
 Card::Card(QString name){
     this->name = name;
+    isLand = false;
+    isTapped = false;
+    isPermanent = false;
+    hasSummoningSickness = false;
+    toughness = -1;
+    power = -1;
 }
 
 Card::Card(const Card& other) :
@@ -19,6 +25,7 @@ Card::Card(const Card& other) :
     keywords(other.keywords),
     isTapped(other.isTapped),
     isPermanent(other.isPermanent),
+    isLand(other.isLand),
     hasSummoningSickness(other.hasSummoningSickness)
 {}
 
@@ -36,6 +43,7 @@ Card& Card::operator=(const Card& other) {
         keywords = other.keywords;
         isTapped = other.isTapped;
         isPermanent = other.isPermanent;
+        isLand = other.isLand;
     }
     return *this;
 }

@@ -84,7 +84,7 @@ public slots:
     bool promptForMana();
 
     void updateUI();
-    void startTargeting();
+    void startTargeting(Card* sourceCard);
 
     void attackPhase();
 
@@ -141,6 +141,8 @@ private:
     ZoneLayout playerLayout;
     ZoneLayout enemyLayout;
     void handlePhase();
+
+    Card* targetSource;
 
     bool isTargeting;
 

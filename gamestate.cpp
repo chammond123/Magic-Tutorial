@@ -44,6 +44,7 @@ void GameState::changePhase(){
         player2->emptyManaPool();
     }
     else if (currentPhase == Phase::EndStep){
+        // Should we check amount of cards > 7?
         player1->emptyManaPool();
         player2->emptyManaPool();
         player1->endStepPhase();
