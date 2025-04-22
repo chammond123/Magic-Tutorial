@@ -28,13 +28,18 @@ void gamemanager::onPassPriority(){
     passPriorityCommand cmd = passPriorityCommand(state);
     cmd.execute();
     emit updateUI();
+    if (state->player1->health <= 0){
+        emit gameOver(false);
+    }
+    else if (state->player2->health <= 0){
+        emit gameOver(false);
+    }
 }
 
 void gamemanager::onChangePhase(){
     changePhaseCommand cmd = changePhaseCommand(state);
     cmd.execute();
     emit updateUI();
-        // emit updateUIPhase();
 }
 
 void gamemanager::onCombatCardsReceived(QMap<Card*, QVector<Card*>> CombatCreatures){
@@ -43,7 +48,9 @@ void gamemanager::onCombatCardsReceived(QMap<Card*, QVector<Card*>> CombatCreatu
     emit updateUI();
 }
 
-void gamemanager::onPlayerLost(){
-    return;
+void gamemanager::onTapCard(Card* card){
+    tapCardCommand cmd = tapCardCommand(state, card);
+    cmd.execute();
+    emit updateUI();
 }
 // // Player object communication

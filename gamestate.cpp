@@ -5,6 +5,7 @@ GameState::GameState(){
 }
 
 void GameState::changePhase(){
+    bool hasSeenPhase = false;
     if (currentPhaseIndex >= phases.size() - 1){
         currentPhaseIndex = 0;
     }
@@ -42,12 +43,12 @@ void GameState::changePhase(){
         player1->emptyManaPool();
         player2->emptyManaPool();
     }
-    // else if (currentPhase == Phase::EndStep){
-    //     player1->emptyManaPool();
-    //     player2->emptyManaPool();
-    //     player1->endStepPhase();
-    //     player2->endstepPhase();
-    // }
+    else if (currentPhase == Phase::EndStep){
+        player1->emptyManaPool();
+        player2->emptyManaPool();
+        player1->endStepPhase();
+        player2->endStepPhase();
+    }
     else if (currentPhase == Phase::Cleanup){
         player1->emptyManaPool();
         player2->emptyManaPool();
@@ -113,15 +114,17 @@ void GameState::resolveCombatDamage(QMap<Card*, QVector<Card*>> CombatCreatures)
                     attacker->takeDamage(defender->toughness);
                 }
                 // If the defending creature dies, send it to the graveyard
-                if (defender->toughness <= 0){
+                if (defender->currHealth <= 0){
                     defendingPlayer->moveCardString(defender, "battlefeild", "graveyard", true);
                 }
             }
             // If the attacking creature dies, send it to the graveyard
-            if (attacker->toughness <= 0){
+            if (attacker->currHealth <= 0){
                 attackingPlayer->moveCardString(attacker, "battlefeild", "graveyard", true);
             }
         }
+        // Tap the card after it attacks
+        attackingPlayer->tapCard(attacker);
     }
 }
 
@@ -245,6 +248,12 @@ void GameState::validateBattlefield(Player* player){
             card->shouldEnable = true;
         }
         if (!player->isActivePlayer && rules.canDeclareDefense && card->type == CardType::CREATURE){
+            card->shouldEnable = true;
+        }
+        if (card->type == CardType::LAND){
+            card->shouldEnable = true;
+        }
+        if (card->type == CardType::ARTIFACT){
             card->shouldEnable = true;
         }
         else{

@@ -42,12 +42,13 @@ public slots:
      */
     void onCombatCardsReceived(QMap<Card*, QVector<Card*>> CombatCreatures);
     /**
-     * @brief Receives if a player has lost the game
+     * @brief Receives if a plyer has taped a card
      */
-    void onPlayerLost();
+    void onTapCard(Card* card);
 
 signals:
     void updateUI();
+    bool gameOver(bool hasWon);
 };
 
 #endif // GAMEMANAGER_H
