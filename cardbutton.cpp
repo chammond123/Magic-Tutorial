@@ -171,8 +171,6 @@ void CardButton::updateTapped() {
         }
         baseImage = darkened;
     }
-
-    // 🟡 Critical fix: always scale AFTER modifying the image
     QPixmap pixmap = QPixmap::fromImage(baseImage).scaled(
         this->size() - QSize(6, 6),
         Qt::KeepAspectRatio,

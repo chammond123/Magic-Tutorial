@@ -172,7 +172,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
 
     // TESTING
     connect(ui->tapButton, &QPushButton::clicked, this, [=]() {
-        emit tapCard(currentSelectedCard->cardPtr);
+        cardBeingTapped(currentSelectedCard, currentSelectedCard->tapped);
     });
 
     QTimer::singleShot(200, this, [=](){
@@ -183,7 +183,6 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     connect(this, &MainWindow::playCard, game, &gamemanager::onPlayCard);
 
     connect(this, &MainWindow::sendCombatCards, game, &gamemanager::onCombatCardsReceived);
-
 }
 
 MainWindow::~MainWindow() {
@@ -233,8 +232,6 @@ QString MainWindow::phaseTypeToString(Phase phase) {
 }
 // Need to add more logic
 void MainWindow::cardBeingTapped(CardButton* cardButton, bool tapped){
-    //Test on game end
-    onGameEnded(true);
 
     // check with game state to allow the card to be tapped or untapped
     //Now just hard coded for testing
@@ -242,6 +239,11 @@ void MainWindow::cardBeingTapped(CardButton* cardButton, bool tapped){
         handleCardSelected(cardButton);
     }
     qDebug() << currentSelectedCard->cardName;
+
+    if(!tapped){
+        emit tapCard(currentSelectedCard->cardPtr);
+    }
+
     currentSelectedCard->setTapped(!tapped);
 
     // add logic if card is a land
@@ -478,8 +480,7 @@ void MainWindow::updateUI(){
         }
 
         // update Stack zone
-        //need to implement stackZone
-        // updateZone(ui->stack, //zone);
+
 
         qDebug() << "update Mana";
         // Set the Mana
@@ -512,6 +513,32 @@ void MainWindow::updateUI(){
 
         update();
         qDebug() << "updateUI has finished";
+    }
+
+    //update Stack
+    QGridLayout* container = ui->stack;
+
+    // Clear current stack view
+    QLayoutItem* item;
+    while ((item = container->takeAt(0)) != nullptr) {
+        if (item->widget()){
+            delete item->widget();
+        }
+        delete item;            // delete the layout wrapper
+    }
+
+    // Re-add current stack contents
+    for (const StackObject &object : statePointer->theStack) {
+        qDebug() << "accessing the stack";
+
+        CardButton* cardButton = new CardButton(object.card);
+        activeCards.append(cardButton);
+
+        connect(cardButton, &CardButton::cardSelected, this, &MainWindow::handleCardSelected);
+        connect(cardButton, &CardButton::hovered, this, &MainWindow::updateMagnifier);
+        connect(cardButton, &CardButton::cardTapped, this, &MainWindow::cardBeingTapped);
+        cardButton->setFixedSize(100, 140);
+        container->addWidget(cardButton);
     }
 }
 
@@ -758,7 +785,7 @@ void MainWindow::onGameEnded(bool playerWon) {
     // endView->setFrameShape(QFrame::NoFrame);
     // endView->setSceneRect(0, 0, width(), height());
     // endView->setAttribute(Qt::WA_TransparentForMouseEvents);
-    // endView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    endView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     endView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     endView->show();
 

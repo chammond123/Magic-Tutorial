@@ -200,13 +200,13 @@
     <widget class="QWidget" name="horizontalLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>830</x>
-       <y>40</y>
-       <width>155</width>
+       <x>730</x>
+       <y>200</y>
+       <width>169</width>
        <height>31</height>
       </rect>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QHBoxLayout" name="playerHPZone">
       <item>
        <widget class="QLabel" name="PlayerHealth">
         <property name="text">
@@ -223,18 +223,56 @@
       </item>
      </layout>
     </widget>
-    <widget class="QLabel" name="playerDeck">
+    <widget class="QWidget" name="verticalLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>820</x>
-       <y>80</y>
+       <x>819</x>
+       <y>-1</y>
        <width>111</width>
-       <height>181</height>
+       <height>251</height>
       </rect>
      </property>
-     <property name="text">
-      <string>Deck</string>
-     </property>
+     <layout class="QVBoxLayout" name="playerDeckZone">
+      <item>
+       <widget class="QPushButton" name="playerExileButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Ignored">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Exile Pile</string>
+        </property>
+        <property name="toolTipDuration">
+         <number>-2</number>
+        </property>
+        <property name="text">
+         <string>Exile</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="playerGraveyardButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Ignored">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Graveyard</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="playerDeck">
+        <property name="text">
+         <string>Deck</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
     <widget class="QLabel" name="phaseLabel">
      <property name="geometry">
@@ -488,50 +526,6 @@
     </property>
     <layout class="QGridLayout" name="stack"/>
    </widget>
-   <widget class="QPushButton" name="playerExileButton">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>670</y>
-      <width>131</width>
-      <height>181</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Minimum" vsizetype="Ignored">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="toolTip">
-     <string>Exile Pile</string>
-    </property>
-    <property name="toolTipDuration">
-     <number>-2</number>
-    </property>
-    <property name="text">
-     <string>Exile</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="playerGraveyardButton">
-    <property name="geometry">
-     <rect>
-      <x>180</x>
-      <y>670</y>
-      <width>121</width>
-      <height>181</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Minimum" vsizetype="Ignored">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="text">
-     <string>Graveyard</string>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -539,7 +533,7 @@
      <x>0</x>
      <y>0</y>
      <width>1548</width>
-     <height>24</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>

@@ -31,10 +31,6 @@ private:
      */
     int currentPhaseIndex = 0;
     /**
-     * @brief Holds the active stack in a magic round
-     */
-    QVector<StackObject> theStack;
-    /**
      * @brief Attackers declared by a player
      */
     QVector<Card*> attackers;
@@ -63,6 +59,13 @@ private:
     int turnCount;
 
 public:
+    /**
+     * @brief Holds the active stack in a magic round
+     */
+    QVector<StackObject> theStack;
+    /**
+     * @brief GameState
+     */
     GameState();
     /**
      * @brief Sets the current phase in the game state
