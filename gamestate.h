@@ -30,7 +30,6 @@ private:
      * @brief Index of the current phase of the game
      */
     int currentPhaseIndex = 0;
-
     /**
      * @brief Holds the active stack in a magic round
      */
@@ -43,6 +42,25 @@ private:
      * @brief Defenders declared by a player
      */
     QVector<Card*> defenders;
+    /**
+     * @brief Sets the valid cards in a players hand
+     * @param The player whos hand to validate
+     */
+    void validateHand(Player* player);
+    /**
+     * @brief Sets the valid cards in a players battlefield
+     * @param The player whos battlefield to validate
+     */
+    void validateBattlefield(Player* player);
+    /**
+     * @brief Validates the actions a player can take
+     * @param The players whos actions to validate
+     */
+    void validatePlayerActions(Player* player);
+    /**
+     * @brief Holds how many turns have taken place
+     */
+    int turnCount;
 
 public:
     GameState();
@@ -84,6 +102,12 @@ public:
     PhaseRules getPhaseRules();
 
     /**
+     * @brief Gets the player with current priority
+     * @return The player with current priority
+     */
+    Player* getPriorityPlayer();
+
+    /**
      * @brief Checks if both players have passed priority without making a game action.
      * @param The player making the check
      */
@@ -115,6 +139,16 @@ public:
      * @brief A pointer to the second player object
      */
     Player* player2;
+
+    /**
+     * @brief Bool reporting if there is a bot set as player2
+     */
+    bool hasBotPlayer = true;
+
+    /**
+     * @brief Sets all the valid actions for a given state
+     */
+    void getValidActions();
 
 };
 

@@ -67,7 +67,9 @@ SOURCES += \
     gamestate.cpp \
     main.cpp \
     mainwindow.cpp \
+    manacollection.cpp \
     player.cpp \
+    scenebot.cpp \
     textparser.cpp \
     type.cpp \
     zone.cpp
@@ -130,15 +132,18 @@ HEADERS += \
     gamemanager.h \
     gamestate.h \
     mainwindow.h \
+    manacollection.h \
     phase.h \
     player.h \
+    scenebot.h \
     stackobject.h \
     textparser.h \
     type.h \
     zone.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    manacollection.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
