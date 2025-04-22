@@ -303,62 +303,13 @@ void MainWindow::onPlayCardButtonClicked(){
         return;
     }
 
+    if(isTargeting){
+        emit playCard(targetSource, currentSelectedCard->cardPtr);
+    }
+
     emit playCard(currentSelectedCard->cardPtr, nullptr);
 
     clearSelection();
-
-    // if (!currentSelectedCard) {
-    //     QMessageBox::information(this, "No card selected", "Select a card to play.");
-    //     return;
-    // }
-
-    // qDebug() << "playCardButton called";
-    // qDebug() << "played card: " + currentSelectedCard->cardName;
-
-    // Card* card = currentSelectedCard->cardPtr;
-    // qDebug() << "got card " << card->name;
-
-    // qDebug() << ui->playerHand->count();
-
-    // if(card->type == CardType::LAND){
-    //     userPlayer->moveCardZone(card, userPlayer->Hand, userPlayer->Battlefield, false);
-
-    //     // ManaType mana = card->color;
-    //     // qDebug() << manaTypeToString((mana));
-
-    //     currentSelectedCard->setParent(this);
-
-    //     // Add to land group
-    //     // TODO: Hard coded need to change
-    //     landGroups[ManaType::RED].append(currentSelectedCard);
-
-    //     currentSelectedCard->setChecked(false);
-    //     currentSelectedCard = nullptr;
-
-    //     qDebug() << "Played land to mana stack.";
-    //     qDebug() << ui->playerHand->count();
-
-    //     // Hard coded need to change
-    //     updateManaButton(ManaType::RED);
-
-    //     userPlayer->hasPlayedLand = true;
-    // }
-
-    // else if (card->isPermanent){
-    //     // FOR TESTING PURPOSES
-    //     userPlayer->moveCardZone(card, userPlayer->Hand, userPlayer->Battlefield, false);
-
-    //     currentSelectedCard->setChecked(false);
-    //     currentSelectedCard = nullptr;
-
-    //     qDebug() << "Played creature to battlefield.";
-    //     clearSelection();
-    // }
-    // else {
-    //     userPlayer->moveCardString(card, "hand", "graveyard", true);
-    //     clearSelection();
-    // }
-    // updateUI();
 }
 
 void MainWindow::handleCardSelected(CardButton* clicked) {
@@ -537,13 +488,10 @@ void MainWindow::updateUI(){
 
         // Set the Health
         layout.health->setText(QString::number(currPlayer->health));
-
-        qDebug() << "update Phases";
-        handlePhase();
-
-        update();
-        qDebug() << "updateUI has finished";
     }
+
+    handlePhase();
+    update();
 }
 
 void MainWindow::updateZone(QGridLayout* container, Zone* zone, QMap<ManaType, QList<CardButton *>>* landGroups){
@@ -667,7 +615,7 @@ void MainWindow::showCollection(QString title){
     mainLayout->addWidget(scrollArea);
     dialog->setLayout(mainLayout);
 
-    dialog->exec();
+    dialog->show();
 }
 
 
@@ -745,9 +693,9 @@ void MainWindow::handlePhase(){
     }
 }
 
-void MainWindow::startTargeting(){
+void MainWindow::startTargeting(Card *sourceCard){
     isTargeting = true;
-    // IMPLEMENT ISTARGETING IN CARD SELECTION
+    targetSource = sourceCard;
     selectedCards.clear();
 
     for(CardButton* button : activeCards){
