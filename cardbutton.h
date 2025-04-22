@@ -9,7 +9,6 @@ class CardButton : public QPushButton{
 public:
     Card* cardPtr;
     QString cardName;
-    bool tapped = false;
 
     explicit CardButton(Card* card, QWidget* parent = nullptr);
 
@@ -17,7 +16,7 @@ public:
     void enableCard(bool enabled);
 
 private:
-    void updateTapped();
+    // void updateTapped();
 
 protected:
     void mousePressEvent(QMouseEvent* event) override;
@@ -27,12 +26,11 @@ protected:
 signals:
     void cardSelected(CardButton* button);
     void hovered(Card* card);
-    void cardTapped(CardButton* card, bool tapped);
+    void cardTapped();
 
 
 public slots:
     void resetCard();
-    void setTapped(bool tapped);
 };
 
 

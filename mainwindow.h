@@ -81,7 +81,7 @@ public slots:
     void collectAttackers();
     void collectBlockers();
 
-    bool promptForMana();
+    bool promptForMana(Card* card);
 
     void updateUI();
     void startTargeting(Card* sourceCard);
@@ -96,11 +96,9 @@ public slots:
 
     void onPlayCardButtonClicked();
 
-    void cardBeingTapped(CardButton* card, bool tapped);
+    void cardBeingTapped();
 
     void onGameEnded(bool playerWon);
-
-    // void showZoneDialog(QVector<CardButton*>* zoneCards, const QString& title);
 
 signals:
 
