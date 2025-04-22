@@ -99,7 +99,7 @@
       <string>Play</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="phaseButton">
+    <widget class="QPushButton" name="priorityButton">
      <property name="geometry">
       <rect>
        <x>650</x>
@@ -109,7 +109,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Next Phase</string>
+      <string>Pass Priority</string>
      </property>
     </widget>
     <widget class="QWidget" name="verticalLayoutWidget_3">
@@ -405,7 +405,7 @@
      <x>0</x>
      <y>0</y>
      <width>1226</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

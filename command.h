@@ -10,10 +10,9 @@ class GameState;
 class Command
 {
 public:
-    Player* player;
     GameState* state;
 
-    Command(GameState* state, Player* player);
+    Command(GameState* state);
     virtual ~Command() noexcept;
 
     virtual void execute() = 0;
@@ -22,7 +21,7 @@ public:
 
 class drawCommand : public Command{
 public:
-    drawCommand(GameState* state, Player* player);
+    drawCommand(GameState* state);
 
     virtual void execute();
     virtual bool isValid();
@@ -32,7 +31,7 @@ class playCardCommand : public Command{
 public:
     Card* card;
     Card* target;
-    playCardCommand(GameState* state, Player* player, Card* card, Card* target);
+    playCardCommand(GameState* state, Card* card, Card* target);
 
     virtual void execute();
     virtual bool isValid();
@@ -40,7 +39,7 @@ public:
 
 class passPriorityCommand : public Command{
 public:
-    passPriorityCommand(GameState* state, Player* player);
+    passPriorityCommand(GameState* state);
 
     virtual void execute();
     virtual bool isValid();
@@ -48,15 +47,7 @@ public:
 
 class changePhaseCommand : public Command{
 public:
-    changePhaseCommand(GameState* state, Player* player);
-
-    virtual void execute();
-    virtual bool isValid();
-};
-
-class passTurnCommand : public Command{
-public:
-    passTurnCommand(GameState* state, Player* player);
+    changePhaseCommand(GameState* state);
 
     virtual void execute();
     virtual bool isValid();
@@ -65,7 +56,7 @@ public:
 class declareCombatCommand : public Command{
 public:
     QMap<Card*, QVector<Card*>> CombatCreatures;
-    declareCombatCommand(GameState* state, Player* player, QMap<Card*, QVector<Card*>> CombatCreatures);
+    declareCombatCommand(GameState* state, QMap<Card*, QVector<Card*>> CombatCreatures);
 
     virtual void execute();
     virtual bool isValid();
@@ -74,7 +65,7 @@ public:
 class tapCardCommand : public Command{
 public:
     Card* card;
-    tapCardCommand(GameState* state, Player* player, Card* card);
+    tapCardCommand(GameState* state, Card* card);
 
     virtual void execute();
     virtual bool isValid();

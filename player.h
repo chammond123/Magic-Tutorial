@@ -57,6 +57,11 @@ public:
     // Health Methods
     int getHealth();
 
+    // Variables for valid commands
+    bool canPassPriority;
+    bool canChangePhase;
+    bool canDrawCard;
+
     // Zone Methods
     /**
      * @brief allows player to take a card and move if from one zone to the next

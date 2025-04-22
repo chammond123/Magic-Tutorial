@@ -32,7 +32,13 @@ int main(int argc, char *argv[])
     apiManager->fetchCardsByNames(deckList);
 
     Player userPlayer(deckList);
+    // for testing
+    userPlayer.isActivePlayer = true;
+    userPlayer.holdingPriority = true;
     Player enemyPlayer(deckList);
+    // for testing
+    enemyPlayer.isActivePlayer = false;
+    enemyPlayer.holdingPriority = false;
     qDebug() << "made it through deck initialization.";
     GameState originalState;
     GameState secondState;

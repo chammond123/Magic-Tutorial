@@ -6,6 +6,7 @@ Player::Player(QStringList deckList, QObject *parent)
     : QObject{parent},
     deck(deckList)
 {
+    hasSummoningSickness = true;
     Library.type = ZoneType::LIBRARY;
     Graveyard.type = ZoneType::GRAVEYARD;
     Battlefield.type = ZoneType::BATTLEFIELD;

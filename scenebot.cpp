@@ -6,8 +6,7 @@ SceneBot::SceneBot(QStringList deckList, QObject *parent, GameState* state)
     // Initialize a bunch of pass priority commands for basic testing
     for (int i = 0; i < 100; i++){
         QString stringTest = "passCommand";
-        Player* test = this;
-        Command* passCommand = new passPriorityCommand(currentState, test);
+        Command* passCommand = new passPriorityCommand(currentState);
         scenes[stringTest].append(passCommand);
     }
 }

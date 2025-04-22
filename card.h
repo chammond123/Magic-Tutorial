@@ -20,6 +20,9 @@ public:
 
     bool canBePlayed(const QVector<ManaType> &availableMana) const;
     bool hasKeyword(PropertyType keyword) const;
+
+    bool shouldEnable;
+
     //take damage
     void takeDamage(int damage);
     //gain health

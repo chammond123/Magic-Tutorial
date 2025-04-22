@@ -45,10 +45,15 @@ void GameState::changePhase(){
         player2->emptyManaPool();
         player1->cleanupPhase();
         player2->cleanupPhase();
+        changeActivePlayer();
     }
 }
 
 void GameState::changePriority(){
+    qDebug() << "entered change priority";
+    qDebug() << "pre-execution:";
+    qDebug() << player1->holdingPriority;
+    qDebug() << player2->holdingPriority;
     if(player1->holdingPriority){
         player1->madeAction = false;
         player2->holdingPriority = true;
@@ -59,6 +64,9 @@ void GameState::changePriority(){
         player1->holdingPriority = true;
         player2->holdingPriority = false;
     }
+    qDebug() << "post-execution:";
+    qDebug() << player1->holdingPriority;
+    qDebug() << player2->holdingPriority;
 }
 
 void GameState::changeActivePlayer(){
@@ -188,4 +196,83 @@ bool GameState::stackIsEmpty(){
 }
 QString GameState::toString(){
     return "";
+}
+Player* GameState::getPriorityPlayer(){
+    if (player1->holdingPriority){
+        return player1;
+    }
+    else{
+        return player2;
+    }
+}
+
+void GameState::validateHand(Player* player){
+    PhaseRules rules = getPhaseRules();
+    for (Card* card : player->Hand){
+        if (rules.canPlayInstant && card->type == CardType::INSTANT && player->canPayMana(card)){
+            card->shouldEnable = true;
+        }
+        else if (player->isActivePlayer && rules.canPlaySorcery && card->type == CardType::SORCERY && player->canPayMana(card) && stackIsEmpty()){
+            card->shouldEnable = true;
+        }
+        else if (player->isActivePlayer && rules.canPlaySorcery && card->type == CardType::LAND && stackIsEmpty()){
+            card->shouldEnable = true;
+        }
+        else if (player->isActivePlayer && rules.canPlaySorcery && stackIsEmpty() && player->canPayMana(card) &&
+                 (card->type == CardType::CREATURE ||
+                  card->type == CardType::ARTIFACT ||
+                  card->type == CardType::ENCHANTMENT ||
+                  card->type == CardType::PLANESWALKER ||
+                  card->type == CardType::BATTLE)) {
+            card->shouldEnable = true;
+        }
+        else{
+            card->shouldEnable = false;
+        }
+    }
+}
+
+void GameState::validateBattlefield(Player* player){
+    PhaseRules rules = getPhaseRules();
+    for (Card* card : player->Battlefield){
+        if (player->isActivePlayer && rules.canDeclareAttack && card->type == CardType::CREATURE && !card->isTapped && (!card->hasSummoningSickness or !player->hasSummoningSickness)){
+            card->shouldEnable = true;
+        }
+        if (!player->isActivePlayer && rules.canDeclareDefense && card->type == CardType::CREATURE){
+            card->shouldEnable = true;
+        }
+        else{
+            card->shouldEnable = false;
+        }
+    }
+}
+
+void GameState::validatePlayerActions(Player* player){
+
+
+    if (player->isActivePlayer && player->hasntDrawnForTurn){
+        player->canDrawCard = true;
+    }
+    qDebug() << "holdingPriority:" << player->holdingPriority;
+    if (player->holdingPriority){
+        player->canPassPriority = true;
+    }
+    if (player->isActivePlayer && theStack.empty()){
+        player->canChangePhase = true;
+    }
+    else{
+        player->canDrawCard = false;
+        player->canPassPriority = false;
+        player->canChangePhase = false;
+    }
+    qDebug() << player->canChangePhase;
+}
+
+void GameState::getValidActions(){
+    validateHand(player1);
+    validateHand(player2);
+    validateBattlefield(player1);
+    validateBattlefield(player2);
+    validatePlayerActions(player1);
+    validatePlayerActions(player2);
 }
