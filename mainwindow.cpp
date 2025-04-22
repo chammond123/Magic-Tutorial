@@ -28,6 +28,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     apiManager = new CardAPIManager(this);
     statePointer = game->state;
     userPlayer = statePointer->player1;
+    isTargeting = false;
     userPlayer->holdingPriority = true;
     QMap<ManaType, int>* mana = new QMap<ManaType, int>;
     (*mana)[ManaType::RED] = 1;
@@ -169,6 +170,8 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     connect(ui->priorityButton, &QPushButton::clicked, game, &gamemanager::onPassPriority);
 
     connect(game, &gamemanager::updateUI, this, &MainWindow::updateUI);
+
+    connect(game, &gamemanager::promptTargeting, this, &MainWindow::startTargeting);
 
     // TESTING
     connect(ui->tapButton, &QPushButton::clicked, this, [=]() {
@@ -336,6 +339,8 @@ void MainWindow::onPlayCardButtonClicked(){
 
     if(isTargeting){
         emit playCard(targetSource, currentSelectedCard->cardPtr);
+        isTargeting = false;
+        return;
     }
 
     emit playCard(currentSelectedCard->cardPtr, nullptr);

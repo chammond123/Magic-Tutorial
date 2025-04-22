@@ -50,6 +50,7 @@ signals:
     void updateUI();
     void gameOver(bool hasWon);
     void startTargeting(Card* initialCard);
+    void promptTargeting(Card* card);
 };
 
 #endif // GAMEMANAGER_H

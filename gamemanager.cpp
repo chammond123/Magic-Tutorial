@@ -19,6 +19,11 @@ void gamemanager::onPlayCard(Card *card, std::variant<Player*, Card*, std::nullp
         return;
     }
 
+    if(card->needsTarget && std::holds_alternative<std::nullptr_t>(target)){
+        emit promptTargeting(card);
+        return;
+    }
+
     playCardCommand cmd = playCardCommand(state, card, target);
     cmd.execute();
     emit updateUI();

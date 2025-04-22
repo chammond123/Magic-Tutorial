@@ -106,7 +106,7 @@ signals:
 
     void sendCombatCards(QMap<Card*, QVector<Card*>> combatCards);
 
-    void playCard(Card* card, Card* target);
+    void playCard(Card* card, std::variant<Player*, Card*, std::nullptr_t> target);
 
     void tapCard(Card* card);
 
