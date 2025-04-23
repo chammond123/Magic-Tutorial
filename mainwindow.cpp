@@ -876,9 +876,11 @@ void MainWindow::stopTargeting(){
         QWidget* widget = item->widget();
 
         if (widget && qobject_cast<CardButton*>(widget)) {
-            widget->setVisible(true);  // or widget->setVisible(false);
+            widget->setVisible(true);
         }
     }
+
+    isTargeting = false;
 
     ui->enemyTargetButton->setVisible(false);
     targetSource = nullptr;
