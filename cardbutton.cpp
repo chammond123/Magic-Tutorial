@@ -38,8 +38,9 @@ CardButton::CardButton(Card* card, QWidget* parent)
         baseImage = darkened;
     }
 
-    QPixmap pixmap = QPixmap::fromImage(baseImage).scaled(
-        this->size() - QSize(6,6), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    QPixmap pixmap = QPixmap::fromImage(baseImage).scaled(this->size() - QSize(6, 6),
+                                                          Qt::KeepAspectRatio,
+                                                          Qt::SmoothTransformation);
 
     this->setIcon(QIcon(pixmap));
     this->setText("");
@@ -122,7 +123,7 @@ QPixmap CardButton::getOverlayedPixmap(int selectionIndex) {
     // Step 2: Draw number
     QFont font = painter.font();
     font.setBold(true);
-    font.setPointSize(24); // Adjust size to taste
+    font.setPointSize(24);
     painter.setFont(font);
     painter.setPen(Qt::white);
     painter.drawText(overlayed.rect(), Qt::AlignCenter, QString::number(selectionIndex + 1));
@@ -148,8 +149,13 @@ void CardButton::enableCard(bool enabled){
 
     if(enabled){
         resetCard();
-    }
-    else{
+        //        this->setStyleSheet(R"(
+        // 	QPushButton {
+        //        	border: 3px solid yellow;
+        //        	border-radius: 7px;
+        // 	}
+        // )");
+    } else {
         QPixmap original = QPixmap::fromImage(cardPtr->image).scaled(
             this->size() - QSize(6,6), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 

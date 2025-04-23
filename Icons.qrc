@@ -6,5 +6,6 @@
         <file>Icons/Red.png</file>
         <file>Icons/white.png</file>
         <file>Icons/BackCard.png</file>
+        <file>Icons/tablebackground.png</file>
     </qresource>
 </RCC>

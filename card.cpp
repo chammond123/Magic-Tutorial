@@ -27,8 +27,8 @@ Card::Card(const Card& other) :
     isPermanent(other.isPermanent),
     isLand(other.isLand),
     hasSummoningSickness(other.hasSummoningSickness),
-    needsTarget(other.needsTarget),
-    flavorText(other.flavorText)
+    flavorText(other.flavorText),
+    needsTarget(other.needsTarget)
 {}
 
 Card& Card::operator=(const Card& other) {

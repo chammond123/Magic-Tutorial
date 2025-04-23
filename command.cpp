@@ -17,7 +17,7 @@ void playCardCommand::execute(){
     Player* player = state->getPriorityPlayer();
     state->getPriorityPlayer()->madeAction = true;
 
-    // //Check if the variant is a play or card, then use ability
+    //Check if the variant is a play or card, then use ability
     // if(holds_alternative<Player*>(target)){
     //     Player* t = get<Player*>(target);
     //     card->ability.use(t);

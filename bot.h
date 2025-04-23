@@ -5,10 +5,22 @@
 #include "gamestate.h"
 #include "card.h"
 
+/**
+ * @brief The Bot class acts as an opponent to the user player
+ * This bot can really play as a player
+ */
 class Bot : public Player {
 public:
+    /**
+     * Constructor of the bot that take in a deckList
+     * @param deckList
+     */
     Bot(QStringList deckList);
 
+    /**
+     * @brief takeTurn
+     * @param gameState is the currentGameState
+     */
     void takeTurn(GameState* gameState);
 
 private:

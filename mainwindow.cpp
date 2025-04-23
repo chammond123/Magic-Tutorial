@@ -15,6 +15,7 @@
 #include <QIcon>
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>
+#include <QFontDatabase>
 
 MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -24,6 +25,8 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
 
     ui->CardDescription->setReadOnly(true);
     ui->CardDescription->setFocusPolicy(Qt::NoFocus);
+
+    this->setStyleSheet(QString("QMainWindow { background-image: url(:/Icons/Icons/white_bg.png); }"));
 
     apiManager = new CardAPIManager(this);
     statePointer = game->state;
@@ -41,6 +44,8 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     enemyPlayer = statePointer->player2;
     enemyPlayer->isActivePlayer = false;
     enemyPlayer->holdingPriority = false;
+
+    ui->enemyTargetButton->setVisible(false);
 
     playerLayout = {
         ui->playerHand,
@@ -170,7 +175,10 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
         showLandPopup(ManaType::BLACK, enemyLayout);
     });
 
-
+    connect(ui->enemyTargetButton, &QPushButton::clicked, this, [=]() {
+        emit playCard(targetSource, enemyPlayer);
+        stopTargeting();
+    });
 
     connect(ui->phaseButton, &QPushButton::clicked, game, &gamemanager::onChangePhase);
     connect(ui->priorityButton, &QPushButton::clicked, game, &gamemanager::onPassPriority);
@@ -333,6 +341,20 @@ bool MainWindow::promptForMana(Card* card){
 
 void MainWindow::onPlayCardButtonClicked(){
     // Just for testing need to handle more condiction phrases, cost, priority
+    if(statePointer->currentPhase == Phase::DeclareAttackers && userPlayer->isActivePlayer){
+        collectAttackers();
+        statePointer->changePhase();
+        updateUI();
+        return;
+    }
+
+    if(statePointer->currentPhase == Phase::DeclareBlockers && !userPlayer->isActivePlayer){
+        collectBlockers();
+        clearSelection();
+        updateUI();
+        return;
+    }
+
     if (!currentSelectedCard){
         QMessageBox::information(this, "No Card Selected", "Select a card to play.");
         return;
@@ -341,7 +363,7 @@ void MainWindow::onPlayCardButtonClicked(){
 
     if(isTargeting){
         emit playCard(targetSource, card);
-        isTargeting = false;
+        stopTargeting();
         return;
     }
 
@@ -349,6 +371,7 @@ void MainWindow::onPlayCardButtonClicked(){
         if(promptForMana(card)){
             if(isTargeting){
                 emit playCard(targetSource, card);
+                stopTargeting();
                 return;
             }
             else {
@@ -358,26 +381,26 @@ void MainWindow::onPlayCardButtonClicked(){
         }
     }
 
+
     emit playCard(card, nullptr);
 
     clearSelection();
 }
 
 void MainWindow::handleCardSelected(CardButton* clicked) {
-    if(statePointer->currentPhase == Phase::DeclareAttackers ||
-        statePointer->currentPhase == Phase::DeclareBlockers){
+    if((statePointer->currentPhase == Phase::DeclareAttackers ||
+        statePointer->currentPhase == Phase::DeclareBlockers) &&
+        clicked->cardPtr->type == CardType::CREATURE){
 
         if(selectedButtons.contains(clicked)){
             selectedButtons.removeOne(clicked);
             clicked->setChecked(false);
             currentSelectedCard = nullptr;
-            // qDebug() << "Removed " << clicked->cardPtr->name;
         }
         else{
             selectedButtons.append(clicked);
             clicked->setChecked(true);
             currentSelectedCard = clicked;
-            // qDebug() << "Added " << clicked->cardPtr->name;
         }
         overlayCards();
     }
@@ -441,23 +464,20 @@ void MainWindow::updateMagnifier(Card* card) {
     }
 
     info += "<hr>";
-    info += "<b>Description:</b><br>" + cardFromDictionary.description;
+    info += "<b>Ability:</b><br>" + cardFromDictionary.description;
+
+    qDebug() << cardFromDictionary.flavorText;
+    info += "<hr>";
+    if (!cardFromDictionary.flavorText.isEmpty()) {
+        info += "<br><i style='color:gray'>" + cardFromDictionary.flavorText + "</i>";
+    }
 
     // Show formatted description in the magnifier
     ui->CardDescription->setText(info);
 }
 
-void MainWindow::attackPhase(){
-    if (userPlayer->isActivePlayer){
-        ui->playCardButton->setText("Select Attackers...");
-    }
-    else {
-        ui->playCardButton->setText("Enemy Selecting");
-        ui->playCardButton->setDisabled(true);
-    }
-}
-
 void MainWindow::collectAttackers(){
+    qDebug() << "Collecting Attackers";
 
     QGridLayout* battlefield;
 
@@ -474,7 +494,7 @@ void MainWindow::collectAttackers(){
         QWidget* widget = item->widget();
         CardButton* button = qobject_cast<CardButton*>(widget);
 
-        if(button->isChecked()){
+        if(button->isChecked() && button->cardPtr->type == CardType::CREATURE){
             buttonCombatants[button];
         }
     }
@@ -483,14 +503,17 @@ void MainWindow::collectAttackers(){
 }
 
 void MainWindow::collectBlockers(){
-
+    qDebug() << "Collecting Blockers";
 
     if (targetIt == buttonCombatants.end()){
         extractCombatants(buttonCombatants);
         return;
     }
 
-    targetIt.value() = selectedButtons;
+    if(!selectedButtons.isEmpty()){
+        targetIt.value() = selectedButtons;
+    }
+
     targetIt++;
 }
 
@@ -584,13 +607,41 @@ void MainWindow::updateUI(){
 
         // Set Active Player Label
         layout.activePlayerLabel->setText(QString(statePointer->player1->isActivePlayer ? "You are" : "The enemy is") + " the active player");
-
+        layout.activePlayerLabel->setStyleSheet(statePointer->player1->isActivePlayer
+                                                    ? "QLabel { color : green; }"
+                                                    : "QLabel { color : red; }");
 
         qDebug() << "update Phases";
         handlePhase();
 
         update();
         qDebug() << "updateUI has finished";
+    }
+
+    if(statePointer->currentPhase == Phase::DeclareAttackers){
+        if(userPlayer->isActivePlayer){
+            ui->playCardButton->setText("Declare Attackers");
+            ui->playCardButton->setEnabled(true);
+        }
+        else {
+            ui->playCardButton->setText("Enemy Declaring...");
+            ui->playCardButton->setDisabled(true);
+        }
+    }
+    else if(statePointer->currentPhase == Phase::DeclareBlockers){
+
+        if(!userPlayer->isActivePlayer){
+            ui->playCardButton->setText("Declare Blockers");
+            ui->playCardButton->setEnabled(true);
+        }
+        else {
+            ui->playCardButton->setText("Enemy Declaring...");
+            ui->playCardButton->setDisabled(true);
+        }
+    }
+    else {
+        ui->playCardButton->setText("Play");
+        ui->playCardButton->setEnabled(true);
     }
 
     //update Stack
@@ -608,14 +659,7 @@ void MainWindow::updateUI(){
     // Re-add current stack contents
     for (const StackObject &object : statePointer->theStack) {
         qDebug() << "accessing the stack";
-
-        CardButton* cardButton = new CardButton(object.card);
-        activeCards.append(cardButton);
-
-        connect(cardButton, &CardButton::cardSelected, this, &MainWindow::handleCardSelected);
-        connect(cardButton, &CardButton::hovered, this, &MainWindow::updateMagnifier);
-        connect(cardButton, &CardButton::cardTapped, this, &MainWindow::cardBeingTapped);
-        cardButton->setFixedSize(100, 140);
+        CardButton* cardButton = createCardButton(object.card);
         container->addWidget(cardButton);
     }
 }
@@ -760,6 +804,8 @@ void MainWindow::clearSelection(){
 
 void MainWindow::extractCombatants(QMap<CardButton*, QVector<CardButton*>> packedCombatCards){
 
+    combatants.clear();
+
     for(auto it = packedCombatCards.begin(); it != packedCombatCards.end(); it++){
 
         Card* attacker = it.key()->cardPtr;
@@ -773,6 +819,8 @@ void MainWindow::extractCombatants(QMap<CardButton*, QVector<CardButton*>> packe
     }
 
     emit sendCombatCards(combatants);
+
+    packedCombatCards.clear();
 }
 
 void MainWindow::handlePhase(){
@@ -800,19 +848,46 @@ void MainWindow::startTargeting(Card *sourceCard){
     targetSource = sourceCard;
     selectedCards.clear();
 
-    for(CardButton* button : activeCards){
+    for (CardButton *button : activeCards) {
         button->enableCard(false);
     }
 
     QGridLayout* targetZone = ui->enemyBattlefield;
 
     for(int i = 0; i < targetZone->count(); i++){
-
         QLayoutItem* item = targetZone->itemAt(i);
         QWidget* widget = item->widget();
         CardButton* button = qobject_cast<CardButton*>(widget);
         button->enableCard(true);
     }
+
+    for (int i = 0; i < ui->enemyHand->count(); ++i) {
+        QLayoutItem* item = ui->enemyHand->itemAt(i);
+        QWidget* widget = item->widget();
+
+        if (widget && qobject_cast<CardButton*>(widget)) {
+            widget->setVisible(false);
+        }
+    }
+
+    ui->enemyTargetButton->setVisible(true);
+}
+
+void MainWindow::stopTargeting(){
+    for (int i = 0; i < ui->enemyHand->count(); ++i) {
+        QLayoutItem* item = ui->enemyHand->itemAt(i);
+        QWidget* widget = item->widget();
+
+        if (widget && qobject_cast<CardButton*>(widget)) {
+            widget->setVisible(true);
+        }
+    }
+
+    isTargeting = false;
+
+    ui->enemyTargetButton->setVisible(false);
+    targetSource = nullptr;
+    clearSelection();
 }
 
 void MainWindow::overlayCards(){
@@ -904,3 +979,14 @@ void MainWindow::updateEndExplosion() {
     }
 }
 
+CardButton* MainWindow::createCardButton(Card* card){
+    CardButton* cardButton = new CardButton(card);
+    activeCards.append(cardButton);
+
+    connect(cardButton, &CardButton::cardSelected, this, &MainWindow::handleCardSelected);
+    connect(cardButton, &CardButton::hovered, this, &MainWindow::updateMagnifier);
+    connect(cardButton, &CardButton::cardTapped, this, &MainWindow::cardBeingTapped);
+    cardButton->setFixedSize(100, 140);
+
+    return cardButton;
+}

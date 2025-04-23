@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/tutorial">
+        <file>tutorial-mtg/p1.jpg</file>
+        <file>tutorial-mtg/p4.png</file>
+        <file>tutorial-mtg/p5.png</file>
+        <file>tutorial-mtg/p3.png</file>
+        <file>tutorial-mtg/p2.png</file>
+    </qresource>
+</RCC>

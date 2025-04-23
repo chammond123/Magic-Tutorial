@@ -103,7 +103,7 @@ void gamemanager::onPlayCard(Card *card, std::variant<Player*, Card*, std::nullp
 
 void gamemanager::onPassPriority(){
     qDebug() << "Received priority command";
-    displayTip("This is a test");
+    // displayTip("This is a test");
     passPriorityCommand cmd = passPriorityCommand(state);
     cmd.execute();
     emit updateUI();
