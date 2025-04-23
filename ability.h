@@ -8,11 +8,25 @@
 class Player;
 class Card;
 
+/**
+ * @brief The Ability class represents the ability of the card
+ */
 class Ability
 {
 private:
+    /**
+     * @brief effect is a functor that execute the ability of the card
+     */
     std::function<void(Player* player, Card* card)> effect;
+
+    /**
+     * @brief type of the ability
+     */
     abilityType type;
+
+    /**
+     * @brief amount is the quantifier for the ability effect
+     */
     int amount;
 
 public:
