@@ -57,6 +57,7 @@ SOURCES += \
     Box2D/Dynamics/b2WorldCallbacks.cpp \
     Box2D/Rope/b2Rope.cpp \
     ability.cpp \
+    aboutpage.cpp \
     bot.cpp \
     card.cpp \
     cardapimanager.cpp \
@@ -69,11 +70,12 @@ SOURCES += \
     gametipsdialog.cpp \
     loadscreen.cpp \
     main.cpp \
+    mainmenu.cpp \
     mainwindow.cpp \
     manacollection.cpp \
     player.cpp \
-    scenebot.cpp \
     textparser.cpp \
+    tutorialpage.cpp \
     type.cpp \
     zone.cpp
 
@@ -126,6 +128,7 @@ HEADERS += \
     Box2D/Dynamics/b2WorldCallbacks.h \
     Box2D/Rope/b2Rope.h \
     ability.h \
+    aboutpage.h \
     bot.h \
     card.h \
     cardapimanager.h \
@@ -137,20 +140,24 @@ HEADERS += \
     gamestate.h \
     gametipsdialog.h \
     loadscreen.h \
+    mainmenu.h \
     mainwindow.h \
     manacollection.h \
     phase.h \
     player.h \
-    scenebot.h \
     stackobject.h \
     textparser.h \
+    tutorialpage.h \
     type.h \
     zone.h
 
 FORMS += \
+    aboutpage.ui \
     loadscreen.ui \
+    mainmenu.ui \
     mainwindow.ui \
-    manacollection.ui
+    manacollection.ui \
+    tutorialpage.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
