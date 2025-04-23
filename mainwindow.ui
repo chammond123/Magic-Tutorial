@@ -433,7 +433,24 @@
        <height>131</height>
       </rect>
      </property>
-     <layout class="QGridLayout" name="enemyHand"/>
+     <layout class="QGridLayout" name="enemyHand">
+      <item row="0" column="0">
+       <widget class="QPushButton" name="enemyTargetButton">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>100</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Target Enemy</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
     <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
@@ -546,7 +563,7 @@
      <x>0</x>
      <y>0</y>
      <width>1548</width>
-     <height>24</height>
+     <height>17</height>
     </rect>
    </property>
   </widget>

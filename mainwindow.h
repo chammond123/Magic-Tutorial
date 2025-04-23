@@ -87,8 +87,6 @@ public slots:
     void updateUI();
     void startTargeting(Card* sourceCard);
 
-    void attackPhase();
-
     /**
      * @brief updateMagnifier
      * @param card
@@ -100,6 +98,8 @@ public slots:
     void cardBeingTapped();
 
     void onGameEnded(bool playerWon);
+
+    void stopTargeting();
 
 signals:
 
@@ -147,6 +147,8 @@ private:
 
     bool isLand(Card* card);
     bool isCreature(Card* card);
+
+    CardButton* createCardButton(Card* card);
 
 
     //For mana zone

@@ -53,6 +53,13 @@ void Player::addMana(QMap<ManaType, int> *manaCosts)
 void Player::useMana(Card* card)
 {
     QMap<ManaType, int> manaCosts = card->cost;
+
+    if (manaCosts[ManaType::ANY] > 0){
+        for(auto [color, amount] : selectedMana.toStdMap()){
+            manaPool[color] -= amount;
+        }
+    }
+
     for (auto [color, amount] : manaCosts.toStdMap()) {
         if(color == ManaType::ANY){
             continue;
@@ -60,11 +67,7 @@ void Player::useMana(Card* card)
         manaPool[color] -= amount;
     }
 
-    if (manaCosts[ManaType::ANY] > 0){
-        for(auto [color, amount] : selectedMana.toStdMap()){
-            manaPool[color] -= amount;
-        }
-    }
+
 }
 
 void Player::drawCard(int amount)
