@@ -24,18 +24,47 @@ public:
     void takeTurn(GameState* gameState);
 
 private:
+    /**
+     * @brief playCard
+     * @param gameState
+     */
     void playCard(GameState* gameState);
 
+    /**
+     * @brief declareAttackers
+     * @param gameState
+     */
     void declareAttackers(GameState* gameState);
 
+    /**
+     * @brief declareBlockers
+     * @param gameState
+     */
     void declareBlockers(GameState* gameState);
 
+    /**
+     * @brief endTurn
+     * @param gameState
+     */
     void endTurn(GameState* gameState);
 
+    /**
+     * @brief passPriority
+     * @param gameState
+     */
     void passPriority(GameState* gameState);
 
+    /**
+     * @brief changePhase
+     * @param gameState
+     */
     void changePhase(GameState* gameState);
 
+    /**
+     * @brief calculateManaValue
+     * @param card
+     * @return
+     */
     int calculateManaValue(Card* card);
 };
 

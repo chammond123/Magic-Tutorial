@@ -4,6 +4,10 @@
 #include <QWidget>
 
 namespace Ui {
+
+/**
+ * The about page has the authors credit as well as simply explaining the purpose and features of the game
+ */
 class AboutPage;
 }
 

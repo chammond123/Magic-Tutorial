@@ -4,6 +4,9 @@
 #include "card.h"
 #include <QObject>
 
+/**
+ * @brief The Deck class
+ */
 class Deck : public QObject
 {
     Q_OBJECT

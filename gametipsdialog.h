@@ -6,6 +6,9 @@
 class QLabel;
 class QPushButton;
 
+/**
+ * @brief The GameTipsDialog class
+ */
 class GameTipsDialog : public QDialog
 {
     Q_OBJECT

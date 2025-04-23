@@ -4,6 +4,9 @@
 #include "card.h"
 #include <QPushButton>
 
+/**
+ * @brief The CardButton class represent the card as a QPushButton
+ */
 class CardButton : public QPushButton{
     Q_OBJECT
 public:

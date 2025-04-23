@@ -4,7 +4,9 @@
 #ifndef STACKOBJECT_H
 #define STACKOBJECT_H
 
-
+/**
+ * @brief The StackObject class
+ */
 struct StackObject{
     Player* player;
     Card* card;
