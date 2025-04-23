@@ -4,6 +4,10 @@
 #include <QWidget>
 
 namespace Ui {
+
+/**
+ * The main menu of the game
+ */
 class MainMenu;
 }
 

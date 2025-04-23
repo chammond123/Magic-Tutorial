@@ -3,6 +3,10 @@
 #include <map>
 #include <QString>
 #include "card.h"
+
+/**
+ * @brief The cardDictionary class
+ */
 class cardDictionary
 {
 private:

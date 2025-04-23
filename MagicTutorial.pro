@@ -165,8 +165,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
+    Fonts.qrc \
     Icons.qrc \
-    TextFiles.qrc
+    TextFiles.qrc \
+    Tutorial.qrc
 
 DISTFILES += \
     Box2D/Box2DConfig.cmake \

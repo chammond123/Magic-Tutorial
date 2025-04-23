@@ -45,7 +45,6 @@ void GameState::changePhase(){
         player2->emptyManaPool();
     }
     else if (currentPhase == Phase::EndStep){
-        // Should we check amount of cards > 7?
         player1->emptyManaPool();
         player2->emptyManaPool();
         player1->endStepPhase();
@@ -56,6 +55,11 @@ void GameState::changePhase(){
         player2->emptyManaPool();
         player1->cleanupPhase();
         player2->cleanupPhase();
+
+        // Checks if players have more than 7 cards
+        player1->endTurn();
+        player2->endTurn();
+
         changeActivePlayer();
         changePhase();
         if (player2->isActivePlayer) {
@@ -63,7 +67,6 @@ void GameState::changePhase(){
             botPlayer->takeTurn(this);
         }
     }
-
 }
 
 void GameState::changePriority(){

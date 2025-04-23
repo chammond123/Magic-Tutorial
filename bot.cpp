@@ -41,19 +41,19 @@ void Bot::takeTurn(GameState* gameState) {
 void Bot::playCard(GameState* gameState) {
     if (!hasPlayedLand) {
         for (Card* card : Hand) {
-            if (card->type == CardType::LAND) {
+            if (card->isLand) {
                 qDebug() << "Chose to play " << card->name << " for the land part";
                 playCardCommand cmd(gameState, card, nullptr);
                 cmd.execute();
                 hasPlayedLand = true;
-                return;
+                break;
             }
         }
     }
 
     QVector<Card*> playableCards;
     for (Card* card : Hand) {
-        if (canPayMana(card)) {
+        if (canPayMana(card) && card->type != CardType::LAND) {
             playableCards.append(card);
         }
     }
@@ -62,16 +62,45 @@ void Bot::playCard(GameState* gameState) {
         return calculateManaValue(a) > calculateManaValue(b);
     });
 
-    if (!playableCards.isEmpty() && !hasPlayedLand) {
-        qDebug() << "Chose to play " << playableCards.first()->name << " for the land part";
-        playCardCommand cmd(gameState, playableCards.first(), nullptr);
-        cmd.execute();
+    if (!playableCards.isEmpty()) {
+        for (Card* chosen : playableCards){
+            int manaNeeded = calculateManaValue(chosen);
+
+            QVector<Card*> untappedLands;
+            for (Card* land : Battlefield) {
+                if (land->type == CardType::LAND && !land->isTapped) {
+                    untappedLands.append(land);
+                }
+            }
+
+            if (untappedLands.size() < manaNeeded) {
+                qDebug() << "Not enough untapped lands to play " << chosen->name;
+                continue;
+            }
+
+            if (untappedLands.size() < manaNeeded && chosen == playableCards.last()) {
+                qDebug() << "Not enough untapped lands to play anything" << chosen->name;
+                return;
+            }
+
+            for (int i = 0; i < manaNeeded; ++i) {
+                Card* land = untappedLands[i];
+                land->isTapped = true;
+                qDebug() << "Tapped land " << land->name << " to pay for " << chosen->name;
+            }
+
+            qDebug() << "Chose to play " << chosen->name << " (paid " << manaNeeded << " mana)";
+            playCardCommand cmd(gameState, chosen, nullptr);
+            cmd.execute();
+            break;
+        }
     }
 
     if (this->isActivePlayer) {
         changePhase(gameState);
     }
 }
+
 
 int Bot::calculateManaValue(Card* card) {
     int total = 0;

@@ -8,6 +8,9 @@
 #include"gamestate.h"
 #include"command.h"
 
+/**
+ * @brief The gamemanager class
+ */
 class gamemanager : public QObject
 {
     Q_OBJECT

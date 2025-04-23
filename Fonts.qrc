@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/Fonts"/>
+    <qresource prefix="/Font">
+        <file>Fonts/Goudy Medieval Alternate.ttf</file>
+        <file>Fonts/Magicmedieval-pRV1.ttf</file>
+        <file>Fonts/Planewalker-38m6.ttf</file>
+        <file>Fonts/PlanewalkerItalic-DgM1.ttf</file>
+    </qresource>
+</RCC>

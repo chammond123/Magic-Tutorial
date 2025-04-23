@@ -7,6 +7,9 @@
 #include <QDialog>
 
 namespace Ui {
+/**
+ * This is a loading screen pop up when loading the all of the elements of the game
+ */
 class loadScreen;
 }
 

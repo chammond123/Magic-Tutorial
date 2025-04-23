@@ -9,11 +9,18 @@
 class QNetworkAccessManager;
 class QNetworkReply;
 
+/**
+ * @brief The CardAPIManager class
+ */
 class CardAPIManager : public QObject
 {
     Q_OBJECT
 
 public:
+
+    /**
+     * @brief The ReplyType enum
+     */
     enum class ReplyType {
         Unknown,
         CardsList,
@@ -21,6 +28,10 @@ public:
         CardImage
     };
 
+    /**
+     * @brief CardAPIManager
+     * @param parent
+     */
     explicit CardAPIManager(QObject *parent = nullptr);
 
     // Fetch all cards (original method)

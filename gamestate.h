@@ -7,6 +7,9 @@
 #include"phase.h"
 #include"stackobject.h"
 
+/**
+ * @brief The GameState class
+ */
 class GameState
 {
 private:
