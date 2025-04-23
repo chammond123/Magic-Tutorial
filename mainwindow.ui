@@ -277,11 +277,16 @@
     <widget class="QLabel" name="phaseLabel">
      <property name="geometry">
       <rect>
-       <x>140</x>
+       <x>200</x>
        <y>100</y>
        <width>171</width>
        <height>20</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>Phase: </string>
@@ -290,11 +295,16 @@
     <widget class="QLabel" name="activePlayerLabel">
      <property name="geometry">
       <rect>
-       <x>327</x>
+       <x>380</x>
        <y>100</y>
        <width>211</width>
        <height>20</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>is Active Player</string>
@@ -433,7 +443,24 @@
        <height>131</height>
       </rect>
      </property>
-     <layout class="QGridLayout" name="enemyHand"/>
+     <layout class="QGridLayout" name="enemyHand">
+      <item row="0" column="0">
+       <widget class="QPushButton" name="enemyTargetButton">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>100</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Target Enemy</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
     <widget class="QWidget" name="layoutWidget">
      <property name="geometry">

@@ -167,11 +167,6 @@ public slots:
     void startTargeting(Card* sourceCard);
 
     /**
-     * @brief attackPhase a slot that being called when current state is the battle phrase
-     */
-    void attackPhase();
-
-    /**
      * @brief updateMagnifier uses to update the magnifier of the card that being hovered
      * @param card that being hovered
      */
@@ -196,6 +191,8 @@ public slots:
      * @param playerWon a boolean value if the user player won
      */
     void onGameEnded(bool playerWon);
+
+    void stopTargeting();
 
 signals:
 
@@ -336,6 +333,7 @@ private:
      */
     bool isTargeting;
 
+    CardButton* createCardButton(Card* card);
 
     //For mana zone
     /**

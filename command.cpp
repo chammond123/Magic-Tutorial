@@ -18,14 +18,14 @@ void playCardCommand::execute(){
     state->getPriorityPlayer()->madeAction = true;
 
     //Check if the variant is a play or card, then use ability
-    if(holds_alternative<Player*>(target)){
-        Player* t = get<Player*>(target);
-        card->ability.use(t);
-    }
-    else if(holds_alternative<Card*>(target)){
-        Card* c = get<Card*>(target);
-        card->ability.use(c);
-    }
+    // if(holds_alternative<Player*>(target)){
+    //     Player* t = get<Player*>(target);
+    //     card->ability.use(t);
+    // }
+    // else if(holds_alternative<Card*>(target)){
+    //     Card* c = get<Card*>(target);
+    //     card->ability.use(c);
+    // }
 
     if (card->isLand){
         player->moveCardString(card, "hand", "battlefield", false);

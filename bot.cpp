@@ -29,7 +29,10 @@ void Bot::takeTurn(GameState* gameState) {
         passPriority(gameState);
         break;
     default:
-        changePhase(gameState);
+        // Any other phase has no special actions to auto take
+        if (this->isActivePlayer) {
+            changePhase(gameState);
+        }
         passPriority(gameState);
         break;
     }
@@ -59,12 +62,15 @@ void Bot::playCard(GameState* gameState) {
         return calculateManaValue(a) > calculateManaValue(b);
     });
 
-    if (!playableCards.isEmpty()) {
+    if (!playableCards.isEmpty() && !hasPlayedLand) {
         qDebug() << "Chose to play " << playableCards.first()->name << " for the land part";
         playCardCommand cmd(gameState, playableCards.first(), nullptr);
         cmd.execute();
     }
-    changePhase(gameState);
+
+    if (this->isActivePlayer) {
+        changePhase(gameState);
+    }
 }
 
 int Bot::calculateManaValue(Card* card) {
@@ -88,7 +94,9 @@ void Bot::declareAttackers(GameState* gameState) {
         declareCombatCommand cmd(gameState, combatCreatures);
         cmd.execute();
     }
-    changePhase(gameState);
+    if (this->isActivePlayer) {
+        changePhase(gameState);
+    }
 }
 
 void Bot::declareBlockers(GameState* gameState) {

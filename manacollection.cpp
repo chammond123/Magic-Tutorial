@@ -33,6 +33,9 @@ ManaCollection::ManaCollection(Player* player, Card* card, QWidget *parent)
     connect(ui->bluePayment, &QSpinBox::valueChanged, this, &ManaCollection::updateMana);
     connect(ui->greenPayment, &QSpinBox::valueChanged, this, &ManaCollection::updateMana);
     connect(ui->blackPayment, &QSpinBox::valueChanged, this, &ManaCollection::updateMana);
+
+    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+    connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }
 
 ManaCollection::~ManaCollection()
