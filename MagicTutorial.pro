@@ -74,7 +74,6 @@ SOURCES += \
     mainwindow.cpp \
     manacollection.cpp \
     player.cpp \
-    scenebot.cpp \
     textparser.cpp \
     tutorialpage.cpp \
     type.cpp \
@@ -146,7 +145,6 @@ HEADERS += \
     manacollection.h \
     phase.h \
     player.h \
-    scenebot.h \
     stackobject.h \
     textparser.h \
     tutorialpage.h \

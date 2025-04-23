@@ -29,6 +29,7 @@ void Bot::takeTurn(GameState* gameState) {
         passPriority(gameState);
         break;
     default:
+        // Any other phase has no special actions to auto take
         if (this->isActivePlayer) {
             changePhase(gameState);
         }
@@ -61,7 +62,7 @@ void Bot::playCard(GameState* gameState) {
         return calculateManaValue(a) > calculateManaValue(b);
     });
 
-    if (!playableCards.isEmpty()) {
+    if (!playableCards.isEmpty() && !hasPlayedLand) {
         qDebug() << "Chose to play " << playableCards.first()->name << " for the land part";
         playCardCommand cmd(gameState, playableCards.first(), nullptr);
         cmd.execute();
