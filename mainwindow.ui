@@ -511,7 +511,7 @@
       <x>20</x>
       <y>460</y>
       <width>291</width>
-      <height>191</height>
+      <height>361</height>
      </rect>
     </property>
    </widget>
@@ -532,12 +532,35 @@
     <property name="geometry">
      <rect>
       <x>1320</x>
-      <y>9</y>
+      <y>69</y>
       <width>211</width>
-      <height>831</height>
+      <height>771</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="stack"/>
+   </widget>
+   <widget class="QLabel" name="stackLabel">
+    <property name="geometry">
+     <rect>
+      <x>1320</x>
+      <y>10</y>
+      <width>211</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 2px solid #444;
+border-radius: 8px;
+padding: 4px;
+color: white;
+background-color: #222;</string>
+    </property>
+    <property name="text">
+     <string>Stack</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignCenter</set>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -546,7 +569,7 @@
      <x>0</x>
      <y>0</y>
      <width>1548</width>
-     <height>24</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>

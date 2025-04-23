@@ -9,6 +9,8 @@ AboutPage::AboutPage(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle("About");
 
+    ui->textBrowser->setReadOnly(true);
+
     connect(ui->backButton, &QPushButton::clicked, this, &AboutPage::backToMenu);
 }
 
