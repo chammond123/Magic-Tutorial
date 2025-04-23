@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>644</width>
-    <height>223</height>
+    <height>308</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>260</x>
-     <y>177</y>
+     <y>260</y>
      <width>164</width>
      <height>31</height>
     </rect>
@@ -44,7 +44,7 @@
     <rect>
      <x>340</x>
      <y>20</y>
-     <width>31</width>
+     <width>41</width>
      <height>22</height>
     </rect>
    </property>
@@ -60,8 +60,8 @@
     <rect>
      <x>50</x>
      <y>50</y>
-     <width>571</width>
-     <height>111</height>
+     <width>576</width>
+     <height>161</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -85,6 +85,12 @@
       </item>
       <item>
        <widget class="QSpinBox" name="whiteMana">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -95,6 +101,18 @@
       </item>
       <item>
        <widget class="QSpinBox" name="whitePayment">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="baseSize">
+         <size>
+          <width>80</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="buttonSymbols">
          <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
         </property>
@@ -113,6 +131,12 @@
       </item>
       <item>
        <widget class="QSpinBox" name="blueMana">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -123,6 +147,12 @@
       </item>
       <item>
        <widget class="QSpinBox" name="bluePayment">
+        <property name="baseSize">
+         <size>
+          <width>80</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="buttonSymbols">
          <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
         </property>
@@ -147,6 +177,18 @@
       </item>
       <item>
        <widget class="QSpinBox" name="redMana">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="baseSize">
+         <size>
+          <width>0</width>
+          <height>10</height>
+         </size>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -157,6 +199,12 @@
       </item>
       <item>
        <widget class="QSpinBox" name="redPayment">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="buttonSymbols">
          <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
         </property>
@@ -178,6 +226,12 @@
       </item>
       <item>
        <widget class="QSpinBox" name="greenMana">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -206,6 +260,12 @@
       </item>
       <item>
        <widget class="QSpinBox" name="blackMana">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -216,6 +276,12 @@
       </item>
       <item>
        <widget class="QSpinBox" name="blackPayment">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="buttonSymbols">
          <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
         </property>

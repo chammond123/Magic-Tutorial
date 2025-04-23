@@ -10,26 +10,27 @@ void Bot::takeTurn(GameState* gameState) {
     switch (gameState->currentPhase) {
     case Phase::PreCombatMain:
         playCard(gameState);
-        passTurn(gameState);
+        passPriority(gameState);
         break;
     case Phase::DeclareAttackers:
         declareAttackers(gameState);
-        passTurn(gameState);
+        passPriority(gameState);
         break;
     case Phase::DeclareBlockers:
         declareBlockers(gameState);
-        passTurn(gameState);
+        passPriority(gameState);
         break;
     case Phase::PostCombatMain:
         playCard(gameState);
-        passTurn(gameState);
+        passPriority(gameState);
         break;
     case Phase::EndStep:
         endTurn(gameState);
-        passTurn(gameState);
+        passPriority(gameState);
         break;
     default:
-        passTurn(gameState);
+        changePhase(gameState);
+        passPriority(gameState);
         break;
     }
 }
@@ -63,6 +64,7 @@ void Bot::playCard(GameState* gameState) {
         playCardCommand cmd(gameState, playableCards.first(), nullptr);
         cmd.execute();
     }
+    changePhase(gameState);
 }
 
 int Bot::calculateManaValue(Card* card) {
@@ -86,9 +88,12 @@ void Bot::declareAttackers(GameState* gameState) {
         declareCombatCommand cmd(gameState, combatCreatures);
         cmd.execute();
     }
+    changePhase(gameState);
 }
 
 void Bot::declareBlockers(GameState* gameState) {
+    changePhase(gameState);
+    return;
     Player* attacker = gameState->player1;
     QMap<Card*, QVector<Card*>> combatCreatures;
 
@@ -140,7 +145,12 @@ void Bot::endTurn(GameState* gameState) {
     cmd.execute();
 }
 
-void Bot::passTurn(GameState* gameState) {
+void Bot::passPriority(GameState* gameState) {
     passPriorityCommand cmd(gameState);
+    cmd.execute();
+}
+
+void Bot::changePhase(GameState* gameState){
+    changePhaseCommand cmd(gameState);
     cmd.execute();
 }

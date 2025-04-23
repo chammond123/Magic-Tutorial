@@ -32,14 +32,17 @@ void cardDictionary::giveAbility(Card* c){
 
     if (c->name == "Shock"){
         c->setAbility(Ability::damageTarget(2));
+        c->needsTarget = true;
     }
 
     if (c->name == "Lightning Bolt"){
         c->setAbility(Ability::damageTarget(3));
+        c->needsTarget = true;
     }
 
     if (c->name == "Counterspell"){
         c->setAbility(Ability::counter());
+        c->needsTarget = true;
     }
 
     if (c->name == "Fervor"){

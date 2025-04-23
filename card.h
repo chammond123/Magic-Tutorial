@@ -50,6 +50,7 @@ public:
     bool hasSummoningSickness;
     bool isCountered = false;
     QString flavorText;
+    bool needsTarget = false;
 };
 
 #endif // CARD_H

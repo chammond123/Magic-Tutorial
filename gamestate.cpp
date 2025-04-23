@@ -1,4 +1,5 @@
 #include "gamestate.h"
+#include "bot.h"
 
 GameState::GameState(){
     currentPhase = Phase::Untap;
@@ -56,7 +57,13 @@ void GameState::changePhase(){
         player1->cleanupPhase();
         player2->cleanupPhase();
         changeActivePlayer();
+        changePhase();
+        if (player2->isActivePlayer) {
+            Bot* botPlayer = static_cast<Bot*>(player2);
+            botPlayer->takeTurn(this);
+        }
     }
+
 }
 
 void GameState::changePriority(){
@@ -64,11 +71,13 @@ void GameState::changePriority(){
         player1->madeAction = false;
         player2->holdingPriority = true;
         player1->holdingPriority = false;
+        qDebug() << "Player 1 passed priority to Player 2.";
     }
     else{
         player2->madeAction = false;
         player1->holdingPriority = true;
         player2->holdingPriority = false;
+        qDebug() << "Player 2 passed priority to Player 1.";
     }
 }
 
@@ -138,15 +147,22 @@ void GameState::resolveStack(){
     if (!theStack.empty()){
         StackObject stackObject = theStack.takeLast();
 
-        if (stackObject.target != nullptr){
-            stackObject.card->ability.use(stackObject.target);
+        if (!std::holds_alternative<std::nullptr_t>(stackObject.target)){
+            if(std::holds_alternative<Player*>(stackObject.target)){
+                Player* t = get<Player*>(stackObject.target);
+                stackObject.card->ability.use(t);
+            }
+            else if(std::holds_alternative<Card*>(stackObject.target)){
+                Card* c = get<Card*>(stackObject.target);
+                stackObject.card->ability.use(c);
+            }
         }
 
         if (stackObject.card->isPermanent){
             stackObject.player->moveCardString(stackObject.card, "hand", "battlefield", false);
         }
         else{
-            stackObject.player->moveCardString(stackObject.card, "hand", "battlefield", true);
+            stackObject.player->moveCardString(stackObject.card, "hand", "graveyard", true);
         }
     }
 }
@@ -245,6 +261,8 @@ void GameState::validateHand(Player* player){
 void GameState::validateBattlefield(Player* player){
     PhaseRules rules = getPhaseRules();
     for (Card* card : player->Battlefield){
+        card->shouldEnable = false;
+
         if (player->isActivePlayer && rules.canDeclareAttack && card->type == CardType::CREATURE && !card->isTapped && (!card->hasSummoningSickness or !player->hasSummoningSickness)){
             card->shouldEnable = true;
         }
@@ -257,9 +275,6 @@ void GameState::validateBattlefield(Player* player){
         if (card->type == CardType::ARTIFACT){
             card->shouldEnable = true;
         }
-        else{
-            card->shouldEnable = false;
-        }
     }
 }
 
@@ -268,12 +283,12 @@ void GameState::validatePlayerActions(Player* player){
     player->canPassPriority = false;
     player->canChangePhase = false;
     qDebug() << "active player check:";
-    qDebug() << player->isActivePlayer;
-    qDebug() << player->holdingPriority;
-    qDebug() << theStack.empty();
-    if (player->isActivePlayer && player->hasntDrawnForTurn){
-        player->canDrawCard = true;
-    }
+    // qDebug() << player->isActivePlayer;
+    // qDebug() << player->holdingPriority;
+    // qDebug() << theStack.empty();
+    // if (player->isActivePlayer && player->hasntDrawnForTurn){
+    //     player->canDrawCard = true;
+    // }
     if (player->holdingPriority){
         player->canPassPriority = true;
     }

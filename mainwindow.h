@@ -39,6 +39,7 @@ struct ZoneLayout {
     QPushButton* blackCount;
     QLabel* health;
     QLabel* phaseLabel;
+    QLabel* activePlayerLabel;
     QMap<ManaType, QList<CardButton*>>* landGroups;
 };
 
@@ -151,7 +152,8 @@ public slots:
      * this method allows the user to choose different mana to pay for it
      * @return indicate if the player paid for the cost of the card
      */
-    bool promptForMana();
+    bool promptForMana(Card* card);
+
 
     /**
      * @brief updateUI redraw the ui when the state has changed
@@ -180,12 +182,14 @@ public slots:
      */
     void onPlayCardButtonClicked();
 
+
     /**
      * @brief cardBeingTapped handles tapping the card
      * @param card that being tapped
      * @param tapped current state of the card
      */
-    void cardBeingTapped(CardButton* card, bool tapped);
+    void cardBeingTapped();
+
 
     /**
      * @brief onGameEnded called when the one of the player win the game
@@ -206,7 +210,8 @@ signals:
      * @param card that being played
      * @param target of the card that being played
      */
-    void playCard(Card* card, Card* target);
+    void playCard(Card* card, std::variant<Player*, Card*, std::nullptr_t> target);
+
 
     /**
      * @brief tapCard is a signal to the backend when a card is tapped

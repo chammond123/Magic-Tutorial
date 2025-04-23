@@ -26,7 +26,9 @@ Card::Card(const Card& other) :
     isTapped(other.isTapped),
     isPermanent(other.isPermanent),
     isLand(other.isLand),
-    hasSummoningSickness(other.hasSummoningSickness)
+    hasSummoningSickness(other.hasSummoningSickness),
+    needsTarget(other.needsTarget),
+    flavorText(other.flavorText)
 {}
 
 Card& Card::operator=(const Card& other) {
@@ -44,6 +46,8 @@ Card& Card::operator=(const Card& other) {
         isTapped = other.isTapped;
         isPermanent = other.isPermanent;
         isLand = other.isLand;
+        needsTarget = other.needsTarget;
+        flavorText = other.flavorText;
     }
     return *this;
 }

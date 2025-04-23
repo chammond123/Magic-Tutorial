@@ -277,7 +277,7 @@
     <widget class="QLabel" name="phaseLabel">
      <property name="geometry">
       <rect>
-       <x>277</x>
+       <x>140</x>
        <y>100</y>
        <width>171</width>
        <height>20</height>
@@ -285,6 +285,19 @@
      </property>
      <property name="text">
       <string>Phase: </string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="activePlayerLabel">
+     <property name="geometry">
+      <rect>
+       <x>327</x>
+       <y>100</y>
+       <width>211</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>is Active Player</string>
      </property>
     </widget>
    </widget>
@@ -533,7 +546,7 @@
      <x>0</x>
      <y>0</y>
      <width>1548</width>
-     <height>25</height>
+     <height>24</height>
     </rect>
    </property>
   </widget>

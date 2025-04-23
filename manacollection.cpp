@@ -12,11 +12,16 @@ ManaCollection::ManaCollection(Player* player, Card* card, QWidget *parent)
     remainingMana = player->manaPool;
 
     // Set all Icons
-    ui->redIcon->setPixmap(QPixmap(":/Icons/Icons/Red.png"));
-    ui->blackIcon->setPixmap(QPixmap(":/Icons/Icons/Black.png"));
-    ui->whiteIcon->setPixmap(QPixmap(":/Icons/Icons/white.png"));
-    ui->greenIcon->setPixmap(QPixmap(":/Icons/Icons/Green.png"));
-    ui->blueIcon->setPixmap(QPixmap(":/Icons/Icons/Blue.png"));
+    ui->redIcon->setPixmap(QPixmap(":/Icons/Icons/Red.png").scaled(
+        ui->redIcon->size() - QSize(6,6), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    ui->blackIcon->setPixmap(QPixmap(":/Icons/Icons/Black.png").scaled(
+        ui->redIcon->size() - QSize(6,6), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    ui->whiteIcon->setPixmap(QPixmap(":/Icons/Icons/white.png").scaled(
+        ui->redIcon->size() - QSize(6,6), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    ui->greenIcon->setPixmap(QPixmap(":/Icons/Icons/Green.png").scaled(
+        ui->redIcon->size() - QSize(6,6), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    ui->blueIcon->setPixmap(QPixmap(":/Icons/Icons/Blue.png").scaled(
+        ui->redIcon->size() - QSize(6,6), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
     // Set payment from card
     ui->manaCost->setValue(card->cost[ManaType::ANY]);

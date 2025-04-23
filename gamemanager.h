@@ -24,7 +24,7 @@ public slots:
      * @param The player who wants to play a card
      * @param The card they want to play
      */
-    void onPlayCard(Card* card, Card* target);
+    void onPlayCard(Card* card, std::variant<Player*, Card*, std::nullptr_t> target);
     /**
      * @brief Receives if a player wants to pass priority
      * @param The player that wants to pass
@@ -45,10 +45,17 @@ public slots:
      * @brief Receives if a plyer has taped a card
      */
     void onTapCard(Card* card);
+    /**
+     * @brief Displays a dialog box containing a tip for the phase
+     * @param The tip message to show
+     */
+    void displayTip(QString tip);
 
 signals:
     void updateUI();
-    bool gameOver(bool hasWon);
+    void gameOver(bool hasWon);
+    void startTargeting(Card* initialCard);
+    void promptTargeting(Card* card);
 };
 
 #endif // GAMEMANAGER_H

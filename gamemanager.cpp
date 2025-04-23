@@ -2,6 +2,7 @@
 
 #include "gamemanager.h"
 #include "qobject.h"
+#include "gametipsdialog.h"
 gamemanager::gamemanager(QObject *parent)
     : QObject{parent}
 {
@@ -12,12 +13,23 @@ gamemanager::~gamemanager(){
     delete state;
 }
 
+void gamemanager::displayTip(QString tip){
+    GameTipsDialog* tipDialog = new GameTipsDialog(tip);
+    tipDialog->exec();
+}
+
 // UI Player Commands
-void gamemanager::onPlayCard(Card *card, Card* target){
+void gamemanager::onPlayCard(Card *card, std::variant<Player*, Card*, std::nullptr_t> target){
     if(!card){
         qDebug() << "NO CARD";
         return;
     }
+
+    if(card->needsTarget && std::holds_alternative<std::nullptr_t>(target)){
+        emit promptTargeting(card);
+        return;
+    }
+
     playCardCommand cmd = playCardCommand(state, card, target);
     cmd.execute();
     emit updateUI();
@@ -25,6 +37,7 @@ void gamemanager::onPlayCard(Card *card, Card* target){
 
 void gamemanager::onPassPriority(){
     qDebug() << "Received priority command";
+    displayTip("This is a test");
     passPriorityCommand cmd = passPriorityCommand(state);
     cmd.execute();
     emit updateUI();

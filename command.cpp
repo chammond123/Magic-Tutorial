@@ -6,14 +6,27 @@
 #include "bot.h"
 #include <type_traits>
 
+using namespace std;
+
 Command::Command(GameState* state) : state(state){}
 Command::~Command() {}
 
-playCardCommand::playCardCommand(GameState* state, Card* card, Card* target) :
+playCardCommand::playCardCommand(GameState* state, Card* card, std::variant<Player*, Card*, std::nullptr_t> target) :
     Command(state), card(card), target(target){}
 void playCardCommand::execute(){
     Player* player = state->getPriorityPlayer();
     state->getPriorityPlayer()->madeAction = true;
+
+    //Check if the variant is a play or card, then use ability
+    if(holds_alternative<Player*>(target)){
+        Player* t = get<Player*>(target);
+        card->ability.use(t);
+    }
+    else if(holds_alternative<Card*>(target)){
+        Card* c = get<Card*>(target);
+        card->ability.use(c);
+    }
+
     if (card->isLand){
         player->moveCardString(card, "hand", "battlefield", false);
         player->hasPlayedLand = true;
@@ -44,7 +57,6 @@ void passPriorityCommand::execute(){
 changePhaseCommand::changePhaseCommand(GameState* state) :
     Command(state){}
 void changePhaseCommand::execute(){
-    state->resolveStack();
     qDebug() << "Change Phase executed";
     state->changePhase();
 }
