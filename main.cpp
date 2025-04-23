@@ -12,6 +12,7 @@
 #include <QDebug>
 #include <QApplication>
 #include "tutorialpage.h"
+#include <QFontDatabase>
 
 int main(int argc, char *argv[])
 {
@@ -20,6 +21,10 @@ int main(int argc, char *argv[])
     /**
      * Test Phases / Game States
      */
+
+    int fontId = QFontDatabase::addApplicationFont(":/Font/Fonts/Magicmedieval-pRV1.ttf");
+    QString family = QFontDatabase::applicationFontFamilies(fontId).at(0);
+    a.setFont(QFont(family));
 
 
     // Instantiating a deck list

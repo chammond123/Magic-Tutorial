@@ -56,9 +56,9 @@
     <widget class="QPushButton" name="priorityButton">
      <property name="geometry">
       <rect>
-       <x>740</x>
+       <x>710</x>
        <y>10</y>
-       <width>71</width>
+       <width>101</width>
        <height>31</height>
       </rect>
      </property>
@@ -174,9 +174,9 @@
     <widget class="QPushButton" name="phaseButton">
      <property name="geometry">
       <rect>
-       <x>740</x>
+       <x>710</x>
        <y>40</y>
-       <width>71</width>
+       <width>101</width>
        <height>31</height>
       </rect>
      </property>
@@ -563,7 +563,7 @@
      <x>0</x>
      <y>0</y>
      <width>1548</width>
-     <height>17</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

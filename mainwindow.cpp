@@ -15,6 +15,7 @@
 #include <QIcon>
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>
+#include <QFontDatabase>
 
 MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -24,6 +25,8 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
 
     ui->CardDescription->setReadOnly(true);
     ui->CardDescription->setFocusPolicy(Qt::NoFocus);
+
+    this->setStyleSheet(QString("QMainWindow { background-image: url(:/Icons/Icons/white_bg.png); }"));
 
     apiManager = new CardAPIManager(this);
     statePointer = game->state;
