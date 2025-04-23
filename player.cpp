@@ -258,6 +258,9 @@ void Player::endStepPhase(){
 
 void Player::endTurn()
 {
+    if (Hand.getCount() > 7) {
+        emit requestDiscard("Hand");
+    }
     if (Hand.getCount() <= 7) {
         emit turnEnded();
         return;

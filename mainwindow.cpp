@@ -607,7 +607,9 @@ void MainWindow::updateUI(){
 
         // Set Active Player Label
         layout.activePlayerLabel->setText(QString(statePointer->player1->isActivePlayer ? "You are" : "The enemy is") + " the active player");
-
+        layout.activePlayerLabel->setStyleSheet(statePointer->player1->isActivePlayer
+                                                    ? "QLabel { color : green; }"
+                                                    : "QLabel { color : red; }");
 
         qDebug() << "update Phases";
         handlePhase();
@@ -846,7 +848,7 @@ void MainWindow::startTargeting(Card *sourceCard){
     targetSource = sourceCard;
     selectedCards.clear();
 
-    for(CardButton* button : activeCards){
+    for (CardButton *button : activeCards) {
         button->enableCard(false);
     }
 
@@ -872,8 +874,6 @@ void MainWindow::startTargeting(Card *sourceCard){
 }
 
 void MainWindow::stopTargeting(){
-
-
     for (int i = 0; i < ui->enemyHand->count(); ++i) {
         QLayoutItem* item = ui->enemyHand->itemAt(i);
         QWidget* widget = item->widget();
