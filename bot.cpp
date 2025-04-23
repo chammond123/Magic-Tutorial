@@ -29,7 +29,9 @@ void Bot::takeTurn(GameState* gameState) {
         passPriority(gameState);
         break;
     default:
-        changePhase(gameState);
+        if (this->isActivePlayer) {
+            changePhase(gameState);
+        }
         passPriority(gameState);
         break;
     }
@@ -64,7 +66,10 @@ void Bot::playCard(GameState* gameState) {
         playCardCommand cmd(gameState, playableCards.first(), nullptr);
         cmd.execute();
     }
-    changePhase(gameState);
+
+    if (this->isActivePlayer) {
+        changePhase(gameState);
+    }
 }
 
 int Bot::calculateManaValue(Card* card) {
@@ -88,7 +93,9 @@ void Bot::declareAttackers(GameState* gameState) {
         declareCombatCommand cmd(gameState, combatCreatures);
         cmd.execute();
     }
-    changePhase(gameState);
+    if (this->isActivePlayer) {
+        changePhase(gameState);
+    }
 }
 
 void Bot::declareBlockers(GameState* gameState) {
