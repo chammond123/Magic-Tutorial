@@ -441,7 +441,13 @@ void MainWindow::updateMagnifier(Card* card) {
     }
 
     info += "<hr>";
-    info += "<b>Description:</b><br>" + cardFromDictionary.description;
+    info += "<b>Ability:</b><br>" + cardFromDictionary.description;
+
+    qDebug() << cardFromDictionary.flavorText;
+    info += "<hr>";
+    if (!cardFromDictionary.flavorText.isEmpty()) {
+        info += "<br><i style='color:gray'>" + cardFromDictionary.flavorText + "</i>";
+    }
 
     // Show formatted description in the magnifier
     ui->CardDescription->setText(info);
