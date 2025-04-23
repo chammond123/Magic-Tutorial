@@ -45,6 +45,11 @@ public slots:
      * @brief Receives if a plyer has taped a card
      */
     void onTapCard(Card* card);
+    /**
+     * @brief Displays a dialog box containing a tip for the phase
+     * @param The tip message to show
+     */
+    void displayTip(QString tip);
 
 signals:
     void updateUI();

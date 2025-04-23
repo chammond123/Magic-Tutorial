@@ -66,6 +66,7 @@ SOURCES += \
     deck.cpp \
     gamemanager.cpp \
     gamestate.cpp \
+    gametipsdialog.cpp \
     loadscreen.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -134,6 +135,7 @@ HEADERS += \
     deck.h \
     gamemanager.h \
     gamestate.h \
+    gametipsdialog.h \
     loadscreen.h \
     mainwindow.h \
     manacollection.h \

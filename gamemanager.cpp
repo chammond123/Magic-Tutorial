@@ -2,6 +2,7 @@
 
 #include "gamemanager.h"
 #include "qobject.h"
+#include "gametipsdialog.h"
 gamemanager::gamemanager(QObject *parent)
     : QObject{parent}
 {
@@ -10,6 +11,11 @@ gamemanager::gamemanager(QObject *parent)
 
 gamemanager::~gamemanager(){
     delete state;
+}
+
+void gamemanager::displayTip(QString tip){
+    GameTipsDialog* tipDialog = new GameTipsDialog(tip);
+    tipDialog->exec();
 }
 
 // UI Player Commands
@@ -31,6 +37,7 @@ void gamemanager::onPlayCard(Card *card, std::variant<Player*, Card*, std::nullp
 
 void gamemanager::onPassPriority(){
     qDebug() << "Received priority command";
+    displayTip("This is a test");
     passPriorityCommand cmd = passPriorityCommand(state);
     cmd.execute();
     emit updateUI();
