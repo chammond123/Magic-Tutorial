@@ -49,8 +49,11 @@ public slots:
      * @brief Displays a dialog box containing a tip for the phase
      * @param The tip message to show
      */
-    void displayTip(QString tip);
-
+    void displayTip(QString tip, int xCoord = 1700, int yCoord = 950);
+    /**
+     * @brief Updates dialog when an action is made
+     */
+    void updateDialog();
 signals:
     void updateUI();
     void gameOver(bool hasWon);
