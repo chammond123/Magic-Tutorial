@@ -81,7 +81,6 @@ int main(int argc, char *argv[])
         w->show();
 
         menu->close();
-        qDebug() << "made it to window shown.";
     });
 
     loadScreen.show();

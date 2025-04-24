@@ -117,10 +117,10 @@ QPixmap CardButton::getOverlayedPixmap(int selectionIndex) {
     QPixmap overlayed = original;
     QPainter painter(&overlayed);
 
-    // Step 1: Darken it
+
     painter.fillRect(overlayed.rect(), QColor(0, 0, 0, 60));  // semi-transparent black
 
-    // Step 2: Draw number
+
     QFont font = painter.font();
     font.setBold(true);
     font.setPointSize(24);

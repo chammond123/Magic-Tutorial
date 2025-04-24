@@ -272,7 +272,6 @@ void MainWindow::cardBeingTapped(){
         QMessageBox::warning(this, "Card already tapped", "Card has already been tapped.");
         return;
     }
-
     emit tapCard(currentSelectedCard->cardPtr);
 
     qDebug() << "tapped card";
