@@ -198,6 +198,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     connect(this, &MainWindow::playCard, game, &gamemanager::onPlayCard);
 
     connect(this, &MainWindow::sendCombatCards, game, &gamemanager::onCombatCardsReceived);
+    connect(ui->GameTipsCheckBox, &QCheckBox::toggled, game, &gamemanager::onToggleGameTips);
 }
 
 MainWindow::~MainWindow() {
