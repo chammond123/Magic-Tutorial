@@ -6,6 +6,9 @@
 #include <QTextStream>
 #include <iostream>
 
+/**
+ * @brief The TextParser class
+ */
 class TextParser
 {
 private:

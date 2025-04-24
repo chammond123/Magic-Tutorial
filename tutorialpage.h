@@ -1,20 +1,22 @@
 #ifndef TUTORIALPAGE_H
 #define TUTORIALPAGE_H
-
+#include <QVector>
+#include <QString>
 #include <QWidget>
 
 namespace Ui {
 class TutorialPage;
 }
 
-#include <QVector>
-#include <QString>
 
 struct TutorialSlide {
     QString imagePath;
     QString text;
 };
 
+/**
+ * @brief The TutorialPage class
+ */
 class TutorialPage : public QWidget {
     Q_OBJECT
 

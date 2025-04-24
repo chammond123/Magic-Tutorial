@@ -99,7 +99,7 @@ void GameState::changeActivePlayer(){
     }
 }
 
-void GameState::resolveCombatDamage(QMap<Card*, QVector<Card*>> CombatCreatures){
+void GameState::resolveCombatDamage(QMap<Card*, QList<Card*>> CombatCreatures){
     Player* attackingPlayer;
     Player* defendingPlayer;
     if (player1->isActivePlayer){
@@ -139,6 +139,7 @@ void GameState::resolveCombatDamage(QMap<Card*, QVector<Card*>> CombatCreatures)
         // Tap the card after it attacks
         attackingPlayer->tapCard(attacker);
     }
+    changePhase();
 }
 
 void GameState::addToStack(StackObject stackObject)

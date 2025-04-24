@@ -45,7 +45,7 @@ ManaCollection::~ManaCollection()
 
 void ManaCollection::setRemainingMana() {
 
-    for (auto [color, value] : remainingMana.toStdMap()) {
+    for (auto [color, value] : card->cost.toStdMap()) {
         remainingMana[color] -= value;
     }
 

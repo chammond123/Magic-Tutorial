@@ -3,6 +3,9 @@
 
 #include <QString>
 
+/**
+ * @brief The CardType enum
+ */
 enum class
     CardType : int {
     LAND,
@@ -15,6 +18,9 @@ enum class
     SORCERY
 };
 
+/**
+ * @brief The PropertyType enum
+ */
 enum class PropertyType : int {
     AURA,
     DEATHTOUCH,
@@ -28,6 +34,9 @@ enum class PropertyType : int {
     TRAMPLE
 };
 
+/**
+ * @brief The ManaType enum
+ */
 enum class ManaType : int {
     WHITE,
     RED,
@@ -38,6 +47,9 @@ enum class ManaType : int {
     ANY
 };
 
+/**
+ * @brief The abilityType enum
+ */
 enum class abilityType : int {
     DAMAGE,
     DRAW,
@@ -46,6 +58,9 @@ enum class abilityType : int {
     BYPASS_SUMMONING_SICKNESS
 };
 
+/**
+ * @brief The ZoneType enum
+ */
 enum class ZoneType : int {
     LIBRARY,
     GRAVEYARD,

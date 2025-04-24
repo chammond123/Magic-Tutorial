@@ -187,9 +187,9 @@
     <widget class="QPushButton" name="tapButton">
      <property name="geometry">
       <rect>
-       <x>740</x>
-       <y>150</y>
-       <width>71</width>
+       <x>690</x>
+       <y>110</y>
+       <width>121</width>
        <height>32</height>
       </rect>
      </property>
@@ -516,7 +516,7 @@
       <x>370</x>
       <y>240</y>
       <width>931</width>
-      <height>181</height>
+      <height>131</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="enemyBattlefield"/>
@@ -525,7 +525,7 @@
     <property name="geometry">
      <rect>
       <x>370</x>
-      <y>420</y>
+      <y>370</y>
       <width>931</width>
       <height>181</height>
      </rect>
@@ -565,29 +565,6 @@
      </rect>
     </property>
     <layout class="QGridLayout" name="stack"/>
-   </widget>
-   <widget class="QLabel" name="stackLabel">
-    <property name="geometry">
-     <rect>
-      <x>1320</x>
-      <y>10</y>
-      <width>211</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border: 2px solid #444;
-border-radius: 8px;
-padding: 4px;
-color: white;
-background-color: #222;</string>
-    </property>
-    <property name="text">
-     <string>Stack</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignCenter</set>
-    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

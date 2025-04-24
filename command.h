@@ -7,6 +7,9 @@ class GameState;
 
 #include <QVector>
 
+/**
+ * @brief The Command class
+ */
 class Command
 {
 public:

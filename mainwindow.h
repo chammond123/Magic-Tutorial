@@ -300,13 +300,13 @@ private:
     /**
      * @brief targetIt used to assigning attackers to the blockers
      */
-    QMap<CardButton*, QVector<CardButton*>>::iterator targetIt;
+    QMap<Card*, QVector<Card*>>::iterator targetIt;
 
     /**
      * @brief extractCombatants
      * @param packedCombatCard
      */
-    void extractCombatants(QMap<CardButton*, QVector<CardButton*>> packedCombatCard);
+    void extractCombatants();
 
     /**
      * @brief playerLayout

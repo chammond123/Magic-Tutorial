@@ -379,8 +379,12 @@ void MainWindow::onPlayCardButtonClicked(){
                 return;
             }
         }
+        else{
+            QMessageBox::information(this, "Not Enough Mana", "Please Select Correct amount of Mana.");
+            clearSelection();
+            return;
+        }
     }
-
 
     emit playCard(card, nullptr);
 
@@ -481,6 +485,8 @@ void MainWindow::collectAttackers(){
 
     QGridLayout* battlefield;
 
+    // buttonCombatants.clear();
+
     if(userPlayer->isActivePlayer){
         battlefield = ui->playerBattlefield;
     }
@@ -496,25 +502,46 @@ void MainWindow::collectAttackers(){
 
         if(button->isChecked() && button->cardPtr->type == CardType::CREATURE){
             buttonCombatants[button];
+            combatants[button->cardPtr];
         }
     }
 
-    targetIt = buttonCombatants.begin();
+    if(combatants.isEmpty()){
+        statePointer->changePhase();
+        extractCombatants();
+    }
+
+    targetIt = combatants.begin();
 }
 
 void MainWindow::collectBlockers(){
     qDebug() << "Collecting Blockers";
+    QList<Card*> blockers;
 
-    if (targetIt == buttonCombatants.end()){
-        extractCombatants(buttonCombatants);
+    if (targetIt == combatants.end()){
+        extractCombatants();
         return;
     }
 
     if(!selectedButtons.isEmpty()){
-        targetIt.value() = selectedButtons;
+        // targetIt.value() = selectedButtons;
+
+        for(CardButton* button : selectedButtons){
+            Card* card = button->cardPtr;
+            blockers.append(card);
+        }
+
+        selectedButtons.clear();
     }
 
+    targetIt.value() = blockers;
+
     targetIt++;
+
+    if (targetIt == combatants.end()){
+        extractCombatants();
+        return;
+    }
 }
 
 void MainWindow::updateUI(){
@@ -653,7 +680,7 @@ void MainWindow::updateUI(){
         if (item->widget()){
             delete item->widget();
         }
-        delete item;            // delete the layout wrapper
+        delete item;
     }
 
     // Re-add current stack contents
@@ -662,6 +689,20 @@ void MainWindow::updateUI(){
         CardButton* cardButton = createCardButton(object.card);
         container->addWidget(cardButton);
     }
+
+    // Set Phase Label
+    layout = playerLayout;
+    layout.phaseLabel->setText(QString("Phase: ") + phaseTypeToString(statePointer->currentPhase));
+
+    // Set Active Player Label
+    layout.activePlayerLabel->setText(QString(statePointer->player1->isActivePlayer ? "You are" : "The enemy is") + " the active player");
+
+
+    qDebug() << "update Phases";
+    handlePhase();
+
+    update();
+    qDebug() << "updateUI has finished";
 }
 
 void MainWindow::updateZone(QGridLayout* container, Zone* zone, QMap<ManaType, QList<CardButton *>>* landGroups){
@@ -682,15 +723,7 @@ void MainWindow::updateZone(QGridLayout* container, Zone* zone, QMap<ManaType, Q
     // should we another container and another Stack zone so we can move cardButton from player hand to the stack before hitting the field?
 
     for(Card* card : *zone){
-        CardButton* cardButton = new CardButton(card);
-        activeCards.append(cardButton);
-
-        connect(cardButton, &CardButton::cardSelected, this, &MainWindow::handleCardSelected);
-        connect(cardButton, &CardButton::hovered, this, &MainWindow::updateMagnifier);
-        connect(cardButton, &CardButton::cardTapped, this, &MainWindow::cardBeingTapped);
-        // QSize targetSize = card->isTapped ? QSize(140, 100) : QSize(100, 140);
-        cardButton->setFixedSize(100, 140);
-
+        CardButton* cardButton = createCardButton(card);
 
         if(card->type == CardType::LAND && zone->type == ZoneType::BATTLEFIELD){
             (*landGroups)[card->color].append(cardButton);
@@ -698,16 +731,9 @@ void MainWindow::updateZone(QGridLayout* container, Zone* zone, QMap<ManaType, Q
             continue;
         }
 
-
-        //Test
-        // if(zone->type != ZoneType::GRAVEYARD && zone->type != ZoneType::EXILE){
-        //     container->addWidget(cardButton, 0, container->count(), Qt::AlignCenter);
-        // }
-
         container->addWidget(cardButton, 0, container->count(), Qt::AlignCenter);
 
     }
-    // update();
 }
 
 void MainWindow::updateDeck(Zone* zone, QString title, QPushButton *deckButton){
@@ -719,17 +745,8 @@ void MainWindow::updateDeck(Zone* zone, QString title, QPushButton *deckButton){
     containerCards[title].clear();
 
     for(Card* card : *zone){
-        CardButton* button = new CardButton(card);
-        activeCards.append(button);
+        CardButton* button = createCardButton(card);
         containerCards[title].prepend(button);
-
-        connect(button, &CardButton::cardSelected, this, &MainWindow::handleCardSelected);
-        connect(button, &CardButton::hovered, this, &MainWindow::updateMagnifier);
-        connect(button, &CardButton::cardTapped, this, &MainWindow::cardBeingTapped);
-        button->setFixedSize(100, 140);
-
-        qDebug() << "Added Card: " << card->name << "Count: " << containerCards[title].count();
-        qDebug() << "Card in graveyard: " << containerCards["Graveyard"].count() << "Cards in Exile: " << containerCards["Exile"].count();
     }
 
     if(!deckButton){
@@ -768,13 +785,7 @@ void MainWindow::showCollection(QString title){
 
     for (CardButton* card : containerCards[title]) {
         layout->addWidget(card);
-        if(card->isEnabled()){
-            card->enableCard(true);
-        }
-        else{
-            card->enableCard(false);
-        }
-        // qDebug() << "added";
+        card->enableCard(false);
     }
 
     container->setLayout(layout);
@@ -802,36 +813,32 @@ void MainWindow::clearSelection(){
 
 }
 
-void MainWindow::extractCombatants(QMap<CardButton*, QVector<CardButton*>> packedCombatCards){
+void MainWindow::extractCombatants(){
 
-    combatants.clear();
+    // combatants.clear();
 
-    for(auto it = packedCombatCards.begin(); it != packedCombatCards.end(); it++){
+    // for(auto it = buttonCombatants.begin(); it != buttonCombatants.end(); it++){
 
-        Card* attacker = it.key()->cardPtr;
-        combatants[attacker];
+    //     Card* attacker = it.key()->cardPtr;
+    //     combatants[attacker];
 
-        for (auto button : it.value()){
-
-            Card* blocker = button->cardPtr;
-            combatants[attacker].append(blocker);
-        }
-    }
+    //     for (auto button : it.value()){
+    //         Card* blocker = button->cardPtr;
+    //         combatants[attacker].append(blocker);
+    //     }
+    // }
 
     emit sendCombatCards(combatants);
 
-    packedCombatCards.clear();
+    combatants.clear();
 }
 
 void MainWindow::handlePhase(){
     statePointer->getValidActions();
 
-    // PhaseRules rules = statePointer->getPhaseRules();
-    // bool isActive = userPlayer->isActivePlayer;
 
     for (CardButton* button : activeCards){
         if (!button) {
-            // qDebug() << "Warning: Null button found in activeCards";
             continue;
         }
         Card* card = button->cardPtr;
@@ -840,6 +847,11 @@ void MainWindow::handlePhase(){
         ui->priorityButton->setEnabled(statePointer->player1->canPassPriority);
         ui->phaseButton->setEnabled(statePointer->player1->canChangePhase);
         // update();
+    }
+
+    if (statePointer->currentPhase == Phase::CombatDamage){
+        extractCombatants();
+        // updateUI();
     }
 }
 

@@ -9,6 +9,9 @@ namespace Ui {
 class ManaCollection;
 }
 
+/**
+ * @brief The ManaCollection class
+ */
 class ManaCollection : public QDialog
 {
     Q_OBJECT
