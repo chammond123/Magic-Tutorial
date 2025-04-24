@@ -13,7 +13,7 @@ public:
     Card* cardPtr;
     QString cardName;
 
-    explicit CardButton(Card* card, QWidget* parent = nullptr);
+    explicit CardButton(Card* card, bool player, QWidget* parent = nullptr);
 
     QPixmap getOverlayedPixmap(int selectionIndex);
     void enableCard(bool enabled);

@@ -276,7 +276,7 @@ private:
      * @param zone that being updated
      * @param landGroups
      */
-    void updateZone(QGridLayout* container, Zone* zone, QMap<ManaType, QList<CardButton *> > *landGroups);
+    void updateZone(QGridLayout* container, Zone* zone, QMap<ManaType, QList<CardButton *> > *landGroups, bool player);
 
     /**
      * @brief updateDeck
@@ -333,7 +333,7 @@ private:
      */
     bool isTargeting;
 
-    CardButton* createCardButton(Card* card);
+    CardButton* createCardButton(Card* card, bool player);
 
     //For mana zone
     /**

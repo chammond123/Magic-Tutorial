@@ -73,9 +73,9 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     enemyLayout = {
         nullptr,
         ui->enemyBattlefield,
-        nullptr,
+        ui->enemyGraveyardButton,
         "EnemyGraveyard",
-        nullptr,
+        ui->enemyExileButton,
         "EnemyExile",
         ui->enemyRed,
         ui->enemyGreen,
@@ -103,6 +103,9 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     //update Icon for zones
     ui->playerDeck->setFixedSize(100,140);
     ui->playerDeck->setPixmap(QPixmap(":/Icons/Icons/BackCard.png").scaled(ui->playerDeck->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    ui->enemyDeck->setFixedSize(100,140);
+    ui->enemyDeck->setPixmap(QPixmap(":/Icons/Icons/BackCard.png").scaled(ui->playerDeck->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
 
     //set up for mana
 
@@ -153,6 +156,14 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
 
     connect(ui->playerExileButton, &QPushButton::clicked, this, [=]() {
         showCollection("Exile");
+    });
+
+    connect(ui->enemyGraveyardButton, &QPushButton::clicked, this, [=]() {
+        showCollection("EnemyGraveyard");
+    });
+
+    connect(ui->enemyExileButton, &QPushButton::clicked, this, [=]() {
+        showCollection("EnemyExile");
     });
 
     connect(ui->enemyRedIcon, &QPushButton::clicked, this, [=]() {
@@ -561,6 +572,7 @@ void MainWindow::updateUI(){
     QVector<Zone*> zones;
     ZoneLayout layout;
     Player* currPlayer;
+    bool player;
 
     if(!userPlayer){
         qDebug() << "NO USER";
@@ -574,11 +586,13 @@ void MainWindow::updateUI(){
             zones = userPlayer->getZones();
             layout = playerLayout;
             currPlayer = userPlayer;
+            player = true;
         }
         else{
             zones = enemyPlayer->getZones();
             layout = enemyLayout;
             currPlayer = enemyPlayer;
+            player = false;
         }
         if(!currPlayer){
             qDebug() << "Lost Player";
@@ -590,10 +604,10 @@ void MainWindow::updateUI(){
         // Go through all zones and update containers
         for (Zone* zone : zones){
             if (zone->type == ZoneType::HAND){
-                updateZone(layout.hand, zone, layout.landGroups);
+                updateZone(layout.hand, zone, layout.landGroups, player);
             }
             else if (zone->type == ZoneType::BATTLEFIELD){
-                updateZone(layout.battlefield, zone, layout.landGroups);
+                updateZone(layout.battlefield, zone, layout.landGroups, player);
             }
             else if (zone->type == ZoneType::GRAVEYARD){
                 updateDeck(zone, layout.graveName, layout.graveyard);
@@ -686,7 +700,7 @@ void MainWindow::updateUI(){
     // Re-add current stack contents
     for (const StackObject &object : statePointer->theStack) {
         qDebug() << "accessing the stack";
-        CardButton* cardButton = createCardButton(object.card);
+        CardButton* cardButton = createCardButton(object.card, true);
         container->addWidget(cardButton);
     }
 
@@ -705,7 +719,7 @@ void MainWindow::updateUI(){
     qDebug() << "updateUI has finished";
 }
 
-void MainWindow::updateZone(QGridLayout* container, Zone* zone, QMap<ManaType, QList<CardButton *>>* landGroups){
+void MainWindow::updateZone(QGridLayout* container, Zone* zone, QMap<ManaType, QList<CardButton *>>* landGroups, bool player){
     qDebug() << "Updating Zone";
     if (container == nullptr){
         return;
@@ -720,10 +734,14 @@ void MainWindow::updateZone(QGridLayout* container, Zone* zone, QMap<ManaType, Q
         delete item;
     }
 
-    // should we another container and another Stack zone so we can move cardButton from player hand to the stack before hitting the field?
-
     for(Card* card : *zone){
-        CardButton* cardButton = createCardButton(card);
+        CardButton* cardButton = nullptr;
+        if(!player && zone->type == ZoneType::HAND){
+            cardButton = createCardButton(card, player);
+            cardButton->setDisabled(true);
+        } else {
+            cardButton = createCardButton(card, true);
+        }
 
         if(card->type == CardType::LAND && zone->type == ZoneType::BATTLEFIELD){
             (*landGroups)[card->color].append(cardButton);
@@ -745,7 +763,7 @@ void MainWindow::updateDeck(Zone* zone, QString title, QPushButton *deckButton){
     containerCards[title].clear();
 
     for(Card* card : *zone){
-        CardButton* button = createCardButton(card);
+        CardButton* button = createCardButton(card, true);
         containerCards[title].prepend(button);
     }
 
@@ -991,13 +1009,15 @@ void MainWindow::updateEndExplosion() {
     }
 }
 
-CardButton* MainWindow::createCardButton(Card* card){
-    CardButton* cardButton = new CardButton(card);
+CardButton* MainWindow::createCardButton(Card* card, bool player){
+    CardButton* cardButton = new CardButton(card, player);
     activeCards.append(cardButton);
 
-    connect(cardButton, &CardButton::cardSelected, this, &MainWindow::handleCardSelected);
+    if(player){
+        connect(cardButton, &CardButton::cardSelected, this, &MainWindow::handleCardSelected);
+        connect(cardButton, &CardButton::cardTapped, this, &MainWindow::cardBeingTapped);
+    }
     connect(cardButton, &CardButton::hovered, this, &MainWindow::updateMagnifier);
-    connect(cardButton, &CardButton::cardTapped, this, &MainWindow::cardBeingTapped);
     cardButton->setFixedSize(100, 140);
 
     return cardButton;
