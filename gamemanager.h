@@ -60,7 +60,7 @@ public slots:
     /**
      * @brief Updates dialog when an action is made
      */
-    void updateDialog();
+    void displayPhaseTip();
     /**
      * @brief Connected to the UI toggle tips check box, turns the tips on and off
      */

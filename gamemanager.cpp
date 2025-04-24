@@ -19,7 +19,7 @@ void gamemanager::displayTip(QString tip, int xCoord, int yCoord){
     tipDialog->exec();
 }
 
-void gamemanager::updateDialog(){
+void gamemanager::displayPhaseTip(){
     if (displayGameTips){
         switch(state->currentPhase){
         case Phase::Untap:
@@ -100,7 +100,6 @@ void gamemanager::onPlayCard(Card *card, std::variant<Player*, Card*, std::nullp
     playCardCommand cmd = playCardCommand(state, card, target);
     cmd.execute();
     emit updateUI();
-    updateDialog();
 }
 
 void gamemanager::onPassPriority(){
@@ -109,7 +108,6 @@ void gamemanager::onPassPriority(){
     passPriorityCommand cmd = passPriorityCommand(state);
     cmd.execute();
     emit updateUI();
-    updateDialog();
     if (state->player1->health <= 0){
         emit gameOver(false);
     }
@@ -122,21 +120,19 @@ void gamemanager::onChangePhase(){
     changePhaseCommand cmd = changePhaseCommand(state);
     cmd.execute();
     emit updateUI();
-    updateDialog();
+    displayPhaseTip();
 }
 
 void gamemanager::onCombatCardsReceived(QMap<Card*, QVector<Card*>> CombatCreatures){
     declareCombatCommand cmd = declareCombatCommand(state, CombatCreatures);
     cmd.execute();
     emit updateUI();
-    updateDialog();
 }
 
 void gamemanager::onTapCard(Card* card){
     tapCardCommand cmd = tapCardCommand(state, card);
     cmd.execute();
     emit updateUI();
-    updateDialog();
 }
 
 void gamemanager::onToggleGameTips(bool toggled){
