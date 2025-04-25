@@ -98,6 +98,17 @@ void Bot::playCard(GameState* gameState) {
             QVector<ManaType> anyList;
             QVector<Card*> work = untappedLands;
 
+            for(ManaType m : chosen->cost.keys()){
+                for(int i = 0; i < chosen->cost[m]; i++){
+                    if(m != ManaType::ANY){
+                        manaList.append(m);
+                    }
+                    else{
+                        anyList.append(m);
+                    }
+                }
+            }
+
             for (ManaType needed : manaList) {
                 auto it = std::find_if(work.begin(), work.end(),
                                        [&](Card* c){ return c->color == needed; });
