@@ -190,7 +190,6 @@ void GameState::addToStack(StackObject stackObject)
 void GameState::resolveStack(){
     if (!theStack.empty()){
         StackObject stackObject = theStack.takeLast();
-
         if (!std::holds_alternative<std::nullptr_t>(stackObject.target)){
             if(std::holds_alternative<Player*>(stackObject.target)){
                 Player* t = get<Player*>(stackObject.target);
@@ -198,18 +197,24 @@ void GameState::resolveStack(){
             }
             else if(std::holds_alternative<Card*>(stackObject.target)){
                 Card* c = get<Card*>(stackObject.target);
-                stackObject.card->ability.use(c);
-                if(c->currHealth <= 0){
-                    stackObject.player->moveCardString(stackObject.card, "battlefield", "graveyard", true);
+                if (stackObject.card->isCountered){
+                    stackObject.player->moveCardString(stackObject.card, "hand", "graveyard", true);
                 }
+                else{
+                    stackObject.card->ability.use(c);
+                }
+                // if(c->currHealth <= 0){
+                //     stackObject.player->moveCardString(stackObject.card, "battlefield", "graveyard", true);
+                // }
             }
         }
-
-        if (stackObject.card->isPermanent){
-            stackObject.player->moveCardString(stackObject.card, "hand", "battlefield", false);
-        }
-        else{
-            stackObject.player->moveCardString(stackObject.card, "hand", "graveyard", true);
+        if (!stackObject.card->isCountered){
+            if (stackObject.card->isPermanent){
+                stackObject.player->moveCardString(stackObject.card, "hand", "battlefield", false);
+            }
+            else{
+                stackObject.player->moveCardString(stackObject.card, "hand", "graveyard", true);
+            }
         }
     }
 }

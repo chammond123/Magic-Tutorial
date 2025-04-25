@@ -285,13 +285,13 @@ QString MainWindow::phaseTypeToString(Phase phase) {
     case Phase::Untap:   return "Untap";
     case Phase::Upkeep:   return "Upkeep";
     case Phase::Draw:   return "Draw";
-    case Phase::PreCombatMain:   return "PreCombatMain";
-    case Phase::BeginCombat:   return "BeginCombat";
-    case Phase::DeclareAttackers:   return "DeclareAttackers";
-    case Phase::DeclareBlockers:   return "DeclareBlockers";
-    case Phase::CombatDamage:   return "CombatDamage";
-    case Phase::PostCombatMain:   return "PostCombatMain";
-    case Phase::EndStep:   return "EndStep";
+    case Phase::PreCombatMain:   return "Pre-Combat Main";
+    case Phase::BeginCombat:   return "Begin Combat";
+    case Phase::DeclareAttackers:   return "Declare Attackers";
+    case Phase::DeclareBlockers:   return "Declare Blockers";
+    case Phase::CombatDamage:   return "Combat Damage";
+    case Phase::PostCombatMain:   return "Post-Combat Main";
+    case Phase::EndStep:   return "End Step";
     case Phase::Cleanup:   return "Cleanup";
     default:              return "Unknown";
     }

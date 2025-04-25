@@ -11,5 +11,6 @@
         <file>tutorial-mtg/card_name_highlight.png</file>
         <file>tutorial-mtg/card_stats_highlight.png</file>
         <file>tutorial-mtg/card_type_highlight.png</file>
+        <file>tutorial-mtg/phases_img.png</file>
     </qresource>
 </RCC>

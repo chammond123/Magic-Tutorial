@@ -42,14 +42,15 @@ passPriorityCommand::passPriorityCommand(GameState* state) :
 void passPriorityCommand::execute(){
     qDebug() << "Command executed";
 
-    state->changePriority();
-
-    Player* player = state->getPriorityPlayer();
-    if (!player->madeAction){
+    //Player* player = state->getPriorityPlayer();
+    if (!state->player1->madeAction && !state->player2->madeAction){
         state->resolveStack();
     }
+
+    state->changePriority();
+
     if (state->player2->holdingPriority){
-        Bot* botPlayer = static_cast<Bot*>(player);
+        Bot* botPlayer = static_cast<Bot*>(state->player2);
         botPlayer->takeTurn(state);
     }
 }

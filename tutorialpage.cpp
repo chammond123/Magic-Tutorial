@@ -19,6 +19,18 @@ TutorialPage::TutorialPage(QWidget *parent) :
             "We will run you through a quick tutorial to get you ready for the game. Just hit the right arrow to progress once you're done reading!"
         },
         {
+            ":/tutorial/tutorial-mtg/phases_img.png",
+            "During the game, there are a few phases, which will be gone into more in-depth when you play the game. "
+            "There are, however, three important ideas to know about – Priority, the Active Player, and the Stack:\n\n"
+            "• Priority and passing priority: A turn-based system that determines who may cast spells or activate abilities. "
+            "Each player in turn gets priority and may act, then passes it to the other player. "
+            "When both players pass priority without taking an action, the top object on the stack resolves.\n\n"
+            "• The active player: The player whose turn it is. They play lands, cast spells, and receive priority first in each step and phase.\n\n"
+            "• The stack: A “waiting area” where spells and abilities go before they resolve, operating in last-in, first-out order. "
+            "Whenever a player casts a spell or activates an ability, it’s placed on the stack and players get priority to respond before the top object resolves."
+        },
+
+        {
             ":/tutorial/tutorial-mtg/card_full_highlight.png",
             "There are many different cards in Magic: The Gathering. In fact, there are over 27,000! It's nearly impossible to know all of them,"
             " but you don't need to, you just need to know how to read one. The card displayed is one you will see during your practice game, so let's"
@@ -62,7 +74,7 @@ TutorialPage::TutorialPage(QWidget *parent) :
         {
             ":/tutorial/tutorial-mtg/p3.png",
             "On each of your turns, you can play one land card from your hand onto the battlefield.\n\n"
-            "Lands are your main source of mana—the magical energy used to cast spells. You tap a land (turn it sideways) to produce one mana of a specific color.\n"
+            "Lands are your main source of mana. You tap a land (turn it sideways) to produce one mana of a specific color.\n"
             "• Plains make white mana\n"
             "• Islands make blue mana\n"
             "• Swamps make black mana\n"
