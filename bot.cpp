@@ -12,37 +12,37 @@ Bot::Bot(QStringList deckList) : Player(deckList) {
 }
 
 void Bot::takeTurn(GameState* gameState) {
-    QTimer::singleShot(3000, this, [this, gameState]() {
-        switch (gameState->currentPhase) {
-        case Phase::PreCombatMain:
-            playCard(gameState);
-            passPriority(gameState);
-            break;
-        case Phase::DeclareAttackers:
-            declareAttackers(gameState);
+    //QTimer::singleShot(3000, this, [this, gameState]() {
+    switch (gameState->currentPhase) {
+    case Phase::PreCombatMain:
+        playCard(gameState);
+        passPriority(gameState);
+        break;
+    case Phase::DeclareAttackers:
+        declareAttackers(gameState);
+        changePhase(gameState);
+        break;
+    case Phase::DeclareBlockers:
+        declareBlockers(gameState);
+        changePhase(gameState);
+        break;
+    case Phase::PostCombatMain:
+        playCard(gameState);
+        passPriority(gameState);
+        break;
+    case Phase::EndStep:
+        endTurn(gameState);
+        passPriority(gameState);
+        break;
+    default:
+        // Any other phase has no special actions to auto take
+        if (this->isActivePlayer) {
             changePhase(gameState);
-            break;
-        case Phase::DeclareBlockers:
-            declareBlockers(gameState);
-            changePhase(gameState);
-            break;
-        case Phase::PostCombatMain:
-            playCard(gameState);
-            passPriority(gameState);
-            break;
-        case Phase::EndStep:
-            endTurn(gameState);
-            passPriority(gameState);
-            break;
-        default:
-            // Any other phase has no special actions to auto take
-            if (this->isActivePlayer) {
-                changePhase(gameState);
-            }
-            passPriority(gameState);
-            break;
         }
-    });
+        passPriority(gameState);
+        break;
+    }
+    //});
 }
 
 void Bot::playCard(GameState* gameState) {
@@ -106,7 +106,7 @@ void Bot::playCard(GameState* gameState) {
         }
     }
 
-    if (this->isActivePlayer && !gameState->player1->madeAction) {
+    if (this->isActivePlayer && !gameState->player1->madeAction && gameState->theStack.empty()) {
         changePhase(gameState);
     }
 }
@@ -141,28 +141,17 @@ void Bot::declareAttackers(GameState* gameState) {
     gameState->attackers = combatCreatures.keys();
     emit UiDeclareAttackers(combatCreatures.keys());
 
-    if (!combatCreatures.isEmpty()) {
-
-        declareCombatCommand cmd(gameState, combatCreatures);
-        cmd.execute();
-    }
     if (this->isActivePlayer) {
         changePhase(gameState);
     }
 }
 
 void Bot::declareBlockers(GameState* gameState) {
-    changePhase(gameState);
-    return;
+
     Player* attacker = gameState->player1;
     QMap<Card*, QVector<Card*>> combatCreatures;
 
     QList<Card*> attackingCreatures = gameState->attackers;
-    for (Card* card : attacker->Battlefield) {
-        if (card->type == CardType::CREATURE) {
-            attackingCreatures.append(card);
-        }
-    }
 
     if (attackingCreatures.isEmpty()) {
         emit UiDeclareCombatants(combatCreatures);
@@ -173,6 +162,7 @@ void Bot::declareBlockers(GameState* gameState) {
     for (Card* card : Battlefield) {
         if (card->type == CardType::CREATURE && !card->isTapped && !card->hasSummoningSickness) {
             availableBlockers.append(card);
+            card->isTapped = true;
         }
     }
 

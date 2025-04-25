@@ -93,6 +93,11 @@
        <layout class="QHBoxLayout" name="playerManaLabel">
         <item>
          <widget class="QLabel" name="playerWhite">
+          <property name="styleSheet">
+           <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+          </property>
           <property name="text">
            <string>White</string>
           </property>
@@ -103,6 +108,11 @@
         </item>
         <item>
          <widget class="QLabel" name="playerBlue">
+          <property name="styleSheet">
+           <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+          </property>
           <property name="text">
            <string>Blue</string>
           </property>
@@ -113,6 +123,11 @@
         </item>
         <item>
          <widget class="QLabel" name="playerRed">
+          <property name="styleSheet">
+           <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+          </property>
           <property name="text">
            <string>Red</string>
           </property>
@@ -123,6 +138,11 @@
         </item>
         <item>
          <widget class="QLabel" name="playerGreen">
+          <property name="styleSheet">
+           <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+          </property>
           <property name="text">
            <string>Green</string>
           </property>
@@ -133,6 +153,11 @@
         </item>
         <item>
          <widget class="QLabel" name="playerBlack">
+          <property name="styleSheet">
+           <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+          </property>
           <property name="text">
            <string>Black</string>
           </property>
@@ -178,7 +203,7 @@
         <property name="styleSheet">
          <string notr="true"> background-color: #ffffff;        
 color: #2c3e50;                    
-font-family: &quot;Segoe UI&quot;, sans-serif; 
+font-family: &quot;Fixedsys&quot;; 
  font-size: 16px;
     font-weight: bold;
     padding: 8px 12px;                  
@@ -217,6 +242,13 @@ font-family: &quot;Segoe UI&quot;, sans-serif;
         <property name="toolTipDuration">
          <number>-2</number>
         </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 200);
+border-color: rgb(0, 0, 255);
+font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+        </property>
         <property name="text">
          <string>Exile</string>
         </property>
@@ -229,6 +261,13 @@ font-family: &quot;Segoe UI&quot;, sans-serif;
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 200);
+border-color: rgb(0, 0, 255);
+font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
         </property>
         <property name="text">
          <string>Graveyard</string>
@@ -269,11 +308,17 @@ font-family: &quot;Segoe UI&quot;, sans-serif;
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(255, 174, 35);
+         <string notr="true">QPushButton {
+background-color: rgb(255, 174, 35);
 border-color: rgb(0, 0, 255);
 font: 9pt &quot;Fixedsys&quot;;
 color: rgb(0, 0, 0);
-</string>
+}
+QPushButton:disabled {
+    background-color: rgb(200, 200, 200);
+    border: 2px inset rgb(160, 160, 160);
+    color: rgb(100, 100, 100);
+}</string>
         </property>
         <property name="text">
          <string>Pass Priority</string>
@@ -289,11 +334,17 @@ color: rgb(0, 0, 0);
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(255, 174, 35);
-border-color: rgb(255, 174, 35);
-font: 9pt &quot;Fixedsys&quot;;
-color: rgb(0, 0, 0);
-</string>
+         <string notr="true">QPushButton {
+    background-color: rgb(255, 174, 35);
+    font: 9pt &quot;Fixedsys&quot;;
+    color: rgb(0, 0, 0);
+    padding: 4px;
+}
+QPushButton:disabled {
+    background-color: rgb(200, 200, 200);
+    border: 2px inset rgb(160, 160, 160);
+    color: rgb(100, 100, 100);
+}</string>
         </property>
         <property name="text">
          <string>Next Phase</string>
@@ -309,12 +360,18 @@ color: rgb(0, 0, 0);
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(0, 170, 255);
+         <string notr="true">QPushButton {
+background-color: rgb(0, 170, 255);
 border-color: rgb(0, 0, 255);
 font: 9pt &quot;Fixedsys&quot;;
 color: rgb(0, 0, 0);
 
-</string>
+}
+QPushButton:disabled {
+    background-color: rgb(200, 200, 200);
+    border: 2px inset rgb(160, 160, 160);
+    color: rgb(100, 100, 100);
+}</string>
         </property>
         <property name="text">
          <string>Tap Card</string>
@@ -330,9 +387,16 @@ color: rgb(0, 0, 0);
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(0, 170, 0);
+         <string notr="true">QPushButton{
+background-color: rgb(0, 170, 0);
 font: 9pt &quot;Fixedsys&quot;;
-color: rgb(0, 0, 0);</string>
+color: rgb(0, 0, 0);
+}
+QPushButton:disabled {
+    background-color: rgb(200, 200, 200);
+    border: 2px inset rgb(160, 160, 160);
+    color: rgb(100, 100, 100);
+}</string>
         </property>
         <property name="text">
          <string>Play</string>
@@ -363,12 +427,17 @@ color: rgb(0, 0, 0);</string>
        <x>230</x>
        <y>170</y>
        <width>711</width>
-       <height>31</height>
+       <height>41</height>
       </rect>
      </property>
      <layout class="QHBoxLayout" name="EnemyMana">
       <item>
        <widget class="QLabel" name="enemyWhite">
+        <property name="styleSheet">
+         <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+        </property>
         <property name="text">
          <string>White</string>
         </property>
@@ -379,6 +448,11 @@ color: rgb(0, 0, 0);</string>
       </item>
       <item>
        <widget class="QLabel" name="enemyBlue">
+        <property name="styleSheet">
+         <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+        </property>
         <property name="text">
          <string>Blue</string>
         </property>
@@ -389,6 +463,11 @@ color: rgb(0, 0, 0);</string>
       </item>
       <item>
        <widget class="QLabel" name="enemyRed">
+        <property name="styleSheet">
+         <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+        </property>
         <property name="text">
          <string>Red</string>
         </property>
@@ -399,6 +478,11 @@ color: rgb(0, 0, 0);</string>
       </item>
       <item>
        <widget class="QLabel" name="enemyGreen">
+        <property name="styleSheet">
+         <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+        </property>
         <property name="text">
          <string>Green</string>
         </property>
@@ -409,6 +493,11 @@ color: rgb(0, 0, 0);</string>
       </item>
       <item>
        <widget class="QLabel" name="enemyBlack">
+        <property name="styleSheet">
+         <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+        </property>
         <property name="text">
          <string>Black</string>
         </property>
@@ -428,37 +517,13 @@ color: rgb(0, 0, 0);</string>
        <height>171</height>
       </rect>
      </property>
-     <layout class="QGridLayout" name="enemyHand">
-      <item row="0" column="0">
-       <widget class="QPushButton" name="enemyTargetButton">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>50</width>
-          <height>100</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(255, 0, 0 );
-border-color: rgb(170, 0, 0);
-font: 9pt &quot;Fixedsys&quot;;
-color: rgb(0, 0, 0);
-</string>
-        </property>
-        <property name="text">
-         <string>Target Enemy</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <layout class="QGridLayout" name="enemyHand"/>
     </widget>
     <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>230</x>
-       <y>200</y>
+       <y>220</y>
        <width>711</width>
        <height>31</height>
       </rect>
@@ -526,6 +591,13 @@ color: rgb(0, 0, 0);
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 200);
+border-color: rgb(0, 0, 255);
+font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+        </property>
         <property name="text">
          <string>Graveyard</string>
         </property>
@@ -544,6 +616,13 @@ color: rgb(0, 0, 0);
         </property>
         <property name="toolTipDuration">
          <number>-2</number>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 200);
+border-color: rgb(0, 0, 255);
+font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
         </property>
         <property name="text">
          <string>Exile</string>
@@ -599,6 +678,35 @@ font-family: &quot;Segoe UI&quot;, sans-serif;
        </widget>
       </item>
      </layout>
+    </widget>
+    <widget class="QPushButton" name="enemyTargetButton">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>29</y>
+       <width>661</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>50</width>
+       <height>100</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.529, y2:1, stop:0 rgba(184, 6, 6, 255), stop:1 rgba(255, 171, 149, 255));
+border-color: rgb(170, 0, 0);
+font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+     </property>
+     <property name="text">
+      <string>Target Enemy</string>
+     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="gridLayoutWidget_2">
