@@ -323,7 +323,7 @@ color: rgb(0, 0, 0);
       <rect>
        <x>720</x>
        <y>10</y>
-       <width>114</width>
+       <width>115</width>
        <height>161</height>
       </rect>
      </property>
@@ -621,7 +621,7 @@ color: rgb(0, 0, 0);
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>121</width>
+       <width>111</width>
        <height>261</height>
       </rect>
      </property>
@@ -684,9 +684,9 @@ color: rgb(0, 0, 0);
     <widget class="QWidget" name="horizontalLayoutWidget_3">
      <property name="geometry">
       <rect>
-       <x>120</x>
+       <x>110</x>
        <y>0</y>
-       <width>266</width>
+       <width>121</width>
        <height>61</height>
       </rect>
      </property>
@@ -963,7 +963,7 @@ color: rgb(0, 0, 0);
      <x>0</x>
      <y>0</y>
      <width>1550</width>
-     <height>22</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>
