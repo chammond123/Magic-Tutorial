@@ -50,7 +50,6 @@ CardButton::CardButton(Card* card, QWidget* parent)
 }
 
 void CardButton::backCard() {
-    qDebug() << "back Card";
     isBack = true;
     QImage backImage(":/Icons/Icons/BackCard.png");
     QPixmap pixmap = QPixmap::fromImage(backImage).scaled(

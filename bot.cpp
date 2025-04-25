@@ -84,12 +84,10 @@ void Bot::playCard(GameState* gameState) {
             }
 
             if (untappedLands.size() < manaNeeded) {
-                qDebug() << "Not enough untapped lands to play " << chosen->name;
                 continue;
             }
 
             if (untappedLands.size() < manaNeeded && chosen == playableCards.last()) {
-                qDebug() << "Not enough untapped lands to play anything" << chosen->name;
                 return;
             }
 
@@ -126,7 +124,6 @@ void Bot::playCard(GameState* gameState) {
             }
 
 
-            qDebug() << "Chose to play " << chosen->name << " (paid " << manaNeeded << " mana)";
             if (chosen->needsTarget){
                 if (chosen->name.toLower() == "counterspell"){
                     if (gameState->theStack.empty()){
@@ -151,13 +148,10 @@ void Bot::playCard(GameState* gameState) {
                     }
                     else{
                         for (Card* card : gameState->player1->Battlefield){
-                            qDebug() << card->name;
                             if (chosen->name.toLower() == "shock"){
-                                qDebug() << "Cast shock";
                                 if (card->toughness <= 2 && card->type == CardType::CREATURE){
                                     playCardCommand* cmd = new playCardCommand(gameState, chosen, card);
                                     cmd->execute();
-                                    qDebug() << "Cast on creature";
                                     break;
                                 }
                                 else{
@@ -168,7 +162,6 @@ void Bot::playCard(GameState* gameState) {
                                 if (card->toughness <= 3 && card->type == CardType::CREATURE){
                                     playCardCommand* cmd = new playCardCommand(gameState, chosen, card);
                                     cmd->execute();
-                                    qDebug() << "Cast on creature";
                                     break;
                                 }
                                 else{
