@@ -10,5 +10,7 @@
         <file>Icons/hp.jpg</file>
         <file>Icons/backgoundv1.png</file>
         <file>Icons/backgroundv2.png</file>
+        <file>Icons/backgroundv3.png</file>
+        <file>Icons/backgroundv4.png</file>
     </qresource>
 </RCC>

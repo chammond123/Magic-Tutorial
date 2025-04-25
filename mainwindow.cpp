@@ -26,10 +26,11 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     ui->setupUi(this);
     setWindowTitle("Magic Tutorial");
 
+    this->setStyleSheet("QMainWindow {background-image: url(:/Icons/Icons/backgroundv4.png); }");
+    this->setFixedSize(this->size());
+
     ui->CardDescription->setReadOnly(true);
     ui->CardDescription->setFocusPolicy(Qt::NoFocus);
-
-    this->setStyleSheet(QString("QMainWindow { background-image: url(:/Icons/Icons/backgroundv2.png); }"));
 
     apiManager = new CardAPIManager(this);
     statePointer = game->state;
