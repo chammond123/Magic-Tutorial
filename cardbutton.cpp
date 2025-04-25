@@ -8,7 +8,7 @@
 #include <QGraphicsEffect>
 #include <QPainterPath>
 
-CardButton::CardButton(Card* card, QWidget* parent)
+CardButton::CardButton(Card* card, bool player, QWidget* parent)
     : QPushButton(parent), cardPtr(card) {
     cardName = card->name;
 
@@ -23,7 +23,13 @@ CardButton::CardButton(Card* card, QWidget* parent)
         border-radius: 5px;
     }
 )");
-    QImage baseImage = card->image;
+    QImage baseImage;
+    if(player){
+        baseImage = card->image;
+    }
+    else{
+        baseImage = QImage(":/Icons/Icons/BackCard.png");
+    }
 
     if (card->isTapped) {
         // Create a darkened copy of the image
@@ -105,10 +111,10 @@ QPixmap CardButton::getOverlayedPixmap(int selectionIndex, QColor color) {
     QPixmap overlayed = original;
     QPainter painter(&overlayed);
 
-    // Step 1: Darken it
+
     painter.fillRect(overlayed.rect(), QColor(0, 0, 0, 60));  // semi-transparent black
 
-    // Step 2: Draw number
+
     QFont font = painter.font();
     font.setBold(true);
     font.setPointSize(24);

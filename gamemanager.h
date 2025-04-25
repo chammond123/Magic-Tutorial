@@ -20,6 +20,10 @@ public:
     GameState* state;
     gamemanager(QObject *parent);
     ~gamemanager();
+    /**
+     * @brief True if a player wants to display gmae tips during a game
+     */
+    bool displayGameTips;
 
 public slots:
     /**
@@ -52,8 +56,15 @@ public slots:
      * @brief Displays a dialog box containing a tip for the phase
      * @param The tip message to show
      */
-    void displayTip(QString tip);
-
+    void displayTip(QString tip, int xCoord = 1700, int yCoord = 950);
+    /**
+     * @brief Updates dialog when an action is made
+     */
+    void displayPhaseTip();
+    /**
+     * @brief Connected to the UI toggle tips check box, turns the tips on and off
+     */
+    void onToggleGameTips(bool toggled);
 signals:
     void updateUI();
     void gameOver(bool hasWon);
