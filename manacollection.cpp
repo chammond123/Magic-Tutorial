@@ -46,6 +46,13 @@ ManaCollection::ManaCollection(Player* player, Card* card, QWidget *parent)
     ui->greenPayment->setMinimum(0);
     ui->blackPayment->setMinimum(0);
 
+    ui->redPayment->setMaximum(remainingMana[ManaType::RED]);
+    ui->whitePayment->setMaximum(remainingMana[ManaType::WHITE]);
+    ui->bluePayment->setMaximum(remainingMana[ManaType::BLUE]);
+    ui->greenPayment->setMaximum(remainingMana[ManaType::GREEN]);
+    ui->blackPayment->setMaximum(remainingMana[ManaType::BLACK]);
+
+
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }
