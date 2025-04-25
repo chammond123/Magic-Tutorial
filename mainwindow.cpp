@@ -16,6 +16,7 @@
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>
 #include <QFontDatabase>
+#include <QPixmap>
 
 MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -71,7 +72,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     };
 
     enemyLayout = {
-        nullptr,
+        ui->enemyHand,
         ui->enemyBattlefield,
         ui->enemyGraveyardButton,
         "EnemyGraveyard",
@@ -101,6 +102,10 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     connect(ui->playCardButton, &QPushButton::clicked, this, &MainWindow::onPlayCardButtonClicked);
 
     //update Icon for zones
+    ui->enemyHealthIcon->setPixmap(QPixmap(":/Icons/Icons/hp.jpg"));
+    ui->enemyHealthIcon->setScaledContents(true);
+    ui->playerHealthIcon->setPixmap(QPixmap(":/Icons/Icons/hp.jpg"));
+    ui->playerHealthIcon->setScaledContents(true);
     ui->playerDeck->setFixedSize(100,140);
     ui->playerDeck->setPixmap(QPixmap(":/Icons/Icons/BackCard.png").scaled(ui->playerDeck->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     ui->enemyDeck->setFixedSize(100,140);
@@ -191,10 +196,17 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
         stopTargeting();
     });
 
+    connect(game, &gamemanager::gameOver, this, &MainWindow::onGameEnded);
+
     connect(ui->phaseButton, &QPushButton::clicked, game, &gamemanager::onChangePhase);
     connect(ui->priorityButton, &QPushButton::clicked, game, &gamemanager::onPassPriority);
 
+    connect(this, &MainWindow::displayGameTip, game, &gamemanager::displayPhaseTip);
+
     connect(game, &gamemanager::updateUI, this, &MainWindow::updateUI);
+
+    connect(game, &gamemanager::requestMainWindowPos, this, &MainWindow::getMainWindowPos);
+    connect(this, &MainWindow::updateMainWindowPos, game, &gamemanager::onReceiveMainWindowPos);
 
     connect(game, &gamemanager::promptTargeting, this, &MainWindow::startTargeting);
 
@@ -238,6 +250,7 @@ void MainWindow::setupHand(){
     }
 
     updateUI();
+    emit displayGameTip();
 }
 
 QString MainWindow::manaTypeToString(ManaType type) {
@@ -263,7 +276,7 @@ QString MainWindow::cardTypeToString(CardType type) {
     case CardType::BATTLE:  return "Battle";
     case CardType::INSTANT:  return "Instant";
     case CardType::SORCERY:        return "Sorcery";
-    default:              return "Unknown";
+    default:               return "Unknown";
     }
 }
 
@@ -297,6 +310,7 @@ void MainWindow::cardBeingTapped(){
     }
     emit tapCard(currentSelectedCard->cardPtr);
 
+    card->isTapped = true;
     qDebug() << "tapped card";
 
     clearSelection();
@@ -359,6 +373,13 @@ bool MainWindow::promptForMana(Card* card){
     else{
         return false;
     }
+}
+
+void MainWindow::getMainWindowPos(){
+    emit updateMainWindowPos(static_cast<int>(this->geometry().left()),
+                             static_cast<int>(this->geometry().right()),
+                             static_cast<int>(this->geometry().top()),
+                             static_cast<int>(this->geometry().bottom()));
 }
 
 void MainWindow::onPlayCardButtonClicked(){
@@ -643,6 +664,9 @@ void MainWindow::updateUI(){
         // Go through all zones and update containers
         for (Zone* zone : zones){
             if (zone->type == ZoneType::HAND){
+                if(!player){
+                    qDebug() << "updating enemy hand";
+                }
                 updateZone(layout.hand, zone, layout.landGroups, player);
             }
             else if (zone->type == ZoneType::BATTLEFIELD){
@@ -702,7 +726,7 @@ void MainWindow::updateUI(){
     qDebug() << "Player has Prority: " << userPlayer->holdingPriority;
 
     //update Stack
-    QGridLayout* container = ui->stack;
+    QVBoxLayout* container = ui->stack;
 
     // Clear current stack view
     QLayoutItem* item;
@@ -715,9 +739,8 @@ void MainWindow::updateUI(){
 
     // Re-add current stack contents
     for (const StackObject &object : statePointer->theStack) {
-        qDebug() << "accessing the stack";
         CardButton* cardButton = createCardButton(object.card, true);
-        container->addWidget(cardButton);
+        container->addWidget(cardButton, 0, Qt::AlignHCenter);
     }
 
     // Set Phase Label
@@ -772,8 +795,6 @@ void MainWindow::updateUI(){
         ui->playCardButton->setEnabled(true);
         ui->priorityButton->show();
     }
-
-
     update();
     qDebug() << "updateUI has finished";
 }
@@ -794,12 +815,11 @@ void MainWindow::updateZone(QGridLayout* container, Zone* zone, QMap<ManaType, Q
     }
 
     for(Card* card : *zone){
-        CardButton* cardButton = nullptr;
+        CardButton* cardButton = createCardButton(card, player);
         if(!player && zone->type == ZoneType::HAND){
-            cardButton = createCardButton(card, player);
+            cardButton->backCard();
             cardButton->setDisabled(true);
-        } else {
-            cardButton = createCardButton(card, true);
+            cardButton->allowHover = false;
         }
 
         if(card->type == CardType::LAND && zone->type == ZoneType::BATTLEFIELD){
@@ -918,6 +938,14 @@ void MainWindow::handlePhase(){
         ui->phaseButton->setEnabled(statePointer->player1->canChangePhase);
         // update();
     }
+
+    // Disable Enemy Hand
+    for (int i = 0; i < ui->enemyBattlefield->count(); i ++){
+        QLayoutItem* item = ui->enemyBattlefield->itemAt(i);
+        QWidget* widget = item->widget();
+        CardButton* button = qobject_cast<CardButton*>(widget);
+        button->enableCard(false);
+    }
 }
 
 void MainWindow::startTargeting(Card *sourceCard){
@@ -988,18 +1016,14 @@ void MainWindow::onGameEnded(bool playerWon) {
     endView = new QGraphicsView(endScene, this);
     endView->setGeometry(this->rect());
     endView->setStyleSheet("background: transparent;");
-    // endView->setFrameShape(QFrame::NoFrame);
-    // endView->setSceneRect(0, 0, width(), height());
-    // endView->setAttribute(Qt::WA_TransparentForMouseEvents);
     endView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     endView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     endView->show();
 
-    // 3. Spawn cards from the center and push outward
     for (int i = 0; i < 30; ++i) {
         QPixmap pix(":/Icons/Icons/BackCard.png");
         QGraphicsPixmapItem* card = endScene->addPixmap(pix.scaled(60, 90));
-        card->setOffset(-30, -45);  // center origin
+        card->setOffset(-30, -45);
         card->setPos(width() / 2, height() / 2);
 
         b2BodyDef def;
@@ -1026,7 +1050,6 @@ void MainWindow::onGameEnded(bool playerWon) {
         endfallingCards.append(qMakePair(card, body));
     }
 
-    // Message
     QLabel* label = new QLabel(this);
     label->setText(playerWon ? "🎉 You Win! 🎉" : "😞 You Lose 😞");
     label->setStyleSheet("color: white; background-color: rgba(0,0,0,180); font-size: 28px; padding: 20px; border-radius: 10px;");
@@ -1057,7 +1080,7 @@ void MainWindow::updateEndExplosion() {
 }
 
 CardButton* MainWindow::createCardButton(Card* card, bool player){
-    CardButton* cardButton = new CardButton(card, player);
+    CardButton* cardButton = new CardButton(card);
     activeCards.append(cardButton);
 
     if(player){

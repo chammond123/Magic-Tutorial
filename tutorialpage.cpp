@@ -9,7 +9,6 @@ TutorialPage::TutorialPage(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle("Tutorial");
 
-
     slides = {
         {
             ":/tutorial/tutorial-mtg/p1.jpg",
@@ -17,22 +16,62 @@ TutorialPage::TutorialPage(QWidget *parent) :
             "Welcoming worldbuilders, narrative lovers, and gameplay enthusiasts alike, Magic has something for everyone and countless ways to play. "
             "Whether you're sitting at the kitchen table, playing online, or battling in a high-stakes competition, "
             "there's a place for you in the world of Magic: The Gathering.\n\n"
-            "We will run you through a quick tutorial to get you ready for the game."
+            "We will run you through a quick tutorial to get you ready for the game. Just hit the right arrow to progress once you're done reading!"
         },
         {
-            ":/tutorial/tutorial-mtg/p2.png",
-            "There are many different card types in MTG: Creature, Land, Instant, etc.\n"
-            "You can figure out what any card is by reading the type line. The first line of the card has the card’s name in the top left, "
-            "and its mana cost in the top right. The middle line has the card’s type and expansion symbol. The first word in the type line "
-            "tells you what kind of card it is. A creature will say “Creature” followed by the subtype of creature it is.\n\n"
-            "The bottom half of a card consists of the card’s text box, where you’ll find any ability or effect the card has. "
-            "If the card is a creature, it will have its power and toughness in the bottom right. Walking Corpse has two power and two toughness. "
-            "Power and toughness are often shortened to just the numbers when playing, so Walking Corpse would be called a 2/2."
+            ":/tutorial/tutorial-mtg/card_full_highlight.png",
+            "There are many different cards in Magic: The Gathering. In fact, there are over 27,000! It's nearly impossible to know all of them,"
+            " but you don't need to, you just need to know how to read one. The card displayed is one you will see during your practice game, so let's"
+            " read what there is to know about this card."
+        },
+        {
+            ":/tutorial/tutorial-mtg/card_name_highlight.png",
+            "This is the name of the card. It is not crucial to any game factors, but is good to know, and you'll be familiar with many more names of cards as you play."
+        },
+        {
+            ":/tutorial/tutorial-mtg/card_mana_highlight.png",
+            "This is the mana cost of the card. Most cards in MTG have a cost (mana) you must pay before playing them. The mana cost is represented by symbols showing the types of mana required. If you see a number, "
+            "it means that it needs that much of ANY type of mana. For instance, this card requires one red mana (the fire icon) and 3 of any of your available mana. We'll get into mana a bit later."
+        },
+        {
+            ":/tutorial/tutorial-mtg/card_type_highlight.png",
+            "This is the type of the card. There are many different card types in MTG: Creature, Land, Instant, etc. Some are permanent (will stay on the battlefield after you play them,"
+            " and some are not. The first word in the type line "
+            "tells you what kind of card it is. A creature will say “Creature” followed by the subtype of creature it is. Each have their own special qualities: \n\n"
+             "• Creature – A permanent card you cast that can attack and block your opponent (and can also be attacked and blocked).\n"
+             "• Land – A resource you play to generate mana by tapping it.\n"
+             "• Sorcery – A one-time spell you can cast only during your main phase.\n"
+             "• Instant – A one-time spell you can cast at almost any time, even on your opponent’s turn.\n"
+             "• Artifact – A permanent card that stays on the battlefield and often has abilities.\n"
+             "• Enchantment – A permanentcard  that creates a continuous effect on the battlefield.\n"
+             "• Planeswalker – A powerful ally with loyalty counters that can activate abilities each turn. We won't be getting into this one, but look it up if you're curious!\n"
+        },
+        {
+            ":/tutorial/tutorial-mtg/card_description_highlight.png",
+            "This is the description of the card. This card doesn't have anything besides just some lore about the card, but many cards have abilites, and this is where they will be displayed."
+            " There are too many abilities to know all of them, so make sure to read this section any time you encounter a new card to familiarize yourself with its ability."
+        },
+        {
+            ":/tutorial/tutorial-mtg/card_stats_highlight.png",
+            "Finally, some cards (generally creatures) have a power and toughness, displayed in that order (power/toughness). The power indicates how much damage it can do to another card,"
+            " and toughness indicates how much damage that card can take in one turn without going to the graveyard (being eliminated). A few notes: \n\n"
+            "• All damage in MTG is done in one turn, you can't chip away damage at a unit over multiple turns. To destroy a unit, you must deal more damage to it than it has toughness\n"
+            "• When creatures are destroyed, they go to the graveyard. Some abilities can bring cards back from the graveyard, so it is not always a permanent defeat. \n"
+            "• Some abilities will cause a creature to be exiled, which generally means it's not coming back! Of course, some abilities can, but you may encounter those occasionally. \n"
         },
         {
             ":/tutorial/tutorial-mtg/p3.png",
-            "On each of your turns, you can play one land. You can use a land to make one mana of a corresponding color by tapping it once each turn.\n\n"
-            "Plains make white mana, Islands make blue mana, Swamps make black mana, Mountains make red mana, and Forests make green mana."
+            "On each of your turns, you can play one land card from your hand onto the battlefield.\n\n"
+            "Lands are your main source of mana—the magical energy used to cast spells. You tap a land (turn it sideways) to produce one mana of a specific color.\n"
+            "• Plains make white mana\n"
+            "• Islands make blue mana\n"
+            "• Swamps make black mana\n"
+            "• Mountains make red mana\n"
+            "• Forests make green mana\n\n"
+            "Most cards cost mana to play. Recall that the amount and color of mana required is shown in the top right of each card.\n"
+            "To cast a card, you tap the necessary lands to generate the correct colors of mana, then spend that mana to play the card.\n"
+            "Tapped lands can’t be used again until they untap at the start of your next turn.\n\n"
+            "At the start of the game, you’ll mostly be casting cheaper cards—but as you play more lands, you’ll be able to summon stronger spells and creatures!"
         },
         {
             ":/tutorial/tutorial-mtg/p4.png",
@@ -48,8 +87,9 @@ TutorialPage::TutorialPage(QWidget *parent) :
         },
         {
             ":/tutorial/tutorial-mtg/p5.png",
-            "Next, you would love to experience the game yourself!\n\n"
+            "Now that you've read everything, it's time to experience the game yourself!\n\n"
             "You can learn more about other elements of the game while playing!\n\n"
+            "Feel free to read back until you're comfortable with this information (it's a lot, we know) \n\n"
             "Go back to the menu and click play to start diving into the MTG!"
         }
     };

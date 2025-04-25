@@ -11,7 +11,6 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include "gamemanager.h"
-#include "bot.h"
 #include "cardbutton.h"
 #include <QtWidgets/qgridlayout.h>
 #include <Box2D/Box2D.h>
@@ -138,6 +137,8 @@ public slots:
      */
     void handleCardSelected(CardButton* clicked);
 
+    void getMainWindowPos();
+
     /**
      * @brief collectAttackers in the battle phase
      */
@@ -226,6 +227,14 @@ signals:
      * @param card that being tapped
      */
     void tapCard(Card* card);
+
+
+    /**
+     * @brief used to show the first welcome display tip
+     */
+    void displayGameTip();
+
+    void updateMainWindowPos(int left, int right, int top, int bottom);
 
 private:
     /**

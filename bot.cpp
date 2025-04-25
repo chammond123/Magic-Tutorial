@@ -2,6 +2,7 @@
 #include "gamestate.h"
 #include "command.h"
 #include <QDebug>
+#include <QTimer>
 
 Bot::Bot(QStringList deckList) : Player(deckList) {
     hasSummoningSickness = true;
@@ -11,39 +12,41 @@ Bot::Bot(QStringList deckList) : Player(deckList) {
 }
 
 void Bot::takeTurn(GameState* gameState) {
-    switch (gameState->currentPhase) {
-    case Phase::PreCombatMain:
-        playCard(gameState);
-        passPriority(gameState);
-        break;
-    case Phase::DeclareAttackers:
-        declareAttackers(gameState);
-        // changePhase(gameState);
-        break;
-    case Phase::DeclareBlockers:
-        declareBlockers(gameState);
-        // changePhase(gameState);
-        break;
-    case Phase::PostCombatMain:
-        playCard(gameState);
-        passPriority(gameState);
-        break;
-    case Phase::EndStep:
-        endTurn(gameState);
-        passPriority(gameState);
-        break;
-    default:
-        // Any other phase has no special actions to auto take
-        if (this->isActivePlayer) {
+    QTimer::singleShot(3000, this, [this, gameState]() {
+        switch (gameState->currentPhase) {
+        case Phase::PreCombatMain:
+            playCard(gameState);
+            passPriority(gameState);
+            break;
+        case Phase::DeclareAttackers:
+            declareAttackers(gameState);
             changePhase(gameState);
+            break;
+        case Phase::DeclareBlockers:
+            declareBlockers(gameState);
+            changePhase(gameState);
+            break;
+        case Phase::PostCombatMain:
+            playCard(gameState);
+            passPriority(gameState);
+            break;
+        case Phase::EndStep:
+            endTurn(gameState);
+            passPriority(gameState);
+            break;
+        default:
+            // Any other phase has no special actions to auto take
+            if (this->isActivePlayer) {
+                changePhase(gameState);
+            }
+            passPriority(gameState);
+            break;
         }
-        passPriority(gameState);
-        break;
-    }
+    });
 }
 
 void Bot::playCard(GameState* gameState) {
-    if (!hasPlayedLand) {
+    if (!hasPlayedLand && isActivePlayer) {
         for (Card* card : Hand) {
             if (card->isLand) {
                 qDebug() << "Chose to play " << card->name << " for the land part";
@@ -57,7 +60,10 @@ void Bot::playCard(GameState* gameState) {
 
     QVector<Card*> playableCards;
     for (Card* card : Hand) {
-        if (canPayMana(card) && card->type != CardType::LAND) {
+        if (card->type == CardType::LAND && hasPlayedLand){
+            continue;
+        }
+        if (card->shouldEnable) {
             playableCards.append(card);
         }
     }
@@ -128,38 +134,38 @@ void Bot::declareAttackers(GameState* gameState) {
         }
     }
 
-    // QList<Card*> attackers;
-    // for (Card* card : combatCreatures.keys()){
-    //     attackers.append(card);
-    // }
+    QList<Card*> attackers;
+    for (Card* card : combatCreatures.keys()){
+        attackers.append(card);
+    }
     gameState->attackers = combatCreatures.keys();
-    // emit UiDeclareAttackers(combatCreatures.keys());
+    emit UiDeclareAttackers(combatCreatures.keys());
 
-    // if (!combatCreatures.isEmpty()) {
+    if (!combatCreatures.isEmpty()) {
 
-    //     declareCombatCommand cmd(gameState, combatCreatures);
-    //     cmd.execute();
-    // }
-    // if (this->isActivePlayer) {
-    //     changePhase(gameState);
-    // }
+        declareCombatCommand cmd(gameState, combatCreatures);
+        cmd.execute();
+    }
+    if (this->isActivePlayer) {
+        changePhase(gameState);
+    }
 }
 
 void Bot::declareBlockers(GameState* gameState) {
-    // changePhase(gameState);
-    // return;
-    // Player* attacker = gameState->player1;
+    changePhase(gameState);
+    return;
+    Player* attacker = gameState->player1;
     QMap<Card*, QVector<Card*>> combatCreatures;
 
     QList<Card*> attackingCreatures = gameState->attackers;
-    // for (Card* card : attacker->Battlefield) {
-    //     if (card->type == CardType::CREATURE) {
-    //         attackingCreatures.append(card);
-    //     }
-    // }
+    for (Card* card : attacker->Battlefield) {
+        if (card->type == CardType::CREATURE) {
+            attackingCreatures.append(card);
+        }
+    }
 
     if (attackingCreatures.isEmpty()) {
-        // emit UiDeclareCombatants(combatCreatures);
+        emit UiDeclareCombatants(combatCreatures);
         return;
     }
 
@@ -187,17 +193,13 @@ void Bot::declareBlockers(GameState* gameState) {
 
                 combatCreatures[attacker].append(blocker);
                 availableBlockers.removeAt(i);
-                // emit showBlockers(combatCreatures[attacker]);
+                emit showBlockers(combatCreatures[attacker]);
                 break;
             }
         }
     }
 
-    // emit UiDeclareCombatants(combatCreatures);
-    // if (!combatCreatures.isEmpty()) {
-    //     emit UiDeclareCombatants(combatCreatures);
-    //     // cmd.execute();
-    // }
+    emit UiDeclareCombatants(combatCreatures);
 }
 
 void Bot::endTurn(GameState* gameState) {

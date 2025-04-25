@@ -111,6 +111,12 @@ public:
     Card* drawTop();
 
     /**
+     * @brief containsType
+     * @return whether the hand contains that type
+     */
+    bool containsEnabledType(CardType);
+
+    /**
      * @brief Destructor
      */
     ~Zone();
