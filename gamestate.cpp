@@ -226,10 +226,10 @@ PhaseRules GameState::getPhaseRules(){
         break;
     case Phase::Upkeep:
         // Player Upkeep trigger
-        return PhaseRules{false, false, false, false, false, false, false};
+        return PhaseRules{true, false, false, false, false, false, false};
         break;
     case Phase::Draw:
-        return PhaseRules{true, false, true, false, false, false, false};
+        return PhaseRules{false, false, true, false, false, false, false};
         // Player can draw a card
         break;
     case Phase::PreCombatMain:
