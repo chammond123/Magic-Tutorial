@@ -210,6 +210,8 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
 
     connect(this, &MainWindow::sendCombatCards, game, &gamemanager::onCombatCardsReceived);
 
+    connect(game, &gamemanager::gameOver, this, &MainWindow::onGameEnded);
+
     Bot* botEnemy = static_cast<Bot*>(enemyPlayer);
     if (botEnemy) {
         connect(botEnemy, &Bot::UiDeclareCombatants, this, &MainWindow::botDeclareCombatants);
@@ -696,44 +698,6 @@ void MainWindow::updateUI(){
         qDebug() << "updateUI has finished";
     }
 
-    if(statePointer->currentPhase == Phase::DeclareAttackers){
-        if(userPlayer->isActivePlayer){
-            ui->playCardButton->setText("Declare Attackers");
-            ui->playCardButton->setEnabled(true);
-            // ui->priorityButton->hide();
-        }
-        else {
-            ui->playCardButton->setText("Enemy Declaring...");
-            ui->playCardButton->setDisabled(true);
-            // ui->priorityButton->hide();
-            if(userPlayer->holdingPriority){
-                statePointer->changePhase();
-                updateUI();
-            }
-        }
-    }
-    else if(statePointer->currentPhase == Phase::DeclareBlockers){
-
-        if(!userPlayer->isActivePlayer){
-            ui->playCardButton->setText("Declare Blockers");
-            ui->playCardButton->setEnabled(true);
-            // ui->priorityButton->hide();
-        }
-        else {
-            ui->playCardButton->setText("Enemy Declaring...");
-            ui->playCardButton->setDisabled(true);
-            // ui->priorityButton->hide();
-            if(userPlayer->holdingPriority){
-                statePointer->changePhase();
-                updateUI();
-            }
-        }
-    }
-    else {
-        ui->playCardButton->setText("Play");
-        ui->playCardButton->setEnabled(true);
-        ui->priorityButton->show();
-    }
 
     qDebug() << "Player has Prority: " << userPlayer->holdingPriority;
 
@@ -768,6 +732,47 @@ void MainWindow::updateUI(){
     handlePhase();
 
     clearSelection();
+
+    if(statePointer->currentPhase == Phase::DeclareAttackers){
+        if(userPlayer->isActivePlayer){
+            ui->playCardButton->setText("Declare Attackers");
+            ui->playCardButton->setEnabled(true);
+            // ui->priorityButton->hide();
+        }
+        else {
+            ui->playCardButton->setText("Enemy Declaring...");
+            ui->playCardButton->setDisabled(true);
+            // ui->priorityButton->hide();
+            if(userPlayer->holdingPriority){
+                statePointer->changePhase();
+                updateUI();
+            }
+        }
+    }
+    else if(statePointer->currentPhase == Phase::DeclareBlockers){
+
+        if(!userPlayer->isActivePlayer){
+            ui->playCardButton->setText("Declare Blockers");
+            ui->playCardButton->setEnabled(true);
+            ui->priorityButton->setDisabled(true);
+            // ui->priorityButton->hide();
+        }
+        else {
+            ui->playCardButton->setText("Enemy Declaring...");
+            ui->playCardButton->setDisabled(true);
+            // ui->priorityButton->hide();
+            if(userPlayer->holdingPriority){
+                statePointer->changePhase();
+                updateUI();
+            }
+        }
+    }
+    else {
+        ui->playCardButton->setText("Play");
+        ui->playCardButton->setEnabled(true);
+        ui->priorityButton->show();
+    }
+
 
     update();
     qDebug() << "updateUI has finished";
@@ -887,9 +892,9 @@ void MainWindow::clearSelection(){
 void MainWindow::extractCombatants(){
 
     if(combatants.isEmpty() || statePointer->attackers.isEmpty()){
-        qDebug() << "Combatants was Empty";
-        statePointer->changePhase();
-        return;
+        qDebug() << "Combatants were Empty";
+        // emit sendCombatCards(combatants);
+        // return;
     }
 
     emit sendCombatCards(combatants);
