@@ -692,7 +692,7 @@ void MainWindow::updateUI(){
         layout.phaseLabel->setText(QString("Phase: ") + phaseTypeToString(statePointer->currentPhase));
 
         // Set Active Player Label
-        layout.activePlayerLabel->setText(QString(statePointer->player1->isActivePlayer ? "You are" : "The enemy is") + " the active player");
+        layout.activePlayerLabel->setText(QString(statePointer->player1->isActivePlayer ? "You are " : "The enemy is\n") + "the active player");
         layout.activePlayerLabel->setStyleSheet(statePointer->player1->isActivePlayer
                                                     ? "QLabel { color : green; }"
                                                     : "QLabel { color : red; }");
@@ -725,7 +725,7 @@ void MainWindow::updateUI(){
     layout.phaseLabel->setText(QString("Phase: ") + phaseTypeToString(statePointer->currentPhase));
 
     // Set Active Player Label
-    layout.activePlayerLabel->setText(QString(statePointer->player1->isActivePlayer ? "You are" : "The enemy is") + " the active player");
+    layout.activePlayerLabel->setText(QString(statePointer->player1->isActivePlayer ? "You are " : "The enemy is\n") + "the active player");
 
     handlePhase();
 
