@@ -43,9 +43,9 @@
     <widget class="QPushButton" name="playCardButton">
      <property name="geometry">
       <rect>
-       <x>740</x>
-       <y>120</y>
-       <width>71</width>
+       <x>690</x>
+       <y>80</y>
+       <width>121</width>
        <height>31</height>
       </rect>
      </property>
@@ -610,7 +610,7 @@
      <x>0</x>
      <y>0</y>
      <width>1548</width>
-     <height>25</height>
+     <height>17</height>
     </rect>
    </property>
   </widget>

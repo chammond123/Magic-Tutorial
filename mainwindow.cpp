@@ -3,8 +3,8 @@
 #include "ui_mainwindow.h"
 #include "carddictionary.h"
 #include "gamemanager.h"
-#include "textparser.h"
 #include "phase.h"
+#include "bot.h"
 #include <QTimer>
 #include <QDebug>
 #include <QtGui/qevent.h>
@@ -211,6 +211,17 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     connect(this, &MainWindow::playCard, game, &gamemanager::onPlayCard);
 
     connect(this, &MainWindow::sendCombatCards, game, &gamemanager::onCombatCardsReceived);
+
+    connect(game, &gamemanager::gameOver, this, &MainWindow::onGameEnded);
+
+    Bot* botEnemy = static_cast<Bot*>(enemyPlayer);
+    if (botEnemy) {
+        connect(botEnemy, &Bot::UiDeclareCombatants, this, &MainWindow::botDeclareCombatants);
+        connect(botEnemy, &Bot::UiDeclareAttackers, this, &MainWindow::botDeclareAttackers);
+        connect(botEnemy, &Bot::showBlockers, this, &MainWindow::displayBlockers);
+    } else {
+        qDebug() << "Enemy player is not a Bot!";
+    }
     connect(ui->GameTipsCheckBox, &QCheckBox::toggled, game, &gamemanager::onToggleGameTips);
 }
 
@@ -357,15 +368,12 @@ void MainWindow::onPlayCardButtonClicked(){
     // Just for testing need to handle more condiction phrases, cost, priority
     if(statePointer->currentPhase == Phase::DeclareAttackers && userPlayer->isActivePlayer){
         collectAttackers();
-        statePointer->changePhase();
-        updateUI();
         return;
     }
 
     if(statePointer->currentPhase == Phase::DeclareBlockers && !userPlayer->isActivePlayer){
         collectBlockers();
         clearSelection();
-        updateUI();
         return;
     }
 
@@ -495,11 +503,9 @@ void MainWindow::updateMagnifier(Card* card) {
 }
 
 void MainWindow::collectAttackers(){
-    qDebug() << "Collecting Attackers";
+    combatants.clear();
 
     QGridLayout* battlefield;
-
-    // buttonCombatants.clear();
 
     if(userPlayer->isActivePlayer){
         battlefield = ui->playerBattlefield;
@@ -515,7 +521,6 @@ void MainWindow::collectAttackers(){
         CardButton* button = qobject_cast<CardButton*>(widget);
 
         if(button->isChecked() && button->cardPtr->type == CardType::CREATURE){
-            buttonCombatants[button];
             combatants[button->cardPtr];
         }
     }
@@ -523,23 +528,48 @@ void MainWindow::collectAttackers(){
     if(combatants.isEmpty()){
         statePointer->changePhase();
         extractCombatants();
+        return;
     }
 
     targetIt = combatants.begin();
+
+    clearSelection();
+
+    statePointer->attackers = combatants.keys();
+    statePointer->changePhase();
+
+}
+
+void MainWindow::botDeclareAttackers(QList<Card*> attackers){
+
+    if(attackers.isEmpty()){
+        extractCombatants();
+        return;
+    }
+
+    // Clear Combatants
+    combatants.clear();
+
+    // Make Attackers Keys
+    for(Card* card : attackers){
+        combatants[card];
+    }
+
+    // Set iterator to the beginning of the attackers
+    targetIt = combatants.begin();
+
 }
 
 void MainWindow::collectBlockers(){
     qDebug() << "Collecting Blockers";
     QList<Card*> blockers;
 
-    if (targetIt == combatants.end()){
+    if (targetIt == combatants.end() || combatants.isEmpty()){
         extractCombatants();
         return;
     }
 
     if(!selectedButtons.isEmpty()){
-        // targetIt.value() = selectedButtons;
-
         for(CardButton* button : selectedButtons){
             Card* card = button->cardPtr;
             blockers.append(card);
@@ -548,14 +578,22 @@ void MainWindow::collectBlockers(){
         selectedButtons.clear();
     }
 
-    targetIt.value() = blockers;
-
-    targetIt++;
+    if (targetIt != combatants.end()) {
+        combatants[targetIt.key()] = blockers;
+        targetIt++;
+    }
 
     if (targetIt == combatants.end()){
         extractCombatants();
         return;
     }
+}
+
+void MainWindow::botDeclareCombatants(QMap<Card*, QList<Card*>> botCombatants){
+
+    emit sendCombatCards(botCombatants);
+    combatants.clear();
+    updateUI();
 }
 
 void MainWindow::updateUI(){
@@ -570,6 +608,7 @@ void MainWindow::updateUI(){
     (*mana)[ManaType::GREEN] = 10;
     (*mana)[ManaType::BLACK] = 10;
     userPlayer->addMana(mana);
+    enemyPlayer->addMana(mana);
 
     qDebug() << "updateUI called";
     QVector<Zone*> zones;
@@ -662,31 +701,8 @@ void MainWindow::updateUI(){
         qDebug() << "updateUI has finished";
     }
 
-    if(statePointer->currentPhase == Phase::DeclareAttackers){
-        if(userPlayer->isActivePlayer){
-            ui->playCardButton->setText("Declare Attackers");
-            ui->playCardButton->setEnabled(true);
-        }
-        else {
-            ui->playCardButton->setText("Enemy Declaring...");
-            ui->playCardButton->setDisabled(true);
-        }
-    }
-    else if(statePointer->currentPhase == Phase::DeclareBlockers){
 
-        if(!userPlayer->isActivePlayer){
-            ui->playCardButton->setText("Declare Blockers");
-            ui->playCardButton->setEnabled(true);
-        }
-        else {
-            ui->playCardButton->setText("Enemy Declaring...");
-            ui->playCardButton->setDisabled(true);
-        }
-    }
-    else {
-        ui->playCardButton->setText("Play");
-        ui->playCardButton->setEnabled(true);
-    }
+    qDebug() << "Player has Prority: " << userPlayer->holdingPriority;
 
     //update Stack
     QGridLayout* container = ui->stack;
@@ -717,6 +733,49 @@ void MainWindow::updateUI(){
 
     qDebug() << "update Phases";
     handlePhase();
+
+    clearSelection();
+
+    if(statePointer->currentPhase == Phase::DeclareAttackers){
+        if(userPlayer->isActivePlayer){
+            ui->playCardButton->setText("Declare Attackers");
+            ui->playCardButton->setEnabled(true);
+            // ui->priorityButton->hide();
+        }
+        else {
+            ui->playCardButton->setText("Enemy Declaring...");
+            ui->playCardButton->setDisabled(true);
+            // ui->priorityButton->hide();
+            if(userPlayer->holdingPriority){
+                statePointer->changePhase();
+                updateUI();
+            }
+        }
+    }
+    else if(statePointer->currentPhase == Phase::DeclareBlockers){
+
+        if(!userPlayer->isActivePlayer){
+            ui->playCardButton->setText("Declare Blockers");
+            ui->playCardButton->setEnabled(true);
+            ui->priorityButton->setDisabled(true);
+            // ui->priorityButton->hide();
+        }
+        else {
+            ui->playCardButton->setText("Enemy Declaring...");
+            ui->playCardButton->setDisabled(true);
+            // ui->priorityButton->hide();
+            if(userPlayer->holdingPriority){
+                statePointer->changePhase();
+                updateUI();
+            }
+        }
+    }
+    else {
+        ui->playCardButton->setText("Play");
+        ui->playCardButton->setEnabled(true);
+        ui->priorityButton->show();
+    }
+
 
     update();
     qDebug() << "updateUI has finished";
@@ -820,7 +879,6 @@ void MainWindow::showCollection(QString title){
     dialog->show();
 }
 
-
 void MainWindow::clearSelection(){
     // qDebug() << "clearing Selection";
 
@@ -836,22 +894,16 @@ void MainWindow::clearSelection(){
 
 void MainWindow::extractCombatants(){
 
-    // combatants.clear();
-
-    // for(auto it = buttonCombatants.begin(); it != buttonCombatants.end(); it++){
-
-    //     Card* attacker = it.key()->cardPtr;
-    //     combatants[attacker];
-
-    //     for (auto button : it.value()){
-    //         Card* blocker = button->cardPtr;
-    //         combatants[attacker].append(blocker);
-    //     }
-    // }
+    if(combatants.isEmpty() || statePointer->attackers.isEmpty()){
+        qDebug() << "Combatants were Empty";
+        // emit sendCombatCards(combatants);
+        // return;
+    }
 
     emit sendCombatCards(combatants);
 
     combatants.clear();
+    clearSelection();
 }
 
 void MainWindow::handlePhase(){
@@ -868,11 +920,6 @@ void MainWindow::handlePhase(){
         ui->priorityButton->setEnabled(statePointer->player1->canPassPriority);
         ui->phaseButton->setEnabled(statePointer->player1->canChangePhase);
         // update();
-    }
-
-    if (statePointer->currentPhase == Phase::CombatDamage){
-        extractCombatants();
-        // updateUI();
     }
 }
 
@@ -932,7 +979,7 @@ void MainWindow::overlayCards(){
 
     for(int i = 0; i < selectedButtons.count(); i++){
         CardButton* currButton = selectedButtons.at(i);
-        QPixmap newIcon = currButton->getOverlayedPixmap(i);
+        QPixmap newIcon = currButton->getOverlayedPixmap(i, Qt::blue);
         currButton->setIcon(QIcon(newIcon));
     }
 }
@@ -1024,4 +1071,16 @@ CardButton* MainWindow::createCardButton(Card* card, bool player){
     cardButton->setFixedSize(100, 140);
 
     return cardButton;
+}
+
+void MainWindow::displayBlockers(QList<Card*> blockers){
+    int i = 1;
+    for(Card* card : blockers){
+        for(CardButton* button : activeCards){
+            if(card == button->cardPtr){
+                QPixmap newIcon = button->getOverlayedPixmap(i, Qt::red);
+            }
+        }
+        i++;
+    }
 }

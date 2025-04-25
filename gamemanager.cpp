@@ -191,6 +191,12 @@ void gamemanager::onChangePhase(){
 void gamemanager::onCombatCardsReceived(QMap<Card*, QVector<Card*>> CombatCreatures){
     declareCombatCommand cmd = declareCombatCommand(state, CombatCreatures);
     cmd.execute();
+    if(state->player1->health <= 0){
+        emit gameOver(false);
+    }
+    else if(state->player2->health <= 0){
+        emit gameOver(true);
+    }
     emit updateUI();
 }
 

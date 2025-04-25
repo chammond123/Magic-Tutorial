@@ -34,14 +34,6 @@ private:
      */
     int currentPhaseIndex = 0;
     /**
-     * @brief Attackers declared by a player
-     */
-    QVector<Card*> attackers;
-    /**
-     * @brief Defenders declared by a player
-     */
-    QVector<Card*> defenders;
-    /**
      * @brief Sets the valid cards in a players hand
      * @param The player whos hand to validate
      */
@@ -145,6 +137,15 @@ public:
      * @brief A pointer to the second player object
      */
     Player* player2;
+
+    /**
+     * @brief Attackers declared by a player
+     */
+    QVector<Card*> attackers;
+    /**
+     * @brief Defenders declared by a player
+     */
+    QVector<Card*> defenders;
 
     /**
      * @brief Bool reporting if there is a bot set as player2

@@ -11,6 +11,7 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include "gamemanager.h"
+#include "bot.h"
 #include "cardbutton.h"
 #include <QtWidgets/qgridlayout.h>
 #include <Box2D/Box2D.h>
@@ -193,6 +194,16 @@ public slots:
     void onGameEnded(bool playerWon);
 
     void stopTargeting();
+
+    /**
+     * @brief Interprets the Bot's actions and implements blockers
+     * @param blockers
+     */
+    void botDeclareCombatants(QMap<Card*, QList<Card*>> botCombatants);
+
+    void botDeclareAttackers(QList<Card*> attackers);
+
+    void displayBlockers(QList<Card*> blockers);
 
 signals:
 

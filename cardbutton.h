@@ -15,7 +15,7 @@ public:
 
     explicit CardButton(Card* card, bool player, QWidget* parent = nullptr);
 
-    QPixmap getOverlayedPixmap(int selectionIndex);
+    QPixmap getOverlayedPixmap(int selectionIndex, QColor color);
     void enableCard(bool enabled);
 
 private:
