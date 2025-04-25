@@ -701,18 +701,47 @@ color: rgb(0, 0, 0);
       </item>
      </layout>
     </widget>
+    <widget class="QPushButton" name="enemyTargetButton">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>29</y>
+       <width>661</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>50</width>
+       <height>100</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.529, y2:1, stop:0 rgba(184, 6, 6, 255), stop:1 rgba(255, 171, 149, 255));
+border-color: rgb(170, 0, 0);
+font: 9pt &quot;Verdana&quot;;
+color: rgb(0, 0, 0);
+</string>
+     </property>
+     <property name="text">
+      <string>Target Enemy</string>
+     </property>
+    </widget>
     <widget class="QWidget" name="horizontalLayoutWidget_3">
      <property name="geometry">
       <rect>
-       <x>110</x>
+       <x>100</x>
        <y>0</y>
-       <width>266</width>
+       <width>121</width>
        <height>61</height>
       </rect>
      </property>
-     <layout class="QHBoxLayout" name="enemyHPZone">
+     <layout class="QHBoxLayout" name="enemyHPZone_2">
       <item>
-       <widget class="QLabel" name="enemyHealthIcon">
+       <widget class="QLabel" name="EnemyHealthIcon">
         <property name="styleSheet">
          <string notr="true"> background-color: #ffffff;       
     color: #2c3e50;                     
@@ -743,40 +772,11 @@ font: 9pt &quot;Verdana&quot;;
     qproperty-alignment: AlignCenter;</string>
         </property>
         <property name="text">
-         <string> </string>
+         <string/>
         </property>
        </widget>
       </item>
      </layout>
-    </widget>
-    <widget class="QPushButton" name="enemyTargetButton">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>260</x>
-       <y>29</y>
-       <width>661</width>
-       <height>101</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>50</width>
-       <height>100</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.529, y2:1, stop:0 rgba(184, 6, 6, 255), stop:1 rgba(255, 171, 149, 255));
-border-color: rgb(170, 0, 0);
-font: 9pt &quot;Verdana&quot;;
-color: rgb(0, 0, 0);
-</string>
-     </property>
-     <property name="text">
-      <string>Target Enemy</string>
-     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="gridLayoutWidget_2">
@@ -985,7 +985,7 @@ background-color: #ECECEC;</string>
      <x>0</x>
      <y>0</y>
      <width>1550</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

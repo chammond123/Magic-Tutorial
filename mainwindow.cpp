@@ -104,10 +104,9 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
 
     connect(ui->playCardButton, &QPushButton::clicked, this, &MainWindow::onPlayCardButtonClicked);
 
-    //update Icon for zones
-    ui->enemyHealthIcon->setGeometry(ui->playerHealthIcon->geometry());
-    ui->enemyHealthIcon->setPixmap(QPixmap(":/Icons/Icons/hp.jpg"));
-    ui->enemyHealthIcon->setScaledContents(true);
+    ui->EnemyHealthIcon->setGeometry(ui->playerHealthIcon->geometry());
+    ui->EnemyHealthIcon->setPixmap(QPixmap(":/Icons/Icons/hp.jpg"));
+    ui->EnemyHealthIcon->setScaledContents(true);
     ui->playerHealthIcon->setPixmap(QPixmap(":/Icons/Icons/hp.jpg"));
     ui->playerHealthIcon->setScaledContents(true);
     ui->playerDeck->setFixedSize(100,140);
