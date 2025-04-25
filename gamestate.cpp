@@ -199,7 +199,7 @@ void GameState::resolveStack(){
             else if(std::holds_alternative<Card*>(stackObject.target)){
                 Card* c = get<Card*>(stackObject.target);
                 if (stackObject.card->isCountered){
-                    stackObject.player->moveCardString(stackObject.card, "hand", "graveyard", true);
+                    // Loser got their spell countered
                 }
                 else{
                     stackObject.card->ability.use(c);
@@ -212,7 +212,6 @@ void GameState::resolveStack(){
                     else{
                         player2->moveCardString(c, "battlefield", "graveyard", true);
                     }
-
                 }
             }
         }
@@ -222,6 +221,14 @@ void GameState::resolveStack(){
             }
             else{
                 stackObject.player->moveCardString(stackObject.card, "hand", "graveyard", true);
+            }
+        }
+        else{
+            if (player1->Hand.findCard(stackObject.card)){
+                player1->moveCardString(stackObject.card, "hand", "graveyard", true);
+            }
+            else{
+                player2->moveCardString(stackObject.card, "hand", "graveyard", true);
             }
         }
         stackObject.card->isOnStack = false;

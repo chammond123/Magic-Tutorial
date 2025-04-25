@@ -933,6 +933,14 @@ void MainWindow::startTargeting(Card *sourceCard){
         button->enableCard(true);
     }
 
+    if (targetSource->name.toLower() == "counterspell")
+    for (int i = 0; i < ui->stack->count(); i++){
+        QLayoutItem* item = ui->stack->itemAt(i);
+        QWidget* widget = item->widget();
+        CardButton* button = qobject_cast<CardButton*>(widget);
+        button->enableCard(true);
+    }
+
     for (int i = 0; i < ui->enemyHand->count(); ++i) {
         QLayoutItem* item = ui->enemyHand->itemAt(i);
         QWidget* widget = item->widget();
