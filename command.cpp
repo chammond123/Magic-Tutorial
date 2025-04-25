@@ -42,7 +42,6 @@ passPriorityCommand::passPriorityCommand(GameState* state) :
 void passPriorityCommand::execute(){
     qDebug() << "Command executed";
 
-    //Player* player = state->getPriorityPlayer();
     if (!state->player1->madeAction && !state->player2->madeAction){
         state->resolveStack();
     }
