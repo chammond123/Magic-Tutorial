@@ -114,7 +114,7 @@ public:
      * @brief containsType
      * @return whether the hand contains that type
      */
-    bool containsType(CardType);
+    bool containsEnabledType(CardType);
 
     /**
      * @brief Destructor

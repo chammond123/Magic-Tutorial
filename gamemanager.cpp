@@ -228,7 +228,7 @@ void gamemanager::onChangePhase(){
     emit updateUI();
     displayPhaseTip();
     if(!playerActionPhases.contains(state->currentPhase) &&
-        !(state->currentPhase == Phase::Upkeep && state->player1->Hand.containsType(CardType::INSTANT))){
+        !(state->currentPhase == Phase::Upkeep && state->player1->Hand.containsEnabledType(CardType::INSTANT))){
         onChangePhase();
     }
 }

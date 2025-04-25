@@ -42,9 +42,9 @@ bool Zone::findCard(Card* card) {
     return cards.contains(card);
 }
 
-bool Zone::containsType(CardType t){
+bool Zone::containsEnabledType(CardType t){
     for (Card* c : cards){
-        if (c->type == t){
+        if (c->type == t && c->shouldEnable){
             return true;
         }
     }
