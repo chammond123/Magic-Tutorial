@@ -50,7 +50,6 @@ CardButton::CardButton(Card* card, QWidget* parent)
 }
 
 void CardButton::backCard() {
-    qDebug() << "back Card";
     isBack = true;
     QImage backImage(":/Icons/Icons/BackCard.png");
     QPixmap pixmap = QPixmap::fromImage(backImage).scaled(
@@ -63,12 +62,10 @@ void CardButton::backCard() {
 
 void CardButton::resetCard(){
     if (!cardPtr) {
-        qDebug() << "Warning: Attempt to reset card with null cardPtr";
         return;
     }
 
     if (cardPtr->image.isNull()) {
-        qDebug() << "Warning: Card image is null for" << cardPtr->name;
         return;
     }
 
@@ -87,12 +84,10 @@ void CardButton::resetCard(){
 void CardButton::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
         emit cardSelected(this);
-        qDebug() << "left click called";
     }
     else if (event->button() == Qt::RightButton){
 
         emit cardTapped(this);
-        qDebug() << "right click called";
     }
 }
 
@@ -176,14 +171,12 @@ QPixmap CardButton::getOverlayedPixmap(int selectionIndex, QColor color) {
 void CardButton::enableCard(bool enabled){
 
     if (!cardPtr) {
-        qDebug() << "Warning: Attempt to enable/disable card with null cardPtr";
         QWidget::setEnabled(enabled);
         return;
     }
 
     // Check if image is valid
     if (cardPtr->image.isNull()) {
-        qDebug() << "Warning: Card image is null for" << cardPtr->name;
         QWidget::setEnabled(enabled);
         return;
     }

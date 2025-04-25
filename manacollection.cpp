@@ -34,6 +34,18 @@ ManaCollection::ManaCollection(Player* player, Card* card, QWidget *parent)
     connect(ui->greenPayment, &QSpinBox::valueChanged, this, &ManaCollection::updateMana);
     connect(ui->blackPayment, &QSpinBox::valueChanged, this, &ManaCollection::updateMana);
 
+    ui->redPayment->setMaximum(player->manaPool[ManaType::RED] - card->cost[ManaType::RED]);
+    ui->whitePayment->setMaximum(player->manaPool[ManaType::WHITE] - card->cost[ManaType::WHITE]);
+    ui->bluePayment->setMaximum(player->manaPool[ManaType::BLUE] - card->cost[ManaType::BLUE]);
+    ui->greenPayment->setMaximum(player->manaPool[ManaType::GREEN] - card->cost[ManaType::GREEN]);
+    ui->blackPayment->setMaximum(player->manaPool[ManaType::BLACK] - card->cost[ManaType::BLACK]);
+
+    ui->redPayment->setMinimum(0);
+    ui->whitePayment->setMinimum(0);
+    ui->bluePayment->setMinimum(0);
+    ui->greenPayment->setMinimum(0);
+    ui->blackPayment->setMinimum(0);
+
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }
@@ -68,7 +80,7 @@ void ManaCollection::updateMana() {
     int totalPayment = whiteCost + redCost + blueCost + blackCost + greenCost;
     int difference = card->cost[ManaType::ANY] - totalPayment;
 
-    if(difference > 0){
+    if(difference != 0){
         ui->buttonBox->setEnabled(false);
     }
     else {
@@ -76,6 +88,10 @@ void ManaCollection::updateMana() {
     }
 
     ui->manaCost->setValue(difference);
+
+    if (remainingMana[ManaType::RED] - redCost < 0){
+        ui->buttonBox->setEnabled(false);
+    }
 
     ui->redMana->setValue(remainingMana[ManaType::RED] - redCost);
     ui->whiteMana->setValue(remainingMana[ManaType::WHITE] - whiteCost);

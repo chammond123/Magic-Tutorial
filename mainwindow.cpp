@@ -100,7 +100,6 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
 
 
     connect(apiManager, &CardAPIManager::errorOccurred, this, [](const QString &error) {
-        qDebug() << "API Error:" << error;
     });
 
     connect(ui->playCardButton, &QPushButton::clicked, this, &MainWindow::onPlayCardButtonClicked);
