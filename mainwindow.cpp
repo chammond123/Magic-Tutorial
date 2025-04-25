@@ -16,6 +16,7 @@
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>
 #include <QFontDatabase>
+#include <QPixmap>
 
 MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -101,6 +102,10 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     connect(ui->playCardButton, &QPushButton::clicked, this, &MainWindow::onPlayCardButtonClicked);
 
     //update Icon for zones
+    ui->enemyHealthIcon->setPixmap(QPixmap(":/Icons/Icons/hp.jpg"));
+    ui->enemyHealthIcon->setScaledContents(true);
+    ui->playerHealthIcon->setPixmap(QPixmap(":/Icons/Icons/hp.jpg"));
+    ui->playerHealthIcon->setScaledContents(true);
     ui->playerDeck->setFixedSize(100,140);
     ui->playerDeck->setPixmap(QPixmap(":/Icons/Icons/BackCard.png").scaled(ui->playerDeck->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     ui->enemyDeck->setFixedSize(100,140);
@@ -300,6 +305,7 @@ void MainWindow::cardBeingTapped(){
     }
     emit tapCard(currentSelectedCard->cardPtr);
 
+    card->isTapped = true;
     qDebug() << "tapped card";
 
     clearSelection();
@@ -708,7 +714,7 @@ void MainWindow::updateUI(){
     qDebug() << "Player has Prority: " << userPlayer->holdingPriority;
 
     //update Stack
-    QGridLayout* container = ui->stack;
+    QVBoxLayout* container = ui->stack;
 
     // Clear current stack view
     QLayoutItem* item;
@@ -721,9 +727,8 @@ void MainWindow::updateUI(){
 
     // Re-add current stack contents
     for (const StackObject &object : statePointer->theStack) {
-        qDebug() << "accessing the stack";
         CardButton* cardButton = createCardButton(object.card, true);
-        container->addWidget(cardButton);
+        container->addWidget(cardButton, 0, Qt::AlignHCenter);
     }
 
     // Set Phase Label
@@ -802,7 +807,6 @@ void MainWindow::updateZone(QGridLayout* container, Zone* zone, QMap<ManaType, Q
     for(Card* card : *zone){
         CardButton* cardButton = createCardButton(card, player);
         if(!player && zone->type == ZoneType::HAND){
-            qDebug() << "calling back Card";
             cardButton->backCard();
             cardButton->setDisabled(true);
             cardButton->allowHover = false;
