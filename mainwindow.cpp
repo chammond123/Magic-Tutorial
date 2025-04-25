@@ -307,9 +307,6 @@ void MainWindow::cardBeingTapped(){
     }
 
     emit tapCard(card);
-
-    resetCards();
-    updateUI();
     clearSelection();
 }
 
@@ -326,9 +323,6 @@ void MainWindow::cardTapped(CardButton* button){
     }
 
     emit tapCard(card);
-
-    resetCards();
-    updateUI();
     clearSelection();
 
 }
@@ -747,7 +741,6 @@ void MainWindow::updateUI(){
         handlePhase();
 
         update();
-        QCoreApplication::processEvents();
     }
 
     //update Stack
@@ -1133,15 +1126,6 @@ void MainWindow::displayBlockers(QList<Card*> blockers){
         }
         i++;
     }
-}
-
-void MainWindow::resetCards(){
-    if(!activeCards.isEmpty()){
-        for(CardButton* button : activeCards){
-            button->resetCard();
-        }
-    }
-    repaint();
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {

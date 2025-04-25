@@ -373,8 +373,6 @@ private:
 
     CardButton* createCardButton(Card* card, bool player);
 
-    void resetCards();
-
     //For mana zone
     /**
      * Use to show and update mana of the player
