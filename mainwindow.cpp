@@ -104,10 +104,9 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
 
     connect(ui->playCardButton, &QPushButton::clicked, this, &MainWindow::onPlayCardButtonClicked);
 
-    //update Icon for zones
-    ui->enemyHealthIcon->setGeometry(ui->playerHealthIcon->geometry());
-    ui->enemyHealthIcon->setPixmap(QPixmap(":/Icons/Icons/hp.jpg"));
-    ui->enemyHealthIcon->setScaledContents(true);
+    ui->EnemyHealthIcon->setGeometry(ui->playerHealthIcon->geometry());
+    ui->EnemyHealthIcon->setPixmap(QPixmap(":/Icons/Icons/hp.jpg"));
+    ui->EnemyHealthIcon->setScaledContents(true);
     ui->playerHealthIcon->setPixmap(QPixmap(":/Icons/Icons/hp.jpg"));
     ui->playerHealthIcon->setScaledContents(true);
     // ui->playerDeck->setFixedSize(100,140);
@@ -733,7 +732,7 @@ void MainWindow::updateUI(){
         layout.phaseLabel->setText(QString("Phase: ") + phaseTypeToString(statePointer->currentPhase));
 
         // Set Active Player Label
-        layout.activePlayerLabel->setText(QString(statePointer->player1->isActivePlayer ? "You are" : "The enemy is") + " the active player");
+        layout.activePlayerLabel->setText(QString(statePointer->player1->isActivePlayer ? "You are " : "The enemy is\n") + "the active player");
         layout.activePlayerLabel->setStyleSheet(statePointer->player1->isActivePlayer
                                                     ? "QLabel { color : green; }"
                                                     : "QLabel { color : red; }");
@@ -766,7 +765,7 @@ void MainWindow::updateUI(){
     layout.phaseLabel->setText(QString("Phase: ") + phaseTypeToString(statePointer->currentPhase));
 
     // Set Active Player Label
-    layout.activePlayerLabel->setText(QString(statePointer->player1->isActivePlayer ? "You are" : "The enemy is") + " the active player");
+    layout.activePlayerLabel->setText(QString(statePointer->player1->isActivePlayer ? "You are " : "The enemy is\n") + "the active player");
 
     handlePhase();
 

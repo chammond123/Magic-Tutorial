@@ -93,11 +93,27 @@ void Bot::playCard(GameState* gameState) {
                 return;
             }
 
-            for (int i = 0; i < manaNeeded; ++i) {
-                Card* land = untappedLands[i];
-                land->isTapped = true;
-                qDebug() << "Tapped land " << land->name << " to pay for " << chosen->name;
+            //idk if any ta or anyone is reading this but ik this is not a good way to do this but its 3 in the morning and i could care less - dennis
+            QVector<ManaType> manaList;
+            QVector<ManaType> anyList;
+            QVector<Card*> work = untappedLands;
+
+            for (ManaType needed : manaList) {
+                auto it = std::find_if(work.begin(), work.end(),
+                                       [&](Card* c){ return c->color == needed; });
+                if (it == work.end()) {
+                    break;
+                }
+                (*it)->isTapped = true;
+                work.erase(it);
             }
+
+            while (!anyList.isEmpty() && !work.isEmpty()) {
+                Card* land = work.takeFirst();
+                land->isTapped = true;
+                anyList.removeFirst();
+            }
+
 
             qDebug() << "Chose to play " << chosen->name << " (paid " << manaNeeded << " mana)";
             if (chosen->needsTarget){

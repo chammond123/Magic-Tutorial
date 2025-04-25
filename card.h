@@ -47,7 +47,7 @@ public:
     bool isTapped;
     bool isPermanent;
     bool isLand;
-    bool hasSummoningSickness;
+    bool hasSummoningSickness = true;
     bool isCountered = false;
     QString flavorText;
     bool needsTarget = false;

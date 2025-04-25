@@ -351,12 +351,7 @@ void GameState::validatePlayerActions(Player* player){
     player->canPassPriority = false;
     player->canChangePhase = false;
     qDebug() << "active player check:";
-    // qDebug() << player->isActivePlayer;
-    // qDebug() << player->holdingPriority;
-    // qDebug() << theStack.empty();
-    // if (player->isActivePlayer && player->hasntDrawnForTurn){
-    //     player->canDrawCard = true;
-    // }
+
     if (player->holdingPriority){
         player->canPassPriority = true;
     }

@@ -23,6 +23,9 @@ void playCardCommand::execute(){
     }
     else{
         player->useMana(card);
+        if (card->name.toLower() == "divination" or card->name.toLower() == "fervor"){
+            target = state->getPriorityPlayer();
+        }
         state->addToStack(StackObject{state->getPriorityPlayer(), card, target});
         card->isOnStack = true;
     }
