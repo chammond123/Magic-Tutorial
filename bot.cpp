@@ -2,6 +2,7 @@
 #include "gamestate.h"
 #include "command.h"
 #include <QDebug>
+#include <QTimer>
 
 Bot::Bot(QStringList deckList) : Player(deckList) {
     hasSummoningSickness = true;
@@ -11,35 +12,37 @@ Bot::Bot(QStringList deckList) : Player(deckList) {
 }
 
 void Bot::takeTurn(GameState* gameState) {
-    switch (gameState->currentPhase) {
-    case Phase::PreCombatMain:
-        playCard(gameState);
-        passPriority(gameState);
-        break;
-    case Phase::DeclareAttackers:
-        declareAttackers(gameState);
-        changePhase(gameState);
-        break;
-    case Phase::DeclareBlockers:
-        declareBlockers(gameState);
-        changePhase(gameState);
-        break;
-    case Phase::PostCombatMain:
-        playCard(gameState);
-        passPriority(gameState);
-        break;
-    case Phase::EndStep:
-        endTurn(gameState);
-        passPriority(gameState);
-        break;
-    default:
-        // Any other phase has no special actions to auto take
-        if (this->isActivePlayer) {
+    QTimer::singleShot(3000, this, [this, gameState]() {
+        switch (gameState->currentPhase) {
+        case Phase::PreCombatMain:
+            playCard(gameState);
+            passPriority(gameState);
+            break;
+        case Phase::DeclareAttackers:
+            declareAttackers(gameState);
             changePhase(gameState);
+            break;
+        case Phase::DeclareBlockers:
+            declareBlockers(gameState);
+            changePhase(gameState);
+            break;
+        case Phase::PostCombatMain:
+            playCard(gameState);
+            passPriority(gameState);
+            break;
+        case Phase::EndStep:
+            endTurn(gameState);
+            passPriority(gameState);
+            break;
+        default:
+            // Any other phase has no special actions to auto take
+            if (this->isActivePlayer) {
+                changePhase(gameState);
+            }
+            passPriority(gameState);
+            break;
         }
-        passPriority(gameState);
-        break;
-    }
+    });
 }
 
 void Bot::playCard(GameState* gameState) {
