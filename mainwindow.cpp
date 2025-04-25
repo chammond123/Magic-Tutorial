@@ -756,45 +756,7 @@ void MainWindow::updateUI(){
 
     clearSelection();
 
-    if(statePointer->currentPhase == Phase::DeclareAttackers){
-        if(userPlayer->isActivePlayer){
-            ui->playCardButton->setText("Declare Attackers");
-            ui->playCardButton->setEnabled(true);
-            // ui->priorityButton->hide();
-        }
-        else {
-            ui->playCardButton->setText("Enemy Declaring...");
-            ui->playCardButton->setDisabled(true);
-            // ui->priorityButton->hide();
-            if(userPlayer->holdingPriority){
-                statePointer->changePhase();
-                updateUI();
-            }
-        }
-    }
-    else if(statePointer->currentPhase == Phase::DeclareBlockers){
 
-        if(!userPlayer->isActivePlayer){
-            ui->playCardButton->setText("Declare Blockers");
-            ui->playCardButton->setEnabled(true);
-            ui->priorityButton->setDisabled(true);
-            // ui->priorityButton->hide();
-        }
-        else {
-            ui->playCardButton->setText("Enemy Declaring...");
-            ui->playCardButton->setDisabled(true);
-            // ui->priorityButton->hide();
-            if(userPlayer->holdingPriority){
-                statePointer->changePhase();
-                updateUI();
-            }
-        }
-    }
-    else {
-        ui->playCardButton->setText("Play");
-        ui->playCardButton->setEnabled(true);
-        ui->priorityButton->show();
-    }
     update();
     qDebug() << "updateUI has finished";
 }
@@ -945,6 +907,46 @@ void MainWindow::handlePhase(){
         QWidget* widget = item->widget();
         CardButton* button = qobject_cast<CardButton*>(widget);
         button->enableCard(false);
+    }
+
+    if(statePointer->currentPhase == Phase::DeclareAttackers){
+        if(userPlayer->isActivePlayer){
+            ui->playCardButton->setText("Declare Attackers");
+            ui->playCardButton->setEnabled(true);
+            // ui->priorityButton->hide();
+        }
+        else {
+            ui->playCardButton->setText("Enemy Declaring...");
+            ui->playCardButton->setDisabled(true);
+            // ui->priorityButton->hide();
+            if(userPlayer->holdingPriority){
+                statePointer->changePhase();
+                updateUI();
+            }
+        }
+    }
+    else if(statePointer->currentPhase == Phase::DeclareBlockers){
+
+        if(!userPlayer->isActivePlayer){
+            ui->playCardButton->setText("Declare Blockers");
+            ui->playCardButton->setEnabled(true);
+            ui->priorityButton->setDisabled(true);
+            // ui->priorityButton->hide();
+        }
+        else {
+            ui->playCardButton->setText("Enemy Declaring...");
+            ui->playCardButton->setDisabled(true);
+            // ui->priorityButton->hide();
+            if(userPlayer->holdingPriority){
+                statePointer->changePhase();
+                updateUI();
+            }
+        }
+    }
+    else {
+        ui->playCardButton->setText("Play");
+        ui->playCardButton->setEnabled(true);
+        ui->priorityButton->show();
     }
 }
 
@@ -1099,6 +1101,7 @@ void MainWindow::displayBlockers(QList<Card*> blockers){
         for(CardButton* button : activeCards){
             if(card == button->cardPtr){
                 QPixmap newIcon = button->getOverlayedPixmap(i, Qt::red);
+                button->setIcon(QIcon(newIcon));
             }
         }
         i++;

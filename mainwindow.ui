@@ -388,7 +388,7 @@ QPushButton:disabled {
        <x>230</x>
        <y>170</y>
        <width>711</width>
-       <height>102</height>
+       <height>41</height>
       </rect>
      </property>
      <layout class="QHBoxLayout" name="EnemyMana">
@@ -459,7 +459,7 @@ QPushButton:disabled {
      <property name="geometry">
       <rect>
        <x>230</x>
-       <y>230</y>
+       <y>220</y>
        <width>711</width>
        <height>31</height>
       </rect>

@@ -141,28 +141,17 @@ void Bot::declareAttackers(GameState* gameState) {
     gameState->attackers = combatCreatures.keys();
     emit UiDeclareAttackers(combatCreatures.keys());
 
-    if (!combatCreatures.isEmpty()) {
-
-        declareCombatCommand cmd(gameState, combatCreatures);
-        cmd.execute();
-    }
     if (this->isActivePlayer) {
         changePhase(gameState);
     }
 }
 
 void Bot::declareBlockers(GameState* gameState) {
-    changePhase(gameState);
-    return;
+
     Player* attacker = gameState->player1;
     QMap<Card*, QVector<Card*>> combatCreatures;
 
     QList<Card*> attackingCreatures = gameState->attackers;
-    for (Card* card : attacker->Battlefield) {
-        if (card->type == CardType::CREATURE) {
-            attackingCreatures.append(card);
-        }
-    }
 
     if (attackingCreatures.isEmpty()) {
         emit UiDeclareCombatants(combatCreatures);
@@ -173,6 +162,7 @@ void Bot::declareBlockers(GameState* gameState) {
     for (Card* card : Battlefield) {
         if (card->type == CardType::CREATURE && !card->isTapped && !card->hasSummoningSickness) {
             availableBlockers.append(card);
+            card->isTapped = true;
         }
     }
 
