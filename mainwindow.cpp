@@ -196,6 +196,8 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
         stopTargeting();
     });
 
+    connect(game, &gamemanager::gameOver, this, &MainWindow::onGameEnded);
+
     connect(ui->phaseButton, &QPushButton::clicked, game, &gamemanager::onChangePhase);
     connect(ui->priorityButton, &QPushButton::clicked, game, &gamemanager::onPassPriority);
 
@@ -998,18 +1000,14 @@ void MainWindow::onGameEnded(bool playerWon) {
     endView = new QGraphicsView(endScene, this);
     endView->setGeometry(this->rect());
     endView->setStyleSheet("background: transparent;");
-    // endView->setFrameShape(QFrame::NoFrame);
-    // endView->setSceneRect(0, 0, width(), height());
-    // endView->setAttribute(Qt::WA_TransparentForMouseEvents);
     endView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     endView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     endView->show();
 
-    // 3. Spawn cards from the center and push outward
     for (int i = 0; i < 30; ++i) {
         QPixmap pix(":/Icons/Icons/BackCard.png");
         QGraphicsPixmapItem* card = endScene->addPixmap(pix.scaled(60, 90));
-        card->setOffset(-30, -45);  // center origin
+        card->setOffset(-30, -45);
         card->setPos(width() / 2, height() / 2);
 
         b2BodyDef def;
@@ -1036,7 +1034,6 @@ void MainWindow::onGameEnded(bool playerWon) {
         endfallingCards.append(qMakePair(card, body));
     }
 
-    // Message
     QLabel* label = new QLabel(this);
     label->setText(playerWon ? "🎉 You Win! 🎉" : "😞 You Lose 😞");
     label->setStyleSheet("color: white; background-color: rgba(0,0,0,180); font-size: 28px; padding: 20px; border-radius: 10px;");
