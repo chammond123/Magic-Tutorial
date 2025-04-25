@@ -216,7 +216,6 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     connect(ui->tapButton, &QPushButton::clicked, this, &MainWindow::cardBeingTapped);
 
     QTimer::singleShot(100, this, [=](){
-        qDebug() << "SETUP CALLED";
         setupHand();
     });
 
@@ -232,7 +231,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
         connect(botEnemy, &Bot::UiDeclareAttackers, this, &MainWindow::botDeclareAttackers);
         connect(botEnemy, &Bot::showBlockers, this, &MainWindow::displayBlockers);
     } else {
-        qDebug() << "Enemy player is not a Bot!";
+
     }
     connect(ui->GameTipsCheckBox, &QCheckBox::toggled, game, &gamemanager::onToggleGameTips);
 }
@@ -245,7 +244,6 @@ MainWindow::~MainWindow() {
 void MainWindow::setupHand(){
 
     if(userPlayer){
-        qDebug() << "Found User!";
     }
     else {
         return;
@@ -313,7 +311,6 @@ void MainWindow::cardBeingTapped(){
     emit tapCard(currentSelectedCard->cardPtr);
 
     card->isTapped = true;
-    qDebug() << "tapped card";
 
     clearSelection();
 }
@@ -345,12 +342,8 @@ void MainWindow::showLandPopup(ManaType manaType, ZoneLayout zoneLayout){
     QWidget* container = new QWidget();
     QVBoxLayout* layout = new QVBoxLayout(container);
 
-    qDebug() << "Mana stack size:" << zoneLayout.landGroups->value(manaType).size();
-    qDebug() << manaTypeToString(manaType);
-
     for (CardButton* land : zoneLayout.landGroups->value(manaType)) {
         layout->addWidget(land);
-        qDebug() << "added";
     }
 
     container->setLayout(layout);
@@ -466,8 +459,6 @@ void MainWindow::handleCardSelected(CardButton* clicked) {
 
         }
     }
-
-    qDebug() << clicked->cardName << " is Checked: " << clicked->isChecked();
 }
 
 void MainWindow::updateMagnifier(Card* card) {
@@ -511,8 +502,6 @@ void MainWindow::updateMagnifier(Card* card) {
 
     info += "<hr>";
     info += "<b>Ability:</b><br>" + cardFromDictionary.description;
-
-    qDebug() << cardFromDictionary.flavorText;
     info += "<hr>";
     if (!cardFromDictionary.flavorText.isEmpty()) {
         info += "<br><i style='color:gray'>" + cardFromDictionary.flavorText + "</i>";
@@ -581,7 +570,6 @@ void MainWindow::botDeclareAttackers(QList<Card*> attackers){
 }
 
 void MainWindow::collectBlockers(){
-    qDebug() << "Collecting Blockers";
     QList<Card*> blockers;
 
     if (targetIt == combatants.end() || combatants.isEmpty()){
@@ -630,14 +618,12 @@ void MainWindow::updateUI(){
     userPlayer->addMana(mana);
     enemyPlayer->addMana(mana);
 
-    qDebug() << "updateUI called";
     QVector<Zone*> zones;
     ZoneLayout layout;
     Player* currPlayer;
     bool player;
 
     if(!userPlayer){
-        qDebug() << "NO USER";
         return;
     }
 
@@ -657,7 +643,6 @@ void MainWindow::updateUI(){
             player = false;
         }
         if(!currPlayer){
-            qDebug() << "Lost Player";
             break;
         }
 
@@ -667,7 +652,6 @@ void MainWindow::updateUI(){
         for (Zone* zone : zones){
             if (zone->type == ZoneType::HAND){
                 if(!player){
-                    qDebug() << "updating enemy hand";
                 }
                 updateZone(layout.hand, zone, layout.landGroups, player);
             }
@@ -682,10 +666,6 @@ void MainWindow::updateUI(){
             }
         }
 
-        // update Stack zone
-
-
-        // qDebug() << "update Mana";
         // Set the Mana
         for (auto [color, amount] : currPlayer->manaPool.toStdMap()){
             switch (color) {
@@ -702,8 +682,6 @@ void MainWindow::updateUI(){
             updateManaButton(color, layout);
         }
 
-        qDebug() << "update Health";
-
         // Set the Health
         layout.health->setText(QString::number(currPlayer->health));
 
@@ -717,15 +695,10 @@ void MainWindow::updateUI(){
                                                     ? "QLabel { color : green; }"
                                                     : "QLabel { color : red; }");
 
-        qDebug() << "update Phases";
         handlePhase();
 
         update();
-        qDebug() << "updateUI has finished";
     }
-
-
-    qDebug() << "Player has Prority: " << userPlayer->holdingPriority;
 
     //update Stack
     QVBoxLayout* container = ui->stack;
@@ -752,19 +725,14 @@ void MainWindow::updateUI(){
     // Set Active Player Label
     layout.activePlayerLabel->setText(QString(statePointer->player1->isActivePlayer ? "You are" : "The enemy is") + " the active player");
 
-
-    qDebug() << "update Phases";
     handlePhase();
 
     clearSelection();
 
-
     update();
-    qDebug() << "updateUI has finished";
 }
 
 void MainWindow::updateZone(QGridLayout* container, Zone* zone, QMap<ManaType, QList<CardButton *>>* landGroups, bool player){
-    qDebug() << "Updating Zone";
     if (container == nullptr){
         return;
     }
@@ -799,7 +767,6 @@ void MainWindow::updateZone(QGridLayout* container, Zone* zone, QMap<ManaType, Q
 
 void MainWindow::updateDeck(Zone* zone, QString title, QPushButton *deckButton){
     if(!zone){
-        qDebug() << "Zone Not Found";
         return;
     }
 
@@ -842,8 +809,6 @@ void MainWindow::showCollection(QString title){
     QWidget* container = new QWidget();
     QVBoxLayout* layout = new QVBoxLayout(container);
 
-    qDebug() << "Collection size: " << containerCards[title].size();
-
     for (CardButton* card : containerCards[title]) {
         layout->addWidget(card);
         card->enableCard(false);
@@ -861,8 +826,6 @@ void MainWindow::showCollection(QString title){
 }
 
 void MainWindow::clearSelection(){
-    // qDebug() << "clearing Selection";
-
     selectedButtons.clear();
     currentSelectedCard = nullptr;
 
@@ -876,9 +839,8 @@ void MainWindow::clearSelection(){
 void MainWindow::extractCombatants(){
 
     if(combatants.isEmpty() || statePointer->attackers.isEmpty()){
-        qDebug() << "Combatants were Empty";
-        // emit sendCombatCards(combatants);
-        // return;
+        emit sendCombatCards(combatants);
+        return;
     }
 
     emit sendCombatCards(combatants);
@@ -900,7 +862,6 @@ void MainWindow::handlePhase(){
         button->enableCard(card->shouldEnable);
         ui->priorityButton->setEnabled(statePointer->player1->canPassPriority);
         ui->phaseButton->setEnabled(statePointer->player1->canChangePhase);
-        // update();
     }
 
     // Disable Enemy Hand

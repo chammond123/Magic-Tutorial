@@ -86,7 +86,7 @@ void CardButton::resetCard(){
 
 void CardButton::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
-        emit cardSelected(this); // let MainWindow handle exclusive selection
+        emit cardSelected(this);
         qDebug() << "left click called";
     }
     else if (event->button() == Qt::RightButton){
@@ -94,7 +94,6 @@ void CardButton::mousePressEvent(QMouseEvent* event) {
         emit cardTapped();
         qDebug() << "right click called";
     }
-    // QPushButton::mousePressEvent(event);
 }
 
 void CardButton::enterEvent(QEnterEvent* event) {
@@ -165,12 +164,6 @@ void CardButton::enableCard(bool enabled){
 
     if(enabled){
         resetCard();
-        //        this->setStyleSheet(R"(
-        // 	QPushButton {
-        //        	border: 3px solid yellow;
-        //        	border-radius: 7px;
-        // 	}
-        // )");
     } else {
         if(isBack){
             backCard();
