@@ -938,6 +938,14 @@ void MainWindow::handlePhase(){
         ui->phaseButton->setEnabled(statePointer->player1->canChangePhase);
         // update();
     }
+
+    // Disable Enemy Hand
+    for (int i = 0; i < ui->enemyBattlefield->count(); i ++){
+        QLayoutItem* item = ui->enemyBattlefield->itemAt(i);
+        QWidget* widget = item->widget();
+        CardButton* button = qobject_cast<CardButton*>(widget);
+        button->enableCard(false);
+    }
 }
 
 void MainWindow::startTargeting(Card *sourceCard){

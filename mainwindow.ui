@@ -40,32 +40,6 @@
      </property>
      <layout class="QGridLayout" name="playerHand"/>
     </widget>
-    <widget class="QPushButton" name="playCardButton">
-     <property name="geometry">
-      <rect>
-       <x>710</x>
-       <y>110</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Play</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="priorityButton">
-     <property name="geometry">
-      <rect>
-       <x>720</x>
-       <y>10</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Pass Priority</string>
-     </property>
-    </widget>
     <widget class="QWidget" name="verticalLayoutWidget_3">
      <property name="geometry">
       <rect>
@@ -171,37 +145,11 @@
       </item>
      </layout>
     </widget>
-    <widget class="QPushButton" name="phaseButton">
-     <property name="geometry">
-      <rect>
-       <x>720</x>
-       <y>50</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Next Phase</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="tapButton">
-     <property name="geometry">
-      <rect>
-       <x>720</x>
-       <y>90</y>
-       <width>101</width>
-       <height>32</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Tap Card</string>
-     </property>
-    </widget>
     <widget class="QWidget" name="horizontalLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>730</x>
-       <y>190</y>
+       <x>720</x>
+       <y>180</y>
        <width>111</width>
        <height>61</height>
       </rect>
@@ -296,6 +244,103 @@ font-family: &quot;Segoe UI&quot;, sans-serif;
       </item>
      </layout>
     </widget>
+    <widget class="QWidget" name="verticalLayoutWidget_6">
+     <property name="geometry">
+      <rect>
+       <x>720</x>
+       <y>10</y>
+       <width>112</width>
+       <height>161</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>4</number>
+      </property>
+      <property name="sizeConstraint">
+       <enum>QLayout::SizeConstraint::SetFixedSize</enum>
+      </property>
+      <item>
+       <widget class="QPushButton" name="priorityButton">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>35</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 174, 35);
+border-color: rgb(0, 0, 255);
+font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+        </property>
+        <property name="text">
+         <string>Pass Priority</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="phaseButton">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>35</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 174, 35);
+border-color: rgb(255, 174, 35);
+font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+        </property>
+        <property name="text">
+         <string>Next Phase</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="tapButton">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>35</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(0, 170, 255);
+border-color: rgb(0, 0, 255);
+font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+
+</string>
+        </property>
+        <property name="text">
+         <string>Tap Card</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="playCardButton">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>35</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(0, 170, 0);
+font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);</string>
+        </property>
+        <property name="text">
+         <string>Play</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </widget>
    <widget class="QFrame" name="enemyContainer">
     <property name="geometry">
@@ -383,7 +428,31 @@ font-family: &quot;Segoe UI&quot;, sans-serif;
        <height>171</height>
       </rect>
      </property>
-     <layout class="QGridLayout" name="enemyHand"/>
+     <layout class="QGridLayout" name="enemyHand">
+      <item row="0" column="0">
+       <widget class="QPushButton" name="enemyTargetButton">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>100</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 0, 0 );
+border-color: rgb(170, 0, 0);
+font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+        </property>
+        <property name="text">
+         <string>Target Enemy</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
     <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
@@ -483,34 +552,12 @@ font-family: &quot;Segoe UI&quot;, sans-serif;
       </item>
      </layout>
     </widget>
-    <widget class="QPushButton" name="enemyTargetButton">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>130</x>
-       <y>140</y>
-       <width>101</width>
-       <height>100</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>50</width>
-       <height>100</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>Target Enemy</string>
-     </property>
-    </widget>
     <widget class="QWidget" name="horizontalLayoutWidget_3">
      <property name="geometry">
       <rect>
        <x>120</x>
        <y>0</y>
-       <width>251</width>
+       <width>111</width>
        <height>61</height>
       </rect>
      </property>
@@ -742,7 +789,7 @@ font-family: &quot;Segoe UI&quot;, sans-serif;
      <x>0</x>
      <y>0</y>
      <width>1550</width>
-     <height>22</height>
+     <height>17</height>
     </rect>
    </property>
   </widget>
