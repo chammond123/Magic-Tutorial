@@ -199,11 +199,11 @@ void GameState::resolveStack(){
             else if(std::holds_alternative<Card*>(stackObject.target)){
                 Card* c = get<Card*>(stackObject.target);
                 if (stackObject.card->isCountered){
-                    if (player1->Hand.findCard(c)){
-                        player1->moveCardString(c, "hand", "graveyard", true);
+                    if (player1->Hand.findCard(stackObject.card)){
+                        player1->moveCardString(stackObject.card, "hand", "graveyard", true);
                     }
                     else{
-                        player2->moveCardString(c, "hand", "graveyard", true);
+                        player2->moveCardString(stackObject.card, "hand", "graveyard", true);
                     }
                 }
                 else{
