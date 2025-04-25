@@ -194,9 +194,12 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     connect(ui->phaseButton, &QPushButton::clicked, game, &gamemanager::onChangePhase);
     connect(ui->priorityButton, &QPushButton::clicked, game, &gamemanager::onPassPriority);
 
-    connect(this, &MainWindow::displayFirstTip, game, &gamemanager::displayPhaseTip);
+    connect(this, &MainWindow::displayGameTip, game, &gamemanager::displayPhaseTip);
 
     connect(game, &gamemanager::updateUI, this, &MainWindow::updateUI);
+
+    connect(game, &gamemanager::requestMainWindowPos, this, &MainWindow::getMainWindowPos);
+    connect(this, &MainWindow::updateMainWindowPos, game, &gamemanager::onReceiveMainWindowPos);
 
     connect(game, &gamemanager::promptTargeting, this, &MainWindow::startTargeting);
 
@@ -240,7 +243,7 @@ void MainWindow::setupHand(){
     }
 
     updateUI();
-    emit displayFirstTip();
+    emit displayGameTip();
 }
 
 QString MainWindow::manaTypeToString(ManaType type) {
@@ -362,6 +365,13 @@ bool MainWindow::promptForMana(Card* card){
     else{
         return false;
     }
+}
+
+void MainWindow::getMainWindowPos(){
+    emit updateMainWindowPos(static_cast<int>(this->geometry().left()),
+                             static_cast<int>(this->geometry().right()),
+                             static_cast<int>(this->geometry().top()),
+                             static_cast<int>(this->geometry().bottom()));
 }
 
 void MainWindow::onPlayCardButtonClicked(){
@@ -778,8 +788,6 @@ void MainWindow::updateUI(){
         ui->playCardButton->setEnabled(true);
         ui->priorityButton->show();
     }
-
-
     update();
     qDebug() << "updateUI has finished";
 }

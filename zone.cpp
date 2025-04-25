@@ -42,6 +42,15 @@ bool Zone::findCard(Card* card) {
     return cards.contains(card);
 }
 
+bool Zone::containsType(CardType t){
+    for (Card* c : cards){
+        if (c->type == t){
+            return true;
+        }
+    }
+    return false;
+}
+
 Card* Zone::drawTop() {
     if (cards.isEmpty()){
         return nullptr;
