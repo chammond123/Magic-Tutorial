@@ -106,7 +106,7 @@ void Bot::playCard(GameState* gameState) {
         }
     }
 
-    if (this->isActivePlayer && !gameState->player1->madeAction) {
+    if (this->isActivePlayer && !gameState->player1->madeAction && gameState->theStack.empty()) {
         changePhase(gameState);
     }
 }

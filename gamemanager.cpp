@@ -217,7 +217,7 @@ void gamemanager::onPassPriority(){
         emit gameOver(false);
     }
     else if (state->player2->health <= 0){
-        emit gameOver(false);
+        emit gameOver(true);
     }
 }
 
