@@ -55,7 +55,7 @@
         <item>
          <widget class="QPushButton" name="playerWhiteIcon">
           <property name="styleSheet">
-           <string notr="true">background-color: #ECECEC;
+           <string notr="true">background-color: #FFFFE0;
 border-color: rgb(0, 0, 255);
 font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
@@ -69,7 +69,7 @@ color: rgb(0, 0, 0);
         <item>
          <widget class="QPushButton" name="playerBlueIcon">
           <property name="styleSheet">
-           <string notr="true">background-color: #ECECEC;
+           <string notr="true">background-color: #ADD8E6;
 border-color: rgb(0, 0, 255);
 font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
@@ -83,7 +83,7 @@ color: rgb(0, 0, 0);
         <item>
          <widget class="QPushButton" name="playerRedIcon">
           <property name="styleSheet">
-           <string notr="true">background-color: #ECECEC;
+           <string notr="true">background-color: #FF7F7F;
 border-color: rgb(0, 0, 255);
 font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
@@ -97,7 +97,7 @@ color: rgb(0, 0, 0);
         <item>
          <widget class="QPushButton" name="playerGreenIcon">
           <property name="styleSheet">
-           <string notr="true">background-color: #ECECEC;
+           <string notr="true">background-color: #88E788;
 border-color: rgb(0, 0, 255);
 font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
@@ -111,7 +111,7 @@ color: rgb(0, 0, 0);
         <item>
          <widget class="QPushButton" name="playerBlackIcon">
           <property name="styleSheet">
-           <string notr="true">background-color: #ECECEC;
+           <string notr="true">background-color: #737270;
 border-color: rgb(0, 0, 255);
 font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
@@ -344,7 +344,7 @@ color: rgb(0, 0, 0);
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-background-color: #ECECEC;
+background-color: rgb(254, 241, 189);
 border-color: rgb(0, 0, 255);
 font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
@@ -370,7 +370,7 @@ QPushButton:disabled {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-background-color: #ECECEC;
+background-color: rgb(254, 241, 189);
 border-color: rgb(0, 0, 255);
 font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
@@ -396,7 +396,7 @@ QPushButton:disabled {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-background-color: #ECECEC;
+background-color: rgb(195, 223, 242);
 border-color: rgb(0, 0, 255);
 font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
@@ -422,7 +422,7 @@ QPushButton:disabled {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-background-color: #ECECEC;
+background-color: rgb(205, 237, 208);
 border-color: rgb(0, 0, 255);
 font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
@@ -567,8 +567,11 @@ color: rgb(0, 0, 0);
       <item>
        <widget class="QPushButton" name="enemyWhiteIcon">
         <property name="styleSheet">
-         <string notr="true">font: 9pt &quot;Verdana&quot;;
-background-color: #ECECEC;</string>
+         <string notr="true">background-color: #FFFFE0;
+border-color: rgb(0, 0, 255);
+font: 9pt &quot;Verdana&quot;;
+color: rgb(0, 0, 0);
+</string>
         </property>
         <property name="text">
          <string/>
@@ -578,8 +581,11 @@ background-color: #ECECEC;</string>
       <item>
        <widget class="QPushButton" name="enemyBlueIcon">
         <property name="styleSheet">
-         <string notr="true">font: 9pt &quot;Verdana&quot;;
-background-color: #ECECEC;</string>
+         <string notr="true">background-color: #ADD8E6;
+border-color: rgb(0, 0, 255);
+font: 9pt &quot;Verdana&quot;;
+color: rgb(0, 0, 0);
+</string>
         </property>
         <property name="text">
          <string/>
@@ -589,8 +595,11 @@ background-color: #ECECEC;</string>
       <item>
        <widget class="QPushButton" name="enemyRedIcon">
         <property name="styleSheet">
-         <string notr="true">font: 9pt &quot;Verdana&quot;;
-background-color: #ECECEC;</string>
+         <string notr="true">background-color: #FF7F7F;
+border-color: rgb(0, 0, 255);
+font: 9pt &quot;Verdana&quot;;
+color: rgb(0, 0, 0);
+</string>
         </property>
         <property name="text">
          <string/>
@@ -600,8 +609,11 @@ background-color: #ECECEC;</string>
       <item>
        <widget class="QPushButton" name="enemyGreenIcon">
         <property name="styleSheet">
-         <string notr="true">font: 9pt &quot;Verdana&quot;;
-background-color: #ECECEC;</string>
+         <string notr="true">background-color: #88E788;
+border-color: rgb(0, 0, 255);
+font: 9pt &quot;Verdana&quot;;
+color: rgb(0, 0, 0);
+</string>
         </property>
         <property name="text">
          <string/>
@@ -611,8 +623,11 @@ background-color: #ECECEC;</string>
       <item>
        <widget class="QPushButton" name="enemyBlackIcon">
         <property name="styleSheet">
-         <string notr="true">font: 9pt &quot;Verdana&quot;;
-background-color: #ECECEC;</string>
+         <string notr="true">background-color: #737270;
+border-color: rgb(0, 0, 255);
+font: 9pt &quot;Verdana&quot;;
+color: rgb(0, 0, 0);
+</string>
         </property>
         <property name="text">
          <string/>
