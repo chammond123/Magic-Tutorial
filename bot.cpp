@@ -1,7 +1,6 @@
 #include "bot.h"
 #include "gamestate.h"
 #include "command.h"
-#include <QDebug>
 #include <QTimer>
 
 Bot::Bot(QStringList deckList) : Player(deckList) {

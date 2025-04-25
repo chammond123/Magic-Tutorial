@@ -984,6 +984,19 @@ background-color: #ECECEC;</string>
      </layout>
     </widget>
    </widget>
+   <widget class="QPushButton" name="winButton">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>830</y>
+      <width>83</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Win</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -991,7 +1004,7 @@ background-color: #ECECEC;</string>
      <x>0</x>
      <y>0</y>
      <width>1550</width>
-     <height>22</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>

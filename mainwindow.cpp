@@ -91,6 +91,9 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
         &enemyLandGroups
     };
 
+    connect(ui->winButton, &QPushButton::clicked,this, [=]() {
+        onGameEnded(true);
+    });
 
     connect(apiManager, &CardAPIManager::errorOccurred, this, [](const QString &error) {
     });

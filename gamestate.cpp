@@ -88,13 +88,11 @@ void GameState::changePriority(){
         player1->madeAction = false;
         player2->holdingPriority = true;
         player1->holdingPriority = false;
-        qDebug() << "Player 1 passed priority to Player 2.";
     }
     else{
         player2->madeAction = false;
         player1->holdingPriority = true;
         player2->holdingPriority = false;
-        qDebug() << "Player 2 passed priority to Player 1.";
     }
 }
 
@@ -187,7 +185,6 @@ void GameState::resolveStack(){
                 else{
                     stackObject.card->ability.use(c);
                 }
-                qDebug() << c->currHealth;
                 if(c->currHealth <= 0){
                     if (player1->Battlefield.findCard(c)){
                         player1->moveCardString(c, "battlefield", "graveyard", true);
@@ -264,7 +261,6 @@ PhaseRules GameState::getPhaseRules(){
         // Player discards excess cards
         break;
     default:
-        qDebug() << "Warning: Unhandled phase in getPhaseRules!";
         return PhaseRules{}; // return default (all false)
     }
 }
@@ -333,7 +329,6 @@ void GameState::validatePlayerActions(Player* player){
     player->canDrawCard = false;
     player->canPassPriority = false;
     player->canChangePhase = false;
-    qDebug() << "active player check:";
 
     if (player->holdingPriority){
         player->canPassPriority = true;

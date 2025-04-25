@@ -1,11 +1,9 @@
 #include "textparser.h"
-#include <QDebug>
 
 QStringList TextParser::getListFromText(QFile file){
     QStringList deckList;
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qDebug() << "Cannot open file:" << file.errorString();
         return deckList;
     }
 
