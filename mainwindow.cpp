@@ -38,13 +38,6 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     userPlayer = statePointer->player1;
     isTargeting = false;
     userPlayer->holdingPriority = true;
-    QMap<ManaType, int>* mana = new QMap<ManaType, int>;
-    (*mana)[ManaType::RED] = 10;
-    (*mana)[ManaType::WHITE] = 10;
-    (*mana)[ManaType::BLUE] = 10;
-    (*mana)[ManaType::GREEN] = 10;
-    (*mana)[ManaType::BLACK] = 10;
-    userPlayer->addMana(mana);
     userPlayer->isActivePlayer = true;
     enemyPlayer = statePointer->player2;
     enemyPlayer->isActivePlayer = false;
