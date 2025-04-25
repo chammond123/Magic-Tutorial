@@ -71,7 +71,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     };
 
     enemyLayout = {
-        nullptr,
+        ui->enemyHand,
         ui->enemyBattlefield,
         ui->enemyGraveyardButton,
         "EnemyGraveyard",
@@ -263,7 +263,7 @@ QString MainWindow::cardTypeToString(CardType type) {
     case CardType::BATTLE:  return "Battle";
     case CardType::INSTANT:  return "Instant";
     case CardType::SORCERY:        return "Sorcery";
-    default:              return "Unknown";
+    default:               return "Unknown";
     }
 }
 
@@ -643,6 +643,9 @@ void MainWindow::updateUI(){
         // Go through all zones and update containers
         for (Zone* zone : zones){
             if (zone->type == ZoneType::HAND){
+                if(!player){
+                    qDebug() << "updating enemy hand";
+                }
                 updateZone(layout.hand, zone, layout.landGroups, player);
             }
             else if (zone->type == ZoneType::BATTLEFIELD){
@@ -794,12 +797,12 @@ void MainWindow::updateZone(QGridLayout* container, Zone* zone, QMap<ManaType, Q
     }
 
     for(Card* card : *zone){
-        CardButton* cardButton = nullptr;
+        CardButton* cardButton = createCardButton(card, player);
         if(!player && zone->type == ZoneType::HAND){
-            cardButton = createCardButton(card, player);
+            qDebug() << "calling back Card";
+            cardButton->backCard();
             cardButton->setDisabled(true);
-        } else {
-            cardButton = createCardButton(card, true);
+            cardButton->allowHover = false;
         }
 
         if(card->type == CardType::LAND && zone->type == ZoneType::BATTLEFIELD){
@@ -1057,7 +1060,7 @@ void MainWindow::updateEndExplosion() {
 }
 
 CardButton* MainWindow::createCardButton(Card* card, bool player){
-    CardButton* cardButton = new CardButton(card, player);
+    CardButton* cardButton = new CardButton(card);
     activeCards.append(cardButton);
 
     if(player){

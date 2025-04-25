@@ -133,7 +133,7 @@ void Bot::declareAttackers(GameState* gameState) {
     //     attackers.append(card);
     // }
     gameState->attackers = combatCreatures.keys();
-    emit UiDeclareAttackers(combatCreatures.keys());
+    // emit UiDeclareAttackers(combatCreatures.keys());
 
     // if (!combatCreatures.isEmpty()) {
 
@@ -159,7 +159,7 @@ void Bot::declareBlockers(GameState* gameState) {
     // }
 
     if (attackingCreatures.isEmpty()) {
-        emit UiDeclareCombatants(combatCreatures);
+        // emit UiDeclareCombatants(combatCreatures);
         return;
     }
 
@@ -187,13 +187,13 @@ void Bot::declareBlockers(GameState* gameState) {
 
                 combatCreatures[attacker].append(blocker);
                 availableBlockers.removeAt(i);
-                emit showBlockers(combatCreatures[attacker]);
+                // emit showBlockers(combatCreatures[attacker]);
                 break;
             }
         }
     }
 
-    emit UiDeclareCombatants(combatCreatures);
+    // emit UiDeclareCombatants(combatCreatures);
     // if (!combatCreatures.isEmpty()) {
     //     emit UiDeclareCombatants(combatCreatures);
     //     // cmd.execute();

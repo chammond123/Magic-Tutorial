@@ -12,14 +12,17 @@ class CardButton : public QPushButton{
 public:
     Card* cardPtr;
     QString cardName;
+    bool isBack = false;
+    bool allowHover = true;
 
-    explicit CardButton(Card* card, bool player, QWidget* parent = nullptr);
+    explicit CardButton(Card* card, QWidget* parent = nullptr);
 
     QPixmap getOverlayedPixmap(int selectionIndex, QColor color);
+    void backCard();
     void enableCard(bool enabled);
 
 private:
-    // void updateTapped();
+
 
 protected:
     void mousePressEvent(QMouseEvent* event) override;

@@ -8,7 +8,7 @@
 #include <QGraphicsEffect>
 #include <QPainterPath>
 
-CardButton::CardButton(Card* card, bool player, QWidget* parent)
+CardButton::CardButton(Card* card, QWidget* parent)
     : QPushButton(parent), cardPtr(card) {
     cardName = card->name;
 
@@ -23,13 +23,7 @@ CardButton::CardButton(Card* card, bool player, QWidget* parent)
         border-radius: 5px;
     }
 )");
-    QImage baseImage;
-    if(player){
-        baseImage = card->image;
-    }
-    else{
-        baseImage = QImage(":/Icons/Icons/BackCard.png");
-    }
+    QImage baseImage = cardPtr->image;
 
     if (card->isTapped) {
         // Create a darkened copy of the image
@@ -55,10 +49,19 @@ CardButton::CardButton(Card* card, bool player, QWidget* parent)
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
+void CardButton::backCard() {
+    qDebug() << "back Card";
+    isBack = true;
+    QImage backImage(":/Icons/Icons/BackCard.png");
+    QPixmap pixmap = QPixmap::fromImage(backImage).scaled(
+        this->size() - QSize(6, 6), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
+    this->setIcon(QIcon(pixmap));
+    this->setIconSize(this->size() - QSize(6, 6));
+    this->setText("");
+}
 
 void CardButton::resetCard(){
-
     if (!cardPtr) {
         qDebug() << "Warning: Attempt to reset card with null cardPtr";
         return;
@@ -69,12 +72,16 @@ void CardButton::resetCard(){
         return;
     }
 
-    QPixmap pixmap = QPixmap::fromImage(cardPtr->image).scaled(
-        this->size() - QSize(6,6), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    if(!isBack){
+        QPixmap pixmap = QPixmap::fromImage(cardPtr->image).scaled(
+            this->size() - QSize(6,6), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
-    this->setIcon(QIcon(pixmap));
-    this->setText("");
-    this->setIconSize(this->size() - QSize(6,6));
+        this->setIcon(QIcon(pixmap));
+        this->setText("");
+        this->setIconSize(this->size() - QSize(6,6));
+    } else {
+        backCard();
+    }
 }
 
 void CardButton::mousePressEvent(QMouseEvent* event) {
@@ -91,17 +98,27 @@ void CardButton::mousePressEvent(QMouseEvent* event) {
 }
 
 void CardButton::enterEvent(QEnterEvent* event) {
+    if (!allowHover) return;
     emit hovered(cardPtr);
     QPushButton::enterEvent(event);
 }
 
 void CardButton::resizeEvent(QResizeEvent* event) {
-    QPushButton::resizeEvent(event); // Call base
+    QPushButton::resizeEvent(event);
 
-    QPixmap pixmap = QPixmap::fromImage(cardPtr->image).scaled(
-        this->size() - QSize(6,6), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    this->setIcon(QIcon(pixmap));
-    this->setIconSize(this->size()- QSize(6,6));
+    if (isBack) {
+        QPixmap pixmap = QPixmap(":/Icons/Icons/BackCard.png").scaled(
+            this->size() - QSize(6, 6), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        this->setIcon(QIcon(pixmap));
+        this->setIconSize(this->size() - QSize(6,6));
+        return;
+    }
+    else{
+        QPixmap pixmap = QPixmap::fromImage(cardPtr->image).scaled(
+            this->size() - QSize(6,6), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        this->setIcon(QIcon(pixmap));
+        this->setIconSize(this->size() - QSize(6,6));
+    }
 }
 
 QPixmap CardButton::getOverlayedPixmap(int selectionIndex, QColor color) {
@@ -155,16 +172,20 @@ void CardButton::enableCard(bool enabled){
         // 	}
         // )");
     } else {
-        QPixmap original = QPixmap::fromImage(cardPtr->image).scaled(
-            this->size() - QSize(6,6), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        if(isBack){
+            backCard();
+        } else {
+            QPixmap original = QPixmap::fromImage(cardPtr->image).scaled(
+                this->size() - QSize(6,6), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
-        QPixmap overlayed = original;
-        QPainter painter(&overlayed);
+            QPixmap overlayed = original;
+            QPainter painter(&overlayed);
 
-        painter.fillRect(overlayed.rect(), QColor(0, 0, 0, 120));
+            painter.fillRect(overlayed.rect(), QColor(0, 0, 0, 120));
 
-        painter.end();
-        this->setIcon(overlayed);
+            painter.end();
+            this->setIcon(overlayed);
+        }
     }
 
     QWidget::setEnabled(enabled);
