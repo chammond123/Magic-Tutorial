@@ -93,6 +93,11 @@
        <layout class="QHBoxLayout" name="playerManaLabel">
         <item>
          <widget class="QLabel" name="playerWhite">
+          <property name="styleSheet">
+           <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+          </property>
           <property name="text">
            <string>White</string>
           </property>
@@ -103,6 +108,11 @@
         </item>
         <item>
          <widget class="QLabel" name="playerBlue">
+          <property name="styleSheet">
+           <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+          </property>
           <property name="text">
            <string>Blue</string>
           </property>
@@ -113,6 +123,11 @@
         </item>
         <item>
          <widget class="QLabel" name="playerRed">
+          <property name="styleSheet">
+           <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+          </property>
           <property name="text">
            <string>Red</string>
           </property>
@@ -123,6 +138,11 @@
         </item>
         <item>
          <widget class="QLabel" name="playerGreen">
+          <property name="styleSheet">
+           <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+          </property>
           <property name="text">
            <string>Green</string>
           </property>
@@ -133,6 +153,11 @@
         </item>
         <item>
          <widget class="QLabel" name="playerBlack">
+          <property name="styleSheet">
+           <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+          </property>
           <property name="text">
            <string>Black</string>
           </property>
@@ -178,7 +203,7 @@
         <property name="styleSheet">
          <string notr="true"> background-color: #ffffff;        
 color: #2c3e50;                    
-font-family: &quot;Segoe UI&quot;, sans-serif; 
+font-family: &quot;Fixedsys&quot;; 
  font-size: 16px;
     font-weight: bold;
     padding: 8px 12px;                  
@@ -217,6 +242,13 @@ font-family: &quot;Segoe UI&quot;, sans-serif;
         <property name="toolTipDuration">
          <number>-2</number>
         </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 200);
+border-color: rgb(0, 0, 255);
+font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+        </property>
         <property name="text">
          <string>Exile</string>
         </property>
@@ -229,6 +261,13 @@ font-family: &quot;Segoe UI&quot;, sans-serif;
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 200);
+border-color: rgb(0, 0, 255);
+font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
         </property>
         <property name="text">
          <string>Graveyard</string>
@@ -249,7 +288,7 @@ font-family: &quot;Segoe UI&quot;, sans-serif;
       <rect>
        <x>720</x>
        <y>10</y>
-       <width>112</width>
+       <width>114</width>
        <height>161</height>
       </rect>
      </property>
@@ -394,6 +433,11 @@ QPushButton:disabled {
      <layout class="QHBoxLayout" name="EnemyMana">
       <item>
        <widget class="QLabel" name="enemyWhite">
+        <property name="styleSheet">
+         <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+        </property>
         <property name="text">
          <string>White</string>
         </property>
@@ -404,6 +448,11 @@ QPushButton:disabled {
       </item>
       <item>
        <widget class="QLabel" name="enemyBlue">
+        <property name="styleSheet">
+         <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+        </property>
         <property name="text">
          <string>Blue</string>
         </property>
@@ -414,6 +463,11 @@ QPushButton:disabled {
       </item>
       <item>
        <widget class="QLabel" name="enemyRed">
+        <property name="styleSheet">
+         <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+        </property>
         <property name="text">
          <string>Red</string>
         </property>
@@ -424,6 +478,11 @@ QPushButton:disabled {
       </item>
       <item>
        <widget class="QLabel" name="enemyGreen">
+        <property name="styleSheet">
+         <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+        </property>
         <property name="text">
          <string>Green</string>
         </property>
@@ -434,6 +493,11 @@ QPushButton:disabled {
       </item>
       <item>
        <widget class="QLabel" name="enemyBlack">
+        <property name="styleSheet">
+         <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+        </property>
         <property name="text">
          <string>Black</string>
         </property>
@@ -527,6 +591,13 @@ QPushButton:disabled {
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 200);
+border-color: rgb(0, 0, 255);
+font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+        </property>
         <property name="text">
          <string>Graveyard</string>
         </property>
@@ -546,6 +617,13 @@ QPushButton:disabled {
         <property name="toolTipDuration">
          <number>-2</number>
         </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 200);
+border-color: rgb(0, 0, 255);
+font: 9pt &quot;Fixedsys&quot;;
+color: rgb(0, 0, 0);
+</string>
+        </property>
         <property name="text">
          <string>Exile</string>
         </property>
@@ -558,7 +636,7 @@ QPushButton:disabled {
       <rect>
        <x>120</x>
        <y>0</y>
-       <width>111</width>
+       <width>251</width>
        <height>61</height>
       </rect>
      </property>
@@ -819,7 +897,7 @@ color: rgb(0, 0, 0);
      <x>0</x>
      <y>0</y>
      <width>1550</width>
-     <height>17</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
