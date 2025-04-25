@@ -25,7 +25,7 @@ TutorialPage::TutorialPage(QWidget *parent) :
             "• Priority and passing priority: A turn-based system that determines who may cast spells or activate abilities. "
             "Each player in turn gets priority and may act, then passes it to the other player. "
             "When both players pass priority without taking an action, the top object on the stack resolves.\n\n"
-            "• The active player: The player whose turn it is. They play lands, cast spells, and receive priority first in each step and phase.\n\n"
+            "• The active player: The player whose turn it is. They can play lands, cast spells, and receive priority first in each step and phase. (Note, you can not play land if you aren't the active player.\n\n"
             "• The stack: A “waiting area” where spells and abilities go before they resolve, operating in last-in, first-out order. "
             "Whenever a player casts a spell or activates an ability, it’s placed on the stack and players get priority to respond before the top object resolves."
         },
