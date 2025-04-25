@@ -53,6 +53,9 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
+
 public:
     /**
      * @brief userPlayer
@@ -132,6 +135,11 @@ public:
 public slots:
 
     /**
+     * @brief goToMainMenu
+     */
+    void goToMainMenu();
+
+    /**
      * @brief handleCardSelected updates which single card is being selected
      * @param clicked is the card that being clicked
      */
@@ -139,6 +147,9 @@ public slots:
 
     void cardTapped(CardButton* button);
 
+    /**
+     * @brief getMainWindowPos
+     */
     void getMainWindowPos();
 
     /**
@@ -209,6 +220,11 @@ public slots:
     void displayBlockers(QList<Card*> blockers);
 
 signals:
+
+    /**
+     * @brief returnToMainMenu
+     */
+    void returnToMainMenu();
 
     /**
      * @brief sendCombatCards is a signal that send combatCards to the backend

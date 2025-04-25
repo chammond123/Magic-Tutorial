@@ -25,10 +25,10 @@ void GameState::changePhase(){
         player2->upkeepPhase();
     }
     else if (currentPhase == Phase::Draw){
-        if (player1->isActivePlayer && turnCount != 1){
+        if (player1->isActivePlayer && turnCount != 0){
             player1->drawCard();
         }
-        else if (player2->isActivePlayer && turnCount != 1){
+        else if (player2->isActivePlayer && turnCount != 0){
             player2->drawCard();
         }
     }
@@ -74,6 +74,7 @@ void GameState::changePhase(){
         player2->endTurn();
 
         changeActivePlayer();
+        turnCount += 1;
         changePhase();
         if (player2->isActivePlayer) {
             Bot* botPlayer = static_cast<Bot*>(player2);
@@ -198,14 +199,20 @@ void GameState::resolveStack(){
             else if(std::holds_alternative<Card*>(stackObject.target)){
                 Card* c = get<Card*>(stackObject.target);
                 if (stackObject.card->isCountered){
-                    stackObject.player->moveCardString(stackObject.card, "hand", "graveyard", true);
+                    // Loser got their spell countered
                 }
                 else{
                     stackObject.card->ability.use(c);
                 }
-                // if(c->currHealth <= 0){
-                //     stackObject.player->moveCardString(stackObject.card, "battlefield", "graveyard", true);
-                // }
+                qDebug() << c->currHealth;
+                if(c->currHealth <= 0){
+                    if (player1->Battlefield.findCard(c)){
+                        player1->moveCardString(c, "battlefield", "graveyard", true);
+                    }
+                    else{
+                        player2->moveCardString(c, "battlefield", "graveyard", true);
+                    }
+                }
             }
         }
         if (!stackObject.card->isCountered){
@@ -216,6 +223,15 @@ void GameState::resolveStack(){
                 stackObject.player->moveCardString(stackObject.card, "hand", "graveyard", true);
             }
         }
+        else{
+            if (player1->Hand.findCard(stackObject.card)){
+                player1->moveCardString(stackObject.card, "hand", "graveyard", true);
+            }
+            else{
+                player2->moveCardString(stackObject.card, "hand", "graveyard", true);
+            }
+        }
+        stackObject.card->isOnStack = false;
     }
 }
 
@@ -287,16 +303,16 @@ Player* GameState::getPriorityPlayer(){
 void GameState::validateHand(Player* player){
     PhaseRules rules = getPhaseRules();
     for (Card* card : player->Hand){
-        if (rules.canPlayInstant && card->type == CardType::INSTANT && player->canPayMana(card)){
+        if (rules.canPlayInstant && card->type == CardType::INSTANT && player->canPayMana(card) && !card->isOnStack){
             card->shouldEnable = true;
         }
-        else if (player->isActivePlayer && rules.canPlaySorcery && card->type == CardType::SORCERY && player->canPayMana(card) && stackIsEmpty()){
+        else if (player->isActivePlayer && rules.canPlaySorcery && card->type == CardType::SORCERY && player->canPayMana(card) && stackIsEmpty() && !card->isOnStack){
             card->shouldEnable = true;
         }
         else if (player->isActivePlayer && rules.canPlaySorcery && card->type == CardType::LAND && stackIsEmpty() && !player->hasPlayedLand){
             card->shouldEnable = true;
         }
-        else if (player->isActivePlayer && rules.canPlaySorcery && stackIsEmpty() && player->canPayMana(card) &&
+        else if (player->isActivePlayer && rules.canPlaySorcery && stackIsEmpty() && player->canPayMana(card) && !card->isOnStack &&
                  (card->type == CardType::CREATURE ||
                   card->type == CardType::ARTIFACT ||
                   card->type == CardType::ENCHANTMENT ||

@@ -1,7 +1,5 @@
 #include "zone.h"
 #include "card.h"
-#include "cardDictionary.h"
-#include <algorithm>
 #include <chrono>
 
 Zone::Zone() {
@@ -22,8 +20,6 @@ iterator Zone::end() { return cards.end(); }
 int Zone::getCount() { return cards.count(); }
 
 void Zone::shuffle() {
-    // std::shuffle(cards.first(), cards.last(), randomEngine);
-    // Create a temporary vector and copy cards
     QVector<Card*> tempVector = cards;
     cards.clear();
 
@@ -72,9 +68,6 @@ void Zone::removeCard(Card* card){
 }
 
 Zone::~Zone() {
-    // for (Card* cardptr : cards) {
-    //     delete cardptr;
-    // }
     cards.clear();
 }
 
