@@ -200,10 +200,6 @@ void Bot::declareBlockers(GameState* gameState) {
     }
 
     emit UiDeclareCombatants(combatCreatures);
-    if (!combatCreatures.isEmpty()) {
-        emit UiDeclareCombatants(combatCreatures);
-        // cmd.execute();
-    }
 }
 
 void Bot::endTurn(GameState* gameState) {
