@@ -29,7 +29,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     ui->CardDescription->setReadOnly(true);
     ui->CardDescription->setFocusPolicy(Qt::NoFocus);
 
-    this->setStyleSheet(QString("QMainWindow { background-image: url(:/Icons/Icons/backgoundv1.png); }"));
+    this->setStyleSheet(QString("QMainWindow { background-image: url(:/Icons/Icons/backgroundv2.png); }"));
 
     apiManager = new CardAPIManager(this);
     statePointer = game->state;
