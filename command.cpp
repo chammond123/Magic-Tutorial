@@ -34,8 +34,6 @@ void playCardCommand::execute(){
 passPriorityCommand::passPriorityCommand(GameState* state) :
     Command(state){}
 void passPriorityCommand::execute(){
-    qDebug() << "Command executed";
-
     if (!state->player1->madeAction && !state->player2->madeAction){
         state->resolveStack();
     }
@@ -51,7 +49,6 @@ void passPriorityCommand::execute(){
 changePhaseCommand::changePhaseCommand(GameState* state) :
     Command(state){}
 void changePhaseCommand::execute(){
-    qDebug() << "Change Phase executed";
     state->changePhase();
 }
 

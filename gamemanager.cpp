@@ -179,7 +179,7 @@ void gamemanager::displayPhaseTip() {
                 break;
 
             default:
-                qDebug() << "Warning: Unhandled phase in getPhaseRules!";
+                qDebug() << "";
             }
 
             if (hasInstant) {
@@ -194,7 +194,6 @@ void gamemanager::displayPhaseTip() {
 // UI Player Commands
 void gamemanager::onPlayCard(Card *card, std::variant<Player*, Card*, std::nullptr_t> target){
     if(!card){
-        qDebug() << "NO CARD";
         return;
     }
 
@@ -209,8 +208,6 @@ void gamemanager::onPlayCard(Card *card, std::variant<Player*, Card*, std::nullp
 }
 
 void gamemanager::onPassPriority(){
-    qDebug() << "Received priority command";
-    // displayTip("This is a test");
     passPriorityCommand cmd = passPriorityCommand(state);
     cmd.execute();
     emit updateUI();

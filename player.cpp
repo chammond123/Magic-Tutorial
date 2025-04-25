@@ -76,7 +76,6 @@ void Player::useMana(Card* card)
 
 void Player::drawCard(int amount)
 {
-    qDebug() << "Drawing Cards!";
     // Check to see if any cards left
     for (int i = 0; i < amount; i++) {
         if ( Library.getCount() <= 0){
@@ -86,8 +85,6 @@ void Player::drawCard(int amount)
 
         Card* card = Library.drawTop();
         moveCardZone(card, Library, Hand, false);
-        // Library.removeCard(card);
-        // Hand.addCard(card, false);
         emit cardDrawn(card);
     }
 }
@@ -132,7 +129,6 @@ void Player::moveCardZone(Card *card, Zone&  sourceZone, Zone& targetZone, bool 
 {
     sourceZone.removeCard(card);
     targetZone.addCard(card, OnTop);
-    qDebug() << "moved card";
 }
 
 void Player::mill(int amount)

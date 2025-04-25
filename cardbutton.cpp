@@ -2,7 +2,6 @@
 #include "carddictionary.h"
 #include "qgraphicstransform.h"
 #include <QMouseEvent>
-#include <QDebug>
 #include <QGraphicsDropShadowEffect>
 #include <QPainter>
 #include <QGraphicsEffect>
