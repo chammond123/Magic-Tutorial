@@ -246,7 +246,7 @@ Card CardAPIManager::parseCardFromJson(const QJsonObject &cardJson)
     }
 
     if (cardJson.contains("flavor_text")){
-        QString flavorText = cardJson["type_line"].toString().toUtf8();
+        QString flavorText = cardJson["flavor_text"].toString().toUtf8();
         card.flavorText = flavorText;
     }
 

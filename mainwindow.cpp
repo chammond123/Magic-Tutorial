@@ -975,7 +975,7 @@ void MainWindow::startTargeting(Card *sourceCard){
         }
     }
 
-    ui->enemyTargetButton->setVisible(true);
+    ui->enemyTargetButton->show();
 }
 
 void MainWindow::stopTargeting(){
@@ -990,7 +990,7 @@ void MainWindow::stopTargeting(){
 
     isTargeting = false;
 
-    ui->enemyTargetButton->setVisible(false);
+    ui->enemyTargetButton->hide();
     targetSource = nullptr;
     clearSelection();
 }
