@@ -705,7 +705,7 @@ color: rgb(0, 0, 0);
     qproperty-alignment: AlignCenter;  </string>
         </property>
         <property name="text">
-         <string>HealthIcon</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -723,7 +723,7 @@ font: 9pt &quot;Verdana&quot;;
     qproperty-alignment: AlignCenter;</string>
         </property>
         <property name="text">
-         <string>Player Health</string>
+         <string> </string>
         </property>
        </widget>
       </item>
