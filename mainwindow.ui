@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1548</width>
-    <height>902</height>
+    <width>1550</width>
+    <height>914</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,9 +17,9 @@
    <widget class="QFrame" name="playerContainer">
     <property name="geometry">
      <rect>
-      <x>370</x>
+      <x>350</x>
       <y>600</y>
-      <width>931</width>
+      <width>951</width>
       <height>261</height>
      </rect>
     </property>
@@ -32,10 +32,10 @@
     <widget class="QWidget" name="gridLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>100</y>
-       <width>711</width>
-       <height>181</height>
+       <x>10</x>
+       <y>110</y>
+       <width>701</width>
+       <height>141</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="playerHand"/>
@@ -56,7 +56,7 @@
     <widget class="QPushButton" name="priorityButton">
      <property name="geometry">
       <rect>
-       <x>710</x>
+       <x>720</x>
        <y>10</y>
        <width>101</width>
        <height>31</height>
@@ -69,10 +69,10 @@
     <widget class="QWidget" name="verticalLayoutWidget_3">
      <property name="geometry">
       <rect>
-       <x>50</x>
+       <x>10</x>
        <y>10</y>
-       <width>651</width>
-       <height>81</height>
+       <width>681</width>
+       <height>91</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="playerMana">
@@ -174,8 +174,8 @@
     <widget class="QPushButton" name="phaseButton">
      <property name="geometry">
       <rect>
-       <x>710</x>
-       <y>40</y>
+       <x>720</x>
+       <y>50</y>
        <width>101</width>
        <height>31</height>
       </rect>
@@ -187,8 +187,8 @@
     <widget class="QPushButton" name="tapButton">
      <property name="geometry">
       <rect>
-       <x>710</x>
-       <y>70</y>
+       <x>720</x>
+       <y>90</y>
        <width>101</width>
        <height>32</height>
       </rect>
@@ -201,23 +201,45 @@
      <property name="geometry">
       <rect>
        <x>730</x>
-       <y>200</y>
-       <width>169</width>
-       <height>31</height>
+       <y>190</y>
+       <width>111</width>
+       <height>61</height>
       </rect>
      </property>
      <layout class="QHBoxLayout" name="playerHPZone">
       <item>
-       <widget class="QLabel" name="PlayerHealth">
+       <widget class="QLabel" name="playerHealthIcon">
+        <property name="styleSheet">
+         <string notr="true"> background-color: #ffffff;       
+    color: #2c3e50;                     
+    font-family: &quot;Segoe UI&quot;, sans-serif; 
+    font-size: 16px;
+    font-weight: bold;
+    padding: 8px 12px;                  
+    border: 2px solid #3498db;         
+    border-radius: 10px;               
+    qproperty-alignment: AlignCenter;  </string>
+        </property>
         <property name="text">
-         <string>Player Health</string>
+         <string/>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="pHealthIcon">
+       <widget class="QLabel" name="PlayerHealth">
+        <property name="styleSheet">
+         <string notr="true"> background-color: #ffffff;        
+color: #2c3e50;                    
+font-family: &quot;Segoe UI&quot;, sans-serif; 
+ font-size: 16px;
+    font-weight: bold;
+    padding: 8px 12px;                  
+    border: 2px solid #3498db;       
+    border-radius: 10px;               
+    qproperty-alignment: AlignCenter;</string>
+        </property>
         <property name="text">
-         <string>HealthIcon</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -226,8 +248,8 @@
     <widget class="QWidget" name="verticalLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>819</x>
-       <y>-1</y>
+       <x>840</x>
+       <y>10</y>
        <width>111</width>
        <height>251</height>
       </rect>
@@ -274,49 +296,13 @@
       </item>
      </layout>
     </widget>
-    <widget class="QLabel" name="phaseLabel">
-     <property name="geometry">
-      <rect>
-       <x>180</x>
-       <y>90</y>
-       <width>171</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Phase: </string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="activePlayerLabel">
-     <property name="geometry">
-      <rect>
-       <x>380</x>
-       <y>90</y>
-       <width>211</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>is Active Player</string>
-     </property>
-    </widget>
    </widget>
    <widget class="QFrame" name="enemyContainer">
     <property name="geometry">
      <rect>
-      <x>370</x>
+      <x>350</x>
       <y>0</y>
-      <width>931</width>
+      <width>951</width>
       <height>261</height>
      </rect>
     </property>
@@ -329,7 +315,7 @@
     <widget class="QWidget" name="horizontalLayoutWidget_2">
      <property name="geometry">
       <rect>
-       <x>210</x>
+       <x>230</x>
        <y>170</y>
        <width>711</width>
        <height>31</height>
@@ -388,51 +374,21 @@
       </item>
      </layout>
     </widget>
-    <widget class="QLabel" name="EnemyHealth">
-     <property name="geometry">
-      <rect>
-       <x>130</x>
-       <y>30</y>
-       <width>61</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Enemy Health</string>
-     </property>
-    </widget>
     <widget class="QWidget" name="gridLayoutWidget_5">
      <property name="geometry">
       <rect>
-       <x>210</x>
+       <x>230</x>
        <y>0</y>
        <width>711</width>
        <height>171</height>
       </rect>
      </property>
-     <layout class="QGridLayout" name="enemyHand">
-      <item row="0" column="0">
-       <widget class="QPushButton" name="enemyTargetButton">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>50</width>
-          <height>100</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Target Enemy</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <layout class="QGridLayout" name="enemyHand"/>
     </widget>
     <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
-       <x>210</x>
+       <x>230</x>
        <y>200</y>
        <width>711</width>
        <height>31</height>
@@ -527,13 +483,83 @@
       </item>
      </layout>
     </widget>
+    <widget class="QPushButton" name="enemyTargetButton">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>140</y>
+       <width>101</width>
+       <height>100</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>50</width>
+       <height>100</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Target Enemy</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="horizontalLayoutWidget_3">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>0</y>
+       <width>111</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="enemyHPZone">
+      <item>
+       <widget class="QLabel" name="enemyHealthIcon">
+        <property name="styleSheet">
+         <string notr="true"> background-color: #ffffff;       
+    color: #2c3e50;                     
+    font-family: &quot;Segoe UI&quot;, sans-serif; 
+    font-size: 16px;
+    font-weight: bold;
+    padding: 8px 12px;                  
+    border: 2px solid #3498db;         
+    border-radius: 10px;               
+    qproperty-alignment: AlignCenter;  </string>
+        </property>
+        <property name="text">
+         <string>HealthIcon</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="EnemyHealth">
+        <property name="styleSheet">
+         <string notr="true"> background-color: #ffffff;        
+color: #2c3e50;                    
+font-family: &quot;Segoe UI&quot;, sans-serif; 
+ font-size: 16px;
+    font-weight: bold;
+    padding: 8px 12px;                  
+    border: 2px solid #3498db;       
+    border-radius: 10px;               
+    qproperty-alignment: AlignCenter;</string>
+        </property>
+        <property name="text">
+         <string>Player Health</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </widget>
    <widget class="QWidget" name="gridLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>370</x>
+      <x>350</x>
       <y>260</y>
-      <width>931</width>
+      <width>951</width>
       <height>161</height>
      </rect>
     </property>
@@ -542,9 +568,9 @@
    <widget class="QWidget" name="gridLayoutWidget_3">
     <property name="geometry">
      <rect>
-      <x>370</x>
+      <x>350</x>
       <y>420</y>
-      <width>931</width>
+      <width>951</width>
       <height>181</height>
      </rect>
     </property>
@@ -565,7 +591,7 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>321</width>
+      <width>311</width>
       <height>451</height>
      </rect>
     </property>
@@ -573,27 +599,16 @@
      <string>Image</string>
     </property>
    </widget>
-   <widget class="QWidget" name="gridLayoutWidget_4">
-    <property name="geometry">
-     <rect>
-      <x>1320</x>
-      <y>69</y>
-      <width>211</width>
-      <height>771</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="stack"/>
-   </widget>
    <widget class="QCheckBox" name="GameTipsCheckBox">
     <property name="enabled">
      <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
-      <x>110</x>
-      <y>820</y>
-      <width>77</width>
-      <height>22</height>
+      <x>200</x>
+      <y>830</y>
+      <width>101</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -602,6 +617,124 @@
     <property name="checked">
      <bool>true</bool>
     </property>
+   </widget>
+   <widget class="QFrame" name="stackFrame">
+    <property name="geometry">
+     <rect>
+      <x>1320</x>
+      <y>0</y>
+      <width>211</width>
+      <height>671</height>
+     </rect>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LayoutDirection::LeftToRight</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">
+</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Shape::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Shadow::Raised</enum>
+    </property>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>211</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel {
+    background-color: #f5f5f5;      
+    color: #333333;                  
+    font-weight: bold;
+  	border: 2px solid #4a90e2;
+    qproperty-alignment: AlignCenter;
+}</string>
+     </property>
+     <property name="text">
+      <string>Stack</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QWidget" name="verticalLayoutWidget_5">
+     <property name="geometry">
+      <rect>
+       <x>-1</x>
+       <y>59</y>
+       <width>211</width>
+       <height>611</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="stack"/>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="phaseFrame">
+    <property name="geometry">
+     <rect>
+      <x>1319</x>
+      <y>680</y>
+      <width>211</width>
+      <height>171</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QFrame {
+    border: 2px solid #d0d0d0;
+    border-radius: 12px;
+    padding: 12px;
+}</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Shape::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Shadow::Raised</enum>
+    </property>
+    <widget class="QWidget" name="verticalLayoutWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>211</width>
+       <height>171</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="phaseContainer">
+      <item>
+       <widget class="QLabel" name="phaseLabel">
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Phase: </string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="activePlayerLabel">
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>is Active Player</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

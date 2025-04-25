@@ -16,6 +16,7 @@
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>
 #include <QFontDatabase>
+#include <QPixmap>
 
 MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -101,6 +102,10 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     connect(ui->playCardButton, &QPushButton::clicked, this, &MainWindow::onPlayCardButtonClicked);
 
     //update Icon for zones
+    ui->enemyHealthIcon->setPixmap(QPixmap(":/Icons/Icons/hp.jpg"));
+    ui->enemyHealthIcon->setScaledContents(true);
+    ui->playerHealthIcon->setPixmap(QPixmap(":/Icons/Icons/hp.jpg"));
+    ui->playerHealthIcon->setScaledContents(true);
     ui->playerDeck->setFixedSize(100,140);
     ui->playerDeck->setPixmap(QPixmap(":/Icons/Icons/BackCard.png").scaled(ui->playerDeck->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     ui->enemyDeck->setFixedSize(100,140);
@@ -190,6 +195,8 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
         emit playCard(targetSource, enemyPlayer);
         stopTargeting();
     });
+
+    connect(game, &gamemanager::gameOver, this, &MainWindow::onGameEnded);
 
     connect(ui->phaseButton, &QPushButton::clicked, game, &gamemanager::onChangePhase);
     connect(ui->priorityButton, &QPushButton::clicked, game, &gamemanager::onPassPriority);
@@ -303,6 +310,7 @@ void MainWindow::cardBeingTapped(){
     }
     emit tapCard(currentSelectedCard->cardPtr);
 
+    card->isTapped = true;
     qDebug() << "tapped card";
 
     clearSelection();
@@ -718,7 +726,7 @@ void MainWindow::updateUI(){
     qDebug() << "Player has Prority: " << userPlayer->holdingPriority;
 
     //update Stack
-    QGridLayout* container = ui->stack;
+    QVBoxLayout* container = ui->stack;
 
     // Clear current stack view
     QLayoutItem* item;
@@ -731,9 +739,8 @@ void MainWindow::updateUI(){
 
     // Re-add current stack contents
     for (const StackObject &object : statePointer->theStack) {
-        qDebug() << "accessing the stack";
         CardButton* cardButton = createCardButton(object.card, true);
-        container->addWidget(cardButton);
+        container->addWidget(cardButton, 0, Qt::AlignHCenter);
     }
 
     // Set Phase Label
@@ -810,7 +817,6 @@ void MainWindow::updateZone(QGridLayout* container, Zone* zone, QMap<ManaType, Q
     for(Card* card : *zone){
         CardButton* cardButton = createCardButton(card, player);
         if(!player && zone->type == ZoneType::HAND){
-            qDebug() << "calling back Card";
             cardButton->backCard();
             cardButton->setDisabled(true);
             cardButton->allowHover = false;
@@ -1002,18 +1008,14 @@ void MainWindow::onGameEnded(bool playerWon) {
     endView = new QGraphicsView(endScene, this);
     endView->setGeometry(this->rect());
     endView->setStyleSheet("background: transparent;");
-    // endView->setFrameShape(QFrame::NoFrame);
-    // endView->setSceneRect(0, 0, width(), height());
-    // endView->setAttribute(Qt::WA_TransparentForMouseEvents);
     endView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     endView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     endView->show();
 
-    // 3. Spawn cards from the center and push outward
     for (int i = 0; i < 30; ++i) {
         QPixmap pix(":/Icons/Icons/BackCard.png");
         QGraphicsPixmapItem* card = endScene->addPixmap(pix.scaled(60, 90));
-        card->setOffset(-30, -45);  // center origin
+        card->setOffset(-30, -45);
         card->setPos(width() / 2, height() / 2);
 
         b2BodyDef def;
@@ -1040,7 +1042,6 @@ void MainWindow::onGameEnded(bool playerWon) {
         endfallingCards.append(qMakePair(card, body));
     }
 
-    // Message
     QLabel* label = new QLabel(this);
     label->setText(playerWon ? "🎉 You Win! 🎉" : "😞 You Lose 😞");
     label->setStyleSheet("color: white; background-color: rgba(0,0,0,180); font-size: 28px; padding: 20px; border-radius: 10px;");
