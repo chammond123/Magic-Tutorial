@@ -98,6 +98,17 @@ void Bot::playCard(GameState* gameState) {
             QVector<ManaType> anyList;
             QVector<Card*> work = untappedLands;
 
+            for(ManaType m : chosen->cost.keys()){
+                for(int i = 0; i < chosen->cost[m]; i++){
+                    if(m != ManaType::ANY){
+                        manaList.append(m);
+                    }
+                    else{
+                        anyList.append(m);
+                    }
+                }
+            }
+
             for (ManaType needed : manaList) {
                 auto it = std::find_if(work.begin(), work.end(),
                                        [&](Card* c){ return c->color == needed; });
@@ -147,16 +158,18 @@ void Bot::playCard(GameState* gameState) {
                                     playCardCommand* cmd = new playCardCommand(gameState, chosen, card);
                                     cmd->execute();
                                     qDebug() << "Cast on creature";
+                                    break;
                                 }
                                 else{
                                     continue;
                                 }
                             }
-                            else{
+                            else if (chosen->name.toLower() == "lightning bolt"){
                                 if (card->toughness <= 3 && card->type == CardType::CREATURE){
                                     playCardCommand* cmd = new playCardCommand(gameState, chosen, card);
                                     cmd->execute();
                                     qDebug() << "Cast on creature";
+                                    break;
                                 }
                                 else{
                                     continue;

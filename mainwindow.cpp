@@ -247,7 +247,6 @@ MainWindow::~MainWindow() {
 void MainWindow::setupHand(){
 
     updateUI();
-    emit displayGameTip();
 }
 
 QString MainWindow::manaTypeToString(ManaType type) {
@@ -618,7 +617,6 @@ void MainWindow::botDeclareAttackers(QList<Card*> attackers){
 
     // Set iterator to the beginning of the attackers
     targetIt = combatants.begin();
-
 }
 
 void MainWindow::collectBlockers(){
@@ -659,6 +657,11 @@ void MainWindow::botDeclareCombatants(QMap<Card*, QList<Card*>> botCombatants){
 void MainWindow::updateUI(){
 
     activeCards.clear();
+
+    if (!hasWelcomed){
+        emit displayGameTip();
+        hasWelcomed = true;
+    }
 
     QVector<Zone*> zones;
     ZoneLayout layout;
@@ -800,7 +803,6 @@ void MainWindow::updateZone(QGridLayout* container, Zone* zone, QMap<ManaType, Q
         }
 
         container->addWidget(cardButton, 0, container->count(), Qt::AlignCenter);
-
     }
 }
 

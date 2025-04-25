@@ -259,7 +259,7 @@ font: 9pt &quot;Verdana&quot;;
        <x>840</x>
        <y>10</y>
        <width>111</width>
-       <height>251</height>
+       <height>111</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="playerDeckZone">
@@ -306,13 +306,6 @@ color: rgb(0, 0, 0);
         </property>
         <property name="text">
          <string>Graveyard</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="playerDeck">
-        <property name="text">
-         <string>Deck</string>
         </property>
        </widget>
       </item>
@@ -439,6 +432,19 @@ QPushButton:disabled {
        </widget>
       </item>
      </layout>
+    </widget>
+    <widget class="QLabel" name="playerDeck">
+     <property name="geometry">
+      <rect>
+       <x>850</x>
+       <y>130</y>
+       <width>101</width>
+       <height>131</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Deck</string>
+     </property>
     </widget>
    </widget>
    <widget class="QFrame" name="enemyContainer">
@@ -985,7 +991,7 @@ background-color: #ECECEC;</string>
      <x>0</x>
      <y>0</y>
      <width>1550</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
