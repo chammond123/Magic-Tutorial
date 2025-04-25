@@ -106,9 +106,9 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     ui->enemyHealthIcon->setScaledContents(true);
     ui->playerHealthIcon->setPixmap(QPixmap(":/Icons/Icons/hp.jpg"));
     ui->playerHealthIcon->setScaledContents(true);
-    ui->playerDeck->setFixedSize(100,140);
+    // ui->playerDeck->setFixedSize(100,140);
     ui->playerDeck->setPixmap(QPixmap(":/Icons/Icons/BackCard.png").scaled(ui->playerDeck->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    ui->enemyDeck->setFixedSize(100,140);
+    // ui->enemyDeck->setFixedSize(100,140);
     ui->enemyDeck->setPixmap(QPixmap(":/Icons/Icons/BackCard.png").scaled(ui->playerDeck->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
 
@@ -212,9 +212,9 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
 
     // TESTING
     connect(ui->tapButton, &QPushButton::clicked, this, &MainWindow::cardBeingTapped);
+    connect(this, &MainWindow::tapCard, game, &gamemanager::onTapCard);
 
     QTimer::singleShot(100, this, [=](){
-        qDebug() << "SETUP CALLED";
         setupHand();
     });
 
@@ -232,6 +232,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     } else {
         qDebug() << "Enemy player is not a Bot!";
     }
+
     connect(ui->GameTipsCheckBox, &QCheckBox::toggled, game, &gamemanager::onToggleGameTips);
 }
 
@@ -239,15 +240,7 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
-//FOR TESTING
 void MainWindow::setupHand(){
-
-    if(userPlayer){
-        qDebug() << "Found User!";
-    }
-    else {
-        return;
-    }
 
     updateUI();
     emit displayGameTip();
@@ -296,7 +289,7 @@ QString MainWindow::phaseTypeToString(Phase phase) {
     default:              return "Unknown";
     }
 }
-// Need to add more logic
+
 void MainWindow::cardBeingTapped(){
     if (!currentSelectedCard){
         QMessageBox::information(this, "No Card Selected", "Select a card to play.");
@@ -308,14 +301,33 @@ void MainWindow::cardBeingTapped(){
         QMessageBox::warning(this, "Card already tapped", "Card has already been tapped.");
         return;
     }
-    emit tapCard(currentSelectedCard->cardPtr);
 
-    card->isTapped = true;
-    qDebug() << "tapped card";
+    emit tapCard(card);
 
+    resetCards();
+    updateUI();
     clearSelection();
 }
 
+void MainWindow::cardTapped(CardButton* button){
+    if(!button){
+        QMessageBox::information(this, "No Card Selected", "Select a card to play.");
+        return;
+    }
+    Card* card = button->cardPtr;
+
+    if(card->isTapped){
+        QMessageBox::warning(this, "Card already tapped", "Card has already been tapped.");
+        return;
+    }
+
+    emit tapCard(card);
+
+    resetCards();
+    updateUI();
+    clearSelection();
+
+}
 void MainWindow::updateManaButton(ManaType type, ZoneLayout layout) {
     int count = layout.landGroups->value(type).size();
     QPushButton* button = nullptr;
@@ -347,8 +359,35 @@ void MainWindow::showLandPopup(ManaType manaType, ZoneLayout zoneLayout){
     qDebug() << manaTypeToString(manaType);
 
     for (CardButton* land : zoneLayout.landGroups->value(manaType)) {
-        layout->addWidget(land);
-        qDebug() << "added";
+        // Create a horizontal layout for each land + button combination
+        QWidget* landWidget = new QWidget();
+        QHBoxLayout* landLayout = new QHBoxLayout(landWidget);
+
+        // Add the land card to the layout
+        landLayout->addWidget(land);
+
+        // Create a tap button
+        QPushButton* tapButton = new QPushButton("Tap Land");
+
+        // Connect the tap button to a slot that will handle tapping the land
+        connect(tapButton, &QPushButton::clicked, [=]() {
+            // Toggle the tapped state
+            if (land->cardPtr && !land->cardPtr->isTapped) {
+                cardTapped(land);
+                land->resetCard(); // Update the visual to reflect the new state
+                dialog->repaint();
+            }
+            else {
+                QMessageBox::information(this, "Land Tapped", "This card is already Tapped");
+                update();
+            }
+        });
+
+        landLayout->addWidget(tapButton);
+        landWidget->setLayout(landLayout);
+
+        // Add the combined widget to the main layout
+        layout->addWidget(landWidget);
     }
 
     container->setLayout(layout);
@@ -357,8 +396,12 @@ void MainWindow::showLandPopup(ManaType manaType, ZoneLayout zoneLayout){
 
     QVBoxLayout* mainLayout = new QVBoxLayout(dialog);
     mainLayout->addWidget(scrollArea);
-    dialog->setLayout(mainLayout);
 
+    QPushButton* closeButton = new QPushButton("Close");
+    connect(closeButton, &QPushButton::clicked, dialog, &QDialog::accept);
+    mainLayout->addWidget(closeButton);
+
+    dialog->setLayout(mainLayout);
     dialog->exec();  // modal
 
 }
@@ -715,11 +758,10 @@ void MainWindow::updateUI(){
                                                     ? "QLabel { color : green; }"
                                                     : "QLabel { color : red; }");
 
-        qDebug() << "update Phases";
         handlePhase();
 
         update();
-        qDebug() << "updateUI has finished";
+        QCoreApplication::processEvents();
     }
 
 
@@ -750,15 +792,11 @@ void MainWindow::updateUI(){
     // Set Active Player Label
     layout.activePlayerLabel->setText(QString(statePointer->player1->isActivePlayer ? "You are" : "The enemy is") + " the active player");
 
-
-    qDebug() << "update Phases";
     handlePhase();
 
     clearSelection();
 
-
     update();
-    qDebug() << "updateUI has finished";
 }
 
 void MainWindow::updateZone(QGridLayout* container, Zone* zone, QMap<ManaType, QList<CardButton *>>* landGroups, bool player){
@@ -886,6 +924,10 @@ void MainWindow::extractCombatants(){
 }
 
 void MainWindow::handlePhase(){
+    if(isTargeting){
+        return;
+    }
+
     statePointer->getValidActions();
 
 
@@ -913,12 +955,11 @@ void MainWindow::handlePhase(){
         if(userPlayer->isActivePlayer){
             ui->playCardButton->setText("Declare Attackers");
             ui->playCardButton->setEnabled(true);
-            // ui->priorityButton->hide();
+            ui->priorityButton->setDisabled(true);
         }
         else {
             ui->playCardButton->setText("Enemy Declaring...");
             ui->playCardButton->setDisabled(true);
-            // ui->priorityButton->hide();
             if(userPlayer->holdingPriority){
                 statePointer->changePhase();
                 updateUI();
@@ -933,6 +974,7 @@ void MainWindow::handlePhase(){
             ui->priorityButton->setDisabled(true);
             // ui->priorityButton->hide();
         }
+
         else {
             ui->playCardButton->setText("Enemy Declaring...");
             ui->playCardButton->setDisabled(true);
@@ -967,6 +1009,16 @@ void MainWindow::startTargeting(Card *sourceCard){
         CardButton* button = qobject_cast<CardButton*>(widget);
         button->enableCard(true);
     }
+
+    // if(sourceCard->name == "Counterspell"){
+    //     for(int i = 0; i < ui->stack->count(); i++){
+    //         QLayoutItem* item = targetZone->itemAt(i);
+    //         QWidget* widget = item->widget();
+    //         CardButton* button = qobject_cast<CardButton*>(widget);
+    //         button->enableCard(true);
+    //     }
+    // }
+
 
     for (int i = 0; i < ui->enemyHand->count(); ++i) {
         QLayoutItem* item = ui->enemyHand->itemAt(i);
@@ -1087,7 +1139,7 @@ CardButton* MainWindow::createCardButton(Card* card, bool player){
 
     if(player){
         connect(cardButton, &CardButton::cardSelected, this, &MainWindow::handleCardSelected);
-        connect(cardButton, &CardButton::cardTapped, this, &MainWindow::cardBeingTapped);
+        connect(cardButton, &CardButton::cardTapped, this, &MainWindow::cardTapped);
     }
     connect(cardButton, &CardButton::hovered, this, &MainWindow::updateMagnifier);
     cardButton->setFixedSize(100, 140);
@@ -1106,4 +1158,13 @@ void MainWindow::displayBlockers(QList<Card*> blockers){
         }
         i++;
     }
+}
+
+void MainWindow::resetCards(){
+    if(!activeCards.isEmpty()){
+        for(CardButton* button : activeCards){
+            button->resetCard();
+        }
+    }
+    repaint();
 }

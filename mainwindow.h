@@ -137,6 +137,8 @@ public slots:
      */
     void handleCardSelected(CardButton* clicked);
 
+    void cardTapped(CardButton* button);
+
     void getMainWindowPos();
 
     /**
@@ -354,6 +356,8 @@ private:
     bool isTargeting;
 
     CardButton* createCardButton(Card* card, bool player);
+
+    void resetCards();
 
     //For mana zone
     /**

@@ -8,5 +8,6 @@
         <file>Icons/BackCard.png</file>
         <file>Icons/tablebackground.png</file>
         <file>Icons/hp.jpg</file>
+        <file>Icons/tap_symbol.png</file>
     </qresource>
 </RCC>
