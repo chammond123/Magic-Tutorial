@@ -251,7 +251,6 @@ void MainWindow::setupHand(){
     }
 
     updateUI();
-    emit displayGameTip();
 }
 
 QString MainWindow::manaTypeToString(ManaType type) {
@@ -609,6 +608,11 @@ void MainWindow::updateUI(){
 
     activeCards.clear();
 
+    if (!hasWelcomed){
+        emit displayGameTip();
+        hasWelcomed = true;
+    }
+
     // FOR TESTING, REMOVE
     QMap<ManaType, int>* mana = new QMap<ManaType, int>;
     (*mana)[ManaType::RED] = 10;
@@ -762,7 +766,6 @@ void MainWindow::updateZone(QGridLayout* container, Zone* zone, QMap<ManaType, Q
         }
 
         container->addWidget(cardButton, 0, container->count(), Qt::AlignCenter);
-
     }
 }
 
