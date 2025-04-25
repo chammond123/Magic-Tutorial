@@ -43,8 +43,8 @@
     <widget class="QPushButton" name="playCardButton">
      <property name="geometry">
       <rect>
-       <x>720</x>
-       <y>130</y>
+       <x>710</x>
+       <y>110</y>
        <width>101</width>
        <height>31</height>
       </rect>
@@ -510,7 +510,7 @@ font-family: &quot;Segoe UI&quot;, sans-serif;
       <rect>
        <x>120</x>
        <y>0</y>
-       <width>111</width>
+       <width>251</width>
        <height>61</height>
       </rect>
      </property>
@@ -612,7 +612,7 @@ font-family: &quot;Segoe UI&quot;, sans-serif;
      </rect>
     </property>
     <property name="text">
-     <string>Game TIps</string>
+     <string>Game Tips</string>
     </property>
     <property name="checked">
      <bool>true</bool>
@@ -631,8 +631,7 @@ font-family: &quot;Segoe UI&quot;, sans-serif;
      <enum>Qt::LayoutDirection::LeftToRight</enum>
     </property>
     <property name="styleSheet">
-     <string notr="true">
-</string>
+     <string notr="true"/>
     </property>
     <property name="frameShape">
      <enum>QFrame::Shape::StyledPanel</enum>
@@ -743,7 +742,7 @@ font-family: &quot;Segoe UI&quot;, sans-serif;
      <x>0</x>
      <y>0</y>
      <width>1550</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

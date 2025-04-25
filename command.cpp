@@ -59,10 +59,6 @@ changePhaseCommand::changePhaseCommand(GameState* state) :
 void changePhaseCommand::execute(){
     qDebug() << "Change Phase executed";
     state->changePhase();
-
-    // while (state->currentPhase != Phase::PreCombatMain){
-    //     state->changePhase();
-    // }
 }
 
 declareCombatCommand::declareCombatCommand(GameState* state, QMap<Card*, QVector<Card*>> CombatCreatures) :
