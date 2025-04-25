@@ -216,6 +216,7 @@ void GameState::resolveStack(){
                 stackObject.player->moveCardString(stackObject.card, "hand", "graveyard", true);
             }
         }
+        stackObject.card->isOnStack = false;
     }
 }
 
@@ -287,16 +288,16 @@ Player* GameState::getPriorityPlayer(){
 void GameState::validateHand(Player* player){
     PhaseRules rules = getPhaseRules();
     for (Card* card : player->Hand){
-        if (rules.canPlayInstant && card->type == CardType::INSTANT && player->canPayMana(card)){
+        if (rules.canPlayInstant && card->type == CardType::INSTANT && player->canPayMana(card) && !card->isOnStack){
             card->shouldEnable = true;
         }
-        else if (player->isActivePlayer && rules.canPlaySorcery && card->type == CardType::SORCERY && player->canPayMana(card) && stackIsEmpty()){
+        else if (player->isActivePlayer && rules.canPlaySorcery && card->type == CardType::SORCERY && player->canPayMana(card) && stackIsEmpty() && !card->isOnStack){
             card->shouldEnable = true;
         }
         else if (player->isActivePlayer && rules.canPlaySorcery && card->type == CardType::LAND && stackIsEmpty() && !player->hasPlayedLand){
             card->shouldEnable = true;
         }
-        else if (player->isActivePlayer && rules.canPlaySorcery && stackIsEmpty() && player->canPayMana(card) &&
+        else if (player->isActivePlayer && rules.canPlaySorcery && stackIsEmpty() && player->canPayMana(card) && !card->isOnStack &&
                  (card->type == CardType::CREATURE ||
                   card->type == CardType::ARTIFACT ||
                   card->type == CardType::ENCHANTMENT ||

@@ -51,6 +51,7 @@ public:
     bool isCountered = false;
     QString flavorText;
     bool needsTarget = false;
+    bool isOnStack = false;
 };
 
 #endif // CARD_H
