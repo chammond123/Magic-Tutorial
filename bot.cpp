@@ -100,8 +100,64 @@ void Bot::playCard(GameState* gameState) {
             }
 
             qDebug() << "Chose to play " << chosen->name << " (paid " << manaNeeded << " mana)";
-            playCardCommand cmd(gameState, chosen, nullptr);
-            cmd.execute();
+            if (chosen->needsTarget){
+                if (chosen->name.toLower() == "counterspell"){
+                    if (gameState->theStack.empty()){
+                        continue;
+                    }
+                    else{
+                        for (StackObject stackItem : gameState->theStack){
+                            if (stackItem.player == gameState->player2){
+                                continue;
+                            }
+                            else{
+                                playCardCommand* cmd = new playCardCommand(gameState, chosen, stackItem.card);
+                                cmd->execute();
+                            }
+                        }
+                    }
+                }
+                else if(chosen->type == CardType::INSTANT){
+                    if (gameState->player1->Battlefield.getCount() == 0){
+                        playCardCommand* cmd = new playCardCommand(gameState, chosen, gameState->player1);
+                        cmd->execute();
+                    }
+                    else{
+                        for (Card* card : gameState->player1->Battlefield){
+                            qDebug() << card->name;
+                            if (chosen->name.toLower() == "shock"){
+                                qDebug() << "Cast shock";
+                                if (card->toughness <= 2 && card->type == CardType::CREATURE){
+                                    playCardCommand* cmd = new playCardCommand(gameState, chosen, card);
+                                    cmd->execute();
+                                    qDebug() << "Cast on creature";
+                                }
+                                else{
+                                    continue;
+                                }
+                            }
+                            else{
+                                if (card->toughness <= 3 && card->type == CardType::CREATURE){
+                                    playCardCommand* cmd = new playCardCommand(gameState, chosen, card);
+                                    cmd->execute();
+                                    qDebug() << "Cast on creature";
+                                }
+                                else{
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                }
+                else{
+                    playCardCommand* cmd = new playCardCommand(gameState, chosen, gameState->player2);
+                    cmd->execute();
+                }
+            }
+            else {
+                playCardCommand cmd(gameState, chosen, nullptr);
+                cmd.execute();
+            }
             break;
         }
     }

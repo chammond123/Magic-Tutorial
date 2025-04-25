@@ -204,9 +204,16 @@ void GameState::resolveStack(){
                 else{
                     stackObject.card->ability.use(c);
                 }
-                // if(c->currHealth <= 0){
-                //     stackObject.player->moveCardString(stackObject.card, "battlefield", "graveyard", true);
-                // }
+                qDebug() << c->currHealth;
+                if(c->currHealth <= 0){
+                    if (player1->Battlefield.findCard(c)){
+                        player1->moveCardString(c, "battlefield", "graveyard", true);
+                    }
+                    else{
+                        player2->moveCardString(c, "battlefield", "graveyard", true);
+                    }
+
+                }
             }
         }
         if (!stackObject.card->isCountered){
