@@ -194,6 +194,8 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     connect(ui->phaseButton, &QPushButton::clicked, game, &gamemanager::onChangePhase);
     connect(ui->priorityButton, &QPushButton::clicked, game, &gamemanager::onPassPriority);
 
+    connect(this, &MainWindow::displayFirstTip, game, &gamemanager::displayPhaseTip);
+
     connect(game, &gamemanager::updateUI, this, &MainWindow::updateUI);
 
     connect(game, &gamemanager::promptTargeting, this, &MainWindow::startTargeting);
@@ -227,6 +229,7 @@ void MainWindow::setupHand(){
     }
 
     updateUI();
+    emit displayFirstTip();
 }
 
 QString MainWindow::manaTypeToString(ManaType type) {

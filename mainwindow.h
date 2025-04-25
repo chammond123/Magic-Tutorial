@@ -216,6 +216,12 @@ signals:
      */
     void tapCard(Card* card);
 
+
+    /**
+     * @brief used to show the first welcome display tip
+     */
+    void displayFirstTip();
+
 private:
     /**
      * @brief ui
