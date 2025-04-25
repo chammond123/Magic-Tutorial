@@ -15,6 +15,10 @@ class gamemanager : public QObject
 {
     Q_OBJECT
 private:
+    int mainWindowLeft;
+    int mainWindowTop;
+    int mainWindowRight;
+    int mainWindowBottom;
 
 public:
     GameState* state;
@@ -67,11 +71,14 @@ public slots:
      * @brief Connected to the UI toggle tips check box, turns the tips on and off
      */
     void onToggleGameTips(bool toggled);
+
+    void onReceiveMainWindowPos(int left, int right, int top, int bottom);
 signals:
     void updateUI();
     void gameOver(bool hasWon);
     void startTargeting(Card* initialCard);
     void promptTargeting(Card* card);
+    void requestMainWindowPos();
 };
 
 #endif // GAMEMANAGER_H
