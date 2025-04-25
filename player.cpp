@@ -238,7 +238,7 @@ void Player::untap(){
 
 void Player::upkeepPhase(){
     for(Card* card : Battlefield){
-        // (TODO: Make Upkeep for card) card->triggerUpkeep();
+        card->hasSummoningSickness = false;
     }
 }
 
