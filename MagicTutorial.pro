@@ -74,6 +74,7 @@ SOURCES += \
     mainwindow.cpp \
     manacollection.cpp \
     player.cpp \
+    settings.cpp \
     textparser.cpp \
     tutorialpage.cpp \
     type.cpp \
@@ -145,6 +146,7 @@ HEADERS += \
     manacollection.h \
     phase.h \
     player.h \
+    settings.h \
     stackobject.h \
     textparser.h \
     tutorialpage.h \
@@ -157,6 +159,7 @@ FORMS += \
     mainmenu.ui \
     mainwindow.ui \
     manacollection.ui \
+    settings.ui \
     tutorialpage.ui
 
 # Default rules for deployment.

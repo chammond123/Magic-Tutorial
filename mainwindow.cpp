@@ -17,6 +17,8 @@
 #include <QGraphicsPixmapItem>
 #include <QFontDatabase>
 #include <QPixmap>
+#include "settings.h"
+#include "mainmenu.h"
 
 MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -1103,4 +1105,19 @@ void MainWindow::displayBlockers(QList<Card*> blockers){
         }
         i++;
     }
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event) {
+    if (event->key() == Qt::Key_Escape) {
+        Settings* settings = new Settings(this);
+        connect(settings, &Settings::returnToMainMenu, this, &MainWindow::goToMainMenu);
+        settings->exec();
+    }
+}
+
+
+void MainWindow::goToMainMenu() {
+    emit returnToMainMenu();
+    this->close();
+    this->deleteLater();
 }

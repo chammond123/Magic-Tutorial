@@ -78,8 +78,13 @@ int main(int argc, char *argv[])
         game->state = originalState;
 
         MainWindow *w = new MainWindow(game);
-        w->show();
 
+        QObject::connect(w, &MainWindow::returnToMainMenu, [=]() {
+            w->close();
+            menu->show();
+        });
+
+        w->show();
         menu->close();
     });
 
