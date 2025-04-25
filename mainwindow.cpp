@@ -607,7 +607,6 @@ void MainWindow::botDeclareAttackers(QList<Card*> attackers){
 
     // Set iterator to the beginning of the attackers
     targetIt = combatants.begin();
-
 }
 
 void MainWindow::collectBlockers(){
