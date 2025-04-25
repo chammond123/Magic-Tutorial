@@ -5,5 +5,11 @@
         <file>tutorial-mtg/p5.png</file>
         <file>tutorial-mtg/p3.png</file>
         <file>tutorial-mtg/p2.png</file>
+        <file>tutorial-mtg/card_description_highlight.png</file>
+        <file>tutorial-mtg/card_full_highlight.png</file>
+        <file>tutorial-mtg/card_mana_highlight.png</file>
+        <file>tutorial-mtg/card_name_highlight.png</file>
+        <file>tutorial-mtg/card_stats_highlight.png</file>
+        <file>tutorial-mtg/card_type_highlight.png</file>
     </qresource>
 </RCC>

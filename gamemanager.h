@@ -25,6 +25,8 @@ public:
      */
     bool displayGameTips;
 
+    bool hasDisplayedWelcome = false;
+
 public slots:
     /**
      * @brief Receives if a player wants to cast a card

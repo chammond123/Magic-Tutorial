@@ -43,7 +43,7 @@ void Bot::takeTurn(GameState* gameState) {
 }
 
 void Bot::playCard(GameState* gameState) {
-    if (!hasPlayedLand) {
+    if (!hasPlayedLand && isActivePlayer) {
         for (Card* card : Hand) {
             if (card->isLand) {
                 qDebug() << "Chose to play " << card->name << " for the land part";
@@ -57,7 +57,10 @@ void Bot::playCard(GameState* gameState) {
 
     QVector<Card*> playableCards;
     for (Card* card : Hand) {
-        if (canPayMana(card) && card->type != CardType::LAND) {
+        if (card->type == CardType::LAND && hasPlayedLand){
+            continue;
+        }
+        if (card->shouldEnable) {
             playableCards.append(card);
         }
     }
