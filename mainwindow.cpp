@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "cardapimanager.h"
+#include "lotusdialog.h"
 #include "ui_mainwindow.h"
 #include "carddictionary.h"
 #include "gamemanager.h"
@@ -305,6 +306,10 @@ void MainWindow::cardBeingTapped(){
         return;
     }
 
+    if(card->name == "Black Lotus"){
+        lotusHandling();
+    }
+
     emit tapCard(card);
     clearSelection();
 }
@@ -318,6 +323,11 @@ void MainWindow::cardTapped(CardButton* button){
 
     if(card->isTapped){
         QMessageBox::warning(this, "Card already tapped", "Card has already been tapped.");
+        return;
+    }
+
+    if(card->name == "Black Lotus"){
+        lotusHandling();
         return;
     }
 
@@ -650,16 +660,6 @@ void MainWindow::updateUI(){
 
     activeCards.clear();
 
-    // FOR TESTING, REMOVE
-    QMap<ManaType, int>* mana = new QMap<ManaType, int>;
-    (*mana)[ManaType::RED] = 10;
-    (*mana)[ManaType::WHITE] = 10;
-    (*mana)[ManaType::BLUE] = 10;
-    (*mana)[ManaType::GREEN] = 10;
-    (*mana)[ManaType::BLACK] = 10;
-    userPlayer->addMana(mana);
-    enemyPlayer->addMana(mana);
-
     QVector<Zone*> zones;
     ZoneLayout layout;
     Player* currPlayer;
@@ -738,7 +738,6 @@ void MainWindow::updateUI(){
                                                     : "QLabel { color : red; }");
 
         handlePhase();
-
         update();
     }
 
@@ -768,9 +767,7 @@ void MainWindow::updateUI(){
     layout.activePlayerLabel->setText(QString(statePointer->player1->isActivePlayer ? "You are " : "The enemy is\n") + "the active player");
 
     handlePhase();
-
     clearSelection();
-
     update();
 }
 
@@ -1140,4 +1137,18 @@ void MainWindow::goToMainMenu() {
     emit returnToMainMenu();
     this->close();
     this->deleteLater();
+}
+
+void MainWindow::lotusHandling(){
+    LotusDialog* lotus = new LotusDialog();
+    int result = lotus->exec();  // Show the dialog
+
+    if (result == QDialog::Accepted) {
+        ManaType selectedMana = lotus->getData();
+        QMap<ManaType, int> mana;
+        mana[selectedMana] = 3;
+        statePointer->player1->addMana(&mana);
+    }
+
+    delete lotus;
 }

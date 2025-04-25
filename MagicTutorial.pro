@@ -69,6 +69,7 @@ SOURCES += \
     gamestate.cpp \
     gametipsdialog.cpp \
     loadscreen.cpp \
+    lotusdialog.cpp \
     main.cpp \
     mainmenu.cpp \
     mainwindow.cpp \
@@ -141,6 +142,7 @@ HEADERS += \
     gamestate.h \
     gametipsdialog.h \
     loadscreen.h \
+    lotusdialog.h \
     mainmenu.h \
     mainwindow.h \
     manacollection.h \
@@ -156,6 +158,7 @@ HEADERS += \
 FORMS += \
     aboutpage.ui \
     loadscreen.ui \
+    lotusdialog.ui \
     mainmenu.ui \
     mainwindow.ui \
     manacollection.ui \

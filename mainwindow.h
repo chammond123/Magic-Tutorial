@@ -380,6 +380,8 @@ private:
     void showLandPopup(ManaType type, ZoneLayout layout);
     void updateManaButton(ManaType type, ZoneLayout layout);
 
+    void lotusHandling();
+
 
     // FOR TESTING PURPOSES
     void setupHand();

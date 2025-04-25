@@ -134,21 +134,6 @@ void GameState::resolveCombatDamage(QMap<Card*, QList<Card*>> CombatCreatures){
         }
         // Otherwise deal damage to the blocking creatures with powerLeftToDeal
         else{
-            // for (Card* defender : CombatCreatures[attacker]){
-            //     if (powerLeftToDeal > 0){
-            //         defender->takeDamage(powerLeftToDeal);
-            //         powerLeftToDeal -= defender->toughness;
-            //         attacker->takeDamage(defender->toughness);
-            //     }
-            //     // If the defending creature dies, send it to the graveyard
-            //     if (defender->currHealth <= 0){
-            //         defendingPlayer->moveCardString(defender, "battlefield", "graveyard", true);
-            //     }
-            // }
-            // // If the attacking creature dies, send it to the graveyard
-            // if (attacker->currHealth <= 0){
-            //     attackingPlayer->moveCardString(attacker, "battlefield", "graveyard", true);
-            // }
 
             int remainingPower = attacker->power;
 
@@ -177,8 +162,6 @@ void GameState::resolveCombatDamage(QMap<Card*, QList<Card*>> CombatCreatures){
                 attackingPlayer->moveCardString(attacker, "battlefield", "graveyard", true);
             }
         }
-        // Tap the card after it attacks
-        // attackingPlayer->tapCard(attacker);
     }
     changePhase();
 }
