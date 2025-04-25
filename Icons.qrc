@@ -12,5 +12,6 @@
         <file>Icons/backgroundv2.png</file>
         <file>Icons/backgroundv3.png</file>
         <file>Icons/backgroundv4.png</file>
+        <file>Icons/tapped.png</file>
     </qresource>
 </RCC>

@@ -145,6 +145,8 @@ public slots:
      */
     void handleCardSelected(CardButton* clicked);
 
+    void cardTapped(CardButton* button);
+
     /**
      * @brief getMainWindowPos
      */

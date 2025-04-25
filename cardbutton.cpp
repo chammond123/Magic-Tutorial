@@ -91,7 +91,7 @@ void CardButton::mousePressEvent(QMouseEvent* event) {
     }
     else if (event->button() == Qt::RightButton){
 
-        emit cardTapped();
+        emit cardTapped(this);
         qDebug() << "right click called";
     }
 }
@@ -117,6 +117,32 @@ void CardButton::resizeEvent(QResizeEvent* event) {
             this->size() - QSize(6,6), Qt::KeepAspectRatio, Qt::SmoothTransformation);
         this->setIcon(QIcon(pixmap));
         this->setIconSize(this->size() - QSize(6,6));
+    }
+}
+
+void CardButton::paintEvent(QPaintEvent* event) {
+    QPushButton::paintEvent(event);  // Always call base first
+
+    if(cardPtr && cardPtr->isTapped){
+        QPixmap baseImage = QPixmap::fromImage(cardPtr->image).scaled(
+            this->size() - QSize(6, 6),
+            Qt::KeepAspectRatio,
+            Qt::SmoothTransformation);
+
+        QPainter painter(this);
+
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.setRenderHint(QPainter::SmoothPixmapTransform);
+
+        painter.fillRect(cardPtr->image.rect(), QColor(0, 0, 0, 80));
+
+        QPixmap tapIcon(":/Icons/Icons/tapped.png");  // Make sure this is in your .qrc
+        QSize iconSize(width() / 1.5, height() / 1.5);  // scale appropriately
+        QPixmap scaledIcon = tapIcon.scaled(iconSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+        QPoint centerPos((width() - scaledIcon.width()) / 2,
+                         (height() - scaledIcon.height()) / 2);
+        painter.drawPixmap(centerPos, scaledIcon);
     }
 }
 

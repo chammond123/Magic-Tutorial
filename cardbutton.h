@@ -28,11 +28,12 @@ protected:
     void mousePressEvent(QMouseEvent* event) override;
     void enterEvent(QEnterEvent* event) override;
     void resizeEvent(QResizeEvent* event) override;
+    void paintEvent(QPaintEvent* event) override;
 
 signals:
     void cardSelected(CardButton* button);
     void hovered(Card* card);
-    void cardTapped();
+    void cardTapped(CardButton* button);
 
 
 public slots:

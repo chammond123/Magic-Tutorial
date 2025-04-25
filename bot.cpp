@@ -212,10 +212,6 @@ void Bot::declareAttackers(GameState* gameState) {
     }
     gameState->attackers = combatCreatures.keys();
     emit UiDeclareAttackers(combatCreatures.keys());
-
-    if (this->isActivePlayer) {
-        changePhase(gameState);
-    }
 }
 
 void Bot::declareBlockers(GameState* gameState) {
