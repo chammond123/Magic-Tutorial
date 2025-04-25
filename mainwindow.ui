@@ -713,7 +713,7 @@ font-family: &quot;Segoe UI&quot;, sans-serif;
        <widget class="QLabel" name="phaseLabel">
         <property name="font">
          <font>
-          <pointsize>11</pointsize>
+          <pointsize>9</pointsize>
          </font>
         </property>
         <property name="text">
@@ -725,7 +725,7 @@ font-family: &quot;Segoe UI&quot;, sans-serif;
        <widget class="QLabel" name="activePlayerLabel">
         <property name="font">
          <font>
-          <pointsize>11</pointsize>
+          <pointsize>9</pointsize>
          </font>
         </property>
         <property name="text">
