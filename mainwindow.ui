@@ -54,6 +54,13 @@
        <layout class="QHBoxLayout" name="playerIcon">
         <item>
          <widget class="QPushButton" name="playerWhiteIcon">
+          <property name="styleSheet">
+           <string notr="true">background-color: #FFFFC8;
+border-color: rgb(0, 0, 255);
+font: 9pt &quot;Verdana&quot;;
+color: rgb(0, 0, 0);
+</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -61,6 +68,13 @@
         </item>
         <item>
          <widget class="QPushButton" name="playerBlueIcon">
+          <property name="styleSheet">
+           <string notr="true">background-color: #FFFFC8;
+border-color: rgb(0, 0, 255);
+font: 9pt &quot;Verdana&quot;;
+color: rgb(0, 0, 0);
+</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -68,6 +82,13 @@
         </item>
         <item>
          <widget class="QPushButton" name="playerRedIcon">
+          <property name="styleSheet">
+           <string notr="true">background-color: #FFFFC8;
+border-color: rgb(0, 0, 255);
+font: 9pt &quot;Verdana&quot;;
+color: rgb(0, 0, 0);
+</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -75,6 +96,13 @@
         </item>
         <item>
          <widget class="QPushButton" name="playerGreenIcon">
+          <property name="styleSheet">
+           <string notr="true">background-color: #FFFFC8;
+border-color: rgb(0, 0, 255);
+font: 9pt &quot;Verdana&quot;;
+color: rgb(0, 0, 0);
+</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -82,6 +110,13 @@
         </item>
         <item>
          <widget class="QPushButton" name="playerBlackIcon">
+          <property name="styleSheet">
+           <string notr="true">background-color: #FFFFC8;
+border-color: rgb(0, 0, 255);
+font: 9pt &quot;Verdana&quot;;
+color: rgb(0, 0, 0);
+</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -94,7 +129,7 @@
         <item>
          <widget class="QLabel" name="playerWhite">
           <property name="styleSheet">
-           <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+           <string notr="true">font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
 </string>
           </property>
@@ -109,7 +144,7 @@ color: rgb(0, 0, 0);
         <item>
          <widget class="QLabel" name="playerBlue">
           <property name="styleSheet">
-           <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+           <string notr="true">font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
 </string>
           </property>
@@ -124,7 +159,7 @@ color: rgb(0, 0, 0);
         <item>
          <widget class="QLabel" name="playerRed">
           <property name="styleSheet">
-           <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+           <string notr="true">font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
 </string>
           </property>
@@ -139,7 +174,7 @@ color: rgb(0, 0, 0);
         <item>
          <widget class="QLabel" name="playerGreen">
           <property name="styleSheet">
-           <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+           <string notr="true">font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
 </string>
           </property>
@@ -154,7 +189,7 @@ color: rgb(0, 0, 0);
         <item>
          <widget class="QLabel" name="playerBlack">
           <property name="styleSheet">
-           <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+           <string notr="true">font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
 </string>
           </property>
@@ -203,7 +238,7 @@ color: rgb(0, 0, 0);
         <property name="styleSheet">
          <string notr="true"> background-color: #ffffff;        
 color: #2c3e50;                    
-font-family: &quot;Fixedsys&quot;; 
+font: 9pt &quot;Verdana&quot;;
  font-size: 16px;
     font-weight: bold;
     padding: 8px 12px;                  
@@ -243,9 +278,9 @@ font-family: &quot;Fixedsys&quot;;
          <number>-2</number>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(255, 255, 200);
+         <string notr="true">background-color: #D6F6DD;
 border-color: rgb(0, 0, 255);
-font: 9pt &quot;Fixedsys&quot;;
+font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
 </string>
         </property>
@@ -263,9 +298,9 @@ color: rgb(0, 0, 0);
          </sizepolicy>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(255, 255, 200);
+         <string notr="true">background-color: #D6F6DD;
 border-color: rgb(0, 0, 255);
-font: 9pt &quot;Fixedsys&quot;;
+font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
 </string>
         </property>
@@ -311,7 +346,7 @@ color: rgb(0, 0, 0);
          <string notr="true">QPushButton {
 background-color: rgb(255, 174, 35);
 border-color: rgb(0, 0, 255);
-font: 9pt &quot;Fixedsys&quot;;
+font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
 }
 QPushButton:disabled {
@@ -335,10 +370,10 @@ QPushButton:disabled {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    background-color: rgb(255, 174, 35);
-    font: 9pt &quot;Fixedsys&quot;;
-    color: rgb(0, 0, 0);
-    padding: 4px;
+background-color: rgb(255, 174, 35);
+border-color: rgb(0, 0, 255);
+font: 9pt &quot;Verdana&quot;;
+color: rgb(0, 0, 0);
 }
 QPushButton:disabled {
     background-color: rgb(200, 200, 200);
@@ -361,11 +396,10 @@ QPushButton:disabled {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-background-color: rgb(0, 170, 255);
+background-color: rgb(255, 174, 35);
 border-color: rgb(0, 0, 255);
-font: 9pt &quot;Fixedsys&quot;;
+font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
-
 }
 QPushButton:disabled {
     background-color: rgb(200, 200, 200);
@@ -387,9 +421,10 @@ QPushButton:disabled {
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">QPushButton{
-background-color: rgb(0, 170, 0);
-font: 9pt &quot;Fixedsys&quot;;
+         <string notr="true">QPushButton {
+background-color: rgb(255, 174, 35);
+border-color: rgb(0, 0, 255);
+font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
 }
 QPushButton:disabled {
@@ -434,7 +469,7 @@ QPushButton:disabled {
       <item>
        <widget class="QLabel" name="enemyWhite">
         <property name="styleSheet">
-         <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+         <string notr="true">font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
 </string>
         </property>
@@ -449,7 +484,7 @@ color: rgb(0, 0, 0);
       <item>
        <widget class="QLabel" name="enemyBlue">
         <property name="styleSheet">
-         <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+         <string notr="true">font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
 </string>
         </property>
@@ -464,7 +499,7 @@ color: rgb(0, 0, 0);
       <item>
        <widget class="QLabel" name="enemyRed">
         <property name="styleSheet">
-         <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+         <string notr="true">font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
 </string>
         </property>
@@ -479,7 +514,7 @@ color: rgb(0, 0, 0);
       <item>
        <widget class="QLabel" name="enemyGreen">
         <property name="styleSheet">
-         <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+         <string notr="true">font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
 </string>
         </property>
@@ -494,7 +529,7 @@ color: rgb(0, 0, 0);
       <item>
        <widget class="QLabel" name="enemyBlack">
         <property name="styleSheet">
-         <string notr="true">font: 9pt &quot;Fixedsys&quot;;
+         <string notr="true">font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
 </string>
         </property>
@@ -531,6 +566,9 @@ color: rgb(0, 0, 0);
      <layout class="QHBoxLayout" name="playerIcon_2">
       <item>
        <widget class="QPushButton" name="enemyWhiteIcon">
+        <property name="styleSheet">
+         <string notr="true">font: 9pt &quot;Verdana&quot;;</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -538,6 +576,9 @@ color: rgb(0, 0, 0);
       </item>
       <item>
        <widget class="QPushButton" name="enemyBlueIcon">
+        <property name="styleSheet">
+         <string notr="true">font: 9pt &quot;Verdana&quot;;</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -545,6 +586,9 @@ color: rgb(0, 0, 0);
       </item>
       <item>
        <widget class="QPushButton" name="enemyRedIcon">
+        <property name="styleSheet">
+         <string notr="true">font: 9pt &quot;Verdana&quot;;</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -552,6 +596,9 @@ color: rgb(0, 0, 0);
       </item>
       <item>
        <widget class="QPushButton" name="enemyGreenIcon">
+        <property name="styleSheet">
+         <string notr="true">font: 9pt &quot;Verdana&quot;;</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -559,6 +606,9 @@ color: rgb(0, 0, 0);
       </item>
       <item>
        <widget class="QPushButton" name="enemyBlackIcon">
+        <property name="styleSheet">
+         <string notr="true">font: 9pt &quot;Verdana&quot;;</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -592,9 +642,9 @@ color: rgb(0, 0, 0);
          </sizepolicy>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(255, 255, 200);
+         <string notr="true">background-color: #D6F6DD;
 border-color: rgb(0, 0, 255);
-font: 9pt &quot;Fixedsys&quot;;
+font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
 </string>
         </property>
@@ -618,9 +668,9 @@ color: rgb(0, 0, 0);
          <number>-2</number>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(255, 255, 200);
+         <string notr="true">background-color: #D6F6DD;
 border-color: rgb(0, 0, 255);
-font: 9pt &quot;Fixedsys&quot;;
+font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
 </string>
         </property>
@@ -636,7 +686,7 @@ color: rgb(0, 0, 0);
       <rect>
        <x>120</x>
        <y>0</y>
-       <width>251</width>
+       <width>266</width>
        <height>61</height>
       </rect>
      </property>
@@ -664,7 +714,7 @@ color: rgb(0, 0, 0);
         <property name="styleSheet">
          <string notr="true"> background-color: #ffffff;        
 color: #2c3e50;                    
-font-family: &quot;Segoe UI&quot;, sans-serif; 
+font: 9pt &quot;Verdana&quot;;
  font-size: 16px;
     font-weight: bold;
     padding: 8px 12px;                  
@@ -700,7 +750,7 @@ font-family: &quot;Segoe UI&quot;, sans-serif;
      <property name="styleSheet">
       <string notr="true">background-color: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.529, y2:1, stop:0 rgba(184, 6, 6, 255), stop:1 rgba(255, 171, 149, 255));
 border-color: rgb(170, 0, 0);
-font: 9pt &quot;Fixedsys&quot;;
+font: 9pt &quot;Verdana&quot;;
 color: rgb(0, 0, 0);
 </string>
      </property>
@@ -739,6 +789,9 @@ color: rgb(0, 0, 0);
       <width>291</width>
       <height>361</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 9pt &quot;Verdana&quot;;</string>
     </property>
    </widget>
    <widget class="QLabel" name="MagnifierImage">
@@ -805,6 +858,7 @@ color: rgb(0, 0, 0);
      </property>
      <property name="styleSheet">
       <string notr="true">QLabel {
+	font: 9pt &quot;Verdana&quot;;
     background-color: #f5f5f5;      
     color: #333333;                  
     font-weight: bold;
@@ -867,8 +921,14 @@ color: rgb(0, 0, 0);
        <widget class="QLabel" name="phaseLabel">
         <property name="font">
          <font>
+          <family>Verdana</family>
           <pointsize>9</pointsize>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 9pt &quot;Verdana&quot;;</string>
         </property>
         <property name="text">
          <string>Phase: </string>
@@ -879,8 +939,14 @@ color: rgb(0, 0, 0);
        <widget class="QLabel" name="activePlayerLabel">
         <property name="font">
          <font>
+          <family>Verdana</family>
           <pointsize>9</pointsize>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 9pt &quot;Verdana&quot;;</string>
         </property>
         <property name="text">
          <string>is Active Player</string>

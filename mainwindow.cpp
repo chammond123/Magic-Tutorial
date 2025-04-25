@@ -27,7 +27,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     ui->CardDescription->setReadOnly(true);
     ui->CardDescription->setFocusPolicy(Qt::NoFocus);
 
-    this->setStyleSheet(QString("QMainWindow { background-image: url(:/Icons/Icons/white_bg.png); }"));
+    this->setStyleSheet(QString("QMainWindow { background-image: url(:/Icons/Icons/backgoundv1.png); }"));
 
     apiManager = new CardAPIManager(this);
     statePointer = game->state;
@@ -102,6 +102,7 @@ MainWindow::MainWindow(gamemanager* game, QWidget *parent)
     connect(ui->playCardButton, &QPushButton::clicked, this, &MainWindow::onPlayCardButtonClicked);
 
     //update Icon for zones
+    ui->enemyHealthIcon->setGeometry(ui->playerHealthIcon->geometry());
     ui->enemyHealthIcon->setPixmap(QPixmap(":/Icons/Icons/hp.jpg"));
     ui->enemyHealthIcon->setScaledContents(true);
     ui->playerHealthIcon->setPixmap(QPixmap(":/Icons/Icons/hp.jpg"));
