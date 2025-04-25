@@ -510,7 +510,7 @@ font-family: &quot;Segoe UI&quot;, sans-serif;
       <rect>
        <x>120</x>
        <y>0</y>
-       <width>111</width>
+       <width>251</width>
        <height>61</height>
       </rect>
      </property>
@@ -612,7 +612,7 @@ font-family: &quot;Segoe UI&quot;, sans-serif;
      </rect>
     </property>
     <property name="text">
-     <string>Game TIps</string>
+     <string>Game Tips</string>
     </property>
     <property name="checked">
      <bool>true</bool>
@@ -631,8 +631,7 @@ font-family: &quot;Segoe UI&quot;, sans-serif;
      <enum>Qt::LayoutDirection::LeftToRight</enum>
     </property>
     <property name="styleSheet">
-     <string notr="true">
-</string>
+     <string notr="true"/>
     </property>
     <property name="frameShape">
      <enum>QFrame::Shape::StyledPanel</enum>
@@ -742,7 +741,7 @@ font-family: &quot;Segoe UI&quot;, sans-serif;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1548</width>
+     <width>1550</width>
      <height>22</height>
     </rect>
    </property>
