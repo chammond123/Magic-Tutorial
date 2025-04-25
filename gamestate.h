@@ -51,7 +51,7 @@ private:
     /**
      * @brief Holds how many turns have taken place
      */
-    int turnCount;
+    int turnCount = 0;
 
 public:
     /**

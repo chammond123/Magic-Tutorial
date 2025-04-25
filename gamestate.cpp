@@ -25,10 +25,10 @@ void GameState::changePhase(){
         player2->upkeepPhase();
     }
     else if (currentPhase == Phase::Draw){
-        if (player1->isActivePlayer && turnCount != 1){
+        if (player1->isActivePlayer && turnCount != 0){
             player1->drawCard();
         }
-        else if (player2->isActivePlayer && turnCount != 1){
+        else if (player2->isActivePlayer && turnCount != 0){
             player2->drawCard();
         }
     }
@@ -74,6 +74,7 @@ void GameState::changePhase(){
         player2->endTurn();
 
         changeActivePlayer();
+        turnCount += 1;
         changePhase();
         if (player2->isActivePlayer) {
             Bot* botPlayer = static_cast<Bot*>(player2);
