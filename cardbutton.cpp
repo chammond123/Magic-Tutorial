@@ -66,18 +66,6 @@ void CardButton::resetCard(){
     QPixmap pixmap = QPixmap::fromImage(cardPtr->image).scaled(
         this->size() - QSize(6,6), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
-    // QTransform transform;
-
-    // if(cardPtr->isTapped) {
-    //     transform.rotate(90);
-    //     setFixedSize(140, 100);
-    // }
-    // else {
-    //     transform.rotate(0);
-    //     setFixedSize(100, 140);
-    // }
-    // QPixmap rotated = pixmap.transformed(transform, Qt::SmoothTransformation);
-
     this->setIcon(QIcon(pixmap));
     this->setText("");
     this->setIconSize(this->size() - QSize(6,6));
@@ -110,7 +98,7 @@ void CardButton::resizeEvent(QResizeEvent* event) {
     this->setIconSize(this->size()- QSize(6,6));
 }
 
-QPixmap CardButton::getOverlayedPixmap(int selectionIndex) {
+QPixmap CardButton::getOverlayedPixmap(int selectionIndex, QColor color) {
     QPixmap original = QPixmap::fromImage(cardPtr->image).scaled(
         this->size() - QSize(6,6), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
@@ -127,6 +115,11 @@ QPixmap CardButton::getOverlayedPixmap(int selectionIndex) {
     painter.setFont(font);
     painter.setPen(Qt::white);
     painter.drawText(overlayed.rect(), Qt::AlignCenter, QString::number(selectionIndex + 1));
+
+    QPen pen(color);
+    pen.setWidth(4);
+    painter.setPen(pen);
+    painter.drawRect(overlayed.rect().adjusted(2, 2, -2, -2));
 
     painter.end();
     return overlayed;

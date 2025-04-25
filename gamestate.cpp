@@ -35,10 +35,23 @@ void GameState::changePhase(){
     else if(currentPhase == Phase::PreCombatMain){
         player1->emptyManaPool();
         player2->emptyManaPool();
+        attackers.clear();
     }
     else if(currentPhase == Phase::BeginCombat){
         player1->emptyManaPool();
         player2->emptyManaPool();
+    }
+    else if(currentPhase == Phase::DeclareAttackers){
+        if(player2->isActivePlayer){
+            Bot* botPlayer = static_cast<Bot*>(player2);
+            botPlayer->takeTurn(this);
+        }
+    }
+    else if(currentPhase == Phase::DeclareBlockers){
+        if(!player2->isActivePlayer){
+            Bot* botPlayer = static_cast<Bot*>(player2);
+            botPlayer->takeTurn(this);
+        }
     }
     else if(currentPhase == Phase::PostCombatMain){
         player1->emptyManaPool();
@@ -112,7 +125,7 @@ void GameState::resolveCombatDamage(QMap<Card*, QList<Card*>> CombatCreatures){
     }
     for (Card* attacker : CombatCreatures.keys()){
         // Holds the attackers power, whenever damage is delt to a creature the excess is stored here
-        int powerLeftToDeal = attacker->power;
+        // int powerLeftToDeal = attacker->power;
 
         // If the attacker has no blockers, deal damage to the player equal to its toughness
         if (CombatCreatures[attacker].empty()){
@@ -120,24 +133,51 @@ void GameState::resolveCombatDamage(QMap<Card*, QList<Card*>> CombatCreatures){
         }
         // Otherwise deal damage to the blocking creatures with powerLeftToDeal
         else{
-            for (Card* defender : CombatCreatures[attacker]){
-                if (powerLeftToDeal > 0){
-                    defender->takeDamage(powerLeftToDeal);
-                    powerLeftToDeal -= defender->toughness;
-                    attacker->takeDamage(defender->toughness);
-                }
-                // If the defending creature dies, send it to the graveyard
-                if (defender->currHealth <= 0){
-                    defendingPlayer->moveCardString(defender, "battlefeild", "graveyard", true);
+            // for (Card* defender : CombatCreatures[attacker]){
+            //     if (powerLeftToDeal > 0){
+            //         defender->takeDamage(powerLeftToDeal);
+            //         powerLeftToDeal -= defender->toughness;
+            //         attacker->takeDamage(defender->toughness);
+            //     }
+            //     // If the defending creature dies, send it to the graveyard
+            //     if (defender->currHealth <= 0){
+            //         defendingPlayer->moveCardString(defender, "battlefield", "graveyard", true);
+            //     }
+            // }
+            // // If the attacking creature dies, send it to the graveyard
+            // if (attacker->currHealth <= 0){
+            //     attackingPlayer->moveCardString(attacker, "battlefield", "graveyard", true);
+            // }
+
+            int remainingPower = attacker->power;
+
+            // Step 1: Assign and deal attacker's damage to blockers in order
+            for (Card* blocker : CombatCreatures[attacker]) {
+                if (remainingPower <= 0)
+                    break;
+
+                int damageToDeal = std::min(remainingPower, blocker->toughness);
+                blocker->takeDamage(damageToDeal);
+                remainingPower -= damageToDeal;
+            }
+
+            // Step 2: Each blocker also deals damage to the attacker
+            for (Card* blocker : CombatCreatures[attacker]) {
+                attacker->takeDamage(blocker->power);
+            }
+
+            // Step 3: Check for deaths
+            for (Card* blocker : CombatCreatures[attacker]) {
+                if (blocker->currHealth <= 0) {
+                    defendingPlayer->moveCardString(blocker, "battlefield", "graveyard", true);
                 }
             }
-            // If the attacking creature dies, send it to the graveyard
-            if (attacker->currHealth <= 0){
-                attackingPlayer->moveCardString(attacker, "battlefeild", "graveyard", true);
+            if (attacker->currHealth <= 0) {
+                attackingPlayer->moveCardString(attacker, "battlefield", "graveyard", true);
             }
         }
         // Tap the card after it attacks
-        attackingPlayer->tapCard(attacker);
+        // attackingPlayer->tapCard(attacker);
     }
     changePhase();
 }
@@ -159,6 +199,9 @@ void GameState::resolveStack(){
             else if(std::holds_alternative<Card*>(stackObject.target)){
                 Card* c = get<Card*>(stackObject.target);
                 stackObject.card->ability.use(c);
+                if(c->currHealth <= 0){
+                    stackObject.player->moveCardString(stackObject.card, "battlefield", "graveyard", true);
+                }
             }
         }
 

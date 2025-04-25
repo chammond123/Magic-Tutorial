@@ -7,6 +7,10 @@ Player::Player(QStringList deckList, QObject *parent)
     deck(deckList)
 {
     hasSummoningSickness = true;
+    hasPlayedLand = false;
+    hasntDrawnForTurn = false;
+    madeAction = false;
+    playerID = 0;
     Library.type = ZoneType::LIBRARY;
     Graveyard.type = ZoneType::GRAVEYARD;
     Battlefield.type = ZoneType::BATTLEFIELD;

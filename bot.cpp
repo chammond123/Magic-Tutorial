@@ -1,10 +1,14 @@
 #include "bot.h"
 #include "gamestate.h"
 #include "command.h"
-#include "carddictionary.h"
 #include <QDebug>
 
-Bot::Bot(QStringList deckList) : Player(deckList) {}
+Bot::Bot(QStringList deckList) : Player(deckList) {
+    hasSummoningSickness = true;
+    hasPlayedLand = false;
+    hasntDrawnForTurn = false;
+    madeAction = false;
+}
 
 void Bot::takeTurn(GameState* gameState) {
     switch (gameState->currentPhase) {
@@ -14,11 +18,11 @@ void Bot::takeTurn(GameState* gameState) {
         break;
     case Phase::DeclareAttackers:
         declareAttackers(gameState);
-        passPriority(gameState);
+        // changePhase(gameState);
         break;
     case Phase::DeclareBlockers:
         declareBlockers(gameState);
-        passPriority(gameState);
+        // changePhase(gameState);
         break;
     case Phase::PostCombatMain:
         playCard(gameState);
@@ -96,7 +100,7 @@ void Bot::playCard(GameState* gameState) {
         }
     }
 
-    if (this->isActivePlayer) {
+    if (this->isActivePlayer && !gameState->player1->madeAction) {
         changePhase(gameState);
     }
 }
@@ -111,41 +115,57 @@ int Bot::calculateManaValue(Card* card) {
 }
 
 void Bot::declareAttackers(GameState* gameState) {
+    // if(!this->isActivePlayer){
+    //     return;
+    // }
+
     QMap<Card*, QVector<Card*>> combatCreatures;
 
     for (Card* creature : Battlefield) {
-        if (creature->type == CardType::CREATURE && !creature->isTapped && !creature->hasSummoningSickness) {
+        if (creature->type == CardType::CREATURE && !creature->isTapped) {
             combatCreatures[creature] = QVector<Card*>();
+            creature->isTapped = true;
         }
     }
 
-    if (!combatCreatures.isEmpty()) {
-        declareCombatCommand cmd(gameState, combatCreatures);
-        cmd.execute();
-    }
-    if (this->isActivePlayer) {
-        changePhase(gameState);
-    }
+    // QList<Card*> attackers;
+    // for (Card* card : combatCreatures.keys()){
+    //     attackers.append(card);
+    // }
+    gameState->attackers = combatCreatures.keys();
+    emit UiDeclareAttackers(combatCreatures.keys());
+
+    // if (!combatCreatures.isEmpty()) {
+
+    //     declareCombatCommand cmd(gameState, combatCreatures);
+    //     cmd.execute();
+    // }
+    // if (this->isActivePlayer) {
+    //     changePhase(gameState);
+    // }
 }
 
 void Bot::declareBlockers(GameState* gameState) {
-    changePhase(gameState);
-    return;
-    Player* attacker = gameState->player1;
+    // changePhase(gameState);
+    // return;
+    // Player* attacker = gameState->player1;
     QMap<Card*, QVector<Card*>> combatCreatures;
 
-    QVector<Card*> attackingCreatures;
-    for (Card* card : attacker->Battlefield) {
-        if (card->type == CardType::CREATURE) {
-            attackingCreatures.append(card);
-        }
-    }
+    QList<Card*> attackingCreatures = gameState->attackers;
+    // for (Card* card : attacker->Battlefield) {
+    //     if (card->type == CardType::CREATURE) {
+    //         attackingCreatures.append(card);
+    //     }
+    // }
 
-    if (attackingCreatures.isEmpty()) return;
+    if (attackingCreatures.isEmpty()) {
+        emit UiDeclareCombatants(combatCreatures);
+        return;
+    }
 
     QVector<Card*> availableBlockers;
     for (Card* card : Battlefield) {
-        if (card->type == CardType::CREATURE && !card->isTapped) {
+        if (card->type == CardType::CREATURE && !card->isTapped && !card->hasSummoningSickness) {
             availableBlockers.append(card);
         }
     }
@@ -159,6 +179,7 @@ void Bot::declareBlockers(GameState* gameState) {
     });
 
     for (Card* attacker : attackingCreatures) {
+        combatCreatures[attacker];
         for (int i = 0; i < availableBlockers.size(); i++) {
             Card* blocker = availableBlockers[i];
             if (blocker->toughness > attacker->power ||
@@ -166,15 +187,17 @@ void Bot::declareBlockers(GameState* gameState) {
 
                 combatCreatures[attacker].append(blocker);
                 availableBlockers.removeAt(i);
+                emit showBlockers(combatCreatures[attacker]);
                 break;
             }
         }
     }
 
-    if (!combatCreatures.isEmpty()) {
-        declareCombatCommand cmd(gameState, combatCreatures);
-        cmd.execute();
-    }
+    emit UiDeclareCombatants(combatCreatures);
+    // if (!combatCreatures.isEmpty()) {
+    //     emit UiDeclareCombatants(combatCreatures);
+    //     // cmd.execute();
+    // }
 }
 
 void Bot::endTurn(GameState* gameState) {
