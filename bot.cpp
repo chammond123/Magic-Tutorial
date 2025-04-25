@@ -158,16 +158,18 @@ void Bot::playCard(GameState* gameState) {
                                     playCardCommand* cmd = new playCardCommand(gameState, chosen, card);
                                     cmd->execute();
                                     qDebug() << "Cast on creature";
+                                    break;
                                 }
                                 else{
                                     continue;
                                 }
                             }
-                            else{
+                            else if (chosen->name.toLower() == "lightning bolt"){
                                 if (card->toughness <= 3 && card->type == CardType::CREATURE){
                                     playCardCommand* cmd = new playCardCommand(gameState, chosen, card);
                                     cmd->execute();
                                     qDebug() << "Cast on creature";
+                                    break;
                                 }
                                 else{
                                     continue;
