@@ -131,6 +131,33 @@
         <mxCell id="47YLPtZrNkTIdJmAvj_--14" value="Validate game commands and update game state" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="370" y="1030" width="230" height="30" as="geometry" />
         </mxCell>
+        <mxCell id="47YLPtZrNkTIdJmAvj_--15" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;Node.js&lt;br&gt;Server App&lt;/h1&gt;&lt;p&gt;Diagram of the back end server managing the react app, c++ game instance and db.&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="30" y="1440" width="180" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="47YLPtZrNkTIdJmAvj_--19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="47YLPtZrNkTIdJmAvj_--16" target="47YLPtZrNkTIdJmAvj_--17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="47YLPtZrNkTIdJmAvj_--16" value="Actor" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="-200" y="1760" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="47YLPtZrNkTIdJmAvj_--17" value="React&lt;br&gt;Fronted&lt;br&gt;App" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="-80" y="1760" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="47YLPtZrNkTIdJmAvj_--20" value="User Registration" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="100" y="1620" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="47YLPtZrNkTIdJmAvj_--21" value="User&lt;br&gt;Authentication" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="100" y="1730" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="47YLPtZrNkTIdJmAvj_--23" value="Authorization" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="240" y="1730" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="47YLPtZrNkTIdJmAvj_--24" value="Game&lt;br&gt;Instance&lt;br&gt;Manager" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="100" y="1960" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="47YLPtZrNkTIdJmAvj_--25" value="&lt;div&gt;Security&lt;/div&gt;&lt;div&gt;&amp;amp;&lt;/div&gt;&lt;div&gt;Rate Limiter&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="240" y="1600" width="80" height="80" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
