@@ -1,0 +1,95 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0" version="28.1.1">
+  <diagram name="Page-1" id="I3tga3GYQQUFuahilYMC">
+    <mxGraphModel dx="2191" dy="1879" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="I5TWf7MryPyG4fld3JTO-2" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;Magic Tutorial&lt;/h1&gt;&lt;p&gt;This is the system design for the magic tutorial app. It diagrams and documents all logical flow through the application. If any changes to the app&#39;s flow are made please document them here.&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="170" y="-70" width="180" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-1" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;System&lt;/h1&gt;&lt;p&gt;This represents the high level components of the system&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="170" y="110" width="180" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Q6pponSDPzcCeOAdrSPG-2" target="Q6pponSDPzcCeOAdrSPG-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-2" value="&lt;font size=&quot;3&quot;&gt;React Client&lt;br&gt;Application&lt;/font&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="-190" y="295" width="150" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Q6pponSDPzcCeOAdrSPG-3" target="Q6pponSDPzcCeOAdrSPG-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-3" value="&lt;font size=&quot;3&quot;&gt;Node JS&lt;br&gt;Server Side&lt;br&gt;Application&lt;/font&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="150" y="290" width="160" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-5" value="&lt;font size=&quot;3&quot;&gt;My SQL&lt;br&gt;User DB&lt;/font&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="490" y="445" width="110" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-6" value="&lt;font size=&quot;3&quot;&gt;C++&lt;br&gt;Game Engine&lt;br&gt;Instance&lt;/font&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="470" y="220" width="150" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Q6pponSDPzcCeOAdrSPG-7" target="Q6pponSDPzcCeOAdrSPG-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-7" value="Actor" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="-425" y="305" width="70" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="Q6pponSDPzcCeOAdrSPG-3" target="Q6pponSDPzcCeOAdrSPG-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-12" value="Interacts with react frontend" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="-340" y="300" width="110" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-13" value="Sends game inputs" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="-20" y="320" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-14" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;React Client&amp;nbsp;&lt;br&gt;Application&lt;/h1&gt;&lt;p&gt;The flow for the react client facing application.&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="60" y="610" width="180" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-15" value="Actor" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="-190" y="870" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="Q6pponSDPzcCeOAdrSPG-16" target="Q6pponSDPzcCeOAdrSPG-17">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="10" y="950" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="Q6pponSDPzcCeOAdrSPG-16" target="Q6pponSDPzcCeOAdrSPG-24">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-16" value="Login Page" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="-70" y="910" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-17" value="&lt;div&gt;Node.js&lt;/div&gt;&lt;div&gt;Server Side&amp;nbsp;&lt;/div&gt;&lt;div&gt;Application&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="220" y="930" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-19" value="Sends login request" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="60" y="950" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-20" value="My SQL&amp;nbsp;&lt;br&gt;User DB" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="430" y="860" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=27.5;entryPerimeter=0;" edge="1" parent="1" source="Q6pponSDPzcCeOAdrSPG-17" target="Q6pponSDPzcCeOAdrSPG-20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-22" value="Validates Credentials" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="285" y="850" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Q6pponSDPzcCeOAdrSPG-24" target="Q6pponSDPzcCeOAdrSPG-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-24" value="Registration&lt;br&gt;Page" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="-70" y="770" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-26" value="New users sent to&lt;br&gt;registration page" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="-20" y="870" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Q6pponSDPzcCeOAdrSPG-28" value="Send registration request" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="780" width="150" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
