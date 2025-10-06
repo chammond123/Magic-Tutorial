@@ -1,0 +1,14 @@
+{
+  "name": "router",
+  "version": "1.0.0",
+  "description": "Routing server for the Rect frontend and the c++ game engine",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chase Hammonbd",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
