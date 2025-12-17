@@ -5,6 +5,8 @@
 #include "card.h"
 #include "bot.h"
 #include <type_traits>
+#include <algorithm>
+#include <cctype>
 
 using namespace std;
 
@@ -23,7 +25,9 @@ void playCardCommand::execute(){
     }
     else{
         player->useMana(card);
-        if (card->name.toLower() == "divination" or card->name.toLower() == "fervor"){
+        std::string cardNameLower = card->name;
+        std::transform(cardNameLower.begin(), cardNameLower.end(), cardNameLower.begin(), ::tolower);
+        if (cardNameLower == "divination" || cardNameLower == "fervor"){
             target = state->getPriorityPlayer();
         }
         state->addToStack(StackObject{state->getPriorityPlayer(), card, target});
@@ -52,7 +56,7 @@ void changePhaseCommand::execute(){
     state->changePhase();
 }
 
-declareCombatCommand::declareCombatCommand(GameState* state, QMap<Card*, QVector<Card*>> CombatCreatures) :
+declareCombatCommand::declareCombatCommand(GameState* state, std::map<Card*, std::vector<Card*>> CombatCreatures) :
     Command(state), CombatCreatures(CombatCreatures){}
 void declareCombatCommand::execute(){
     state->resolveCombatDamage(CombatCreatures);

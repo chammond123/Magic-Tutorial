@@ -1,10 +1,11 @@
 #include "player.h"
 #include "type.h"
 #include "zone.h"
+#include <algorithm>
+#include <cctype>
 
-Player::Player(QStringList deckList, QObject *parent)
-    : QObject{parent},
-    deck(deckList)
+Player::Player(std::vector<std::string> deckList)
+    : deck(deckList)
 {
     hasSummoningSickness = true;
     hasPlayedLand = false;
@@ -42,29 +43,27 @@ void Player::gainLife(int amount)
 void Player::takeDamage(int amount)
 {
     health -= amount;
-    if (health <= 0){
-        emit playerLost();
-    }
+    // Player lost condition - would need to be handled by game manager
 }
 
-void Player::addMana(QMap<ManaType, int> *manaCosts)
+void Player::addMana(std::map<ManaType, int> *manaCosts)
 {
-    for (auto [color, amount] : manaCosts->toStdMap()) {
+    for (auto [color, amount] : *manaCosts) {
         manaPool[color] += amount;
     }
 }
 
 void Player::useMana(Card* card)
 {
-    QMap<ManaType, int> manaCosts = card->cost;
+    std::map<ManaType, int> manaCosts = card->cost;
 
     if (manaCosts[ManaType::ANY] > 0){
-        for(auto [color, amount] : selectedMana.toStdMap()){
+        for(auto [color, amount] : selectedMana){
             manaPool[color] -= amount;
         }
     }
 
-    for (auto [color, amount] : manaCosts.toStdMap()) {
+    for (auto [color, amount] : manaCosts) {
         if(color == ManaType::ANY){
             continue;
         }
@@ -79,23 +78,24 @@ void Player::drawCard(int amount)
     // Check to see if any cards left
     for (int i = 0; i < amount; i++) {
         if ( Library.getCount() <= 0){
-            emit playerLost();
+            // Player lost - would need to be handled by game manager
             return;
         }
 
         Card* card = Library.drawTop();
         moveCardZone(card, Library, Hand, false);
-        emit cardDrawn(card);
     }
 }
 
-void Player::moveCardString(Card *card, QString sourceString, QString targetString, bool OnTop)
+void Player::moveCardString(Card *card, std::string sourceString, std::string targetString, bool OnTop)
 {
     Zone *source = nullptr;
     Zone *target = nullptr;
 
-    QString sourceZone = sourceString.toLower();
-    QString targetZone = targetString.toLower();
+    std::string sourceZone = sourceString;
+    std::transform(sourceZone.begin(), sourceZone.end(), sourceZone.begin(), ::tolower);
+    std::string targetZone = targetString;
+    std::transform(targetZone.begin(), targetZone.end(), targetZone.begin(), ::tolower);
 
     // Map pointers to actual targets
     if (sourceZone == "hand")
@@ -117,7 +117,7 @@ void Player::moveCardString(Card *card, QString sourceString, QString targetStri
         target = &Exile;
 
     if (!source || !target || !source->findCard(card)) {
-        emit invalidAction("Invalid Card movement");
+        // Invalid action - would need to be handled by game manager
         return;
     }
 
@@ -135,7 +135,7 @@ void Player::mill(int amount)
 {
     for (int i = 0; i < amount; i++) {
         if (Library.getCount() <= 0){
-            emit playerLost();
+            // Player lost - would need to be handled by game manager
             return;
         }
         Card *card = Library.drawTop();
@@ -166,11 +166,11 @@ void Player::playCard(Card* card)
 
 bool Player::canPayMana(Card* card)
 {
-    QMap<ManaType, int> manaCosts = card->cost;
+    std::map<ManaType, int> manaCosts = card->cost;
     int costTotal = 0;
     int totalMana = 0;
 
-    for (auto [color, value] : manaCosts.toStdMap()) {
+    for (auto [color, value] : manaCosts) {
         if (color == ManaType::ANY){
             continue;
         }
@@ -180,7 +180,7 @@ bool Player::canPayMana(Card* card)
         costTotal += value;
     }
 
-    for (int value : manaPool){
+    for (auto [color, value] : manaPool){
         totalMana += value;
     }
 
@@ -245,7 +245,7 @@ void Player::cleanupPhase(){
 }
 
 void Player::emptyManaPool(){
-    for(ManaType color : manaPool.keys()){
+    for(auto& [color, amount] : manaPool){
         manaPool[color] = 0;
     }
 }
@@ -258,14 +258,10 @@ void Player::endStepPhase(){
 
 void Player::endTurn()
 {
+    // Discard logic would need to be handled by game manager
     if (Hand.getCount() > 7) {
-        emit requestDiscard("Hand");
+        // Request discard
     }
-    if (Hand.getCount() <= 7) {
-        emit turnEnded();
-        return;
-    }
-    emit requestDiscard("Hand"); // TODO: clarify zone
 }
 
 Zone* Player::findCardZone(Card* card)
@@ -286,13 +282,13 @@ Zone* Player::findCardZone(Card* card)
     return nullptr;
 }
 
-QVector<Zone*> Player::getZones(){
-    QVector<Zone*> zones;
-    zones.append(&Library);
-    zones.append(&Graveyard);
-    zones.append(&Battlefield);
-    zones.append(&Exile);
-    zones.append(&Hand);
+std::vector<Zone*> Player::getZones(){
+    std::vector<Zone*> zones;
+    zones.push_back(&Library);
+    zones.push_back(&Graveyard);
+    zones.push_back(&Battlefield);
+    zones.push_back(&Exile);
+    zones.push_back(&Hand);
 
     return zones;
 }

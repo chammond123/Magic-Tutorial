@@ -1,6 +1,7 @@
 #include "zone.h"
 #include "card.h"
 #include <chrono>
+#include <algorithm>
 
 Zone::Zone() {
 
@@ -20,22 +21,23 @@ iterator Zone::end() { return cards.end(); }
 int Zone::getCount() { return cards.count(); }
 
 void Zone::shuffle() {
-    QVector<Card*> tempVector = cards;
+    std::vector<Card*> tempVector = cards;
     cards.clear();
 
     // Fisher-Yates shuffle algorithm
-    while (!tempVector.isEmpty()) {
+    while (!tempVector.empty()) {
         // Generate a random index
         std::uniform_int_distribution<int> dist(0, tempVector.size() - 1);
         int randomIndex = dist(randomEngine);
 
         // Move the randomly selected card to our original vector
-        cards.append(tempVector.takeAt(randomIndex));
+        cards.push_back(tempVector[randomIndex]);
+        tempVector.erase(tempVector.begin() + randomIndex);
     }
 }
 
 bool Zone::findCard(Card* card) {
-    return cards.contains(card);
+    return std::find(cards.begin(), cards.end(), card) != cards.end();
 }
 
 bool Zone::containsEnabledType(CardType t){
@@ -48,23 +50,26 @@ bool Zone::containsEnabledType(CardType t){
 }
 
 Card* Zone::drawTop() {
-    if (cards.isEmpty()){
+    if (cards.empty()){
         return nullptr;
     }
-    return cards.first();
+    return cards.front();
 }
 
 void Zone::addCard(Card* card, bool onTop) {
     if (onTop){
-        cards.prepend(card);
+        cards.insert(cards.begin(), card);
     }
     else{
-        cards.append(card);
+        cards.push_back(card);
     }
 }
 
 void Zone::removeCard(Card* card){
-    cards.removeOne(card);
+    auto it = std::find(cards.begin(), cards.end(), card);
+    if (it != cards.end()) {
+        cards.erase(it);
+    }
 }
 
 Zone::~Zone() {

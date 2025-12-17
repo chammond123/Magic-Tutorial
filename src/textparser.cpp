@@ -1,25 +1,27 @@
 #include "textparser.h"
+#include <sstream>
 
-QStringList TextParser::getListFromText(QFile file){
-    QStringList deckList;
+std::vector<std::string> TextParser::getListFromText(std::string filePath){
+    std::vector<std::string> deckList;
+    std::ifstream file(filePath);
 
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    if (!file.is_open()) {
         return deckList;
     }
 
-    QTextStream in(&file);
-    while (!in.atEnd()) {
-        QString line = in.readLine();
-        int spaceIndex = line.indexOf(" ");
+    std::string line;
+    while (std::getline(file, line)) {
+        size_t spaceIndex = line.find(" ");
+        if (spaceIndex == std::string::npos) continue;
 
         // Number of cards
-        int num = line.mid(0, spaceIndex).toInt();
+        int num = std::stoi(line.substr(0, spaceIndex));
 
         // Type of card
-        QString card = line.mid(spaceIndex + 1);
+        std::string card = line.substr(spaceIndex + 1);
 
         for (int i = 0; i < num; i++) {
-            deckList.append(card);
+            deckList.push_back(card);
         }
     }
 

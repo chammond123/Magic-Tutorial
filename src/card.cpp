@@ -1,8 +1,9 @@
 #include "card.h"
+#include <algorithm>
 
 Card::Card() {}
 
-Card::Card(QString name){
+Card::Card(std::string name){
     this->name = name;
     isLand = false;
     isTapped = false;
@@ -15,7 +16,6 @@ Card::Card(QString name){
 Card::Card(const Card& other) :
     name(other.name),
     description(other.description),
-    image(other.image),
     color(other.color),
     ability(other.ability),
     type(other.type),
@@ -35,7 +35,6 @@ Card& Card::operator=(const Card& other) {
     if (this != &other) {
         name = other.name;
         description = other.description;
-        image = other.image;
         color = other.color;
         ability = other.ability;
         type = other.type;
@@ -54,10 +53,7 @@ Card& Card::operator=(const Card& other) {
 
 bool Card::hasKeyword(PropertyType keyword) const
 {
-    if (keywords.contains(keyword)) {
-        return true;
-    }
-    return false;
+    return std::find(keywords.begin(), keywords.end(), keyword) != keywords.end();
 }
 
 void Card::takeDamage(int damage){

@@ -1,7 +1,7 @@
 #ifndef ABILITY_H
 #define ABILITY_H
 
-#include <QString>
+#include <string>
 #include <functional>
 #include "type.h"
 

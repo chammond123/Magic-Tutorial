@@ -1,7 +1,7 @@
 #ifndef CARDDICTIONARY_H
 #define CARDDICTIONARY_H
 #include <map>
-#include <QString>
+#include <string>
 #include "card.h"
 
 /**
@@ -15,8 +15,8 @@ private:
     static void giveAbility(Card* c);
 
 public:
-    static std::map<QString, Card> dict;
+    static std::map<std::string, Card> dict;
     static void addCard(Card card);
-    static Card getCard(QString cardName);
+    static Card getCard(std::string cardName);
 };
 #endif // CARDDICTIONARY_H

@@ -1,12 +1,11 @@
 #ifndef CARD_H
 #define CARD_H
 
-#include <QImage>
-#include <QString>
-#include <QVector>
+#include <string>
+#include <vector>
+#include <map>
 #include "type.h"
 #include <algorithm>
-#include <QMap>
 #include "ability.h"
 
 class Card
@@ -16,9 +15,9 @@ public:
     Card(const Card& other);
     Card& operator=(const Card& other);
     //For testing
-    Card(QString name);
+    Card(std::string name);
 
-    bool canBePlayed(const QVector<ManaType> &availableMana) const;
+    bool canBePlayed(const std::vector<ManaType> &availableMana) const;
     bool hasKeyword(PropertyType keyword) const;
 
     bool shouldEnable;
@@ -34,16 +33,16 @@ public:
 
 public:
     int currHealth = toughness;
-    QString name;
-    QString description;
-    QImage image;
+    std::string name;
+    std::string description;
+    // QImage removed - image handling needs separate implementation
     ManaType color;
     Ability ability = Ability();
     CardType type;
     int toughness;
     int power;
-    QMap<ManaType, int> cost;
-    QVector<PropertyType> keywords;
+    std::map<ManaType, int> cost;
+    std::vector<PropertyType> keywords;
     bool isTapped;
     bool isPermanent;
     bool isLand;

@@ -2,6 +2,8 @@
 #include "gamemanager.h"
 #include "qobject.h"
 #include "gametipsdialog.h"
+#include <algorithm>
+#include <string>
 gamemanager::gamemanager(QObject *parent)
     : QObject{parent}
 {
@@ -27,10 +29,10 @@ void gamemanager::onReceiveMainWindowPos(int left, int right, int top, int botto
 
 void gamemanager::displayPhaseTip() {
     emit requestMainWindowPos();
-    QString landName = "";
-    QString creatureName = "any cards with any numbered mana requirement";
+    std::string landName = "";
+    std::string creatureName = "any cards with any numbered mana requirement";
     bool hasInstant = false;
-    QString phaseMessage = ""; // Initialize the message for each phase
+    std::string phaseMessage = ""; // Initialize the message for each phase
     if (state->player1->isActivePlayer){
         if (displayGameTips) {
             int midX = (mainWindowLeft + mainWindowRight) / 2;
@@ -220,18 +222,18 @@ void gamemanager::onPassPriority(){
 }
 
 void gamemanager::onChangePhase(){
-    QVector<Phase> playerActionPhases = {Phase::PreCombatMain, Phase::PostCombatMain, Phase::DeclareAttackers, Phase::DeclareBlockers, Phase::EndStep};
+    std::vector<Phase> playerActionPhases = {Phase::PreCombatMain, Phase::PostCombatMain, Phase::DeclareAttackers, Phase::DeclareBlockers, Phase::EndStep};
     changePhaseCommand cmd = changePhaseCommand(state);
     cmd.execute();
     emit updateUI();
     displayPhaseTip();
-    if(!playerActionPhases.contains(state->currentPhase) &&
+    if(std::find(playerActionPhases.begin(), playerActionPhases.end(), state->currentPhase) == playerActionPhases.end() &&
         !(state->currentPhase == Phase::Upkeep && state->player1->Hand.containsEnabledType(CardType::INSTANT))){
         onChangePhase();
     }
 }
 
-void gamemanager::onCombatCardsReceived(QMap<Card*, QVector<Card*>> CombatCreatures){
+void gamemanager::onCombatCardsReceived(std::map<Card*, std::vector<Card*>> CombatCreatures){
     declareCombatCommand cmd = declareCombatCommand(state, CombatCreatures);
     cmd.execute();
     if(state->player1->health <= 0){

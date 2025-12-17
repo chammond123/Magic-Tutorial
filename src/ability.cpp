@@ -47,7 +47,7 @@ Ability Ability::bypassSummonSickness() {
 Ability Ability::addMana(int amount, ManaType mana) {
     return Ability(abilityType::ADD_MANA, amount, [amount, mana](Player* p, Card*) {
         if (p) {
-            QMap<ManaType, int> manaMap;
+            std::map<ManaType, int> manaMap;
             manaMap[mana] = amount;
             p->addMana(&manaMap);  // Add mana to Player's pool
         }

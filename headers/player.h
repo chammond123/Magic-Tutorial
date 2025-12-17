@@ -1,17 +1,18 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <QWidget>
+#include <vector>
+#include <string>
+#include <map>
 #include "card.h"
 #include "zone.h"
 #include "type.h"
 #include "deck.h"
 
-class Player : public QObject
+class Player
 {
-    Q_OBJECT
 public:
-    explicit Player(QStringList deckList, QObject *parent = nullptr);
+    explicit Player(std::vector<std::string> deckList);
 
     /**
      * @brief deck object to contain instantiated cards
@@ -31,8 +32,8 @@ public:
 
     int health;
 
-    QMap<ManaType, int> manaPool;
-    QMap<ManaType, int> selectedMana;
+    std::map<ManaType, int> manaPool;
+    std::map<ManaType, int> selectedMana;
 
     // Used by UI to check which zones to update
     int playerID;
@@ -53,7 +54,7 @@ public:
 
     bool hasSummoningSickness;
 
-    QVector<Zone*> getZones();
+    std::vector<Zone*> getZones();
 
     // Health Methods
     int getHealth();
@@ -71,7 +72,7 @@ public:
      * @param target where card is moving
      * @param ontop
      */
-    void moveCardString(Card *card, QString sourceZone, QString targetZone, bool OnTop);
+    void moveCardString(Card *card, std::string sourceZone, std::string targetZone, bool OnTop);
     void moveCardZone(Card *card, Zone& sourceZone, Zone& targetZone, bool OnTop);
 
     // Mana Methods
@@ -93,25 +94,13 @@ public:
     void endStepPhase();
     void resolveCard(Card* card);
 
-public slots:
-
     void playCard(Card *card);
-    void addMana(QMap<ManaType, int> *manaCosts);
+    void addMana(std::map<ManaType, int> *manaCosts);
     void mill(int amount);
     void drawCard(int amount = 1);
     void takeDamage(int amount);
     void gainLife(int amount);
     void endTurn();
-
-signals:
-
-    void cardDrawn(Card *card);
-    void cardPlayed(Card *card);
-    void turnEnded();
-    void playerLost();
-    void handChanged();
-    void requestDiscard(QString zone);
-    void invalidAction(QString message);
 
 private:
 

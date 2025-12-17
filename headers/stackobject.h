@@ -1,5 +1,5 @@
 #include "player.h"
-#include <QVector>
+#include <vector>
 #include <variant>
 #ifndef STACKOBJECT_H
 #define STACKOBJECT_H

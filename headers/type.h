@@ -1,8 +1,6 @@
 #ifndef TYPE_H
 #define TYPE_H
 
-#include <QString>
-
 /**
  * @brief The CardType enum
  */

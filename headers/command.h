@@ -5,7 +5,8 @@ class Player;
 class GameState;
 #include "card.h"
 
-#include <QVector>
+#include <vector>
+#include <map>
 
 /**
  * @brief The Command class
@@ -47,8 +48,8 @@ public:
 
 class declareCombatCommand : public Command{
 public:
-    QMap<Card*, QVector<Card*>> CombatCreatures;
-    declareCombatCommand(GameState* state, QMap<Card*, QVector<Card*>> CombatCreatures);
+    std::map<Card*, std::vector<Card*>> CombatCreatures;
+    declareCombatCommand(GameState* state, std::map<Card*, std::vector<Card*>> CombatCreatures);
 
     virtual void execute();
 };

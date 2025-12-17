@@ -1,9 +1,10 @@
 #include "bot.h"
 #include "gamestate.h"
 #include "command.h"
-#include <QTimer>
+#include <algorithm>
+#include <cctype>
 
-Bot::Bot(QStringList deckList) : Player(deckList) {
+Bot::Bot(std::vector<std::string> deckList) : Player(deckList) {
     hasSummoningSickness = true;
     hasPlayedLand = false;
     hasntDrawnForTurn = false;
@@ -56,13 +57,13 @@ void Bot::playCard(GameState* gameState) {
         }
     }
 
-    QVector<Card*> playableCards;
+    std::vector<Card*> playableCards;
     for (Card* card : Hand) {
         if (card->type == CardType::LAND && hasPlayedLand){
             continue;
         }
         if (card->shouldEnable) {
-            playableCards.append(card);
+            playableCards.push_back(card);
         }
     }
 
@@ -70,14 +71,14 @@ void Bot::playCard(GameState* gameState) {
         return calculateManaValue(a) > calculateManaValue(b);
     });
 
-    if (!playableCards.isEmpty()) {
+    if (!playableCards.empty()) {
         for (Card* chosen : playableCards){
             int manaNeeded = calculateManaValue(chosen);
 
-            QVector<Card*> untappedLands;
+            std::vector<Card*> untappedLands;
             for (Card* land : Battlefield) {
                 if (land->type == CardType::LAND && !land->isTapped) {
-                    untappedLands.append(land);
+                    untappedLands.push_back(land);
                 }
             }
 
@@ -85,22 +86,22 @@ void Bot::playCard(GameState* gameState) {
                 continue;
             }
 
-            if (untappedLands.size() < manaNeeded && chosen == playableCards.last()) {
+            if (untappedLands.size() < manaNeeded && chosen == playableCards.back()) {
                 return;
             }
 
             //idk if any ta or anyone is reading this but ik this is not a good way to do this but its 3 in the morning and i could care less - dennis
-            QVector<ManaType> manaList;
-            QVector<ManaType> anyList;
-            QVector<Card*> work = untappedLands;
+            std::vector<ManaType> manaList;
+            std::vector<ManaType> anyList;
+            std::vector<Card*> work = untappedLands;
 
-            for(ManaType m : chosen->cost.keys()){
-                for(int i = 0; i < chosen->cost[m]; i++){
+            for(auto& [m, count] : chosen->cost){
+                for(int i = 0; i < count; i++){
                     if(m != ManaType::ANY){
-                        manaList.append(m);
+                        manaList.push_back(m);m);
                     }
                     else{
-                        anyList.append(m);
+                        anyList.push_back(m);
                     }
                 }
             }
@@ -115,14 +116,17 @@ void Bot::playCard(GameState* gameState) {
                 work.erase(it);
             }
 
-            while (!anyList.isEmpty() && !work.isEmpty()) {
-                Card* land = work.takeFirst();
+            while (!anyList.empty() && !work.empty()) {
+                Card* land = work.front();
+                work.erase(work.begin());
                 land->isTapped = true;
-                anyList.removeFirst();
+                anyList.erase(anyList.begin());
             }
 
             if (chosen->needsTarget){
-                if (chosen->name.toLower() == "counterspell"){
+                std::string chosenNameLower = chosen->name;
+                std::transform(chosenNameLower.begin(), chosenNameLower.end(), chosenNameLower.begin(), ::tolower);
+                if (chosenNameLower == "counterspell"){
                     if (gameState->theStack.empty()){
                         continue;
                     }
@@ -145,7 +149,7 @@ void Bot::playCard(GameState* gameState) {
                     }
                     else{
                         for (Card* card : gameState->player1->Battlefield){
-                            if (chosen->name.toLower() == "shock"){
+                            if (chosenNameLower == "shock"){
                                 if (card->toughness <= 2 && card->type == CardType::CREATURE){
                                     playCardCommand* cmd = new playCardCommand(gameState, chosen, card);
                                     cmd->execute();
@@ -155,7 +159,7 @@ void Bot::playCard(GameState* gameState) {
                                     continue;
                                 }
                             }
-                            else if (chosen->name.toLower() == "lightning bolt"){
+                            else if (chosenNameLower == "lightning bolt"){
                                 if (card->toughness <= 3 && card->type == CardType::CREATURE){
                                     playCardCommand* cmd = new playCardCommand(gameState, chosen, card);
                                     cmd->execute();
@@ -189,7 +193,7 @@ void Bot::playCard(GameState* gameState) {
 
 int Bot::calculateManaValue(Card* card) {
     int total = 0;
-    for (auto [color, amount] : card->cost.toStdMap()) {
+    for (auto [color, amount] : card->cost) {
         total += amount;
     }
     return total;
@@ -200,39 +204,39 @@ void Bot::declareAttackers(GameState* gameState) {
     //     return;
     // }
 
-    QMap<Card*, QVector<Card*>> combatCreatures;
+    std::map<Card*, std::vector<Card*>> combatCreatures;
 
     for (Card* creature : Battlefield) {
         if (creature->type == CardType::CREATURE && !creature->isTapped) {
-            combatCreatures[creature] = QVector<Card*>();
+            combatCreatures[creature] = std::vector<Card*>();
             creature->isTapped = true;
         }
     }
 
-    QList<Card*> attackers;
-    for (Card* card : combatCreatures.keys()){
-        attackers.append(card);
+    std::vector<Card*> attackers;
+    for (auto& [card, blockers] : combatCreatures){
+        attackers.push_back(card);
     }
-    gameState->attackers = combatCreatures.keys();
-    emit UiDeclareAttackers(combatCreatures.keys());
+    gameState->attackers = attackers;
+    // UI declaration would need to be handled externally
 }
 
 void Bot::declareBlockers(GameState* gameState) {
 
     Player* attacker = gameState->player1;
-    QMap<Card*, QVector<Card*>> combatCreatures;
+    std::map<Card*, std::vector<Card*>> combatCreatures;
 
-    QList<Card*> attackingCreatures = gameState->attackers;
+    std::vector<Card*> attackingCreatures = gameState->attackers;
 
-    if (attackingCreatures.isEmpty()) {
-        emit UiDeclareCombatants(combatCreatures);
+    if (attackingCreatures.empty()) {
+        // UI declaration would need to be handled externally
         return;
     }
 
-    QVector<Card*> availableBlockers;
+    std::vector<Card*> availableBlockers;
     for (Card* card : Battlefield) {
         if (card->type == CardType::CREATURE && !card->isTapped && !card->hasSummoningSickness) {
-            availableBlockers.append(card);
+            availableBlockers.push_back(card);
             card->isTapped = true;
         }
     }
@@ -252,15 +256,15 @@ void Bot::declareBlockers(GameState* gameState) {
             if (blocker->toughness > attacker->power ||
                 (blocker->power >= attacker->toughness && blocker->toughness >= attacker->power)) {
 
-                combatCreatures[attacker].append(blocker);
-                availableBlockers.removeAt(i);
-                emit showBlockers(combatCreatures[attacker]);
+                combatCreatures[attacker].push_back(blocker);
+                availableBlockers.erase(availableBlockers.begin() + i);
+                // UI blockers display would need to be handled externally
                 break;
             }
         }
     }
 
-    emit UiDeclareCombatants(combatCreatures);
+    // UI declaration would need to be handled externally
 }
 
 void Bot::endTurn(GameState* gameState) {

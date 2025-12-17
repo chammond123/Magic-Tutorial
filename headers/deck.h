@@ -2,32 +2,27 @@
 #define DECK_H
 
 #include "card.h"
-#include <QObject>
+#include <vector>
+#include <string>
 
 /**
  * @brief The Deck class
  */
-class Deck : public QObject
+class Deck
 {
-    Q_OBJECT
-
-
 private:
 
-    QVector<Card*> cards;
+    std::vector<Card*> cards;
 public:
     /**
      * @brief Deck Constructor that instantiates all cards
      * @param deckList
-     * @param parent
      */
-    explicit Deck(QStringList deckList, QObject *parent = nullptr);
+    explicit Deck(std::vector<std::string> deckList);
 
-    QVector<Card*> getCardObjects();
+    std::vector<Card*> getCardObjects();
 
     ~Deck();
-
-signals:
 };
 
 #endif // DECK_H

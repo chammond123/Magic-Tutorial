@@ -1,8 +1,9 @@
 #ifndef GAMEMANAGER_H
 #define GAMEMANAGER_H
 
-#include<QVector>
-#include<QMap>
+#include<vector>
+#include<map>
+#include<string>
 #include"card.h"
 #include"player.h"
 #include"gamestate.h"
@@ -53,7 +54,7 @@ public slots:
      * @param The player who wants to declare an attacker
      * @param The card they want to declare as an attacker
      */
-    void onCombatCardsReceived(QMap<Card*, QVector<Card*>> CombatCreatures);
+    void onCombatCardsReceived(std::map<Card*, std::vector<Card*>> CombatCreatures);
     /**
      * @brief Receives if a plyer has taped a card
      */
@@ -62,7 +63,7 @@ public slots:
      * @brief Displays a dialog box containing a tip for the phase
      * @param The tip message to show
      */
-    void displayTip(QString tip, int xCoord = 1700, int yCoord = 950);
+    void displayTip(std::string tip, int xCoord = 1700, int yCoord = 950);
     /**
      * @brief Updates dialog when an action is made
      */

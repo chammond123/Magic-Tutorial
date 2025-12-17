@@ -111,7 +111,7 @@ void GameState::changeActivePlayer(){
     }
 }
 
-void GameState::resolveCombatDamage(QMap<Card*, QList<Card*>> CombatCreatures){
+void GameState::resolveCombatDamage(std::map<Card*, std::vector<Card*>> CombatCreatures){
     Player* attackingPlayer;
     Player* defendingPlayer;
     if (player1->isActivePlayer){
@@ -122,12 +122,12 @@ void GameState::resolveCombatDamage(QMap<Card*, QList<Card*>> CombatCreatures){
         attackingPlayer = player2;
         defendingPlayer = player1;
     }
-    for (Card* attacker : CombatCreatures.keys()){
+    for (auto& [attacker, blockers] : CombatCreatures){res){
         // Holds the attackers power, whenever damage is delt to a creature the excess is stored here
         // int powerLeftToDeal = attacker->power;
 
         // If the attacker has no blockers, deal damage to the player equal to its toughness
-        if (CombatCreatures[attacker].empty()){
+        if (blockers.empty()){
             defendingPlayer->takeDamage(attacker->power);
         }
         // Otherwise deal damage to the blocking creatures with powerLeftToDeal
@@ -136,7 +136,7 @@ void GameState::resolveCombatDamage(QMap<Card*, QList<Card*>> CombatCreatures){
             int remainingPower = attacker->power;
 
             // Step 1: Assign and deal attacker's damage to blockers in order
-            for (Card* blocker : CombatCreatures[attacker]) {
+            for (Card* blocker : blockers) {
                 if (remainingPower <= 0)
                     break;
 
@@ -146,12 +146,12 @@ void GameState::resolveCombatDamage(QMap<Card*, QList<Card*>> CombatCreatures){
             }
 
             // Step 2: Each blocker also deals damage to the attacker
-            for (Card* blocker : CombatCreatures[attacker]) {
+            for (Card* blocker : blockers) {
                 attacker->takeDamage(blocker->power);
             }
 
             // Step 3: Check for deaths
-            for (Card* blocker : CombatCreatures[attacker]) {
+            for (Card* blocker : blockers) {
                 if (blocker->currHealth <= 0) {
                     defendingPlayer->moveCardString(blocker, "battlefield", "graveyard", true);
                 }
@@ -166,12 +166,13 @@ void GameState::resolveCombatDamage(QMap<Card*, QList<Card*>> CombatCreatures){
 
 void GameState::addToStack(StackObject stackObject)
 {
-    theStack.append(stackObject);
+    theStack.push_back(stackObject);
 }
 
 void GameState::resolveStack(){
     if (!theStack.empty()){
-        StackObject stackObject = theStack.takeLast();
+        StackObject stackObject = theStack.back();
+        theStack.pop_back();
         if (!std::holds_alternative<std::nullptr_t>(stackObject.target)){
             if(std::holds_alternative<Player*>(stackObject.target)){
                 Player* t = get<Player*>(stackObject.target);
@@ -265,9 +266,9 @@ PhaseRules GameState::getPhaseRules(){
     }
 }
 bool GameState::stackIsEmpty(){
-    return theStack.isEmpty();
+    return theStack.empty();
 }
-QString GameState::toString(){
+std::string GameState::toString(){
     return "";
 }
 Player* GameState::getPriorityPlayer(){

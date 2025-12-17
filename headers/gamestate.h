@@ -1,7 +1,9 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
-#include<QVector>
+#include<vector>
+#include<string>
+#include<map>
 #include"player.h"
 #include"card.h"
 #include"phase.h"
@@ -16,7 +18,7 @@ private:
     /**
      * @brief A vector holding an order set of phases
      */
-    QVector<Phase> phases = {
+    std::vector<Phase> phases = {
         Phase::Untap,
         Phase::Upkeep,
         Phase::Draw,
@@ -57,7 +59,7 @@ public:
     /**
      * @brief Holds the active stack in a magic round
      */
-    QVector<StackObject> theStack;
+    std::vector<StackObject> theStack;
     /**
      * @brief GameState
      */
@@ -80,7 +82,7 @@ public:
     /**
      * @brief Based on declared attackers and defenders resolve damage
      */
-    void resolveCombatDamage(QMap<Card*, QList<Card*>> CombatCreatures);
+    void resolveCombatDamage(std::map<Card*, std::vector<Card*>> CombatCreatures);
 
     /**
      * @brief Resolves the top card in the stack
@@ -123,10 +125,10 @@ public:
     bool stackIsEmpty();
 
     /**
-     * @brief Returns a QString representing the state
-     * @return A QString containing the state
+     * @brief Returns a string representing the state
+     * @return A string containing the state
      */
-    QString toString();
+    std::string toString();
 
     /**
      * @brief A pointer to the second player object
@@ -141,11 +143,11 @@ public:
     /**
      * @brief Attackers declared by a player
      */
-    QVector<Card*> attackers;
+    std::vector<Card*> attackers;
     /**
      * @brief Defenders declared by a player
      */
-    QVector<Card*> defenders;
+    std::vector<Card*> defenders;
 
     /**
      * @brief Bool reporting if there is a bot set as player2

@@ -1,17 +1,15 @@
 #include "deck.h"
 #include "carddictionary.h"
-#include <QFile>
 
-Deck::Deck(QStringList deckList, QObject *parent)
-    // : QObject{parent}, fileName{fileName}
+Deck::Deck(std::vector<std::string> deckList)
 {
     for (const auto &cardName : deckList) {
         Card* card = new Card(cardDictionary::getCard(cardName));
-        cards.append(card);
+        cards.push_back(card);
     }
 }
 
-QVector<Card*> Deck::getCardObjects() {
+std::vector<Card*> Deck::getCardObjects() {
     return this->cards;
 }
 

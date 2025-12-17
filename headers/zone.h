@@ -2,9 +2,9 @@
 #define ZONE_H
 
 #include "card.h"
-#include <QIterator>
+#include <vector>
 #include <random>
-using iterator = QVector<Card*>::Iterator;
+using iterator = std::vector<Card*>::iterator;
 
 class Zone
 {
@@ -14,7 +14,7 @@ private:
      * First element represents bottom of card stack
      * Last element represents top of card stack
      */
-    QVector<Card*> cards;
+    std::vector<Card*> cards;
 
     bool isFaceUp;
 
@@ -64,14 +64,14 @@ public:
      * @return
      * Makes Zone class iterable
      */
-    QVector<Card*>::iterator begin();
+    std::vector<Card*>::iterator begin();
 
     /**
      * @brief End
      * @return
      * Makes Zone class iterable
      */
-    QVector<Card*>::iterator end();
+    std::vector<Card*>::iterator end();
 
     /**
      * @brief getCount

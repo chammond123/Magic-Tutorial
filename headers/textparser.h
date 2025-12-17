@@ -1,9 +1,9 @@
 #ifndef TEXTPARSER_H
 #define TEXTPARSER_H
 
-#include <QStringList>
-#include <QFile>
-#include <QTextStream>
+#include <vector>
+#include <string>
+#include <fstream>
 #include <iostream>
 
 /**
@@ -16,7 +16,7 @@ private:
     TextParser() = delete;
 
 public:
-    static QStringList getListFromText(QFile input);
+    static std::vector<std::string> getListFromText(std::string filePath);
 };
 
 #endif // TEXTPARSER_H

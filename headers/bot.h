@@ -10,33 +10,18 @@
  * This bot can really play as a player
  */
 class Bot : public Player {
-
-    Q_OBJECT
 public:
     /**
      * Constructor of the bot that take in a deckList
      * @param deckList
      */
-    Bot(QStringList deckList);
+    Bot(std::vector<std::string> deckList);
 
     /**
      * @brief takeTurn
      * @param gameState is the currentGameState
      */
     void takeTurn(GameState* gameState);
-
-public slots:
-
-signals:
-    /**
-     * @brief Declares blockers to be used in the UI
-     * @param blockers against a card
-     */
-    void UiDeclareCombatants(QMap<Card*, QList<Card*>> botCombatants);
-
-    void UiDeclareAttackers(QList<Card*> attackers);
-
-    void showBlockers(QList<Card*> blockers);
 
 private:
     /**

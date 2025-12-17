@@ -4,6 +4,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const webSocket = require('ws');
 const http = require('http');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcrypt');
+const session = require('express-session');
 
 cosnt app = express();
 const server = http.createServer(app);
@@ -12,16 +16,45 @@ const wss = new webSocket.Server({ server });
 
 app.use(bodyParser.json());
 
+// In-memory user store for testing
+const users = []
+
+passport.use(new LocalStrategy(
+	async (username, password, done) => {
+		const user = users.find(u => u.username === username);
+		if !user return done(null, false, { message: 'Incorrect username.' });
+		const match = await bcrypt.compare(password, user.password);
+		if (!match) return done(null, false, { message: 'Incorrect password.' });
+		return done(null, user);
+	}
+));
+
+passport.serializeUser((user, done) => {
+	done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+	const user = users.find(u => u.id === id);
+	done(null, user);
+});
+
+app.use(session({
+	secret: 'your_secret',
+	resave: false,
+	saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+
 wss.on('connection', (ws) => {
 
     console.log('Client connected');
 
     ws.on('message', (message) => {
 	console.log(`Received message: ${message}`);
-
-	// Here you would typically send the message to your C++ backend
-	// For example, using a child process or a native addon
-	// const response = sendToCppBackend(message);
 // This file contaisn the server code for the communication between the client and the game server. 
 // It handles the connection, disconnection, and message events.
 
