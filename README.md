@@ -23,30 +23,6 @@ MagicTutorial demonstrates a complete game implementation from rules engine to U
 - **Physics Engine**: Box2D (embedded)
 - **External API**: Scryfall Card Database
 - **Build System**: Qt Creator / qmake
-- **Platforms**: Windows (MinGW 64-bit), extensible to macOS/Linux
-
-## Quick Start
-
-### Prerequisites
-- Qt 6.x (with Qt Creator)
-- MinGW 64-bit compiler
-- CMake (for Box2D compilation)
-
-### Building
-
-1. **Clone and navigate to project:**
-   ```bash
-   git clone https://github.com/your-org/cs3505-assignment9-Tweagan11.git
-   cd cs3505-assignment9-Tweagan11
-   ```
-
-2. **Open in Qt Creator:**
-   - File → Open File or Project
-   - Select `MagicTutorial.pro`
-
-3. **Build and Run:**
-   - Press `Ctrl+R` to build and run
-   - Or use Build menu → Run
 
 ### First Game
 - Launch the application
@@ -92,6 +68,30 @@ MagicTutorial demonstrates a complete game implementation from rules engine to U
 | **Signal/Slot** | Qt event-driven arch for action dispatch | Decouples game logic from UI; testable game engine |
 | **Singleton** | `CardDictionary` static cache | O(1) card property lookups; memory efficient |
 | **Observer** | Zone/Player state changes emit signals | UI auto-updates without polling |
+
+
+## Quick Start
+
+### Prerequisites
+- Qt 6.x (with Qt Creator)
+- MinGW 64-bit compiler
+- CMake (for Box2D compilation)
+
+### Building
+
+1. **Clone and navigate to project:**
+   ```bash
+   git clone https://github.com/your-org/cs3505-assignment9-Tweagan11.git
+   cd cs3505-assignment9-Tweagan11
+   ```
+
+2. **Open in Qt Creator:**
+   - File → Open File or Project
+   - Select `MagicTutorial.pro`
+
+3. **Build and Run:**
+   - Press `Ctrl+R` to build and run
+   - Or use Build menu → Run
 
 ## How to Extend
 
