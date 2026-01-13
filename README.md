@@ -17,9 +17,9 @@ MagicTutorial demonstrates a complete game implementation from rules engine to U
 - **Command Pattern Implementation**: Action history and undo support via command objects
 
 <p align="center">
-  <img src="images/" width="300" />
-  <img src="images/" width="300" />
-  <img src="images/" width="300" />
+  <img src="images/main_ui.png" width="300" />
+  <img src="images/tapped_lands.png" width="300" />
+  <img src="images/use_any_mana.png" width="300" />
 </p>
 
 ## Tech Stack
