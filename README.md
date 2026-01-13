@@ -24,11 +24,6 @@ MagicTutorial demonstrates a complete game implementation from rules engine to U
 - **External API**: Scryfall Card Database
 - **Build System**: Qt Creator / qmake
 
-### First Game
-- Launch the application
-- Select "New Game" from main menu
-- Game board appears with tutorial tips enabled by default
-
 ## Architecture Highlights
 
 ### Layered Design
@@ -64,9 +59,9 @@ MagicTutorial demonstrates a complete game implementation from rules engine to U
 
 | Pattern | Implementation | Benefit |
 |---------|---|---|
-| **Command** | `playCardCommand` objects stored in `GameState` | Enables undo, action history, deterministic replay |
+| **Command** | `playCardCommand` objects stored in `GameState` | Enables countering and resolving cards true to ruleset |
 | **Signal/Slot** | Qt event-driven arch for action dispatch | Decouples game logic from UI; testable game engine |
-| **Singleton** | `CardDictionary` static cache | O(1) card property lookups; memory efficient |
+| **Dictionary** | `CardDictionary` static cache | O(1) card property lookups; memory efficient |
 | **Observer** | Zone/Player state changes emit signals | UI auto-updates without polling |
 
 
@@ -92,6 +87,11 @@ MagicTutorial demonstrates a complete game implementation from rules engine to U
 3. **Build and Run:**
    - Press `Ctrl+R` to build and run
    - Or use Build menu → Run
+
+### First Game
+- Launch the application
+- Select "New Game" from main menu
+- Game board appears with tutorial tips enabled by default
 
 ## How to Extend
 
