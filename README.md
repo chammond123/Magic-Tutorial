@@ -22,8 +22,9 @@ MagicTutorial demonstrates a complete game implementation from rules engine to U
 </p>
 
 <div align="center">
+  <img src="images/in_action.png" width="400" />
   <img src="images/tapped_lands.png" width="300" />
-  <img src="images/tutorial.png", width="500" />
+  <img src="images/tutorial.png" width="400" />
 </div>
 
 ## Tech Stack
