@@ -16,6 +16,7 @@ MagicTutorial demonstrates a complete game implementation from rules engine to U
 - **Signal/Slot Architecture**: Decoupled game logic from UI using Qt's event-driven patterns
 - **Command Pattern Implementation**: Action history and undo support via command objects
 
+### Screenshots and Menus
 <p align="center">
   <img src="images/main_ui.png" width="400" />
   <img src="images/use_any_mana.png" width="400" />
