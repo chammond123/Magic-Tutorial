@@ -1,0 +1,60 @@
+version: '3'
+
+tasks:
+  build:
+    desc: Build the C++ game engine
+    cmds:
+      - make
+    dir: .
+
+  rebuild:
+    desc: Clean and rebuild the C++ game engine
+    cmds:
+      - make clean
+      - make
+    dir: .
+
+  run:engine:
+    desc: Run the compiled C++ game engine
+    cmds:
+      - ./bin/magic_tutorial
+    dir: .
+
+  run:server:
+    desc: Start the Express server
+    cmds:
+      - node server/server.js
+    dir: .
+
+  run:react:dev:
+    desc: Start the React app in development mode
+    cmds:
+      - npm install
+      - npm run dev
+    dir: magic-react-app
+
+  run:react:
+    desc: Start the React app in normal (production) mode
+    cmds:
+      - npm install
+      - npm run build
+      - npm start
+    dir: magic-react-app
+
+  run:dev:
+    desc: Start engine, server, and React app in development mode (parallel)
+    deps: [build]
+    cmds:
+      - task -p run:engine &
+      - task -p run:server &
+      - task -p run:react:dev &
+    dir: .
+
+  run:local:
+    desc: Start engine, server, and React app in normal mode (parallel)
+    deps: [build]
+    cmds:
+      - task -p run:engine &
+      - task -p run:server &
+      - task -p run:react &
+    dir: .
