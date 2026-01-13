@@ -16,6 +16,12 @@ MagicTutorial demonstrates a complete game implementation from rules engine to U
 - **Signal/Slot Architecture**: Decoupled game logic from UI using Qt's event-driven patterns
 - **Command Pattern Implementation**: Action history and undo support via command objects
 
+<p align="center">
+  <img src="images/" width="300" />
+  <img src="images/" width="300" />
+  <img src="images/" width="300" />
+</p>
+
 ## Tech Stack
 
 - **Language**: C++17
