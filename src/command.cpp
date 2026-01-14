@@ -28,9 +28,9 @@ void playCardCommand::execute(){
         std::string cardNameLower = card->name;
         std::transform(cardNameLower.begin(), cardNameLower.end(), cardNameLower.begin(), ::tolower);
         if (cardNameLower == "divination" || cardNameLower == "fervor"){
-            target = state->getPriorityPlayer();
+            this->target = state->getPriorityPlayer();
         }
-        state->addToStack(StackObject{state->getPriorityPlayer(), card, target});
+        state->addToStack(StackObject{state->getPriorityPlayer(), card, this->target});
         card->isOnStack = true;
     }
 }

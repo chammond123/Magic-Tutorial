@@ -12,9 +12,8 @@
 /**
  * @brief The gamemanager class
  */
-class gamemanager : public QObject
+class gamemanager // TODO: Was QObject - remove Qt dependency
 {
-    Q_OBJECT
 private:
     int mainWindowLeft;
     int mainWindowTop;
@@ -23,7 +22,7 @@ private:
 
 public:
     GameState* state;
-    gamemanager(QObject *parent);
+    gamemanager(); // TODO: Was QObject constructor - remove Qt dependency
     ~gamemanager();
     /**
      * @brief True if a player wants to display gmae tips during a game
@@ -32,7 +31,8 @@ public:
 
     bool hasDisplayedWelcome = false;
 
-public slots:
+    // TODO: These were Qt slots - implement UI connection mechanism
+    // public slots:
     /**
      * @brief Receives if a player wants to cast a card
      * @param The player who wants to play a card
@@ -74,12 +74,14 @@ public slots:
     void onToggleGameTips(bool toggled);
 
     void onReceiveMainWindowPos(int left, int right, int top, int bottom);
-signals:
-    void updateUI();
-    void gameOver(bool hasWon);
-    void startTargeting(Card* initialCard);
-    void promptTargeting(Card* card);
-    void requestMainWindowPos();
+    
+    // TODO: These were Qt signals - implement event notification mechanism
+    // signals:
+    //     void updateUI();
+    //     void gameOver(bool hasWon);
+    //     void startTargeting(Card* initialCard);
+    //     void promptTargeting(Card* card);
+    //     void requestMainWindowPos();
 };
 
 #endif // GAMEMANAGER_H

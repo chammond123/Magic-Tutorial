@@ -98,7 +98,7 @@ void Bot::playCard(GameState* gameState) {
             for(auto& [m, count] : chosen->cost){
                 for(int i = 0; i < count; i++){
                     if(m != ManaType::ANY){
-                        manaList.push_back(m);m);
+                        manaList.push_back(m);
                     }
                     else{
                         anyList.push_back(m);

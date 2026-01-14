@@ -4,41 +4,58 @@ tasks:
   build:
     desc: Build the C++ game engine
     cmds:
-      - make
+      - make -f Makefile.project
     dir: .
 
   rebuild:
     desc: Clean and rebuild the C++ game engine
     cmds:
-      - make clean
-      - make
+      - make -f Makefile.project clean
+      - make -f Makefile.project
     dir: .
 
   run:engine:
     desc: Run the compiled C++ game engine
     cmds:
-      - ./bin/magic_tutorial
+      - ./build/bin/MagicTutorial
     dir: .
 
   run:server:
     desc: Start the Express server
+    deps: [install:server]
     cmds:
-      - node server/server.js
-    dir: .
+      - node server.js
+    dir: server
+
+  install:react:
+    desc: Install React app dependencies
+    cmds:
+      - npm install
+    dir: magic-react-app
+
+  install:server:
+    desc: Install server dependencies
+    cmds:
+      - npm install
+    dir: server
+
+  install:deps:
+    desc: Install all project dependencies
+    deps: [install:react, install:server]
 
   run:react:dev:
     desc: Start the React app in development mode
+    deps: [install:react]
     cmds:
-      - npm install
       - npm run dev
     dir: magic-react-app
 
   run:react:
-    desc: Start the React app in normal (production) mode
+    desc: Build and serve React app in production mode
+    deps: [install:react]
     cmds:
-      - npm install
       - npm run build
-      - npm start
+      - npm run preview
     dir: magic-react-app
 
   run:dev:

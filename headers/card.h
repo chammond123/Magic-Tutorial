@@ -48,7 +48,7 @@ public:
     bool isLand;
     bool hasSummoningSickness = true;
     bool isCountered = false;
-    QString flavorText;
+    std::string flavorText;
     bool needsTarget = false;
     bool isOnStack = false;
 };

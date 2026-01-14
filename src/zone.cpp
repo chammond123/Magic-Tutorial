@@ -18,7 +18,7 @@ iterator Zone::begin() { return cards.begin(); }
 
 iterator Zone::end() { return cards.end(); }
 
-int Zone::getCount() { return cards.count(); }
+int Zone::getCount() { return cards.size(); }
 
 void Zone::shuffle() {
     std::vector<Card*> tempVector = cards;

@@ -7,6 +7,7 @@ class GameState;
 
 #include <vector>
 #include <map>
+#include <variant>
 
 /**
  * @brief The Command class

@@ -6,8 +6,8 @@ GameState::GameState(){
 }
 
 void GameState::changePhase(){
-    bool hasSeenPhase = false;
-    if (currentPhaseIndex >= phases.size() - 1){
+    // bool hasSeenPhase = false; // TODO: Unused variable, implement if needed
+    if (currentPhaseIndex >= static_cast<int>(phases.size() - 1)){
         currentPhaseIndex = 0;
     }
     else{
@@ -122,7 +122,7 @@ void GameState::resolveCombatDamage(std::map<Card*, std::vector<Card*>> CombatCr
         attackingPlayer = player2;
         defendingPlayer = player1;
     }
-    for (auto& [attacker, blockers] : CombatCreatures){res){
+    for (auto& [attacker, blockers] : CombatCreatures){
         // Holds the attackers power, whenever damage is delt to a creature the excess is stored here
         // int powerLeftToDeal = attacker->power;
 
@@ -175,11 +175,11 @@ void GameState::resolveStack(){
         theStack.pop_back();
         if (!std::holds_alternative<std::nullptr_t>(stackObject.target)){
             if(std::holds_alternative<Player*>(stackObject.target)){
-                Player* t = get<Player*>(stackObject.target);
+                Player* t = std::get<Player*>(stackObject.target);
                 stackObject.card->ability.use(t);
             }
             else if(std::holds_alternative<Card*>(stackObject.target)){
-                Card* c = get<Card*>(stackObject.target);
+                Card* c = std::get<Card*>(stackObject.target);
                 if (stackObject.card->isCountered){
                     // Loser got their spell countered
                 }

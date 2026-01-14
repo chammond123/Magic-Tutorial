@@ -1,11 +1,13 @@
 
 #include "gamemanager.h"
-#include "qobject.h"
-#include "gametipsdialog.h"
+// TODO: Remove Qt includes
+// #include "qobject.h"
+// #include "gametipsdialog.h"
 #include <algorithm>
 #include <string>
-gamemanager::gamemanager(QObject *parent)
-    : QObject{parent}
+#include <iostream>
+
+gamemanager::gamemanager() // TODO: Was QObject constructor
 {
     state = new GameState();
 }
@@ -14,10 +16,19 @@ gamemanager::~gamemanager(){
     delete state;
 }
 
-void gamemanager::displayTip(QString tip, int xCoord, int yCoord){    
+void gamemanager::displayTip(std::string tip, int xCoord, int yCoord){
+    // TODO: Implement UI tip display without Qt
+    // Originally showed GameTipsDialog
+    /*
     GameTipsDialog* tipDialog = new GameTipsDialog(tip);
     tipDialog->move(xCoord, yCoord);
     tipDialog->exec();
+    */
+    
+    // For now, just suppress unused parameter warnings
+    (void)tip;
+    (void)xCoord;
+    (void)yCoord;
 }
 
 void gamemanager::onReceiveMainWindowPos(int left, int right, int top, int bottom){
@@ -28,7 +39,8 @@ void gamemanager::onReceiveMainWindowPos(int left, int right, int top, int botto
 }
 
 void gamemanager::displayPhaseTip() {
-    emit requestMainWindowPos();
+    // TODO: Replace Qt signal with event system
+    // emit requestMainWindowPos();
     std::string landName = "";
     std::string creatureName = "any cards with any numbered mana requirement";
     bool hasInstant = false;
@@ -181,7 +193,9 @@ void gamemanager::displayPhaseTip() {
                 break;
 
             default:
-                qDebug() << "";
+                // TODO: Replace Qt debug with logging system
+                // qDebug() << "";
+                break;
             }
 
             if (hasInstant) {
@@ -200,24 +214,27 @@ void gamemanager::onPlayCard(Card *card, std::variant<Player*, Card*, std::nullp
     }
 
     if(card->needsTarget && std::holds_alternative<std::nullptr_t>(target)){
-        emit promptTargeting(card);
+        // TODO: Replace Qt signal with event system
+        // emit promptTargeting(card);
         return;
     }
 
     playCardCommand cmd = playCardCommand(state, card, target);
     cmd.execute();
-    emit updateUI();
+    // TODO: Replace Qt signal with event system
+    // emit updateUI();
 }
 
 void gamemanager::onPassPriority(){
     passPriorityCommand cmd = passPriorityCommand(state);
     cmd.execute();
-    emit updateUI();
+    // TODO: Replace Qt signals with event system
+    // emit updateUI();
     if (state->player1->health <= 0){
-        emit gameOver(false);
+        // emit gameOver(false);
     }
     else if (state->player2->health <= 0){
-        emit gameOver(true);
+        // emit gameOver(true);
     }
 }
 
@@ -225,7 +242,8 @@ void gamemanager::onChangePhase(){
     std::vector<Phase> playerActionPhases = {Phase::PreCombatMain, Phase::PostCombatMain, Phase::DeclareAttackers, Phase::DeclareBlockers, Phase::EndStep};
     changePhaseCommand cmd = changePhaseCommand(state);
     cmd.execute();
-    emit updateUI();
+    // TODO: Replace Qt signal with event system
+    // emit updateUI();
     displayPhaseTip();
     if(std::find(playerActionPhases.begin(), playerActionPhases.end(), state->currentPhase) == playerActionPhases.end() &&
         !(state->currentPhase == Phase::Upkeep && state->player1->Hand.containsEnabledType(CardType::INSTANT))){
@@ -237,18 +255,20 @@ void gamemanager::onCombatCardsReceived(std::map<Card*, std::vector<Card*>> Comb
     declareCombatCommand cmd = declareCombatCommand(state, CombatCreatures);
     cmd.execute();
     if(state->player1->health <= 0){
-        emit gameOver(false);
+        // TODO: Replace Qt signals with event system
+        // emit gameOver(false);
     }
     else if(state->player2->health <= 0){
-        emit gameOver(true);
+        // emit gameOver(true);
     }
-    emit updateUI();
+    // emit updateUI();
 }
 
 void gamemanager::onTapCard(Card* card){
     tapCardCommand cmd = tapCardCommand(state, card);
     cmd.execute();
-    emit updateUI();
+    // TODO: Replace Qt signal with event system
+    // emit updateUI();
 }
 
 void gamemanager::onToggleGameTips(bool toggled){
