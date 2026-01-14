@@ -5,6 +5,9 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
+# Include directories
+INCLUDEPATH += headers
+
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
@@ -56,30 +59,30 @@ SOURCES += \
     Box2D/Dynamics/b2World.cpp \
     Box2D/Dynamics/b2WorldCallbacks.cpp \
     Box2D/Rope/b2Rope.cpp \
-    ability.cpp \
-    aboutpage.cpp \
-    bot.cpp \
-    card.cpp \
-    cardapimanager.cpp \
-    cardbutton.cpp \
-    carddictionary.cpp \
-    command.cpp \
-    deck.cpp \
-    gamemanager.cpp \
-    gamestate.cpp \
-    gametipsdialog.cpp \
-    loadscreen.cpp \
-    lotusdialog.cpp \
-    main.cpp \
-    mainmenu.cpp \
-    mainwindow.cpp \
-    manacollection.cpp \
-    player.cpp \
-    settings.cpp \
-    textparser.cpp \
-    tutorialpage.cpp \
-    type.cpp \
-    zone.cpp
+    src/ability.cpp \
+    src/aboutpage.cpp \
+    src/bot.cpp \
+    src/card.cpp \
+    src/cardapimanager.cpp \
+    src/cardbutton.cpp \
+    src/carddictionary.cpp \
+    src/command.cpp \
+    src/deck.cpp \
+    src/gamemanager.cpp \
+    src/gamestate.cpp \
+    src/gametipsdialog.cpp \
+    src/loadscreen.cpp \
+    src/lotusdialog.cpp \
+    src/main.cpp \
+    src/mainmenu.cpp \
+    src/mainwindow.cpp \
+    src/manacollection.cpp \
+    src/player.cpp \
+    src/settings.cpp \
+    src/textparser.cpp \
+    src/tutorialpage.cpp \
+    src/type.cpp \
+    src/zone.cpp
 
 HEADERS += \
     Box2D/Box2D.h \
@@ -129,41 +132,41 @@ HEADERS += \
     Box2D/Dynamics/b2World.h \
     Box2D/Dynamics/b2WorldCallbacks.h \
     Box2D/Rope/b2Rope.h \
-    ability.h \
-    aboutpage.h \
-    bot.h \
-    card.h \
-    cardapimanager.h \
-    cardbutton.h \
-    carddictionary.h \
-    command.h \
-    deck.h \
-    gamemanager.h \
-    gamestate.h \
-    gametipsdialog.h \
-    loadscreen.h \
-    lotusdialog.h \
-    mainmenu.h \
-    mainwindow.h \
-    manacollection.h \
-    phase.h \
-    player.h \
-    settings.h \
-    stackobject.h \
-    textparser.h \
-    tutorialpage.h \
-    type.h \
-    zone.h
+    headers/ability.h \
+    headers/aboutpage.h \
+    headers/bot.h \
+    headers/card.h \
+    headers/cardapimanager.h \
+    headers/cardbutton.h \
+    headers/carddictionary.h \
+    headers/command.h \
+    headers/deck.h \
+    headers/gamemanager.h \
+    headers/gamestate.h \
+    headers/gametipsdialog.h \
+    headers/loadscreen.h \
+    headers/lotusdialog.h \
+    headers/mainmenu.h \
+    headers/mainwindow.h \
+    headers/manacollection.h \
+    headers/phase.h \
+    headers/player.h \
+    headers/settings.h \
+    headers/stackobject.h \
+    headers/textparser.h \
+    headers/tutorialpage.h \
+    headers/type.h \
+    headers/zone.h
 
 FORMS += \
-    aboutpage.ui \
-    loadscreen.ui \
-    lotusdialog.ui \
-    mainmenu.ui \
-    mainwindow.ui \
-    manacollection.ui \
-    settings.ui \
-    tutorialpage.ui
+    ui/aboutpage.ui \
+    ui/loadscreen.ui \
+    ui/lotusdialog.ui \
+    ui/mainmenu.ui \
+    ui/mainwindow.ui \
+    ui/manacollection.ui \
+    ui/settings.ui \
+    ui/tutorialpage.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -171,10 +174,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    Fonts.qrc \
-    Icons.qrc \
-    TextFiles.qrc \
-    Tutorial.qrc
+    resources/Fonts.qrc \
+    resources/Icons.qrc \
+    resources/TextFiles.qrc \
+    resources/Tutorial.qrc \
+    resources/resources.qrc
 
 DISTFILES += \
     Box2D/Box2DConfig.cmake \

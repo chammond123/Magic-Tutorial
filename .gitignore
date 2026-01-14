@@ -81,3 +81,9 @@ CMakeLists.txt.user*
 .uic/
 /build*/
 /MagicTutorial/
+*.log
+
+# Qt build directories
+debug/
+release/
+build-*/

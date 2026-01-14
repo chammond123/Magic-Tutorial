@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/Icons">
+        <file>../Icons/Black.png</file>
+        <file>../Icons/Blue.png</file>
+        <file>../Icons/Green.png</file>
+        <file>../Icons/Red.png</file>
+        <file>../Icons/white.png</file>
+        <file>../Icons/BackCard.png</file>
+        <file>../Icons/tablebackground.png</file>
+        <file>../Icons/hp.jpg</file>
+        <file>../Icons/backgoundv1.png</file>
+        <file>../Icons/backgroundv2.png</file>
+        <file>../Icons/backgroundv3.png</file>
+        <file>../Icons/backgroundv4.png</file>
+        <file>../Icons/tapped.png</file>
+    </qresource>
+</RCC>
